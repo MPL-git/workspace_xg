@@ -1,0 +1,125 @@
+<div class="page rushbuy rushbuy-brand flex dc bgf4" data-title="" data-id="rushbuy_brand">
+	<link rel="stylesheet" href="rushbuy/rushbuy.css">
+
+	<style>
+		.rushbuy-brand .count-time {
+			height: 1.36rem;
+			color: #ff5050;
+			background: #fff;
+		}
+		.rushbuy-brand .count-time:before,
+		.rushbuy-brand .count-time:after {
+			display: none;
+		}
+		.rushbuy-brand .count-time i {
+			width: .2rem;
+			height: .02rem;
+			content: '';
+			margin: 0 .1rem;
+			background: #ff5050;
+		}
+		.rushbuy-brand .con-1 {
+			margin-bottom: .1rem;
+			font-size: .36rem;
+		}
+		.rushbuy-brand .content {
+			background: #fff;
+		}
+	</style>
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more"></div>
+
+	<script id="rushbuy_brand_tpl" type="text/html">
+		<div class="touchfix">
+			{{if posterPic}}
+			<div class="swiper-container">
+				<ul class="swiper-wrapper">
+					<li class="swiper-slide"><img src="{{posterPic}}"></li>
+				</ul>
+			</div>
+			{{/if}}
+
+			<div class="count-time flex dc ac jc mt20">
+				<div class="con-1"></div>
+				<div class="con-2 flex ac jc">
+					<i></i>
+					<p></p>
+					<div></div>
+					<i></i>
+				</div>
+			</div>
+
+			<div class="content">
+				{{include 'rushbuy_brand_tpl_scroll'}}
+			</div>
+		</div>
+	</script>
+
+	<script id="rushbuy_brand_tpl_scroll" type="text/html">
+		{{if productInfoList.length}}
+		<div class="list-product">
+			{{each productInfoList value}}
+			<a onclick="getUrlGoods('{{value.productId}}')" class="mt20 flex">
+				<div class="img-over fn">
+					<img src="{{value.productPic}}">
+				</div>
+				<dl class="flex dc jb fg">
+					<dt>
+						<h3>{{value.productName}}</h3>
+						
+						{{if beginTime <= currentTime}}
+						<div class="flex ac stock">
+							<div class="ratio">
+								<span class="flex ac jc" style="width: {{value.salesRatio}}%">{{value.salesRatio}}%</span>
+							</div>
+							剩余{{value.stock}}件
+						</div>
+						{{else}}
+						<div class="flex ac will">
+							限量{{value.stock}}件
+						</div>
+						{{/if}}
+					</dt>
+
+					<dd class="flex ac jb">
+						<div class="flex ac">
+							<strong>{{value.salePrice}}</strong>
+							<s>{{value.tagPrice}}</s>
+						</div>
+
+						{{if value.stock}}
+							{{if beginTime > currentTime}}
+						<span class="btn-red btn-yellow flex ac jc">即将开抢</span>
+							{{else if currentTime > endTime}}
+						<span class="btn-red btn-gray flex ac jc">已结束</span>
+							{{else}}
+						<span class="btn-red flex ac jc">去抢购</span>
+							{{/if}}
+						{{else}}
+						<span class="btn-red btn-gray flex ac jc">已抢光</span>
+						{{/if}}
+					</dd>
+				</dl>
+			</a>
+			{{/each}}
+		</div>
+		{{else}}
+			{{include 'rushbuy_brand_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="rushbuy_brand_tpl_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前暂无限时抢购</p>
+		</div>
+	</script>
+
+	<script src="rushbuy/brand/index.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SourceNicheCustomMapper" >
+    <!-- 每小时栏目统计 -->
+    <select id="getColumnPvHourStatistics" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT
+	S.time_hour,
+	S.statistical_date,
+	S.column_type,
+	S.column_id,
+	S.total_visitor_count,
+	S.total_pv_count,
+	S.total_visitor_count_tourist,
+	S.total_pv_count_tourist,
+	SUM(S.shopping_cart_count) shopping_cart_count,
+	SUM(S.sub_product_count) sub_product_count,
+	SUM(S.pay_product_count) pay_product_count,
+	SUM(S.pay_product_amount) pay_product_amount
+FROM
+	(
+		SELECT
+			HOUR (pv.create_date) AS time_hour,
+			DATE_FORMAT(pv.create_date, '%Y-%m-%d') statistical_date,
+			pv.column_type column_type,
+			pv.column_id column_id,
+			COUNT(DISTINCT pv.member_id) total_visitor_count,
+			COUNT(pv.member_id) total_pv_count,
+			COUNT(
+				DISTINCT
+				IF (
+					pv.member_id IS NOT NULL,
+					NULL,
+					pv.device_number
+				)
+			) total_visitor_count_tourist,
+			COUNT(1) - COUNT(pv.member_id) total_pv_count_tourist,
+			0 AS shopping_cart_count,
+			0 AS sub_product_count,
+			0 AS pay_product_count,
+			0 AS pay_product_amount
+		FROM
+			bu_member_pv pv
+		WHERE
+			pv.del_flag = '0'
+		AND pv.column_type IS NOT NULL
+		AND pv.create_date BETWEEN #{beginDate}
+		AND #{endDate}
+		AND column_type IS NOT NULL
+		GROUP BY
+			column_type,
+			HOUR (pv.create_date)
+		UNION
+			SELECT
+				HOUR (ma.create_date) AS time_hour,
+				DATE_FORMAT(ma.create_date, '%Y-%m-%d') statistical_date,
+				ma.column_type column_type,
+				0 AS column_id,
+				0 AS total_visitor_count,
+				0 AS total_pv_count,
+				0 AS total_visitor_count_tourist,
+				0 AS total_pv_count_tourist,
+				IFNULL(SUM(sc.quantity), 0) AS shopping_cart_count,
+				0 AS sub_product_count,
+				0 AS pay_product_count,
+				0 AS pay_product_amount
+			FROM
+				bu_member_action ma,
+				bu_shopping_cart sc
+			WHERE
+				ma.action_item_id = sc.id
+			AND ma.create_date BETWEEN #{beginDate}
+			AND #{endDate}
+			AND ma.action_type = '14'
+			AND ma.action_item_id IS NOT NULL
+			AND ma.column_type IS NOT NULL
+			GROUP BY
+				ma.column_type,
+				HOUR (ma.create_date)
+			UNION
+				SELECT
+					HOUR (ma.create_date) AS time_hour,
+					DATE_FORMAT(ma.create_date, '%Y-%m-%d') statistical_date,
+					ma.column_type column_type,
+					0 AS column_id,
+					0 AS total_visitor_count,
+					0 AS total_pv_count,
+					0 AS total_visitor_count_tourist,
+					0 AS total_pv_count_tourist,
+					0 AS shopping_cart_count,
+					IFNULL(SUM(sc.quantity), 0) AS sub_product_count,
+					0 AS pay_product_count,
+					0 AS pay_product_amount
+				FROM
+					bu_member_action ma,
+					bu_shopping_cart sc
+				WHERE
+					ma.action_item_id = sc.id
+				AND ma.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				AND ma.action_type IN ('14', '15')
+				AND ma.action_item_id IS NOT NULL
+				AND sc.order_dtl_id IS NOT NULL
+				AND ma.column_type IS NOT NULL
+				GROUP BY
+					ma.column_type,
+					HOUR (ma.create_date)
+				UNION
+					SELECT
+						HOUR (ma.create_date) AS time_hour,
+						DATE_FORMAT(ma.create_date, '%Y-%m-%d') statistical_date,
+						ma.column_type column_type,
+						0 AS column_id,
+						0 AS total_visitor_count,
+						0 AS total_pv_count,
+						0 AS total_visitor_count_tourist,
+						0 AS total_pv_count_tourist,
+						0 AS shopping_cart_count,
+						0 AS sub_product_count,
+						IFNULL(SUM(od.quantity), 0) AS pay_product_count,
+						IFNULL(SUM(od.pay_amount), 0) AS pay_product_amount
+					FROM
+						bu_member_action ma,
+						bu_shopping_cart sc,
+						bu_order_dtl od,
+						bu_sub_order so,
+						bu_combine_order co
+					WHERE
+						ma.action_item_id = sc.id
+					AND sc.order_dtl_id = od.id
+					AND od.sub_order_id = so.id
+					AND so.combine_order_id = co.id
+					AND ma.create_date BETWEEN #{beginDate}
+					AND #{endDate}
+					AND ma.action_type IN ('14', '15')
+					AND ma.action_item_id IS NOT NULL
+					AND sc.order_dtl_id IS NOT NULL
+					AND co. STATUS = '1'
+					AND ma.column_type IS NOT NULL
+					GROUP BY
+						ma.column_type,
+						HOUR (ma.create_date)
+	) S
+GROUP BY
+	S.time_hour,
+	S.column_type
+    </select>
+
+	<select id="queryWeightsProductId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+		select product_id from
+		(select ps.product_id, (ps.sold_amount_90_days - ps.refund_amount_90_days) * (select param_value from sys_param_cfg where param_code = 'HOT_RECOMMEND_CONST' and param_name = 'A') + (ps.sold_count_90_days - ps.refund_count_90_days) * (select param_value from sys_param_cfg where param_code = 'HOT_RECOMMEND_CONST'and param_name = 'B') newWeights
+		from bu_product_statistics ps, bu_product p
+		where ps.product_id = p.id and ps.del_flag = '0'
+		<if test="productTypeId != null">
+		and p.product_type1_id = #{productTypeId}
+		</if>
+		order by newWeights desc limit 0,300) tab
+	</select>
+
+	<select id="queryWeightsProduct" resultType="java.util.Map" parameterType="java.lang.Integer">
+		select distinct p.*,m.*,
+		(ps.sold_amount_90_days - ps.refund_amount_90_days) * (select param_value from sys_param_cfg where param_code = 'HOT_RECOMMEND_CONST' and param_name = 'A') + (ps.sold_count_90_days - ps.refund_count_90_days) * (select param_value from sys_param_cfg where param_code = 'HOT_RECOMMEND_CONST'and param_name = 'B') newWeights
+		from bu_product p, bu_mcht_info m, bu_mcht_product_brand mpb,bu_product_statistics ps
+		where p.mcht_id = m.id and mpb.mcht_id = m.id and ps.product_id = p.id and ps.del_flag = '0'
+		<if test="productTypeId != null">
+			and p.product_type1_id = #{productTypeId}
+		</if>
+		and p.status = '1' and p.audit_status = '2' and p.sale_type = '1'
+		and p.del_flag = '0' and m.status = '1' and m.shop_status = '1' and m.del_flag = '0' and mpb.status = '1'
+		and mpb.audit_status = '3' and mpb.del_flag = '0'
+		order by newWeights desc limit 0,300
+
+	</select>
+
+	<select id="turntableProductList" resultType="map">
+		SELECT
+			id,
+			IFNULL( stock, 0 ) stock,
+			(
+			SELECT
+				IFNULL( SUM( bp.stock ), 0 )
+			FROM
+				bu_product_item bp
+			WHERE
+				sn.link_id = bp.product_id
+				AND bp.del_flag = '0'
+			) stock_sum
+		FROM
+			bu_source_niche sn
+		WHERE
+			del_flag = '0'
+			AND audit_status = '1'
+			AND type = '13'
+			AND STATUS = '0'
+			AND sn.link_id IN (
+			SELECT
+				p.id
+			FROM
+				bu_product p
+			WHERE
+				sn.link_id = p.id
+				AND p.del_flag = '0'
+			AND p.STATUS = '1'
+			)
+		ORDER BY
+			IFNULL( sn.seq_no, 99999999999 ) ASC
+	</select>
+
+	<update id="recycleTurntableProduct">
+		UPDATE bu_source_niche
+		SET seq_no = NULL,
+		status = '1',
+		update_by = 1,
+		update_date = now()
+		WHERE
+			id IN
+			<foreach collection="recycleList" item="listItem" open="(" close=")" separator="," >
+				#{listItem}
+			</foreach>
+	</update>
+</mapper>

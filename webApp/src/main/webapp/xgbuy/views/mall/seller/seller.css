@@ -1,0 +1,129 @@
+.mall-seller .row-1 {
+	background: #fff;
+}
+.mall-seller .row-1 .con-1 {
+	overflow: hidden;
+	width: 1.58rem;
+	height: 1.58rem;
+	margin: 0 auto;
+	border: 1px solid #ddd;
+	border-radius: .03rem;
+}
+.mall-seller .row-1 h2 {
+	height: .94rem;
+	font-size: .36rem;
+	font-weight: bold;
+	text-align: center;
+}
+
+/*客服/收藏*/
+.mall-seller .row-1 .con-2 a {
+	width: 1.1rem;
+	height: .44rem;
+	margin: 0 .15rem .36rem;
+	border-radius: .22rem;
+	font-size: .24rem;
+	border: 1px solid #050505;
+}
+.mall-seller .row-1 .con-2 a.reminded {
+	background: #ff5050;
+	color: #fff;
+	border-color: #ff5050;
+}
+
+/*店铺优惠券*/
+.mall-seller .row-1 .con-3 .w-1 dl,
+.mall-seller .row-1 .con-3 dl.spe {
+	min-width: 3.8rem;
+	max-width: 4.8rem;
+}
+
+.mall-seller .row-1 .con-3 dl {
+	padding: .09rem .27rem;
+	margin-bottom: .36rem;
+	border: .03rem solid #ff5050;
+	color: #ff5050;
+	font-size: .22rem;
+}
+.mall-seller .row-1 .con-3 .w-2 dl {
+	width: 2.6rem;
+	margin-left: .28rem;
+	margin-right: .28rem;
+}
+.mall-seller .row-1 .con-3 .w-3 dl {
+	width: 2.2rem;
+	margin-left: .15rem;
+	margin-right: .15rem;
+}
+.mall-seller .row-1 .con-3 dt {
+	height: 100%;
+}
+.mall-seller .row-1 .con-3 dt .bold {
+	font-size: .36rem;
+	font-weight: bold;
+	word-break: break-all;
+}
+.mall-seller .row-1 .con-3 dt strong {
+	line-height: .56rem;
+	font-size: .5rem;
+}
+.mall-seller .row-1 .con-3 dd {
+	width: .66rem;
+	height: .66rem;
+	line-height: .26rem;
+	padding: .07rem .1rem 0 .1rem;
+	color: #fff;
+	box-sizing: border-box;
+	text-align: center;
+	background: #ff5050 url(resources/sbfd.png) no-repeat center center;
+	background-size: .42rem .46rem;
+}
+
+/*店铺特卖推荐*/
+.mall-seller .row-1 .col-2 {
+	padding: 0 .2rem .33rem;
+	background: #fff;
+}
+.mall-seller .row-1 .col-2 h3 {
+	height: .88rem;
+	font-size: .3rem;
+	font-weight: bold;
+}
+
+
+/* 平台-分类 */
+.product-3 .tag-filter-platform {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    width: 100%;
+    padding: 0 .24rem 0 2rem;
+    font-size: .28rem;
+    background: #fff;
+    box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, .1);
+}
+.mall-seller .lv2{
+	background: rgba(244, 244, 244, 1);
+	flex: none
+}
+.mall-seller .lv2 a{
+	margin: 0;
+    padding: .2rem .3rem;
+    height: auto;
+}
+.mall-seller .lv2 .active{
+	background: #fff;
+}
+.mall-seller .lv3{
+	flex: auto;
+	width: 0;
+	align-content: flex-start;
+}
+
+/* 平台端打开适应 */
+@media (min-width: 750px){ 
+	.product-3 .tag{
+		width: 750px!important;
+	}
+}
+

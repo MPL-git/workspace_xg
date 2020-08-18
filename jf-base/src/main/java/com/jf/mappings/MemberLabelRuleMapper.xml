@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberLabelRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberLabelRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="label_type_id" property="labelTypeId" jdbcType="INTEGER" />
+    <result column="label_id" property="labelId" jdbcType="INTEGER" />
+    <result column="sign_date_begin" property="signDateBegin" jdbcType="TIMESTAMP" />
+    <result column="sign_date_end" property="signDateEnd" jdbcType="TIMESTAMP" />
+    <result column="last_login_date_begin" property="lastLoginDateBegin" jdbcType="TIMESTAMP" />
+    <result column="last_login_date_end" property="lastLoginDateEnd" jdbcType="TIMESTAMP" />
+    <result column="last_expense_date_begin" property="lastExpenseDateBegin" jdbcType="TIMESTAMP" />
+    <result column="last_expense_date_end" property="lastExpenseDateEnd" jdbcType="TIMESTAMP" />
+    <result column="login_date_begin" property="loginDateBegin" jdbcType="TIMESTAMP" />
+    <result column="login_date_end" property="loginDateEnd" jdbcType="TIMESTAMP" />
+    <result column="pay_date_begin" property="payDateBegin" jdbcType="TIMESTAMP" />
+    <result column="pay_date_end" property="payDateEnd" jdbcType="TIMESTAMP" />
+    <result column="pay_count_begin" property="payCountBegin" jdbcType="INTEGER" />
+    <result column="pay_count_end" property="payCountEnd" jdbcType="INTEGER" />
+    <result column="pay_amount_begin" property="payAmountBegin" jdbcType="DECIMAL" />
+    <result column="pay_amount_end" property="payAmountEnd" jdbcType="DECIMAL" />
+    <result column="pay_log_count_begin" property="payLogCountBegin" jdbcType="INTEGER" />
+    <result column="pay_log_count_end" property="payLogCountEnd" jdbcType="INTEGER" />
+    <result column="pay_log_amount_begin" property="payLogAmountBegin" jdbcType="DECIMAL" />
+    <result column="pay_log_amount_end" property="payLogAmountEnd" jdbcType="DECIMAL" />
+    <result column="sport_type_count_begin" property="sportTypeCountBegin" jdbcType="INTEGER" />
+    <result column="sport_type_count_end" property="sportTypeCountEnd" jdbcType="INTEGER" />
+    <result column="costume_type_count_begin" property="costumeTypeCountBegin" jdbcType="INTEGER" />
+    <result column="costume_type_count_end" property="costumeTypeCountEnd" jdbcType="INTEGER" />
+    <result column="shoe_type_count_begin" property="shoeTypeCountBegin" jdbcType="INTEGER" />
+    <result column="shoe_type_count_end" property="shoeTypeCountEnd" jdbcType="INTEGER" />
+    <result column="jewel_type_count_begin" property="jewelTypeCountBegin" jdbcType="INTEGER" />
+    <result column="jewel_type_count_end" property="jewelTypeCountEnd" jdbcType="INTEGER" />
+    <result column="live_type_count_begin" property="liveTypeCountBegin" jdbcType="INTEGER" />
+    <result column="live_type_count_end" property="liveTypeCountEnd" jdbcType="INTEGER" />
+    <result column="digital_type_count_begin" property="digitalTypeCountBegin" jdbcType="INTEGER" />
+    <result column="digital_type_count_end" property="digitalTypeCountEnd" jdbcType="INTEGER" />
+    <result column="makeup_type_count_begin" property="makeupTypeCountBegin" jdbcType="INTEGER" />
+    <result column="makeup_type_count_end" property="makeupTypeCountEnd" jdbcType="INTEGER" />
+    <result column="child_type_count_begin" property="childTypeCountBegin" jdbcType="INTEGER" />
+    <result column="child_type_count_end" property="childTypeCountEnd" jdbcType="INTEGER" />
+    <result column="food_type_count_begin" property="foodTypeCountBegin" jdbcType="INTEGER" />
+    <result column="food_type_count_end" property="foodTypeCountEnd" jdbcType="INTEGER" />
+    <result column="svip_year" property="svipYear" jdbcType="INTEGER" />
+    <result column="return_goods_rate_min" property="returnGoodsRateMin" jdbcType="DECIMAL" />
+    <result column="return_goods_rate_max" property="returnGoodsRateMax" jdbcType="DECIMAL" />
+    <result column="refund_rate_min" property="refundRateMin" jdbcType="DECIMAL" />
+    <result column="refund_rate_max" property="refundRateMax" jdbcType="DECIMAL" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, label_type_id, label_id, sign_date_begin, sign_date_end, last_login_date_begin,
+    last_login_date_end, last_expense_date_begin, last_expense_date_end, login_date_begin,
+    login_date_end, pay_date_begin, pay_date_end, pay_count_begin, pay_count_end, pay_amount_begin,
+    pay_amount_end, pay_log_count_begin, pay_log_count_end, pay_log_amount_begin, pay_log_amount_end,
+    sport_type_count_begin, sport_type_count_end, costume_type_count_begin, costume_type_count_end,
+    shoe_type_count_begin, shoe_type_count_end, jewel_type_count_begin, jewel_type_count_end,
+    live_type_count_begin, live_type_count_end, digital_type_count_begin, digital_type_count_end,
+    makeup_type_count_begin, makeup_type_count_end, child_type_count_begin, child_type_count_end,
+    food_type_count_begin, food_type_count_end, svip_year, return_goods_rate_min, return_goods_rate_max,
+    refund_rate_min, refund_rate_max, create_by, create_date, update_by, update_date,
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberLabelRuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_label_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bu_member_label_rule
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_member_label_rule
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MemberLabelRuleExample" >
+    delete from bu_member_label_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MemberLabelRule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_label_rule (label_type_id, label_id, sign_date_begin,
+    sign_date_end, last_login_date_begin, last_login_date_end,
+    last_expense_date_begin, last_expense_date_end,
+    login_date_begin, login_date_end, pay_date_begin,
+    pay_date_end, pay_count_begin, pay_count_end,
+    pay_amount_begin, pay_amount_end, pay_log_count_begin,
+    pay_log_count_end, pay_log_amount_begin, pay_log_amount_end,
+    sport_type_count_begin, sport_type_count_end,
+    costume_type_count_begin, costume_type_count_end,
+    shoe_type_count_begin, shoe_type_count_end, jewel_type_count_begin,
+    jewel_type_count_end, live_type_count_begin,
+    live_type_count_end, digital_type_count_begin,
+    digital_type_count_end, makeup_type_count_begin,
+    makeup_type_count_end, child_type_count_begin,
+    child_type_count_end, food_type_count_begin,
+    food_type_count_end, svip_year, return_goods_rate_min,
+    return_goods_rate_max, refund_rate_min, refund_rate_max,
+    create_by, create_date, update_by,
+    update_date, remarks, del_flag
+    )
+    values (#{labelTypeId,jdbcType=INTEGER}, #{labelId,jdbcType=INTEGER}, #{signDateBegin,jdbcType=TIMESTAMP},
+    #{signDateEnd,jdbcType=TIMESTAMP}, #{lastLoginDateBegin,jdbcType=TIMESTAMP}, #{lastLoginDateEnd,jdbcType=TIMESTAMP},
+    #{lastExpenseDateBegin,jdbcType=TIMESTAMP}, #{lastExpenseDateEnd,jdbcType=TIMESTAMP},
+    #{loginDateBegin,jdbcType=TIMESTAMP}, #{loginDateEnd,jdbcType=TIMESTAMP}, #{payDateBegin,jdbcType=TIMESTAMP},
+    #{payDateEnd,jdbcType=TIMESTAMP}, #{payCountBegin,jdbcType=INTEGER}, #{payCountEnd,jdbcType=INTEGER},
+    #{payAmountBegin,jdbcType=DECIMAL}, #{payAmountEnd,jdbcType=DECIMAL}, #{payLogCountBegin,jdbcType=INTEGER},
+    #{payLogCountEnd,jdbcType=INTEGER}, #{payLogAmountBegin,jdbcType=DECIMAL}, #{payLogAmountEnd,jdbcType=DECIMAL},
+    #{sportTypeCountBegin,jdbcType=INTEGER}, #{sportTypeCountEnd,jdbcType=INTEGER},
+    #{costumeTypeCountBegin,jdbcType=INTEGER}, #{costumeTypeCountEnd,jdbcType=INTEGER},
+    #{shoeTypeCountBegin,jdbcType=INTEGER}, #{shoeTypeCountEnd,jdbcType=INTEGER}, #{jewelTypeCountBegin,jdbcType=INTEGER},
+    #{jewelTypeCountEnd,jdbcType=INTEGER}, #{liveTypeCountBegin,jdbcType=INTEGER},
+    #{liveTypeCountEnd,jdbcType=INTEGER}, #{digitalTypeCountBegin,jdbcType=INTEGER},
+    #{digitalTypeCountEnd,jdbcType=INTEGER}, #{makeupTypeCountBegin,jdbcType=INTEGER},
+    #{makeupTypeCountEnd,jdbcType=INTEGER}, #{childTypeCountBegin,jdbcType=INTEGER},
+    #{childTypeCountEnd,jdbcType=INTEGER}, #{foodTypeCountBegin,jdbcType=INTEGER},
+    #{foodTypeCountEnd,jdbcType=INTEGER}, #{svipYear,jdbcType=INTEGER}, #{returnGoodsRateMin,jdbcType=DECIMAL},
+    #{returnGoodsRateMax,jdbcType=DECIMAL}, #{refundRateMin,jdbcType=DECIMAL}, #{refundRateMax,jdbcType=DECIMAL},
+    #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER},
+    #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MemberLabelRule" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_label_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="labelTypeId != null" >
+        label_type_id,
+      </if>
+      <if test="labelId != null" >
+        label_id,
+      </if>
+      <if test="signDateBegin != null" >
+        sign_date_begin,
+      </if>
+      <if test="signDateEnd != null" >
+        sign_date_end,
+      </if>
+      <if test="lastLoginDateBegin != null" >
+        last_login_date_begin,
+      </if>
+      <if test="lastLoginDateEnd != null" >
+        last_login_date_end,
+      </if>
+      <if test="lastExpenseDateBegin != null" >
+        last_expense_date_begin,
+      </if>
+      <if test="lastExpenseDateEnd != null" >
+        last_expense_date_end,
+      </if>
+      <if test="loginDateBegin != null" >
+        login_date_begin,
+      </if>
+      <if test="loginDateEnd != null" >
+        login_date_end,
+      </if>
+      <if test="payDateBegin != null" >
+        pay_date_begin,
+      </if>
+      <if test="payDateEnd != null" >
+        pay_date_end,
+      </if>
+      <if test="payCountBegin != null" >
+        pay_count_begin,
+      </if>
+      <if test="payCountEnd != null" >
+        pay_count_end,
+      </if>
+      <if test="payAmountBegin != null" >
+        pay_amount_begin,
+      </if>
+      <if test="payAmountEnd != null" >
+        pay_amount_end,
+      </if>
+      <if test="payLogCountBegin != null" >
+        pay_log_count_begin,
+      </if>
+      <if test="payLogCountEnd != null" >
+        pay_log_count_end,
+      </if>
+      <if test="payLogAmountBegin != null" >
+        pay_log_amount_begin,
+      </if>
+      <if test="payLogAmountEnd != null" >
+        pay_log_amount_end,
+      </if>
+      <if test="sportTypeCountBegin != null" >
+        sport_type_count_begin,
+      </if>
+      <if test="sportTypeCountEnd != null" >
+        sport_type_count_end,
+      </if>
+      <if test="costumeTypeCountBegin != null" >
+        costume_type_count_begin,
+      </if>
+      <if test="costumeTypeCountEnd != null" >
+        costume_type_count_end,
+      </if>
+      <if test="shoeTypeCountBegin != null" >
+        shoe_type_count_begin,
+      </if>
+      <if test="shoeTypeCountEnd != null" >
+        shoe_type_count_end,
+      </if>
+      <if test="jewelTypeCountBegin != null" >
+        jewel_type_count_begin,
+      </if>
+      <if test="jewelTypeCountEnd != null" >
+        jewel_type_count_end,
+      </if>
+      <if test="liveTypeCountBegin != null" >
+        live_type_count_begin,
+      </if>
+      <if test="liveTypeCountEnd != null" >
+        live_type_count_end,
+      </if>
+      <if test="digitalTypeCountBegin != null" >
+        digital_type_count_begin,
+      </if>
+      <if test="digitalTypeCountEnd != null" >
+        digital_type_count_end,
+      </if>
+      <if test="makeupTypeCountBegin != null" >
+        makeup_type_count_begin,
+      </if>
+      <if test="makeupTypeCountEnd != null" >
+        makeup_type_count_end,
+      </if>
+      <if test="childTypeCountBegin != null" >
+        child_type_count_begin,
+      </if>
+      <if test="childTypeCountEnd != null" >
+        child_type_count_end,
+      </if>
+      <if test="foodTypeCountBegin != null" >
+        food_type_count_begin,
+      </if>
+      <if test="foodTypeCountEnd != null" >
+        food_type_count_end,
+      </if>
+      <if test="svipYear != null" >
+        svip_year,
+      </if>
+      <if test="returnGoodsRateMin != null" >
+        return_goods_rate_min,
+      </if>
+      <if test="returnGoodsRateMax != null" >
+        return_goods_rate_max,
+      </if>
+      <if test="refundRateMin != null" >
+        refund_rate_min,
+      </if>
+      <if test="refundRateMax != null" >
+        refund_rate_max,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="labelTypeId != null" >
+        #{labelTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="labelId != null" >
+        #{labelId,jdbcType=INTEGER},
+      </if>
+      <if test="signDateBegin != null" >
+        #{signDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signDateEnd != null" >
+        #{signDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginDateBegin != null" >
+        #{lastLoginDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginDateEnd != null" >
+        #{lastLoginDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExpenseDateBegin != null" >
+        #{lastExpenseDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExpenseDateEnd != null" >
+        #{lastExpenseDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginDateBegin != null" >
+        #{loginDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginDateEnd != null" >
+        #{loginDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDateBegin != null" >
+        #{payDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDateEnd != null" >
+        #{payDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payCountBegin != null" >
+        #{payCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="payCountEnd != null" >
+        #{payCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountBegin != null" >
+        #{payAmountBegin,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmountEnd != null" >
+        #{payAmountEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="payLogCountBegin != null" >
+        #{payLogCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="payLogCountEnd != null" >
+        #{payLogCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="payLogAmountBegin != null" >
+        #{payLogAmountBegin,jdbcType=DECIMAL},
+      </if>
+      <if test="payLogAmountEnd != null" >
+        #{payLogAmountEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="sportTypeCountBegin != null" >
+        #{sportTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="sportTypeCountEnd != null" >
+        #{sportTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="costumeTypeCountBegin != null" >
+        #{costumeTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="costumeTypeCountEnd != null" >
+        #{costumeTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="shoeTypeCountBegin != null" >
+        #{shoeTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="shoeTypeCountEnd != null" >
+        #{shoeTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="jewelTypeCountBegin != null" >
+        #{jewelTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="jewelTypeCountEnd != null" >
+        #{jewelTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="liveTypeCountBegin != null" >
+        #{liveTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="liveTypeCountEnd != null" >
+        #{liveTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="digitalTypeCountBegin != null" >
+        #{digitalTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="digitalTypeCountEnd != null" >
+        #{digitalTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="makeupTypeCountBegin != null" >
+        #{makeupTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="makeupTypeCountEnd != null" >
+        #{makeupTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="childTypeCountBegin != null" >
+        #{childTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="childTypeCountEnd != null" >
+        #{childTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="foodTypeCountBegin != null" >
+        #{foodTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="foodTypeCountEnd != null" >
+        #{foodTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="svipYear != null" >
+        #{svipYear,jdbcType=INTEGER},
+      </if>
+      <if test="returnGoodsRateMin != null" >
+        #{returnGoodsRateMin,jdbcType=DECIMAL},
+      </if>
+      <if test="returnGoodsRateMax != null" >
+        #{returnGoodsRateMax,jdbcType=DECIMAL},
+      </if>
+      <if test="refundRateMin != null" >
+        #{refundRateMin,jdbcType=DECIMAL},
+      </if>
+      <if test="refundRateMax != null" >
+        #{refundRateMax,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MemberLabelRuleExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_label_rule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_member_label_rule
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.labelTypeId != null" >
+        label_type_id = #{record.labelTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.labelId != null" >
+        label_id = #{record.labelId,jdbcType=INTEGER},
+      </if>
+      <if test="record.signDateBegin != null" >
+        sign_date_begin = #{record.signDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signDateEnd != null" >
+        sign_date_end = #{record.signDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginDateBegin != null" >
+        last_login_date_begin = #{record.lastLoginDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginDateEnd != null" >
+        last_login_date_end = #{record.lastLoginDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastExpenseDateBegin != null" >
+        last_expense_date_begin = #{record.lastExpenseDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastExpenseDateEnd != null" >
+        last_expense_date_end = #{record.lastExpenseDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginDateBegin != null" >
+        login_date_begin = #{record.loginDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.loginDateEnd != null" >
+        login_date_end = #{record.loginDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payDateBegin != null" >
+        pay_date_begin = #{record.payDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payDateEnd != null" >
+        pay_date_end = #{record.payDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payCountBegin != null" >
+        pay_count_begin = #{record.payCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.payCountEnd != null" >
+        pay_count_end = #{record.payCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmountBegin != null" >
+        pay_amount_begin = #{record.payAmountBegin,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payAmountEnd != null" >
+        pay_amount_end = #{record.payAmountEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payLogCountBegin != null" >
+        pay_log_count_begin = #{record.payLogCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.payLogCountEnd != null" >
+        pay_log_count_end = #{record.payLogCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.payLogAmountBegin != null" >
+        pay_log_amount_begin = #{record.payLogAmountBegin,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payLogAmountEnd != null" >
+        pay_log_amount_end = #{record.payLogAmountEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sportTypeCountBegin != null" >
+        sport_type_count_begin = #{record.sportTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.sportTypeCountEnd != null" >
+        sport_type_count_end = #{record.sportTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.costumeTypeCountBegin != null" >
+        costume_type_count_begin = #{record.costumeTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.costumeTypeCountEnd != null" >
+        costume_type_count_end = #{record.costumeTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.shoeTypeCountBegin != null" >
+        shoe_type_count_begin = #{record.shoeTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.shoeTypeCountEnd != null" >
+        shoe_type_count_end = #{record.shoeTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.jewelTypeCountBegin != null" >
+        jewel_type_count_begin = #{record.jewelTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.jewelTypeCountEnd != null" >
+        jewel_type_count_end = #{record.jewelTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.liveTypeCountBegin != null" >
+        live_type_count_begin = #{record.liveTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.liveTypeCountEnd != null" >
+        live_type_count_end = #{record.liveTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.digitalTypeCountBegin != null" >
+        digital_type_count_begin = #{record.digitalTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.digitalTypeCountEnd != null" >
+        digital_type_count_end = #{record.digitalTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.makeupTypeCountBegin != null" >
+        makeup_type_count_begin = #{record.makeupTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.makeupTypeCountEnd != null" >
+        makeup_type_count_end = #{record.makeupTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.childTypeCountBegin != null" >
+        child_type_count_begin = #{record.childTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.childTypeCountEnd != null" >
+        child_type_count_end = #{record.childTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.foodTypeCountBegin != null" >
+        food_type_count_begin = #{record.foodTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="record.foodTypeCountEnd != null" >
+        food_type_count_end = #{record.foodTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="record.svipYear != null" >
+        svip_year = #{record.svipYear,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnGoodsRateMin != null" >
+        return_goods_rate_min = #{record.returnGoodsRateMin,jdbcType=DECIMAL},
+      </if>
+      <if test="record.returnGoodsRateMax != null" >
+        return_goods_rate_max = #{record.returnGoodsRateMax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundRateMin != null" >
+        refund_rate_min = #{record.refundRateMin,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundRateMax != null" >
+        refund_rate_max = #{record.refundRateMax,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_member_label_rule
+    set id = #{record.id,jdbcType=INTEGER},
+    label_type_id = #{record.labelTypeId,jdbcType=INTEGER},
+    label_id = #{record.labelId,jdbcType=INTEGER},
+    sign_date_begin = #{record.signDateBegin,jdbcType=TIMESTAMP},
+    sign_date_end = #{record.signDateEnd,jdbcType=TIMESTAMP},
+    last_login_date_begin = #{record.lastLoginDateBegin,jdbcType=TIMESTAMP},
+    last_login_date_end = #{record.lastLoginDateEnd,jdbcType=TIMESTAMP},
+    last_expense_date_begin = #{record.lastExpenseDateBegin,jdbcType=TIMESTAMP},
+    last_expense_date_end = #{record.lastExpenseDateEnd,jdbcType=TIMESTAMP},
+    login_date_begin = #{record.loginDateBegin,jdbcType=TIMESTAMP},
+    login_date_end = #{record.loginDateEnd,jdbcType=TIMESTAMP},
+    pay_date_begin = #{record.payDateBegin,jdbcType=TIMESTAMP},
+    pay_date_end = #{record.payDateEnd,jdbcType=TIMESTAMP},
+    pay_count_begin = #{record.payCountBegin,jdbcType=INTEGER},
+    pay_count_end = #{record.payCountEnd,jdbcType=INTEGER},
+    pay_amount_begin = #{record.payAmountBegin,jdbcType=DECIMAL},
+    pay_amount_end = #{record.payAmountEnd,jdbcType=DECIMAL},
+    pay_log_count_begin = #{record.payLogCountBegin,jdbcType=INTEGER},
+    pay_log_count_end = #{record.payLogCountEnd,jdbcType=INTEGER},
+    pay_log_amount_begin = #{record.payLogAmountBegin,jdbcType=DECIMAL},
+    pay_log_amount_end = #{record.payLogAmountEnd,jdbcType=DECIMAL},
+    sport_type_count_begin = #{record.sportTypeCountBegin,jdbcType=INTEGER},
+    sport_type_count_end = #{record.sportTypeCountEnd,jdbcType=INTEGER},
+    costume_type_count_begin = #{record.costumeTypeCountBegin,jdbcType=INTEGER},
+    costume_type_count_end = #{record.costumeTypeCountEnd,jdbcType=INTEGER},
+    shoe_type_count_begin = #{record.shoeTypeCountBegin,jdbcType=INTEGER},
+    shoe_type_count_end = #{record.shoeTypeCountEnd,jdbcType=INTEGER},
+    jewel_type_count_begin = #{record.jewelTypeCountBegin,jdbcType=INTEGER},
+    jewel_type_count_end = #{record.jewelTypeCountEnd,jdbcType=INTEGER},
+    live_type_count_begin = #{record.liveTypeCountBegin,jdbcType=INTEGER},
+    live_type_count_end = #{record.liveTypeCountEnd,jdbcType=INTEGER},
+    digital_type_count_begin = #{record.digitalTypeCountBegin,jdbcType=INTEGER},
+    digital_type_count_end = #{record.digitalTypeCountEnd,jdbcType=INTEGER},
+    makeup_type_count_begin = #{record.makeupTypeCountBegin,jdbcType=INTEGER},
+    makeup_type_count_end = #{record.makeupTypeCountEnd,jdbcType=INTEGER},
+    child_type_count_begin = #{record.childTypeCountBegin,jdbcType=INTEGER},
+    child_type_count_end = #{record.childTypeCountEnd,jdbcType=INTEGER},
+    food_type_count_begin = #{record.foodTypeCountBegin,jdbcType=INTEGER},
+    food_type_count_end = #{record.foodTypeCountEnd,jdbcType=INTEGER},
+    svip_year = #{record.svipYear,jdbcType=INTEGER},
+    return_goods_rate_min = #{record.returnGoodsRateMin,jdbcType=DECIMAL},
+    return_goods_rate_max = #{record.returnGoodsRateMax,jdbcType=DECIMAL},
+    refund_rate_min = #{record.refundRateMin,jdbcType=DECIMAL},
+    refund_rate_max = #{record.refundRateMax,jdbcType=DECIMAL},
+    create_by = #{record.createBy,jdbcType=INTEGER},
+    create_date = #{record.createDate,jdbcType=TIMESTAMP},
+    update_by = #{record.updateBy,jdbcType=INTEGER},
+    update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+    remarks = #{record.remarks,jdbcType=VARCHAR},
+    del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MemberLabelRule" >
+    update bu_member_label_rule
+    <set >
+      <if test="labelTypeId != null" >
+        label_type_id = #{labelTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="labelId != null" >
+        label_id = #{labelId,jdbcType=INTEGER},
+      </if>
+      <if test="signDateBegin != null" >
+        sign_date_begin = #{signDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signDateEnd != null" >
+        sign_date_end = #{signDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginDateBegin != null" >
+        last_login_date_begin = #{lastLoginDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginDateEnd != null" >
+        last_login_date_end = #{lastLoginDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExpenseDateBegin != null" >
+        last_expense_date_begin = #{lastExpenseDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExpenseDateEnd != null" >
+        last_expense_date_end = #{lastExpenseDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginDateBegin != null" >
+        login_date_begin = #{loginDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loginDateEnd != null" >
+        login_date_end = #{loginDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDateBegin != null" >
+        pay_date_begin = #{payDateBegin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDateEnd != null" >
+        pay_date_end = #{payDateEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payCountBegin != null" >
+        pay_count_begin = #{payCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="payCountEnd != null" >
+        pay_count_end = #{payCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountBegin != null" >
+        pay_amount_begin = #{payAmountBegin,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmountEnd != null" >
+        pay_amount_end = #{payAmountEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="payLogCountBegin != null" >
+        pay_log_count_begin = #{payLogCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="payLogCountEnd != null" >
+        pay_log_count_end = #{payLogCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="payLogAmountBegin != null" >
+        pay_log_amount_begin = #{payLogAmountBegin,jdbcType=DECIMAL},
+      </if>
+      <if test="payLogAmountEnd != null" >
+        pay_log_amount_end = #{payLogAmountEnd,jdbcType=DECIMAL},
+      </if>
+      <if test="sportTypeCountBegin != null" >
+        sport_type_count_begin = #{sportTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="sportTypeCountEnd != null" >
+        sport_type_count_end = #{sportTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="costumeTypeCountBegin != null" >
+        costume_type_count_begin = #{costumeTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="costumeTypeCountEnd != null" >
+        costume_type_count_end = #{costumeTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="shoeTypeCountBegin != null" >
+        shoe_type_count_begin = #{shoeTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="shoeTypeCountEnd != null" >
+        shoe_type_count_end = #{shoeTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="jewelTypeCountBegin != null" >
+        jewel_type_count_begin = #{jewelTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="jewelTypeCountEnd != null" >
+        jewel_type_count_end = #{jewelTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="liveTypeCountBegin != null" >
+        live_type_count_begin = #{liveTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="liveTypeCountEnd != null" >
+        live_type_count_end = #{liveTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="digitalTypeCountBegin != null" >
+        digital_type_count_begin = #{digitalTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="digitalTypeCountEnd != null" >
+        digital_type_count_end = #{digitalTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="makeupTypeCountBegin != null" >
+        makeup_type_count_begin = #{makeupTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="makeupTypeCountEnd != null" >
+        makeup_type_count_end = #{makeupTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="childTypeCountBegin != null" >
+        child_type_count_begin = #{childTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="childTypeCountEnd != null" >
+        child_type_count_end = #{childTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="foodTypeCountBegin != null" >
+        food_type_count_begin = #{foodTypeCountBegin,jdbcType=INTEGER},
+      </if>
+      <if test="foodTypeCountEnd != null" >
+        food_type_count_end = #{foodTypeCountEnd,jdbcType=INTEGER},
+      </if>
+      <if test="svipYear != null" >
+        svip_year = #{svipYear,jdbcType=INTEGER},
+      </if>
+      <if test="returnGoodsRateMin != null" >
+        return_goods_rate_min = #{returnGoodsRateMin,jdbcType=DECIMAL},
+      </if>
+      <if test="returnGoodsRateMax != null" >
+        return_goods_rate_max = #{returnGoodsRateMax,jdbcType=DECIMAL},
+      </if>
+      <if test="refundRateMin != null" >
+        refund_rate_min = #{refundRateMin,jdbcType=DECIMAL},
+      </if>
+      <if test="refundRateMax != null" >
+        refund_rate_max = #{refundRateMax,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MemberLabelRule" >
+    update bu_member_label_rule
+    set label_type_id = #{labelTypeId,jdbcType=INTEGER},
+      label_id = #{labelId,jdbcType=INTEGER},
+      sign_date_begin = #{signDateBegin,jdbcType=TIMESTAMP},
+      sign_date_end = #{signDateEnd,jdbcType=TIMESTAMP},
+      last_login_date_begin = #{lastLoginDateBegin,jdbcType=TIMESTAMP},
+      last_login_date_end = #{lastLoginDateEnd,jdbcType=TIMESTAMP},
+      last_expense_date_begin = #{lastExpenseDateBegin,jdbcType=TIMESTAMP},
+      last_expense_date_end = #{lastExpenseDateEnd,jdbcType=TIMESTAMP},
+      login_date_begin = #{loginDateBegin,jdbcType=TIMESTAMP},
+      login_date_end = #{loginDateEnd,jdbcType=TIMESTAMP},
+      pay_date_begin = #{payDateBegin,jdbcType=TIMESTAMP},
+      pay_date_end = #{payDateEnd,jdbcType=TIMESTAMP},
+      pay_count_begin = #{payCountBegin,jdbcType=INTEGER},
+      pay_count_end = #{payCountEnd,jdbcType=INTEGER},
+      pay_amount_begin = #{payAmountBegin,jdbcType=DECIMAL},
+      pay_amount_end = #{payAmountEnd,jdbcType=DECIMAL},
+      pay_log_count_begin = #{payLogCountBegin,jdbcType=INTEGER},
+      pay_log_count_end = #{payLogCountEnd,jdbcType=INTEGER},
+      pay_log_amount_begin = #{payLogAmountBegin,jdbcType=DECIMAL},
+      pay_log_amount_end = #{payLogAmountEnd,jdbcType=DECIMAL},
+      sport_type_count_begin = #{sportTypeCountBegin,jdbcType=INTEGER},
+      sport_type_count_end = #{sportTypeCountEnd,jdbcType=INTEGER},
+      costume_type_count_begin = #{costumeTypeCountBegin,jdbcType=INTEGER},
+      costume_type_count_end = #{costumeTypeCountEnd,jdbcType=INTEGER},
+      shoe_type_count_begin = #{shoeTypeCountBegin,jdbcType=INTEGER},
+      shoe_type_count_end = #{shoeTypeCountEnd,jdbcType=INTEGER},
+      jewel_type_count_begin = #{jewelTypeCountBegin,jdbcType=INTEGER},
+      jewel_type_count_end = #{jewelTypeCountEnd,jdbcType=INTEGER},
+      live_type_count_begin = #{liveTypeCountBegin,jdbcType=INTEGER},
+      live_type_count_end = #{liveTypeCountEnd,jdbcType=INTEGER},
+      digital_type_count_begin = #{digitalTypeCountBegin,jdbcType=INTEGER},
+      digital_type_count_end = #{digitalTypeCountEnd,jdbcType=INTEGER},
+      makeup_type_count_begin = #{makeupTypeCountBegin,jdbcType=INTEGER},
+      makeup_type_count_end = #{makeupTypeCountEnd,jdbcType=INTEGER},
+      child_type_count_begin = #{childTypeCountBegin,jdbcType=INTEGER},
+      child_type_count_end = #{childTypeCountEnd,jdbcType=INTEGER},
+      food_type_count_begin = #{foodTypeCountBegin,jdbcType=INTEGER},
+      food_type_count_end = #{foodTypeCountEnd,jdbcType=INTEGER},
+      svip_year = #{svipYear,jdbcType=INTEGER},
+      return_goods_rate_min = #{returnGoodsRateMin,jdbcType=DECIMAL},
+      return_goods_rate_max = #{returnGoodsRateMax,jdbcType=DECIMAL},
+      refund_rate_min = #{refundRateMin,jdbcType=DECIMAL},
+      refund_rate_max = #{refundRateMax,jdbcType=DECIMAL},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

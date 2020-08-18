@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>醒购商城 - 唤醒潮流，开心购物</title>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0 auto;
+		}
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 640px) {
+			html {
+				width: 640px;
+			}
+		}
+		body {
+			width: 6.4rem;
+			font-size: .24rem;
+			font-family: "YouYuan685f43d6815e37", Verdana, Arial, Helvetica, sans-serif;
+			color: #555;
+			background: #fff;
+			text-rendering: optimizeLegibility;
+
+			-webkit-font-smoothing: antialiased;
+			-webkit-tap-highlight-color: transparent;
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html'),
+			psd = {
+				w: 640,
+				h: false,
+				f: 100,
+				v: 1
+			};
+
+		function fontFix() {
+			var	a = html.offsetWidth,
+				b = psd.h ? html.offsetHeight * psd.w / a / psd.h : 0;
+
+			psd.v = a / psd.w * (b > 1 || !b ? 1 : b);
+			html.style.fontSize = psd.f * psd.v + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+	<link rel="stylesheet" href="css/smedia.css">
+</head>
+
+<body>
+	<div class="section h100 smedia smedia-1 flex dc">
+		<article class="fg scroll-y">
+			<img src="images/smedia/1.jpg">
+		</article>
+		<a class="fn  jc" onclick="spreadDownload('http://xgbuy.cc/app/xgbuyZIMEITI.apk')">立即下载</a>
+	</div>
+
+	<script src="js/spread.js?var=1.0"></script>
+</body>
+</html>

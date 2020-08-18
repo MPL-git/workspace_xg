@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberFeedbackMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberFeedback" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="phone_model" property="phoneModel" jdbcType="VARCHAR" />
+    <result column="phone_system" property="phoneSystem" jdbcType="CHAR" />
+    <result column="system_version" property="systemVersion" jdbcType="VARCHAR" />
+    <result column="app_version" property="appVersion" jdbcType="VARCHAR" />
+    <result column="proces_by" property="procesBy" jdbcType="INTEGER" />
+    <result column="process_date" property="processDate" jdbcType="TIMESTAMP" />
+    <result column="deal_status" property="dealStatus" jdbcType="CHAR" />
+    <result column="deal_opinion" property="dealOpinion" jdbcType="VARCHAR" />
+    <result column="related_order" property="relatedOrder" jdbcType="VARCHAR" />
+    <result column="deal_date" property="dealDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="mcht_company_name" property="mchtCompanyName" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, member_id, type, content, contact_phone, phone_model, phone_system, system_version, 
+    app_version, proces_by, process_date, deal_status, deal_opinion, related_order, deal_date, 
+    mcht_code, mcht_company_name, create_by, create_date, update_by, update_date, remarks, 
+    del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberFeedbackExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_feedback
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_member_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_member_feedback
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MemberFeedbackExample" >
+    delete from bu_member_feedback
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MemberFeedback" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_feedback (member_id, type, content, 
+      contact_phone, phone_model, phone_system, 
+      system_version, app_version, proces_by, 
+      process_date, deal_status, deal_opinion, 
+      related_order, deal_date, mcht_code, 
+      mcht_company_name, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{memberId,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, #{content,jdbcType=VARCHAR}, 
+      #{contactPhone,jdbcType=VARCHAR}, #{phoneModel,jdbcType=VARCHAR}, #{phoneSystem,jdbcType=CHAR}, 
+      #{systemVersion,jdbcType=VARCHAR}, #{appVersion,jdbcType=VARCHAR}, #{procesBy,jdbcType=INTEGER}, 
+      #{processDate,jdbcType=TIMESTAMP}, #{dealStatus,jdbcType=CHAR}, #{dealOpinion,jdbcType=VARCHAR}, 
+      #{relatedOrder,jdbcType=VARCHAR}, #{dealDate,jdbcType=TIMESTAMP}, #{mchtCode,jdbcType=VARCHAR}, 
+      #{mchtCompanyName,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MemberFeedback" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone,
+      </if>
+      <if test="phoneModel != null" >
+        phone_model,
+      </if>
+      <if test="phoneSystem != null" >
+        phone_system,
+      </if>
+      <if test="systemVersion != null" >
+        system_version,
+      </if>
+      <if test="appVersion != null" >
+        app_version,
+      </if>
+      <if test="procesBy != null" >
+        proces_by,
+      </if>
+      <if test="processDate != null" >
+        process_date,
+      </if>
+      <if test="dealStatus != null" >
+        deal_status,
+      </if>
+      <if test="dealOpinion != null" >
+        deal_opinion,
+      </if>
+      <if test="relatedOrder != null" >
+        related_order,
+      </if>
+      <if test="dealDate != null" >
+        deal_date,
+      </if>
+      <if test="mchtCode != null" >
+        mcht_code,
+      </if>
+      <if test="mchtCompanyName != null" >
+        mcht_company_name,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneModel != null" >
+        #{phoneModel,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneSystem != null" >
+        #{phoneSystem,jdbcType=CHAR},
+      </if>
+      <if test="systemVersion != null" >
+        #{systemVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="procesBy != null" >
+        #{procesBy,jdbcType=INTEGER},
+      </if>
+      <if test="processDate != null" >
+        #{processDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealStatus != null" >
+        #{dealStatus,jdbcType=CHAR},
+      </if>
+      <if test="dealOpinion != null" >
+        #{dealOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedOrder != null" >
+        #{relatedOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="dealDate != null" >
+        #{dealDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtCode != null" >
+        #{mchtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtCompanyName != null" >
+        #{mchtCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MemberFeedbackExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_feedback
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_member_feedback
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=CHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactPhone != null" >
+        contact_phone = #{record.contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneModel != null" >
+        phone_model = #{record.phoneModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneSystem != null" >
+        phone_system = #{record.phoneSystem,jdbcType=CHAR},
+      </if>
+      <if test="record.systemVersion != null" >
+        system_version = #{record.systemVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appVersion != null" >
+        app_version = #{record.appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.procesBy != null" >
+        proces_by = #{record.procesBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.processDate != null" >
+        process_date = #{record.processDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dealStatus != null" >
+        deal_status = #{record.dealStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.dealOpinion != null" >
+        deal_opinion = #{record.dealOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relatedOrder != null" >
+        related_order = #{record.relatedOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dealDate != null" >
+        deal_date = #{record.dealDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtCode != null" >
+        mcht_code = #{record.mchtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtCompanyName != null" >
+        mcht_company_name = #{record.mchtCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_member_feedback
+    set id = #{record.id,jdbcType=INTEGER},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=CHAR},
+      content = #{record.content,jdbcType=VARCHAR},
+      contact_phone = #{record.contactPhone,jdbcType=VARCHAR},
+      phone_model = #{record.phoneModel,jdbcType=VARCHAR},
+      phone_system = #{record.phoneSystem,jdbcType=CHAR},
+      system_version = #{record.systemVersion,jdbcType=VARCHAR},
+      app_version = #{record.appVersion,jdbcType=VARCHAR},
+      proces_by = #{record.procesBy,jdbcType=INTEGER},
+      process_date = #{record.processDate,jdbcType=TIMESTAMP},
+      deal_status = #{record.dealStatus,jdbcType=CHAR},
+      deal_opinion = #{record.dealOpinion,jdbcType=VARCHAR},
+      related_order = #{record.relatedOrder,jdbcType=VARCHAR},
+      deal_date = #{record.dealDate,jdbcType=TIMESTAMP},
+      mcht_code = #{record.mchtCode,jdbcType=VARCHAR},
+      mcht_company_name = #{record.mchtCompanyName,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MemberFeedback" >
+    update bu_member_feedback
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneModel != null" >
+        phone_model = #{phoneModel,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneSystem != null" >
+        phone_system = #{phoneSystem,jdbcType=CHAR},
+      </if>
+      <if test="systemVersion != null" >
+        system_version = #{systemVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="appVersion != null" >
+        app_version = #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="procesBy != null" >
+        proces_by = #{procesBy,jdbcType=INTEGER},
+      </if>
+      <if test="processDate != null" >
+        process_date = #{processDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealStatus != null" >
+        deal_status = #{dealStatus,jdbcType=CHAR},
+      </if>
+      <if test="dealOpinion != null" >
+        deal_opinion = #{dealOpinion,jdbcType=VARCHAR},
+      </if>
+      <if test="relatedOrder != null" >
+        related_order = #{relatedOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="dealDate != null" >
+        deal_date = #{dealDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtCode != null" >
+        mcht_code = #{mchtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtCompanyName != null" >
+        mcht_company_name = #{mchtCompanyName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MemberFeedback" >
+    update bu_member_feedback
+    set member_id = #{memberId,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR},
+      content = #{content,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      phone_model = #{phoneModel,jdbcType=VARCHAR},
+      phone_system = #{phoneSystem,jdbcType=CHAR},
+      system_version = #{systemVersion,jdbcType=VARCHAR},
+      app_version = #{appVersion,jdbcType=VARCHAR},
+      proces_by = #{procesBy,jdbcType=INTEGER},
+      process_date = #{processDate,jdbcType=TIMESTAMP},
+      deal_status = #{dealStatus,jdbcType=CHAR},
+      deal_opinion = #{dealOpinion,jdbcType=VARCHAR},
+      related_order = #{relatedOrder,jdbcType=VARCHAR},
+      deal_date = #{dealDate,jdbcType=TIMESTAMP},
+      mcht_code = #{mchtCode,jdbcType=VARCHAR},
+      mcht_company_name = #{mchtCompanyName,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

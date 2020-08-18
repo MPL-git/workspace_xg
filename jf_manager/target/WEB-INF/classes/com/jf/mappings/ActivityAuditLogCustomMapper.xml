@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ActivityAuditLogCustomMapper" >
+<resultMap id="BaseResultCustomMap" type="com.jf.entity.ActivityAuditLogCustom" extends="com.jf.dao.ActivityAuditLogMapper.BaseResultMap" >
+	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR"/>
+	<result column="type_desc" property="typeDesc" jdbcType="VARCHAR"/>
+</resultMap>
+  <sql id="Base_Column_List" >
+    id, activity_id, type, status, create_by, create_date, update_by, update_date, remarks, 
+    del_flag,
+    FUN_GET_STATUS_DESC("BU_ACTIVITY_AUDIT_LOG","STATUS", al.status) status_desc,
+    FUN_GET_STATUS_DESC("BU_ACTIVITY_AUDIT_LOG","TYPE", al.type) type_desc
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultCustomMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bu_activity_audit_log al
+    where al.activity_id=#{activityId} and al.del_flag='0' order by al.create_date desc limit 0,4
+  </select>
+<!--   获取所有信息列表 -->
+  <select id="selectActivityAuditLogCustomList" resultMap="BaseResultCustomMap" parameterType="java.lang.Integer">
+  	select 
+   	<include refid="Base_Column_List" />
+    from bu_activity_audit_log al where al.activity_id=#{activityId} and al.del_flag='0'
+  </select>
+<!--   获取所有信息列表总条数 -->
+  <select id="selectActivityAuditLogCustomCount" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+  	select count(al.id) from bu_activity_audit_log al where al.activity_id=#{activityId} and al.del_flag='0'
+  </select>
+</mapper>

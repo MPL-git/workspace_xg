@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberLotteryCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberLotteryCustom" extends="com.jf.dao.MemberLotteryMapper.BaseResultMap" >
+    <result column="member_nick" property="memberNick" jdbcType="VARCHAR" />
+  	<result column="member_mobile" property="memberMobile" jdbcType="VARCHAR" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_Address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="coupon_product_code" property="couponProductCode" jdbcType="VARCHAR" />
+    <result column="product_brand_name" property="productBrandName" jdbcType="VARCHAR" />
+    <result column="use_status" property="useStatus" jdbcType="VARCHAR" />
+    <result column="use_date" property="useDate" jdbcType="TIMESTAMP" />
+    <result column="combine_order_code" property="combineOrderCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ml.* ,
+    (SELECT mi.nick FROM bu_member_info mi WHERE mi.id = ml.member_id AND mi.del_flag = '0') member_nick,
+	(SELECT mi.mobile FROM bu_member_info mi WHERE mi.id = ml.member_id AND mi.del_flag = '0') member_mobile,
+	(SELECT co.receiver_name FROM bu_combine_order co WHERE co.id = ml.relevant_id AND co.del_flag = '0') receiver_name,
+	(SELECT co.receiver_phone FROM bu_combine_order co WHERE co.id = ml.relevant_id AND co.del_flag = '0') receiver_phone,
+	(SELECT co.receiver_address FROM bu_combine_order co WHERE co.id = ml.relevant_id AND co.del_flag = '0') receiver_address,
+	(SELECT p.CODE FROM bu_coupon c,bu_product p WHERE c.type_ids = p.id AND ml.coupon_id = c.id AND p.del_flag = '0' ) coupon_product_code,
+	(SELECT pb.NAME FROM bu_coupon c,bu_product_brand pb,bu_product p WHERE p.id = c.type_ids AND p.brand_id = pb.id AND ml.coupon_id = c.id AND pb.del_flag = '0' AND p.del_flag = '0' AND c.del_flag = '0') product_brand_name,
+	(SELECT mc.status FROM bu_member_coupon mc WHERE mc.id = ml.relevant_id AND mc.del_flag = '0') use_status,
+	(SELECT max(mgl.create_date) FROM bu_member_coupon mc,bu_member_coupon_log mgl WHERE mc.id = ml.relevant_id AND mc.id = mgl.member_coupon_id AND mgl.log_type = '1' AND mc.status= '1' AND mc.del_flag = '0' ) use_date,
+	(SELECT co.combine_order_code FROM bu_member_coupon mc,bu_combine_order co WHERE mc.id = ml.relevant_id AND mc.order_id = co.id AND mc.del_flag = '0' AND co.del_flag = '0') combine_order_code
+  </sql>
+  <select id="countMemberLotteryCustomByExample" parameterType="com.jf.entity.MemberLotteryCustomExample" resultType="java.lang.Integer" >
+    select count(1) from bu_member_lottery ml
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectMemberLotteryCustomByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberLotteryCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_lottery ml
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+</mapper>

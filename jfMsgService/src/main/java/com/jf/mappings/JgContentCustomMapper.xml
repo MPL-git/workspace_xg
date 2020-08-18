@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.JgContentCustomMapper">
+	<resultMap id="BaseResultCustomMap" type="com.jf.entity.JgContentCustom" extends="com.jf.dao.JgContentMapper.BaseResultMap">
+	<result column="pro_status" property="proStatus" jdbcType="CHAR" />
+	<result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getMemberCouponInfoForJG" resultType="com.jf.entity.JgContentCustom">
+		select mc.member_id,count(1) as couponNum from bu_member_coupon mc FORCE index (index_member_coupon_5)
+		left join bu_member_info user on user.id=mc.member_id
+		left join bu_coupon coupon on mc.coupon_id=coupon.id
+		where user.del_flag = '0' and coupon.del_flag = '0'
+		and user.`type` in ('1','2') and user.`status` = 'A'
+		and coupon.rang = '1'
+		and mc.`status` = '0'
+		and mc.expiry_end_date &gt;= date_add(now(),interval 1 day)
+		and mc.expiry_end_date &lt;= date_add(now(),interval 2 day)
+		and user.is_accept_push = '1'
+		group by mc.member_id
+	</select>
+	
+      <insert id="insertBatchJg">
+      	insert into bu_jg_content (type,member_id,coupon_num,content,create_date,send_date)
+      	values
+      		<foreach collection="list" item="item" separator=",">
+      			(#{item.type,jdbcType=CHAR},
+      			#{item.memberId,jdbcType=INTEGER},
+      			#{item.couponNum,jdbcType=INTEGER},
+      			#{item.content,jdbcType=VARCHAR},
+      			#{item.createDate,jdbcType=TIMESTAMP},
+      			#{item.sendDate,jdbcType=TIMESTAMP})
+      		</foreach>
+      </insert>
+      <!-- 
+      <update id="updateBatchJg" parameterType="java.util.List">
+      		<foreach collection="list" item="item" separator=",">
+	      		update bu_jg_content
+      				<set>
+      					<if test="item.status != null and item.status != ''">
+      						#{item.status,jdbcType=CHAR},
+      					</if>
+      					<if test="item.sendNum != null and item.sendNum != ''">
+      						#{item.send_num,jdbcType=INTEGER},
+      					</if>
+      					<if test="item.updateDate != null and item.updateDate != ''">
+      						#{item.update_date,jdbcType=TIMESTAMP}
+      					</if>
+      				</set>
+	      		where id = #{item.id}
+      		</foreach>
+      </update> -->
+      
+      <update id="batchUpdateJg" parameterType="map">
+	     update bu_jg_content t set t.send_num=t.send_num+#{sendNum,jdbcType=INTEGER},t.status=#{status,jdbcType=CHAR},t.update_date=#{updateDate,jdbcType=TIMESTAMP} where t.del_flag = '0'
+	      <if test="jgIds != null" >
+	            and t.id in 
+			<foreach item="jgId" collection="jgIds" separator="," open="(" close=")" index="">    
+	          #{jgId, jdbcType=INTEGER}    
+	        </foreach>
+	      </if>
+  	</update>
+  	
+  	 <select id="getPushPointToPointList" parameterType="map" resultType="com.jf.entity.JgContentCustom">
+ 		SELECT
+			a3.*
+		FROM
+			(
+				SELECT
+					a2.*
+				FROM
+					(
+						SELECT
+							cssl.id,
+							'2' AS type,
+							cssl.service_order_id AS bizId,
+							cssl.pro_status,
+							cso.amount,
+							cso.mcht_express_no as expressNo,
+							cso.mcht_express_company AS expressCompany,
+							'' AS sub_order_code,
+							null as endDate,
+							cso.create_by as member_id
+						FROM
+							bu_customer_service_status_log cssl,
+							bu_customer_service_order cso,
+							bu_member_info mi
+						WHERE
+							cssl.service_order_id = cso.id
+						AND cso.create_by = mi.id
+						AND cso.del_flag = '0'
+						AND mi.del_flag = '0'
+						AND mi.is_accept_push = '1'
+						AND	cssl.pro_status IN ('A2','A3','B2','C2','B3','C3','B6','C6','C7','B7','A4')
+						AND cssl.del_flag = '0'
+						AND cssl.create_date >= DATE_ADD(NOW(),INTERVAL -20 MINUTE)
+						ORDER BY
+							cssl.id DESC
+					) a2
+				GROUP BY
+					a2.bizId DESC
+			) a3
+		WHERE
+			a3.id NOT in (
+					select jg.biz_id from bu_jg_content jg where jg.del_flag = '0' and jg.type = '2'
+			)
+		
+		UNION ALL
+		
+		SELECT
+			bso.id,
+			'3' AS type,
+			bso.id AS bizId,
+			'' AS pro_status,
+			NULL AS amount,
+			bso.express_no as expressNo,
+			(
+				SELECT
+					ex.`name`
+				FROM
+					bu_express ex
+				WHERE
+					ex.id = bso.express_id
+			)  AS expressCompany,
+			bso.sub_order_code,
+			null as endDate,
+			co.member_id
+		FROM
+			bu_sub_order bso,bu_combine_order co,bu_member_info mi
+		WHERE bso.combine_order_id = co.id
+		AND co.member_id = mi.id
+		AND mi.del_flag = '0'
+		AND mi.is_accept_push = '1'
+		AND co.del_flag = '0'
+		AND	bso.del_flag = '0'
+		AND bso.`status` = '2'
+		AND bso.delivery_date >= DATE_ADD(NOW(),INTERVAL -20 MINUTE)
+		AND bso.id NOT IN ( 
+			select jg.biz_id from bu_jg_content jg where jg.del_flag = '0' and jg.type = '3'
+		)
+		
+		UNION ALL
+		
+		SELECT
+			c3.*
+		FROM
+			(
+				SELECT
+					c2.*
+				FROM
+					(
+						SELECT
+							al.id,
+							'4' AS type,
+							al.appeal_order_id AS bizId,
+							'' AS pro_status,
+							NULL AS amount,
+							'' as expressNo,
+							'' AS expressCompany,
+							'' AS sub_order_code,
+							null as endDate,
+							ao.user_id as member_id
+						FROM
+							bu_appeal_log al,bu_appeal_order ao,bu_member_info mi
+						WHERE al.appeal_order_id = ao.id
+						AND ao.create_by = mi.id
+						AND ao.del_flag = '0'
+						AND mi.del_flag = '0'
+						AND mi.is_accept_push = '1'
+						AND	al.del_flag = '0'
+						AND al.user_type = '3'
+						AND al.create_date >= DATE_ADD(NOW(),INTERVAL -20 MINUTE)
+						ORDER BY
+							al.id DESC
+					) c2
+				GROUP BY
+					c2.bizId DESC
+			) c3
+		WHERE
+			c3.id NOT IN (
+				select jg.biz_id from bu_jg_content jg where jg.del_flag = '0' and jg.type = '4'
+			)
+		
+		
+		UNION ALL
+		
+		SELECT
+			d3.*
+		FROM
+			(
+				SELECT
+					d2.*
+				FROM
+					(
+						SELECT
+							mnr.id,
+							'5' AS type,
+							mnr.member_id AS bizId,
+							'' AS pro_status,
+							NULL AS amount,
+							'' as expressNo,
+							'' AS expressCompany,
+							'' AS sub_order_code,
+							mnr.agreement_end_date AS endDate,
+							mnr.member_id
+						FROM
+							bu_member_nova_record mnr,bu_member_info mi
+						WHERE mnr.member_id = mi.id
+						AND	mnr.del_flag = '0'
+						AND mi.del_flag = '0'
+						AND mi.is_accept_push = '1'
+						ORDER BY
+							mnr.id DESC
+					) d2
+				GROUP BY
+					d2.bizId
+			) d3
+		WHERE
+			d3.endDate &lt;= DATE_ADD(now(), INTERVAL 15 DAY)
+		AND d3.id NOT IN (
+				select jg.biz_id from bu_jg_content jg where jg.del_flag = '0' and jg.type = '5'
+		)
+ 		
+	 </select>
+</mapper>

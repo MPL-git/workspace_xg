@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtTaxInvoiceInfoChgCustomMapper">
+  <resultMap id="BaseResultCustomMap" type="com.jf.entity.MchtTaxInvoiceInfoChgCustom" extends="com.jf.dao.MchtTaxInvoiceInfoChgMapper.BaseResultMap" >
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="tax_type_desc" property="taxTypeDesc" jdbcType="VARCHAR" />
+    <result column="audit_status_desc" property="auditStatusDesc" jdbcType="VARCHAR" />
+    
+    <result column="fw_staff_id" property="fwStaffId" jdbcType="INTEGER" />
+     <result column="fw_contact_name" property="fwContactName" jdbcType="VARCHAR" />
+    <result column="cw_staff_id" property="cwStaffId" jdbcType="INTEGER" />
+     <result column="cw_contact_name" property="cwContactName" jdbcType="VARCHAR" />
+  </resultMap>
+    
+    <sql id="selectMchtTaxInvoiceInfoChgCustomSql">
+		 select 
+		        a.*,
+		        (select b.company_name from bu_mcht_info b where b.id=a.mcht_id) company_name,
+		        FUN_GET_STATUS_DESC("BU_MCHT_TAX_INVOICE_INFO","TAX_TYPE", a.tax_type) tax_type_desc,
+		        FUN_GET_STATUS_DESC("BU_MCHT_TAX_INVOICE_INFO","AUDIT_STATUS", a.audit_status) audit_status_desc,
+		(select c.contact_name from bu_platform_contact c,bu_mcht_platform_contact b where c.id = b.platform_contact_id and b.mcht_id = a.mcht_id and c.contact_type = '7' and b.del_flag='0' and c.del_flag='0' LIMIT 1) fw_contact_name,
+      (select c.staff_id from bu_platform_contact c,bu_mcht_platform_contact b where c.id = b.platform_contact_id and b.mcht_id = a.mcht_id and c.contact_type = '7' and b.del_flag='0' and c.del_flag='0' LIMIT 1) fw_staff_id,
+		(select c.contact_name from bu_platform_contact c,bu_mcht_platform_contact b where c.id = b.platform_contact_id and b.mcht_id = a.mcht_id and c.contact_type = '5' and b.del_flag='0' and c.del_flag='0' LIMIT 1) cw_contact_name,
+      (select c.staff_id from bu_platform_contact c,bu_mcht_platform_contact b where c.id = b.platform_contact_id and b.mcht_id = a.mcht_id and c.contact_type = '5' and b.del_flag='0' and c.del_flag='0' LIMIT 1) cw_staff_id
+		 from bu_mcht_tax_invoice_info_chg a
+		 where a.del_flag = '0'
+		 	<if test="id !=null and id != ''">
+				and a.id =#{id}
+			</if>
+			<if test="mchtTaxInvoiceInfoId !=null and mchtTaxInvoiceInfoId != ''">
+				and a.mcht_tax_invoice_info_id =#{mchtTaxInvoiceInfoId}
+			</if>
+		 	<if test="mchtId !=null and mchtId != ''">
+				and a.mcht_id =#{mchtId}
+			</if>
+			<if test="taxType !=null and taxType != ''">
+				and a.tax_type =#{taxType}
+			</if>
+			
+			<if test="platformContactId !=null and platformContactId != ''">
+				and EXISTS (select mi.mcht_id from bu_mcht_platform_contact mi where mi.mcht_id=a.mcht_id and mi.platform_contact_id=#{platformContactId})
+			</if>
+			
+			<choose>
+			<when test="auditStatus !=null and auditStatus != ''">
+				and a.audit_status =#{auditStatus}
+			</when>
+            <otherwise>
+				and a.audit_status!='0'
+			</otherwise>
+			</choose>
+			<if test="companyName !=null and companyName != ''">
+				and a.mcht_id in (select b.id from bu_mcht_info b where b.id=a.mcht_id and b.company_name like CONCAT('%', '${companyName}', '%'))
+			</if>
+			
+			<if test="andWhereClause!='' and andWhereClause!=null">
+			and ${andWhereClause}
+			</if>
+    </sql>
+    
+    <select id="mchtTaxInvoiceInfoChgCustomList"  parameterType="java.util.HashMap" resultMap="BaseResultCustomMap">
+       SELECT TAB.* FROM (
+		<include refid="selectMchtTaxInvoiceInfoChgCustomSql" />
+		)TAB
+		order by TAB.id desc
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+    </select>
+    
+    <select id="mchtTaxInvoiceInfoChgCustomListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectMchtTaxInvoiceInfoChgCustomSql" /> 
+		  ) TAB	 
+	</select>
+	
+</mapper>

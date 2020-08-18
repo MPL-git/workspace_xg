@@ -1,0 +1,103 @@
+<div class="page evalua evalua-list flex dc bgf4" data-title="我的评价" data-id="evalua_list">
+	<link rel="stylesheet" href="evalua/index.css">
+	<link rel="stylesheet" href="evalua/list/index.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">我的评价</p>
+		<div class="fn for-update"></div>
+	</header>
+
+	<div class="content fg scroll-y"></div>
+
+	<script id="evalua_list_tpl" type="text/html">
+		<div class="touchfix w75">
+			{{each dataList value}}
+			<div class="main mb20">
+				<div class="evalua-goods bb1">
+					<dl class="flex">
+						<dt class="fn img-cover">
+							<img src="{{value.skuPic}}">
+						</dt>
+						<dd class="fg flex ac">
+							<h3 class="fn">商品描述</h3>
+							<div class="evalua-star productScore star-{{value.productScore}} flex">
+								<i></i>
+								<i></i>
+								<i></i>
+								<i></i>
+								<i></i>
+							</div>
+						</dd>
+					</dl>
+				</div>
+
+				<div class="list-con">
+					<div class="list-text">{{value.content}}</div>
+
+					{{if value.commentPics.length}}
+					<div class="list-pic">
+						{{each value.commentPics val}}
+						<div class="img-pre img-cover" onclick="previewPic(this)">
+							<img src="{{val}}">
+						</div>
+						{{/each}}
+					</div>
+					{{/if}}
+
+					<p class="list-spec flex ac c9">{{value.createDate}} {{value.productPropDesc}}</p>
+					
+					{{if value.mchtReply}}
+					<div class="list-text f50 mb20">商家回复</div>
+					<div class="list-text">{{value.mchtReply}}</div>
+					{{/if}}
+
+					{{if value.appendDataList.length}}
+						{{each value.appendDataList valu}}
+					<h4 class="f50">{{valu.appendCommentDay}}</h4>
+					<div class="list-text">{{valu.appendContent}}</div>
+
+							{{if valu.appendCommentPics.length}}
+					<div class="list-pic">
+								{{each valu.appendCommentPics val}}
+						<div class="img-pre img-cover" onclick="previewPic(this)">
+							<img src="{{val}}">
+						</div>
+								{{/each}}
+					</div>
+							{{/if}}
+						{{/each}}
+					{{/if}}
+				</div>
+			</div>
+			{{/each}}
+
+			<!-- 店铺评分 -->
+			<div class="evalua-shop pd20">
+				<h3 class="flex ac">店铺评分</h3>
+				<div class="flex ac">
+					<span>卖家服务</span>
+					<div class="evalua-star mchtScore star-{{mchtScore}} flex">
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+					</div>
+				</div>
+				<div class="flex ac">
+					<span class="fn">物流服务</span>
+					<div class="evalua-star wuliuScore star-{{wuliuScore}} flex">
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script src="evalua/list/index.js?var=1.0" async></script>
+</div>

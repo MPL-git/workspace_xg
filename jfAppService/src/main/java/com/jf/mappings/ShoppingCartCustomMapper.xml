@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ShoppingCartCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ShoppingCartCustom" extends="com.jf.dao.ShoppingCartMapper.BaseResultMap" >
+     <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+     <result column="product_prop_desc" property="productPropDesc" jdbcType="VARCHAR" />
+     <result column="product_name" property="productName" jdbcType="VARCHAR" />
+     <result column="activity_area_name" property="activityAreaName" jdbcType="VARCHAR" />
+     <result column="preferential_type" property="preferentialType" jdbcType="VARCHAR" />
+     <result column="tag_price" property="tagPrice" jdbcType="DECIMAL" />
+     <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+     <result column="mall_price" property="mallPrice" jdbcType="DECIMAL" />
+     <result column="limit_buy" property="limitBuy" jdbcType="INTEGER" />
+     <result column="locked_amount" property="lockedAmount" jdbcType="INTEGER" />
+     <result column="stock" property="stock" jdbcType="INTEGER" />
+     <result column="product_id" property="productId" jdbcType="INTEGER" />
+     <result column="source" property="source" jdbcType="VARCHAR" />
+     <result column="productStatus" property="productStatus" jdbcType="VARCHAR" />
+     <result column="templet_suffix" property="templetSuffix" jdbcType="VARCHAR" />
+     <result column="activityAreaType" property="activityAreaType" jdbcType="VARCHAR" />
+     <result column="svip_discount" property="svipDiscount" jdbcType="DECIMAL" />
+     <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+     <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+     <result column="product_type1_id" property="productType1Id" jdbcType="INTEGER" />
+     <result column="product_type2_id" property="productType2Id" jdbcType="INTEGER" />
+     <result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, member_id, mcht_id, activity_id, activity_area_id, product_item_id, add_tag_price, 
+    add_sale_price, quantity, status, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ShoppingCartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_shopping_cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_shopping_cart
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.ShoppingCartExample" resultType="java.lang.Integer" >
+    select count(*) from bu_shopping_cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getMemberShoppingCart" parameterType="int" resultMap="BaseResultMap">
+   select T.* from(
+	  select 
+	  t.product_item_id, 
+	  t.id,
+	  t.single_product_activity_id,
+	  t.add_sale_price,
+	  b.is_single_prop as isSingleProp,
+	  b.name product_name,
+	  b.status productStatus,
+	  b.limit_buy,
+	  b.id as productId,
+	  b.product_type1_id as productType1Id,
+	  b.svip_discount,
+	  a.sale_price,
+	  a.mall_price,
+	  a.tag_price,
+	  FUN_GET_PRODUCT_ITEM_PROP_DESC(a.id,' ') product_prop_desc,
+	  t.quantity,
+	  a.pic product_pic,
+	  t.activity_area_id,
+	  t.activity_id,
+	  t.activity_type,
+	  t.mcht_id,
+	  t.member_id,
+	  a.stock,a.locked_amount,
+	  a.product_id,
+	  (select mi.shop_name from bu_mcht_info mi where mi.id = b.mcht_id and mi.del_flag = '0' and mi.shop_status = '1') as shopName,
+	  (select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = b.id and item.del_flag = '0') as stockSum
+	  from bu_shopping_cart t 
+	  left join bu_product_item a on t.product_item_id=a.id 
+	  left join bu_product b on a.product_id=b.id 
+	  where t.member_id= #{memberId}
+	  and t.del_flag = '0' 
+	  and a.del_flag = '0' 
+	  and b.del_flag = '0' 
+	  and b.status = '1'
+	  and b.audit_status = '2'
+	  and b.sale_type = '1'
+	  and t.status='0'
+	  and t.activity_type in ('0','101')
+	  
+	  union 
+	  
+	  select 
+	  t.product_item_id, 
+	  t.id,
+	  t.single_product_activity_id,
+	  t.add_sale_price,
+	  b.is_single_prop as isSingleProp,
+	  b.name product_name,
+	  b.status productStatus,
+	  b.limit_buy,
+	  b.id as productId,
+	  b.product_type1_id as productType1Id,
+	  b.svip_discount,
+	  a.sale_price,
+	  a.mall_price,
+	  a.tag_price,
+	  FUN_GET_PRODUCT_ITEM_PROP_DESC(a.id,' ') product_prop_desc,
+	  t.quantity,
+	  a.pic product_pic,
+	  t.activity_area_id,
+	  t.activity_id,
+	  t.activity_type,
+	  t.mcht_id,
+	  t.member_id,
+	  a.stock,a.locked_amount,
+	  a.product_id,
+	  '' as shopName,
+	  (select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = b.id and item.del_flag = '0') as stockSum
+	  from bu_shopping_cart t 
+	  left join bu_product_item a on t.product_item_id=a.id 
+	  left join bu_product b on a.product_id=b.id 
+	  left join bu_single_product_activity single on single.id = t.single_product_activity_id
+	  where t.member_id= #{memberId}
+	  and t.del_flag = '0' 
+	  and a.del_flag = '0' 
+	  and b.del_flag = '0' 
+	  and single.del_flag = '0'
+	  and b.status = '1'
+	  and b.audit_status = '2'
+	  and t.status='0'
+	  and t.activity_type in ('2','6')
+	  and single.begin_time &lt;= now()
+	  and single.end_time >= now()
+	  and single.is_close = '0'
+	  and single.audit_status = '3')T
+	  order by T.id desc
+
+  </select>
+  
+  <select id="getFullCutData" parameterType="java.util.Map" resultType="com.jf.entity.ShoppingCartCustom">
+  		select 
+  		cart.add_sale_price,
+  		cart.quantity,
+  		cart.activity_type,
+		item.tag_price,
+		item.sale_price,
+		item.mall_price
+		from bu_shopping_cart cart
+		left join bu_product_item item on item.id = cart.product_item_id
+		where cart.del_flag = '0'
+		and item.del_flag = '0'
+		<if test="mchtId != null and mchtId != ''">
+			and cart.mcht_id = #{mchtId}
+		</if>
+		<if test="activityAreaId != null and activityAreaId != ''">
+			and cart.activity_area_id = #{activityAreaId}
+		</if>
+		<if test="shopCardIdList !=null and shopCardIdList.size() > 0">
+			and cart.id in
+			<foreach collection="shopCardIdList" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+		<choose>
+			<when test="orderBy != null and orderBy == 'DESC'">
+				order by add_sale_price desc
+			</when>
+			<when test="orderBy != null and orderBy == 'ASC'">
+				order by add_sale_price
+			</when>
+		</choose>
+  </select>
+  
+  <select id="findShoppingCartById" parameterType="java.util.Map" resultType="com.jf.entity.ShoppingCartCustom">
+  		select
+		cart.*,
+		item.tag_price,
+		item.sale_price,
+		item.mall_price,
+		item.product_id,
+		item.manage_self_freight,
+		item.cloud_product_item_id as cloudProductItemId,
+		(select p.freight_template_id from bu_product p where p.id = item.product_id and p.del_flag = '0') as freightTemplateId,
+		p.suit_group as suitGroup,
+		p.suit_sex as suitSex,
+		p.season,
+		p.sale_type as saleType,
+		p.product_desc as productDesc,
+		p.product_type1_id as productType1Id,
+		p.svip_discount,
+		(select GROUP_CONCAT(ppic.id) from bu_product_pic ppic where ppic.product_id = p.id and ppic.del_flag = '0') as mainPicGroup,
+		(select GROUP_CONCAT(descpic.id) from bu_product_desc_pic descpic where descpic.product_id = p.id and descpic.del_flag = '0') as descPicGroup
+		from bu_shopping_cart cart,bu_product_item item,bu_product p
+		where item.id = cart.product_item_id
+		and p.id = item.product_id
+		and cart.del_flag = '0'
+		and item.del_flag = '0'
+		<if test="activityAreaId != null and activityAreaId != ''">
+			and cart.activity_area_id = #{activityAreaId}
+		</if>
+		<if test="mchtId != null and mchtId != ''">
+			and cart.mcht_id = #{mchtId}
+		</if>
+		<if test="shopCardIdList !=null and shopCardIdList.size() > 0">
+			and cart.id in
+			<foreach collection="shopCardIdList" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+  </select>
+  
+  <select id="getShoppingCartNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  select sum(quantity) from(
+		select 
+	  ifnull(sum(t.quantity),0) as quantity
+	  from bu_shopping_cart t 
+	  left join bu_product_item a on t.product_item_id=a.id 
+	  left join bu_product b on a.product_id=b.id 
+	  left join bu_activity_area aa on t.activity_area_id=aa.id 
+	  where t.member_id= #{memberId}
+	  and t.del_flag = '0' 
+	  and a.del_flag = '0' 
+	  and b.del_flag = '0' 
+	  and aa.del_flag = '0' 
+	  and t.status='0'
+	  and t.activity_type = '0'
+	  and aa.status = '1'
+	  and aa.activity_begin_time &lt;= now()
+	  and aa.activity_end_time &gt;= now() 
+	  and FUN_GET_PRODUCT_ACTIVITY_STATUS(b.id) = '4'
+	  
+	  union 
+	  
+	  select 
+	  ifnull(sum(t.quantity),0) as quantity
+	  from bu_shopping_cart t 
+	  left join bu_product_item a on t.product_item_id=a.id 
+	  left join bu_product b on a.product_id=b.id 
+	  left join bu_single_product_activity single on single.product_id = b.id
+	  where t.member_id= #{memberId}
+	  and t.del_flag = '0' 
+	  and a.del_flag = '0' 
+	  and b.del_flag = '0' 
+	  and single.del_flag = '0'
+	  and t.status='0'
+	  and t.activity_type in ('1','2')
+	  and single.begin_time &lt;= now()
+	  and single.end_time &gt;= now()
+	  and single.is_close = '0'
+	  and single.audit_status = '3') apiA
+		
+  </select>
+  
+  
+  <select id="getShopCars" parameterType="java.util.Map" resultType="com.jf.entity.ShoppingCartCustom">
+  		select cart.*,
+		item.stock,
+		item.locked_amount,
+		item.product_id,
+		item.pic as productPic,
+		item.prop_val_id as propValId,
+		item.sale_price,
+		item.mall_price,
+		p.name as productName,
+		p.limit_buy,
+		p.id as productId,
+		p.product_type1_id as productType1Id,
+		p.freight_template_id as freightTemplateId,
+		p.svip_discount,
+		p.mcht_id,
+		p.product_type1_id,
+		p.product_type2_id,
+		p.product_type_id,
+		p.brand_id
+		from bu_shopping_cart cart,bu_product_item item,bu_product p
+		where cart.product_item_id = item.id and item.product_id = p.id
+		<if test="shopCardIdsList !=null and shopCardIdsList.size() > 0">
+			and cart.id in
+			<foreach collection="shopCardIdsList" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+  </select>
+  
+  <update id="updateShopCartActivityInfo" parameterType="java.util.Map" >
+    update bu_shopping_cart
+    set activity_id = null,
+      activity_area_id = null,
+      activity_type = #{activityType}
+      where id = #{shopCartId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ToutiaoAdvertiserInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ToutiaoAdvertiserInfoCustom" extends="com.jf.dao.ToutiaoAdvertiserInfoMapper.BaseResultMap" >
+  	<result column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+    <result column="campaign_batch_code" property="campaignBatchCode" jdbcType="INTEGER" />
+    <result column="campaign_update_date" property="campaignUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="ad_batch_code" property="adBatchCode" jdbcType="INTEGER" />
+    <result column="ad_update_date" property="adUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, advertiser_id, name, description, email, contacter, phonenumber, role, status, 
+    telephone, address, license_url, license_no, license_province, license_city, company, 
+    brand, promotion_area, promotion_center_province, promotion_center_city, industry, 
+    reason, balance, campaign_page, campaign_page_size, campaign_total_number, campaign_total_page, 
+    ad_page, ad_page_size, ad_total_number, ad_total_page, batch_code, create_by, create_date, 
+    update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("TOUTIAO_ADVERTISER_INFO", "ROLE", t.role) role_desc,
+    FUN_GET_STATUS_DESC("TOUTIAO_ADVERTISER_INFO", "STATUS", t.status) status_desc,
+    (select a.batch_code from toutiao_campaign_info a where a.del_flag = '0' and a.advertiser_id = t.advertiser_id limit 1 ) campaign_batch_code,
+    (select a.update_date from toutiao_campaign_info a where a.del_flag = '0' and a.advertiser_id = t.advertiser_id limit 1 ) campaign_update_date,
+    (select a.batch_code from toutiao_ad_info a where a.del_flag = '0' and a.advertiser_id = t.advertiser_id limit 1 ) ad_batch_code,
+    (select a.update_date from toutiao_ad_info a where a.del_flag = '0' and a.advertiser_id = t.advertiser_id limit 1 ) ad_update_date
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ToutiaoAdvertiserInfoCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from toutiao_advertiser_info t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from toutiao_advertiser_info t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.ToutiaoAdvertiserInfoCustomExample" resultType="java.lang.Integer" >
+    select count(*) from toutiao_advertiser_info t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update toutiao_advertiser_info t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.advertiserId != null" >
+        advertiser_id = #{record.advertiserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contacter != null" >
+        contacter = #{record.contacter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonenumber != null" >
+        phonenumber = #{record.phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.role != null" >
+        role = #{record.role,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telephone != null" >
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseUrl != null" >
+        license_url = #{record.licenseUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseNo != null" >
+        license_no = #{record.licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseProvince != null" >
+        license_province = #{record.licenseProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseCity != null" >
+        license_city = #{record.licenseCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.company != null" >
+        company = #{record.company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null" >
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotionArea != null" >
+        promotion_area = #{record.promotionArea,jdbcType=CHAR},
+      </if>
+      <if test="record.promotionCenterProvince != null" >
+        promotion_center_province = #{record.promotionCenterProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotionCenterCity != null" >
+        promotion_center_city = #{record.promotionCenterCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industry != null" >
+        industry = #{record.industry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reason != null" >
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.campaignPage != null" >
+        campaign_page = #{record.campaignPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.campaignPageSize != null" >
+        campaign_page_size = #{record.campaignPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="record.campaignTotalNumber != null" >
+        campaign_total_number = #{record.campaignTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.campaignTotalPage != null" >
+        campaign_total_page = #{record.campaignTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.adPage != null" >
+        ad_page = #{record.adPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.adPageSize != null" >
+        ad_page_size = #{record.adPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="record.adTotalNumber != null" >
+        ad_total_number = #{record.adTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.adTotalPage != null" >
+        ad_total_page = #{record.adTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.batchCode != null" >
+        batch_code = #{record.batchCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  
+  
+</mapper>

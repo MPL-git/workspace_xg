@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSettleCompareCustomMapper" >
+
+ <select id="selectNoSettleCompareMcht" resultMap="com.jf.dao.MchtInfoMapper.BaseResultMap">
+ <![CDATA[
+	SELECT
+		*
+	FROM
+		bu_mcht_info bmi
+	WHERE
+		bmi.del_flag = '0'
+	AND bmi.mcht_type = 2
+	AND bmi.`status` IN ('1', '2', '3')
+	AND NOT EXISTS (
+		SELECT
+			msc.id
+		FROM
+			bu_mcht_settle_compare msc
+		WHERE
+			msc.mcht_id = bmi.id
+		AND msc.settle_month = #{settleMonth,jdbcType=VARCHAR}
+	)
+ ]]>
+ </select>
+ 
+ <select id="selectCrossMonthSettle" resultType="map">
+ <![CDATA[
+	 SELECT
+		mso.mcht_id,
+		sum(dtl.settle_amount) settle_amount
+	FROM
+		bu_mcht_settle_order mso
+	LEFT JOIN bu_order_dtl dtl ON mso.id = dtl.mcht_settle_order_id
+	LEFT JOIN bu_sub_order bso ON dtl.sub_order_id = bso.id
+	LEFT JOIN bu_combine_order bco ON bso.combine_order_id = bco.id
+	WHERE
+		mso.create_date >= #{settleBeginDate,jdbcType=TIMESTAMP}
+	AND mso.create_date <= #{settleEndDate,jdbcType=TIMESTAMP}
+	AND bco.pay_date < #{settleBeginDate,jdbcType=TIMESTAMP}
+	and mso.del_flag='0'
+	and dtl.del_flag='0'
+	and bso.del_flag='0'
+	and bco.del_flag='0'
+	GROUP BY
+		mso.mcht_id
+ ]]>
+ </select>
+ <select id="selectCurrentMonthSettle" resultType="map">
+ <![CDATA[
+	 SELECT
+		mso.mcht_id,
+		sum(dtl.settle_amount) settle_amount
+	FROM
+		bu_mcht_settle_order mso
+	LEFT JOIN bu_order_dtl dtl ON mso.id = dtl.mcht_settle_order_id
+	LEFT JOIN bu_sub_order bso ON dtl.sub_order_id = bso.id
+	LEFT JOIN bu_combine_order bco ON bso.combine_order_id = bco.id
+	WHERE
+		mso.create_date >= #{settleBeginDate,jdbcType=TIMESTAMP}
+	AND mso.create_date <= #{settleEndDate,jdbcType=TIMESTAMP}
+	AND bco.pay_date >= #{settleBeginDate,jdbcType=TIMESTAMP}
+	AND bco.pay_date <= #{settleEndDate,jdbcType=TIMESTAMP}
+	and mso.del_flag='0'
+	and dtl.del_flag='0'
+	and bso.del_flag='0'
+	and bco.del_flag='0'
+	GROUP BY
+		mso.mcht_id
+ ]]>
+ </select>
+ <select id="selectCurrentMonthNeedSettle" resultType="map">
+ <![CDATA[
+	 SELECT
+		bso.mcht_id,
+	  	sum(dtl.settle_amount) settle_amount
+	FROM
+		bu_order_dtl dtl
+	LEFT JOIN bu_sub_order bso ON dtl.sub_order_id = bso.id
+	LEFT JOIN bu_combine_order bco ON bso.combine_order_id = bco.id
+	WHERE
+		bco.pay_date >= #{settleBeginDate,jdbcType=TIMESTAMP}
+	AND bco.pay_date <= #{settleEndDate,jdbcType=TIMESTAMP}
+	and dtl.del_flag='0'
+	and bso.del_flag='0'
+	and bco.del_flag='0'
+	group by bso.mcht_id
+ ]]>
+ </select>
+ 
+ <select id="selectCurrentSettleOrderAmount" resultType="map">
+ <![CDATA[
+	SELECT
+		sum(mso.settle_amount) settle_amount,
+		mcht_id
+	FROM
+		bu_mcht_settle_order mso
+	WHERE
+		mso.create_date >= #{settleBeginDate,jdbcType=TIMESTAMP}
+	AND mso.create_date <= #{settleEndDate,jdbcType=TIMESTAMP}
+	and mso.del_flag='0'
+	group by mso.mcht_id
+ ]]>
+ </select>
+ 
+ 
+ <select id="selectCurrentRefundAmount" resultType="map">
+ <![CDATA[
+	SELECT
+		bso.mcht_id,
+  		sum(cso.amount) amount
+	FROM
+		bu_customer_service_order cso
+	JOIN bu_sub_order bso ON cso.sub_order_id = bso.id
+	JOIN bu_refund_order ro ON ro.service_order_id = cso.id
+	WHERE
+		cso.service_type = 'D'
+	AND cso.pro_status = 'D2'
+	AND ro.success_date >= #{settleBeginDate,jdbcType=TIMESTAMP}
+	AND ro.success_date <= #{settleEndDate,jdbcType=TIMESTAMP}
+	and cso.del_flag='0'
+	and bso.del_flag='0'
+	and ro.del_flag='0'
+	GROUP BY bso.mcht_id
+ ]]>
+ </select>
+ 
+ 
+</mapper>

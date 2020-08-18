@@ -1,0 +1,59 @@
+<div class="page bgf4 novaplan-offriends flex dc" data-title="TA的关注/粉丝" data-id="activity_shopowner_pages_friend_home_offriends">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="activity/novaplan/pages/friend/home/offriends/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">TA的关注/粉丝</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="refreshText bgf4"></div>
+
+	<div class="tab-top flex fn">
+		<a class="brand flex fg dc ac" onclick="novaplanOffriend.getTab('1')"><span class="fg flex ac">TA的关注</span></a>
+		<a class="brand flex fg dc ac" onclick="novaplanOffriend.getTab('2')"><span class="fg flex ac">TA的粉丝</span></a>
+	</div>
+
+	<div class="scroll-y fg scroll-more"></div>
+
+	<script id="offriend_list" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value}}
+			<div class="flex ac li" onclick="novaplanOffriend.goHome('{{value.frientMenberId}}')">
+				<div class="fn pos-r head">
+					<div class="head-img">
+						<img src="{{value.pic}}" onerror="this.src='../static/images/bg-head.png'"/>
+					</div>
+					{{if value.sexType == '1'}}
+					<img class="gender" src="activity/novaplan/pages/friend/images/man.png">
+					{{else if value.sexType == '0' || value.sexType == '2'}}
+					<img class="gender" src="activity/novaplan/pages/friend/images/woman.png">
+					{{/if}}
+				</div>
+				<div class="fg">
+					<div class="f30 elps name">{{value.nick}}</div>
+					<div class="flex ac">
+						<div class="c9 f24">{{value.regArea ? value.regArea : '未知城市'}}</div>
+						{{if value.friendRelationship && tab != 3}}
+						<div class="flex ac laber">{{value.friendRelationship}}</div>
+						{{/if}}
+					</div>
+				</div>
+				{{if tab != 3 && value.followStatus != 4}}
+				<div class="flex ac follow{{value.followStatus == 1 ? ' follow-2' : ''}}{{value.followStatus == 2 ? ' follow-3' : ''}}" onclick="novaplanOffriend.getFollow(event,this,'{{value.frientMenberId}}')"></div>
+				{{else}}
+				<div class="f50">{{value.payOrderCountStr}}</div>
+				{{/if}}
+			</div>
+			{{/each}}
+		{{else}}
+		<div class="empty-page flex dc ac jc">
+			<img src="../static/images/empty/order.png"/>
+			<p class="c9">空空如也~</p>
+		</div>
+		{{/if}}
+	</script>
+	
+	<script src="activity/shopowner/pages/friend/home/offriends/index.js?var=1.0" async></script>
+</div>

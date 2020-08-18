@@ -1,0 +1,185 @@
+<div class="page bgf4 friend-home flex dc" data-title="好友主页" data-id="activity_novaplan_pages_friend_home">
+	<link rel="stylesheet" href="activity/novaplan/pages/friend/home/index.css?var=1.0">
+	<link rel="stylesheet" href="my/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">好友主页</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-more main my-nova">
+		<div class="user"></div>
+		<ul class="tab-body w75" style="margin-bottom: 1rem;"></ul>		
+	</div>
+	
+	<div class="popup popup-dynamic" onclick="closeSelf(this)"></div>
+	<div class="popup popup-share-reduce" onclick="closeSelf(this)">
+		<div class="popup-bottom" onclick="stopSelf()">
+			<div class="popup-top flex ac jc h4">分享到</div>
+			<div class="popup-con flex ja">
+				<a class="share-bt flex jc ac dc" onclick="friendHomeApi.getShareWx()"><img class="wx-ico" src="../static/images/share-wx.png"><span>微信</span></a>
+				<a class="share-bt flex jc ac dc" onclick="friendHomeApi.getShare()"><img class="wx-ico" src="../static/images/share-dynamic.png" width="90px"><span>醒购动态</span></a>
+			</div>
+			<a class="close-share flex ac jc foot" onclick="closeSelf(this)">取消分享</a>
+		</div>
+	</div>
+
+	<script id="friend_home_user" type="text/html">
+		<div class="head pos-r">
+			<div class="head-img">
+				<img src="{{memberPic}}" onerror="this.src='../static/images/bg-head.png'"/>
+			</div>
+			{{if isSvip == 1}}
+			<img class="svip" src="activity/novaplan/pages/friend/images/svip.png"/>
+			{{/if}}
+		</div>
+		<div class="flex ac jc mt20 name">
+			<span>{{memberNick}}</span>
+			{{if sexType == '1'}}
+			<img class="gender" src="activity/novaplan/pages/friend/images/man.png"/>
+			{{else if sexType == '0' || sexType == '2'}}
+			<img class="gender" src="activity/novaplan/pages/friend/images/woman.png"/>
+			{{/if}}
+		</div>
+		<div class="flex ac jc mt20 relevant">
+			<div onclick="friendHomeApi.getOffriends('4')">关注  {{attentionCount}}</div>
+			<div class="fans" onclick="friendHomeApi.getOffriends('5')">粉丝  {{fansCount}}</div>
+		</div>
+		{{if attentionButton == 1 && attentionStatus == 0}}
+		<div class="flex ac jc follow-bt follow" onclick="friendHomeApi.getFollow(this)"></div>
+		{{else if  attentionButton == 1 && attentionStatus == 1}}
+		<div class="flex ac jc follow-bt" onclick="friendHomeApi.getFollow(this)">取消关注</div>
+		{{/if}}
+	</script>
+	
+	<script id="friend_tpl_novaplan_con" type="text/html">
+		{{if dataList.length}}
+		{{each dataList item}}
+		<li class="mb20" data-obj="{{item}}">
+			<div>
+				<dl class="cursor flex ac"
+					onclick="getUrl('activity/novaplan/pages/newsfeed/index.html?type=1&id={{item.id}}', 'self')">
+					<dt class="fn img-cover">
+						<img src="{{item.pic}}" onerror="imgErrorHead(this)">
+					</dt>
+					<dd class="fg flex dc jb" style="min-width:0">
+						<h3 class="flex ac" style="min-width:0">
+							<span class="elps">{{item.nick}}</span>
+						</h3>
+						<div class="flex ac jb">
+							<span class="c9">{{item.publishDate}}</span>
+						</div>
+					</dd>
+					<dd class="flex je ac fn {{'bg-head-sec-f'}}">
+						<p class="flex turn-from">转发自<span class="f50 elps"
+								onclick="stopSelf(event), getUrl('seller/index.html?mchtId={{item.mchtId}}', 'self');">{{item.shopName}}</span>
+						</p>
+						
+						<div class="btn-2 flex ac" onclick="friendHomeApi.showPopupDynamic(event)">
+							<img src="https://mtest.xgbuy.cc/webApp/applet/image/coupon/down.png" alt="">
+						</div>
+					</dd>
+				</dl>
+				<div class="col-2 cursor "
+					onclick="getUrl('activity/novaplan/pages/newsfeed/index.html?type=1&id={{item.id}}', 'self')">
+					{{item.content}}</div>
+				<div class="btn-row-1 hide"
+					onclick="getUrl('activity/novaplan/pages/newsfeed/index.html?type=1&id={{item.id}}', 'self')">
+					查看全文</div>
+				<div class="col-3 flex fw">
+					{{each item.productList value}}
+					<a onclick="getUrlGoods('{{value.productId}}')">
+						<img src="{{value.productPic}}">
+					</a>
+					{{/each}}
+				</div>
+			</div>
+			<div class="footer bt1 flex ac jb">
+				<div class="btn-group-left">
+					{{item.readCount}} 阅读
+				</div>
+				<div class="btn-group-right flex ac">
+					<a class="flex ac jc" data-type="1" data-id="{{item.id}}"
+						data-mcht="{{item.mchtShopDynamicId}}"
+						onclick="friendHomeApi.showForward(this)"><i></i><b>{{item.forwardCount}}</b></a>
+					<a class="flex ac jc fabulous bl1{{item.likeStatus === '1' ? ' fabulous-1' : ''}}"
+						data-type="1" data-id="{{item.id}}" data-mcht="{{item.mchtShopDynamicId}}"
+						onclick="friendHomeApi.getFabulous(this)"><i
+							style="width: .27rem; height: .3rem;"></i><b>{{item.likeCount}}</b></a>
+				</div>
+
+			</div>
+		</li>
+		{{/each}}
+		{{else}}
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前暂无动态</p>
+		</div>
+		{{/if}}
+	</script>
+	
+	<script id="friend_tpl_popup_dynamic"  type="text/html">
+		<div class="popup-bottom" onclick="stopSelf()">
+			<div class="popup-con">
+				<div class="flex ac jc head" onclick="closeSelf(this)">
+					<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/take-back.png" />
+				</div>
+				<div class="con">
+					{{if (!my && hasFocusOnFriends == 1 && shieldingDynamics == 0) }}
+					<div class="flex li" onclick="friendHomeApi.updateSd()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/shielding-dynamics.png" />
+						<div class="flex dc fg">
+							<span class="t1">屏蔽动态</span>
+							<span class="t2">屏蔽TA的内容，不在醒购动态收到</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if (!my && hasFocusOnFriends == 1 && shieldingDynamics == 1) }}
+					<div class="flex li" onclick="friendHomeApi.updateSd()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/dynamics.png" />
+						<div class="flex dc fg">
+							<span class="t1">接收动态</span>
+							<span class="t2">接收TA的内容，可在醒购动态查看</span>
+						</div>
+					</div>
+					{{/if}}
+				
+					{{if !my && hasFocusOnFriends == 1 }}
+					<div class="flex li" onclick="friendHomeApi.getFollow()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/remove-concerns.png" />
+						<div class="flex dc fg">
+							<span class="t1">取消关注</span>
+							<span class="t2">不再关注TA</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if !my && hasFocusOnFriends == 0}}
+					<div class="flex li" onclick="friendHomeApi.getFollow()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/concerns.png" />
+						<div class="flex dc fg">
+							<span class="t1">关注好友</span>
+							<span class="t2">可在个人中心-关注查看TA的动态</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if my}}
+					<div class="flex li" onclick="friendHomeApi.deteleDynamic()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/detele-dynamics.png" />
+						<div class="flex dc fg">
+							<span class="t1">删除动态</span>
+							<span class="t2">删除已发布动态，不在展示</span>
+						</div>
+					</div>
+					{{/if}}
+				</div>
+				<div class="flex ac jc foot">
+					<button onclick="closeSelf(this)">取消</button>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script src="activity/novaplan/pages/friend/home/index.js?var=1.0" async></script>
+</div>

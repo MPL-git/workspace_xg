@@ -1,0 +1,196 @@
+<div class="page novaplan flex dc bgf4" data-title="新星计划" data-id="activity_novaplan">
+	<link rel="stylesheet" href="activity/novaplan/index.css?ver=1.0">
+
+	<header class="top bg-none flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">新星计划</p>
+		<div class="fn">
+			<a class="row-1" onclick="novaPlan.about()">关于新星计划</a>
+		</div>
+	</header>
+
+	<div class="scroll-y scroll-fix fg content">
+		<div class="touchfix"></div>
+	</div>
+
+	<script id="novaplan_tpl" type="text/html">
+		<div class="header">
+			<div class="row-2 flex ac jc">现金余额</div>
+			<div class="row-3 flex ae jc">
+				<span>{{profitInviteBalance}}</span>元
+			</div>
+		</div>
+
+		<nav class="flex">
+		{{if mVerfiyFlag == 1}}
+			<a class="ico-tx flex dc ac" onclick="getUrl('activity/novaplan/pages/cash/index.html')">
+				<span class="flex ac">现金提现</span>
+			</a>
+		{{else}}
+			<a class="ico-tx flex dc ac" onclick="getUrl('register/mobilePwd/index.html')">
+				<span class="flex ac">现金提现</span>
+			</a>
+		{{/if}}
+			<a class="ico-tg flex dc ac" onclick="getUrl('activity/novaplan/pages/order/index.html')">
+				<span class="flex ac">推广订单</span>
+			</a>
+			<a class="ico-fr flex dc ac" onclick="getUrl('activity/novaplan/pages/friend/index.html')">
+				<span class="flex ac">我的好友</span>
+			</a>
+		</nav>
+
+		<article class="mt20">
+			{{if novaPlanTaskList.length}}
+			<figure>
+				<h2 class="flex ac">新星协议</h2>
+
+				{{each novaPlanTaskList item}}
+				<dl class="cursor flex ac" onclick="getUrl('{{novaPlanAgreementUrl}}')">
+					<dt class="ico-xy fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<!-- <div class="flex dc ac">
+							{{if item.statusText}}
+							<button>{{item.statusText}}</button>
+							{{/if}}
+						</div> -->
+					</dd>
+				</dl>
+				{{/each}}
+			</figure>
+			{{/if}}
+
+			{{if renewalTaskList.length}}
+			<figure>
+				<h2 class="flex ac">续签任务</h2>
+
+				{{each renewalTaskList item}}
+					{{if item.taskType === '2'}}
+				<dl class="cursor flex ac" onclick="getUrl('activity/novaplan/pages/task/index.html', 'self')">
+					<dt class="ico-jd fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{/if}}
+				{{/each}}
+			</figure>
+			{{/if}}
+
+			{{if everyDateTaskList.length}}
+			<figure>
+				<h2 class="flex ac">日常任务</h2>
+
+				{{each everyDateTaskList item}}
+					{{if item.taskType === '3'}}
+				<dl class="flex ac">
+					<dt class="ico-rw fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{else if item.taskType === '4'}}
+				<dl class="cursor flex ac" onclick="getUrl('activity/novaplan/pages/invite/index.html','self')">
+					<dt class="ico-hy fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{else if item.taskType === '5'}}
+				<dl class="cursor flex ac" onclick="getUrl('activity/novaplan/pages/code/index.html')">
+					<dt class="ico-yq fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{else if item.taskType === '6'}}
+				<dl class="cursor flex ac" onclick="getUrl('activity/newsign/index.html')">
+					<dt class="ico-qd fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{else if item.taskType === '7'}}
+				<dl class="cursor flex ac" onclick="setStorage('novaplan_for_dynamic'), getUrl('my', 'self')">
+					<dt class="ico-dt fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{/if}}
+				{{/each}}
+			</figure>
+			{{/if}}
+
+			{{if noviceTaskList.length}}
+			<figure>
+				<h2 class="flex ac">新手必看</h2>
+
+				{{each noviceTaskList item}}
+					{{if item.taskType === '8'}}
+				<dl class="cursor flex ac" onclick="getUrl('activity/novaplan/pages/strategy/index.html')">
+					<dt class="ico-gl fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{else if item.taskType === '9'}}
+				<dl class="cursor flex ac" onclick="getUrl('activity/novaplan/pages/goods/index.html', 'self')">
+					<dt class="ico-hh fn"></dt>
+
+					<dd class="fg flex jb">
+						<div class="fg">
+							<h3 class="h3 flex ac">{{item.title}}</h3>
+							<p class="c9">{{item.content}}</p>
+						</div>
+						<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+					</dd>
+				</dl>
+					{{/if}}
+				{{/each}}
+			</figure>
+			{{/if}}
+		</article>
+	</script>
+
+	<script src="activity/novaplan/index.js?ver=1.2" async></script>
+</div>

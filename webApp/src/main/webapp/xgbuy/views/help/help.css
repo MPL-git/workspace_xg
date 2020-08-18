@@ -1,0 +1,52 @@
+.help form {
+	padding: .15rem .3rem;
+}
+.help .input-box {
+	position: relative;
+	height: .6rem;
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	border-radius: .04rem;
+	background: #fff;
+	font-size: .26rem;
+}
+.help .input-box label {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: .66rem;
+	height: 100%;
+	background: url(resources/search.png) no-repeat center center;
+	background-size: .28rem .28rem;
+}
+.help .input-box input {
+	float: left;
+	width: 100%;
+	height: 100%;
+	padding: 0 .1rem 0 .68rem;
+	border: none;
+	outline: none;
+	background: none;
+}
+
+.help li {
+	height: .9rem;
+	padding: 0 .3rem;
+	font-size: .3rem;
+	background: #fff;
+	border-top: 1px solid #eee;
+}
+.help li:first-child {
+	border: none;
+}
+
+.help .btn-red {
+	width: 6.9rem;
+	height: .8rem;
+	margin: 0 auto .3rem;
+	padding: 0;
+	font-size: .3rem;
+	line-height: .3rem;
+	border-radius: .04rem;
+	box-shadow: 0 .01rem 0.1rem 0.02rem rgba(255, 80, 80, .5);
+}

@@ -1,0 +1,35 @@
+<div class="page help-detail flex dc" data-id="help_detail">
+	<link rel="stylesheet" href="help/detail/detail.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more">
+		<ul class="touchfix"></ul>
+	</div>
+
+	<script id="help_detail_tpl" type="text/html">
+		{{if returnData.length}}
+			{{each returnData value i}}
+				<li>
+					<h3>{{value.title}}</h3>
+					<pre>{{value.content}}</pre>
+				</li>
+			{{/each}}
+		{{else}}
+			{{include 'help_detail_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="help_detail_tpl_empty" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+	</script>
+
+	<script src="help/detail/detail.js?var=1.0" async></script>
+</div>

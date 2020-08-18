@@ -1,0 +1,125 @@
+<div class="page allowance flex dc" data-title="购物津贴" data-id="allowance">
+	<link rel="stylesheet" href="allowance/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">购物津贴</p>
+		<div class="fn">
+		</div>
+	</header>
+
+	<div class="fg content scroll-y scroll-more">
+		
+	</div>
+
+	<script id="allowance_list_tpl_detail" type="text/html">
+		<div class="flex ac jb head">
+			<div data-id="{{informationId}}" onclick="getUrl('link/information.html?id=' + {{informationId}} ,'self')">什么是购物津贴？</div>
+			<div class="flex ac"  onclick="getUrl('allowance/revenueUse/index.html' , 'self');">
+				收入\使用
+				<img style="width: .14rem;height: .24rem;margin-left: .1rem;" src="allowance/resources/detail.png" alt="">
+			</div>
+		</div>
+		<h3 class="allowanceBalance">￥{{allowanceBalance}}</h3>
+		<div class="desc flex dc ac">
+			{{each allowanceDescList value i}}
+				<p class="flex ac">{{value}}<p>
+			{{/each}}
+		</div>
+		
+		<div class="btns flex ac jb">
+			{{if activityFinish}}
+			<button class="finish">活动已结束</button>
+			{{else}}
+			{{each exchangeList val exindex}}
+			<button data-id="{{val.id}}" onclick="allowanceApi.exchange({{val.id}})">{{val.desc}}</button>
+			{{/each}}
+			{{/if}}
+		
+		</div>
+		<div class="flex ac jc msg fs30">— <span class="fw">{{tipContent}}</span> —</div>
+		<div class="tab-nav flex scroll-x {{productTypeList.length < 5 ? ' ja' : ''}}">
+			
+		</div>
+		<div class="product clearfix">
+			<!-- <div class="left"></div>
+			<div class="right"></div> -->
+		</div>
+		<div class="c9" style="text-align:center;padding:.2rem">没有更多内容啦</div>
+
+	</script>
+
+	<!-- 商品 -->
+	<script id="allowance_list_tpl_product" type="text/html">
+		{{if productInfoList.length}}
+			{{each productInfoList value i}}
+			<a class="mb20 {{value.deposit == 0 || value.deductAmount == 0?'':'arrival-a'}}" onclick="getUrlGoods(this, {pos: '{{page + i}}', data: allowanceApi.data})"
+			data-activityareaid="{{activityAreaId}}" data-productid="{{value.productId}}">
+			<div class="con-1 h345">
+				<img src="{{value.pic}}">
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+
+				{{if productWkPicM}}
+				<b class="wk-pic opc0 wk-{{productWkPosition}}">
+					<img src="{{productWkPicM}}">
+				</b>
+				{{/if}}
+			</div>
+			<div class="con-2">
+				{{if value.deposit == 0 || value.deductAmount == 0 || !value.deposit || !value.deductAmount}}
+				<p title="{{value.productName}}">{{value.productName}}</p>
+				<div class="flex ac jb scroll-x">
+					<span>
+						<strong class="f50">{{value.salePrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</span>
+					{{if value.dsicount}}
+					<mark class="btn-f50">{{value.dsicount}}折</mark>
+					{{/if}}
+				</div>
+				{{if value.svipSalePrice > 0}}
+				<div class="flex ac decorate-svip" onclick="getSvip(event)">
+					<img src="activity/templet/images/svip.png">
+					<span>¥{{value.svipSalePrice}}</span>
+				</div>
+				{{/if}}
+				{{else}}
+				<p class="arrival-p" title="{{value.productName}}">{{value.productName}}</p>
+				<div class="flex ac jb">
+					<span class="arrival-span">到手价:<strong class="f50">{{value.arrivalPrice}}</strong>{{value.hasDifferentPrice}}</span>
+					<s class="c9">{{value.salePrice}}</s>
+				</div>
+				<button class="arrival-btn">定金{{value.deposit}}抵{{value.deductAmount}}</button>
+
+				{{/if}}
+			</div>
+		</a>
+			{{/each}}
+			
+		{{/if}}
+	</script>
+
+	<script id="cup_tpl_empty" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+	</script>
+	
+	<!-- 商品导航 -->
+	<script id="nav_tpl" type="text/html">
+		{{if navList.length}}
+		{{each navList value i}}
+		<a onclick="allowanceApi.nav({{value.id}},{{i}},this)" class="flex ac jc {{navId == value.id? 'active': ''}}" data-id="{{value.id}}">
+				<p class="ellipsis">{{value.name}}</p>
+				<b></b>
+		</a>
+		{{/each}}
+		{{/if}}
+	</script>
+
+	<script src="allowance/index.js?ver=1.0" async></script>
+</div>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtInfoCustomMapper">
+	<resultMap id="BaseResultMap" type="com.jf.entity.MchtInfoCustom"
+		extends="com.jf.dao.MchtInfoMapper.BaseResultMap">
+		<result column="mcht_type_desc" property="mchtTypeDesc"
+			jdbcType="VARCHAR" />
+		<result column="is_manage_self_desc" property="isManageSelfDesc"
+			jdbcType="VARCHAR" />
+		<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+		<result column="is_company_inf_perfect_desc" property="isCompanyInfPerfectDesc"
+			jdbcType="VARCHAR" />
+		<result column="is_financial_perfect_desc" property="isFinancialPerfectDesc"
+			jdbcType="VARCHAR" />
+		<result column="mcht_product_type" property="mchtProductType"
+			jdbcType="VARCHAR" />
+		<result column="mcht_product_brand" property="mchtProductBrand"
+			jdbcType="VARCHAR" />
+		<result column="contact_province_name" property="contactProvinceName"
+			jdbcType="VARCHAR" />
+		<result column="contact_city_name" property="contactCityName"
+			jdbcType="VARCHAR" />
+		<result column="contact_county_name" property="contactCountyName"
+			jdbcType="VARCHAR" />
+		<result column="reg_fee_type_desc" property="regFeeTypeDesc"
+			jdbcType="VARCHAR" />
+		<result column="pic_count" property="mchtblpic" jdbcType="VARCHAR" />
+		<result column="yearly_inspection_date" property="yearlyInspectionDate" jdbcType="TIMESTAMP" />	
+	</resultMap>
+	
+	<resultMap id="HomeResultMap" type="com.jf.entity.MchtHomeInfo">
+		<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+		<result column="is_company_inf_perfect" property="isCompanyInfPerfect" jdbcType="VARCHAR" />
+		<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+		<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+		<result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+		<result column="brand_imperfect_count" property="brandImperfectCount" jdbcType="INTEGER" />
+		<result column="tax_imperfect_count" property="taxImperfectCount" jdbcType="INTEGER" />
+		<result column="overtime_count" property="overtimeCount" jdbcType="INTEGER" />
+		<result column="service_count" property="serviceCount" jdbcType="INTEGER" />
+		<result column="today_count" property="todayCount" jdbcType="INTEGER" />
+		<result column="today_amount" property="todayAmount" jdbcType="DECIMAL" />
+		<result column="unadd_count" property="unaddCount" jdbcType="INTEGER" />
+		<result column="unsubmit_count" property="unsubmitCount" jdbcType="INTEGER" />
+		<result column="audit_count" property="auditCount" jdbcType="INTEGER" />
+		<result column="active_count" property="activeCount" jdbcType="INTEGER" />
+		<result column="violate_order_count" property="violateOrderCount" jdbcType="INTEGER" />
+		<result column="yearly_inspection_date" property="yearlyInspectionDate" jdbcType="TIMESTAMP" />
+		<result column="corporation_idcard_date" property="corporationIdcardDate" jdbcType="TIMESTAMP" />
+		<result column="yearly_inspection_dates" property="yearlyInspectionDates" jdbcType="VARCHAR" />
+		<result column="corporation_idcard_dates" property="corporationIdcardDates" jdbcType="VARCHAR" />		
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.*,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO","MCHT_TYPE",
+		t.mcht_type) mcht_type_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO","IS_MANAGE_SELF", t.is_manage_self)
+		is_manage_self_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO","STATUS",
+		t.status) status_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO","IS_COMPANY_INF_PERFECT",
+		t.is_company_inf_perfect) is_company_inf_perfect_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO","IS_FINANCIAL_PERFECT",
+		(select audit_status from bu_mcht_tax_invoice_info a where a.mcht_id=t.id)) is_financial_perfect_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO","COMPANY_TYPE", t.company_type)
+		company_type_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO","REG_FEE_TYPE",
+		t.reg_fee_type) reg_fee_type_desc,
+		(select a.AREA_NAME from bu_p_area a
+		where a.AREA_ID=t.contact_province)
+		contact_province_name,
+		(select
+		b.AREA_NAME from bu_p_area b where b.AREA_ID=t.contact_city)
+		contact_city_name,
+		(select c.AREA_NAME from bu_p_area c where
+		c.AREA_ID=t.contact_county)
+		contact_county_name
+	</sql>
+	
+	<sql id="Base_Column_HOME_List">
+	t.id,
+	t.mcht_code,
+	t.is_company_inf_perfect,
+	t.corporation_idcard_date,
+	t.company_name,
+	t.shop_name,
+	t.yearly_inspection_date,
+	(select IFNULL(sum(od.pay_amount),0) from bu_order_dtl od,bu_sub_order b, bu_combine_order c where od.sub_order_id = b.id and od.is_give='0' and od.del_flag='0' and b.mcht_id=t.id and b.del_flag='0' and b.combine_order_id=c.id and c.del_flag='0' and c.status='1' and (od.product_status IS NULL OR od.product_status='1') and DATE_FORMAT(c.pay_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )) total_amount,
+	(select count(b.id) from bu_mcht_product_brand b where b.mcht_id=t.id and b.del_flag='0' and b.audit_status='0') brand_imperfect_count,
+	(select count(b.id) from bu_mcht_tax_invoice_info b where b.mcht_id=t.id and b.del_flag='0' and b.audit_status='0') tax_imperfect_count,
+	(select count(b.id) from bu_sub_order b, bu_combine_order c where b.mcht_id=t.id and b.del_flag='0' and b.status='1' and b.combine_order_id=c.id and c.del_flag='0' and c.status='1' and b.delivery_last_date <![CDATA[ < ]]> now() ) overtime_count,
+	(select count(c.id) from bu_sub_order b, bu_customer_service_order c where b.mcht_id=t.id and b.del_flag='0' and b.id=c.sub_order_id and c.del_flag='0' and c.status='0' and c.pro_status in('A1','B1','B4','C1','C4','C5') ) service_count,
+	(select count(b.id) from bu_sub_order b, bu_combine_order c where b.mcht_id=t.id and b.del_flag='0' and b.combine_order_id=c.id and c.del_flag='0' and c.status='1' and c.pay_date <![CDATA[ >= ]]> DATE_FORMAT(NOW(), '%Y-%m-%d 00:00:00') and c.pay_date <![CDATA[ <= ]]> DATE_FORMAT(NOW(), '%Y-%m-%d 23:59:59')) today_count,
+	(select IFNULL(sum(b.amount),0) from bu_sub_order b, bu_combine_order c where b.mcht_id=t.id and b.del_flag='0' and b.combine_order_id=c.id and c.del_flag='0' and c.status='1' and c.pay_date <![CDATA[ >= ]]> DATE_FORMAT(NOW(), '%Y-%m-%d 00:00:00') and c.pay_date <![CDATA[ <= ]]> DATE_FORMAT(NOW(), '%Y-%m-%d 23:59:59')) today_amount,
+	(select count(b.id) from bu_activity b,bu_activity_area aa where aa.id = b.activity_area_id and aa.source='2' and b.mcht_id=t.id and b.del_flag='0' and b.status='1' and (select count(c.id) from bu_activity_product c where c.activity_id=b.id and c.del_flag='0' and c.refuse_flag='0')=0) unadd_count,
+	(select count(b.id) from bu_activity b,bu_activity_area aa where aa.id = b.activity_area_id and aa.source='2' and b.mcht_id=t.id and b.del_flag='0' and b.status='1') unsubmit_count,
+	(select count(b.id) from bu_activity b,bu_activity_area aa where aa.id = b.activity_area_id and aa.source='2' and b.mcht_id=t.id and b.del_flag='0' and b.status='3') audit_count,
+	(select count(b.id) from bu_activity b, bu_activity_area c where b.mcht_id=t.id and b.del_flag='0' and b.status='6' and b.activity_area_id=c.id and c.source='2' and c.activity_begin_time <![CDATA[ <= ]]> NOW() and c.activity_end_time <![CDATA[ >= ]]> NOW()) active_count,
+	(select count(vo.id) from bu_violate_order vo where vo.del_flag = '0' and vo.audit_status = '1' and vo.status = '1' and vo.mcht_id = t.id ) violate_order_count,
+	date_format(t.yearly_inspection_date,'%Y-%m-%d %H:%i:%s') as yearly_inspection_dates,
+	date_format(t.corporation_idcard_date,'%Y-%m-%d %H:%i:%s') as corporation_idcard_dates
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from bu_mcht_info t
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<select id="selectMchtHomeByPrimaryKey" resultMap="HomeResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_HOME_List" />
+		from bu_mcht_info t
+		where t.id = #{id,jdbcType=INTEGER}
+	</select>
+
+</mapper>

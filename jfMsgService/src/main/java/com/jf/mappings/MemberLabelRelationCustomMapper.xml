@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberLabelRelationCustomMapper" >
+  <insert id="insertionMemberLabelRelation">
+  INSERT INTO bu_member_label_relation (
+	label_type_id, label_id, memeber_id,create_date, del_flag )
+  VALUES
+	<foreach collection="memberInfoCustoms" item="item"  separator="," >
+  	 	(#{memberLabelRule.labelTypeId},#{memberLabelRule.labelId},#{item.id,jdbcType=INTEGER},now(),"0")
+  	 </foreach> 
+  </insert>
+</mapper>

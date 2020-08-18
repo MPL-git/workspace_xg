@@ -1,0 +1,305 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Genanx</title>
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/frames.css">
+    <link rel="stylesheet" href="../../css/module.css">
+    <script src="../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../js/frames.js"></script>
+    <script>
+        $(function(){
+            var gbcDuration = 200;
+            var nav_layout_width = $("body").width();
+
+            $(".site-nav-item").each(function(i,v){
+                var item = $(v),
+                        layer = $("#"+item.attr("data-navmenu")),
+                        timer;
+                if(!layer[0]) return;
+                item.hover(function(){
+                    var l = item.offset().left,
+                            w = layer.outerWidth();
+
+                    if(l+w > nav_layout_width){
+                        l = nav_layout_width - w;
+                    }
+                    layer.css({left:l}).fadeIn(gbcDuration);
+                    clearTimeout(timer);
+                },function(){
+                    timer = setTimeout(function(){
+                        layer.fadeOut(gbcDuration);
+                    },50);
+                });
+                layer.hover(function(){
+                    clearTimeout(timer);
+                },function(){
+                    timer = setTimeout(function(){
+                        layer.fadeOut(gbcDuration);
+                    },50);
+                });
+            });
+        });
+    </script>
+</head>
+<body class="page-index">
+<div class="header-wrap header-type-2">
+    <div id="topbar">
+        <div class="topbar">
+            <div class="layout">
+                <div class="toptools">
+                </div>
+                <div class="toplinks">
+                    <p><a href="#">我的帐号</a></p>
+                    <p><a href="#">购物车</a></p>
+                    <p><a href="#">官方微博</a></p>
+                    <p><a href="#">网站公告</a></p>
+                    <p><a href="#">帮助</a></p>
+                    <p><a href="#">在线客服</a></p>
+                </div>
+                <div class="toplogin">
+                    <p class="topwelcome">您好！</p>
+                    <p><a href="login.html" class="loginlink">登录</a></p>
+                    <p><a href="register.html" class="loginlink">注册</a></p>
+                    <p class="topnotify">
+                        <a href="###"><span>通知<i>3</i></span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="header">
+        <div class="header">
+            <div class="layout">
+                <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td id="siteLogo">
+                            <a href="#"><img src="themes/01/images/pic/logo.png" alt=""></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="headerRight" class="layout">
+        <div id="headerCart" class="cart-hover">
+            <div class="cartbtn"><i></i><span><a href="#">购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+            <div class="mini-cart-menu">
+                <div class="mini-cart-panel">
+                    <ul class="mini-cart-bd">
+                        <li>
+                            <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                            <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                            <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                            <div class="mini-cart-del"><a href="#">&times;</a></div>
+                            <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                        </li>
+                        <li>
+                            <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                            <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                            <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                            <div class="mini-cart-del"><a href="#">&times;</a></div>
+                            <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                        </li>
+                    </ul>
+                    <div class="mini-cart-ft">
+                        <div class="mini-cart-total">
+                            <p>总计: <strong>¥ 219.00</strong></p>
+                        </div>
+                        <div class="mini-cart-view">
+                            <a href="#">查看更多商品</a>
+                            <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="headerSearch">
+            <form target="_top" action="" name="search">
+                <div class="search-panel-fields">
+                    <label for="q">搜索商城商品!</label>
+                    <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                    <button type="submit">搜索</button>
+                </div>
+            </form>
+            <div class="hotsearch">
+                <a href="#">初夏T恤</a>
+                <a href="#">新款凉鞋</a>
+                <a href="#">夏季防晒衫</a>
+                <a href="#">开衫</a>
+                <a href="#">男T恤</a>
+                <a href="#">初夏T恤</a>
+                <a href="#">新款凉鞋</a>
+                <a href="#">夏季防晒衫</a>
+                <a href="#">开衫</a>
+                <a href="#">男T恤</a>
+                <a href="#">初夏T恤</a>
+                <a href="#">新款凉鞋</a>
+                <a href="#">夏季防晒衫</a>
+                <a href="#">开衫</a>
+                <a href="#">男T恤</a>
+            </div>
+        </div>
+    </div>
+    <div id="nav">
+        <style>
+            .header-type-2 .header { background-color: #fefefe; border-bottom-color: #fff; }
+            .header-type-2 .site-nav-item a { color: #000; }
+            .header-type-2 .site-nav-item a:hover{ color: #f00; background: #ff0;}
+            .header-type-2 .site-nav-item a:hover span { border-bottom-color: #f00; }
+        </style>
+        <div class="nav-wrap">
+            <div class="site-nav">
+                <ul>
+                    <li data-navmenu="snav_item1" class="site-nav-item"><a href="#"><span>首页</span></a></li>
+                    <li data-navmenu="snav_item2" class="site-nav-item"><a href="#"><span>新品上架</span></a></li>
+                    <li data-navmenu="snav_item3" class="site-nav-item"><a href="#"><span>T恤</span></a></li>
+                    <li data-navmenu="snav_item4" class="site-nav-item"><a href="#"><span>POLO衫</span></a></li>
+                    <li data-navmenu="snav_item5" class="site-nav-item"><a href="#"><span>衬衫</span></a></li>
+                    <li data-navmenu="snav_item10" class="site-nav-item"><a href="#"><img src="images/ico-grid.png" alt=""/></a></li>
+                </ul>
+            </div>
+            <div id="snav_item10" class="site-nav-layer site-nav-layer-noimg">
+                <!--<div class="snav-side">
+                    <a href="#"><img style="width: 200px; height: 350px;" src="images/loginad.jpg" alt=""/></a>
+                </div>-->
+                <div class="snav-main">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page">
+
+</div>
+
+
+<div id="footer">
+    <div class="footer">
+        <div class="footothers">
+            <div class="layout">
+                <div class="ftconlist">
+                    <dl>
+                        <dt><img src="/static/images/footico_1.png"/>订购与支付</dt>
+                        <dd>
+                            <p><a href="#">新手注册与登录</a></p>
+                            <p><a href="#">如何购物</a></p>
+                            <p><a href="#">优惠券使用细则</a></p>
+                            <p><a href="#">在线支付宝</a></p>
+                            <p><a href="#">验收签收</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_2.png"/>快递与配送</dt>
+                        <dd>
+                            <p><a href="#">配送方式/时间</a></p>
+                            <p><a href="#">货到付款</a></p>
+                            <p><a href="#">运费说明</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_3.png"/>售后服务</dt>
+                        <dd>
+                            <p><a href="#">联系客服</a></p>
+                            <p><a href="#">订单查询</a></p>
+                            <p><a href="#">退换保修服务</a></p>
+                            <p><a href="#">退款方式</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_4.png"/>关于应有尽有</dt>
+                        <dd>
+                            <p><a href="#">了解应有尽有</a></p>
+                            <p><a href="#">关注应有尽有</a></p>
+                            <p><a href="#">品牌文化</a></p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ftqrcode">
+                    <h3><span>手机无线端</span></h3>
+                    <ul>
+                        <li>
+                            <div><img src="images/pic/qrcode_weixin.png"/></div>
+                            <p>应有尽有无线端</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ftfriends">
+                    <h3>友情链接：</h3>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                </div>
+                <div class="ftlinks">
+                    <p><a href="#">关于我们</a></p>
+                    <p><a href="#">网站地址</a></p>
+                    <p><a href="#">隐私条款</a></p>
+                    <p><a href="#">企业订购</a></p>
+                    <p><a href="#">加入我们</a></p>
+                    <p><a href="#">帮助中心</a></p>
+                    <p><a href="#">网站联盟</a></p>
+                    <p><a href="#">总裁邮箱</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="gotop"></div>
+
+</body>
+</html>

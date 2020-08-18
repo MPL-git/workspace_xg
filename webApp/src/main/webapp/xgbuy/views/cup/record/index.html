@@ -1,0 +1,58 @@
+<div class="page cup-record flex dc bgf4" data-title="竞猜记录" data-id="cup_record">
+	<link rel="stylesheet" href="cup/record/index.css">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">竞猜记录</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="tab-top flex fn">
+		<a class="brand flex fg dc ac data active" data-remindtype="1" onclick="cupRecordApi.changeTab(this)"><span class="fg flex ac">全部</span></a>
+		<a class="goods flex fg dc ac" data-remindtype="2" onclick="cupRecordApi.changeTab(this)"><span class="fg flex ac">待开奖</span></a>
+		<a class="goods flex fg dc ac" data-remindtype="3" onclick="cupRecordApi.changeTab(this)"><span class="fg flex ac">中奖</span></a>
+	</div>
+
+	<div class="tab-body">
+		<div class="tab-con con-1 scroll-y"></div>
+		<div class="tab-con con-2 scroll-y hide"></div>
+		<div class="tab-con con-3 scroll-y hide"></div>
+	</div>
+
+	<script id="cup_record_tpl" type="text/html">
+		{{each returnData value i}}
+		<div class="con">
+			<dl class="flex ac jb">
+				<dt>
+					<h3>{{value.title}}</h3>
+					<p class="c9">{{value.victory}}</p>
+				</dt>
+				{{if value.prizeResult == '未中奖'}}
+				<dd class="flex ac arrow arrow-gray" onclick="cupRecordApi.slideUp(this)">未中奖</dd>
+				{{else if value.prizeResult == '等待开奖'}}
+				<dd class="flex ac arrow arrow-black" onclick="cupRecordApi.slideUp(this)">等待开奖</dd>
+				{{else}}
+				<dd class="flex ac arrow" onclick="cupRecordApi.slideUp(this)">{{value.prizeResult}}</dd>
+				{{/if}}
+			</dl>
+
+			<ul class="c9">
+				<li class="flex ac">{{value.guessCode}}</li>
+				<li class="flex ac">{{value.guessContent}}</li>
+				<li class="flex ac">{{value.guessAmount}}</li>
+				<li class="flex ac">{{value.openResult}}</li>
+			</ul>
+		</div>
+		{{/each}}
+	</script>
+
+	<script id="cup_record_tpl_empty" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+	</script>
+
+	<script src="cup/record/index.js?ver=1.0" async></script>
+</div>

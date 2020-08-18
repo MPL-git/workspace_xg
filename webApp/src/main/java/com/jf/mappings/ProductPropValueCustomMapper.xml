@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductPropValueCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductPropValueCustom"  extends="com.jf.dao.ProductPropValueMapper.BaseResultMap">
+    <result column="propName" property="propName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getProductPropdesc" parameterType="java.util.Map" resultType="com.jf.entity.ProductPropValueCustom">
+  		SELECT
+		prop.name as propName,
+		propValue.prop_value
+		FROM bu_product_prop_value propValue
+		left join bu_product_prop prop on prop.id = propValue.prop_id
+		where propValue.del_flag = '0'
+		and propValue.del_flag = '0'
+		and prop.del_flag = '0'
+		and propValue.id in
+		<foreach collection="propValIdList" index="index" item="propValue" open="(" separator="," close=")">
+             #{propValue}
+        </foreach>
+        order by prop.id
+  	</select>
+  	
+  	<select id="getProductPropValueModelByIds" parameterType="java.util.Map" resultType="com.jf.entity.ProductPropValueCustom">
+  		SELECT
+		distinct alias
+		FROM bu_product_prop_value
+		where del_flag = '0'
+		and prop_id = 2
+		and alias is not null
+		and id in
+		<foreach collection="propValIdList" index="index" item="id" open="(" separator="," close=")">
+             #{id}
+        </foreach>
+        order by ifnull(seq_no,99999)
+  	</select>
+</mapper>

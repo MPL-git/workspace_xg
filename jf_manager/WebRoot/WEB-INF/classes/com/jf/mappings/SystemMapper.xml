@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.dao.SystemMapper">
+
+	<!-- 登录验证密码-查询 -->
+	<select id="queryUserPwd" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT A.STAFF_CODE,
+		A.STAFF_ID,
+		A.STAFF_NAME,
+		A.MOBILE_PHONE,
+		A.EMAIL,
+		A.STAFF_PASS,
+		A.ORG_ID,
+		A.IS_MANAGEMENT,
+		A.LOGIN_ERROR_COUNT,
+		(SELECT O.ORG_NAME FROM SYS_ORGANIZATION O WHERE O.ORG_ID = A.ORG_ID)
+		ORG_NAME,
+		(SELECT ROLE_ID
+		FROM SYS_STAFF_ROLE A1
+		WHERE A1.STAFF_ID=A.STAFF_ID
+		AND A1.STATUS='A'
+		LIMIT 1) CUR_ROLE_ID
+		FROM SYS_STAFF_INFO A
+		WHERE A.STAFF_CODE = #{STAFF_CODE}
+		AND A.STATUS = 'A'
+
+    </select>
+
+	<resultMap type="com.gzs.common.beans.Menu" id="resultMenu">
+		<id column="MENU_ID" property="menuID" />
+		<result column="MENU_CODE" property="menuCode" />
+		<result column="MENU_NAME" property="menuName" />
+		<result column="MENU_DESC" property="menuDesc" />
+		<result column="PARENT_ID" property="parentID" />
+		<result column="MENU_PATH" property="menuPath" />
+		<result column="MENU_ORDER" property="menuOrder" />
+		<result column="CREATE_DATE" property="createDate" />
+		<result column="STATUS" property="status" />
+		<result column="STATUS_DATE" property="statusDate" />
+		<result column="CREATE_STAFF_ID" property="createStaffID" />
+		<result column="MODIFY_STAFF_ID" property="modifyStaffID" />
+	</resultMap>
+
+	<select id="selectMenuTree" resultMap="resultMenu">
+		SELECT *
+		FROM SYS_MENU A
+		WHERE A.STATUS = 'A'
+		AND EXISTS (SELECT 1
+		FROM SYS_STAFF_ROLE B, SYS_ROLE_MENU C,SYS_ROLE_INFO D
+		WHERE D.ROLE_ID = C.ROLE_ID
+		AND B.ROLE_ID = C.ROLE_ID
+		AND C.MENU_ID = A.MENU_ID
+		AND B.STATUS='A'
+		AND C.STATUS='A'
+		AND D.STATUS='A'
+		AND B.STAFF_ID=#{STAFF_ID})
+    </select>
+
+	<select id="queryUserArea" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT C.AREA_ID,C.AREA_NAME FROM SYS_STAFF A,AGRI_STAFF_AREA B,AGRI_AREA C
+		WHERE A.STAFF_ID=B.STAFF_ID
+		AND A.STAFF_CODE=#{STAFF_CODE} AND B.AREA_ID=C.AREA_ID
+    </select>
+
+	<!-- 权限查询 -->
+	<select id="queryCurUserAuth" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT a.STAFF_NAME,c.ROLE_NAME,e.MENU_NAME,e.MENU_URL,e.MENU_PATH FROM
+		SYS_STAFF a,SYS_STAFF_ROLE b
+		,SYS_ROLE c,SYS_ROLE_MENU d,SYS_MENU e
+		WHERE a.STAFF_CODE=#{STAFF_CODE} AND a.STATUS='A' AND a.STAFF_ID=b.STAFF_ID
+		AND b.ROLE_ID=c.ROLE_ID AND c.ROLE_ID=d.ROLE_ID and
+		d.MENU_ID=e.MENU_ID
+    </select>
+
+	<!-- 用户菜单列表 -->
+	<select id="queryUserMenuList" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT M.MENU_ID,
+		M.PARENT_ID F_MENU_ID,
+		M.MENU_NAME,
+		M.MENU_PATH MENU_PATH,
+		(SELECT IF(COUNT(*) = 0, 0, 1)
+		FROM SYS_MENU T1
+		WHERE T1.STATUS = 'A'
+		AND T1.PARENT_ID = M.MENU_ID) HAS_CHILD
+		FROM SYS_MENU M
+		WHERE M.STATUS = 'A'
+		AND MENU_ID IN (SELECT D.MENU_ID
+		FROM SYS_STAFF_ROLE B, SYS_ROLE_MENU D
+		WHERE B.ROLE_ID = D.ROLE_ID
+		AND B.STAFF_ID = #{STAFF_ID}
+		AND B.ROLE_ID=#{ROLE_ID}
+		AND B.STATUS = 'A'
+		AND D.STATUS = 'A')
+		ORDER BY PARENT_ID, M.MENU_ORDER
+
+
+    </select>
+    
+    
+    <select id="selectCwOrgStatus" parameterType="java.lang.Integer" resultType="java.lang.String" >
+		SELECT FUN_IS_CW_ORG (#{orgId })
+    </select>
+    
+
+</mapper>

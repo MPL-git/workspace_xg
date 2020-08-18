@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>红包雨</title>
+  <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+  <div class="red-rain-bg">
+    <div id="inRedRain">
+      <div class="rain-head">
+        <div class="rain-total">
+          <!-- <img src="./images/total.png" />
+          <span class="rain-total-x">x</span>
+          <span id="rainInterval">0</span> -->
+        </div>
+  
+        <div class="rain-countdown"></div>
+  
+        <div class="rain-close" onclick="closeCanvs()"></div>
+      </div>
+  
+      <canvas id="ranCanvas"></canvas>
+    </div>
+    <div id="showSettle"></div>
+    <!-- 没有活动弹窗 -->
+    <div class="red-rain-end">
+      <p id="noredTxt"></p>
+      <div class="konw-btn" onclick="closeSettle()">知道了</div>
+    </div>
+  
+    <!-- 五秒倒计时 -->
+    <div class="show-git"></div>
+  </div>
+</body>
+
+</html>
+<script src="../../../static/js/jquery-3.2.1.min.js"></script>
+<script src="../../../static/js/jquery.mobile-events.min.js"></script>
+<script src="../../../static/js/layer.js"></script>
+<!-- <script src="../../../static/js/vconsole.min.js"></script> -->
+<script src="./index.js"></script>
+<!-- <script>
+		// 初始化
+		var vConsole = new VConsole();
+		console.log('Hello world');
+	  </script> -->

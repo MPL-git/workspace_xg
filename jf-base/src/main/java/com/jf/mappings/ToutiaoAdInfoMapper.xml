@@ -1,0 +1,981 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ToutiaoAdInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ToutiaoAdInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="advertiser_id" property="advertiserId" jdbcType="VARCHAR" />
+    <result column="campaign_id" property="campaignId" jdbcType="VARCHAR" />
+    <result column="ad_id" property="adId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="VARCHAR" />
+    <result column="ad_modify_time" property="adModifyTime" jdbcType="VARCHAR" />
+    <result column="ad_create_time" property="adCreateTime" jdbcType="VARCHAR" />
+    <result column="budget_mode" property="budgetMode" jdbcType="VARCHAR" />
+    <result column="budget" property="budget" jdbcType="DECIMAL" />
+    <result column="hide_if_exists" property="hideIfExists" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="opt_status" property="optStatus" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="bid" property="bid" jdbcType="DECIMAL" />
+    <result column="pricing" property="pricing" jdbcType="VARCHAR" />
+    <result column="schedule_type" property="scheduleType" jdbcType="VARCHAR" />
+    <result column="flow_control_mode" property="flowControlMode" jdbcType="VARCHAR" />
+    <result column="open_url" property="openUrl" jdbcType="VARCHAR" />
+    <result column="download_type" property="downloadType" jdbcType="VARCHAR" />
+    <result column="external_url" property="externalUrl" jdbcType="VARCHAR" />
+    <result column="download_url" property="downloadUrl" jdbcType="VARCHAR" />
+    <result column="app_type" property="appType" jdbcType="VARCHAR" />
+    <result column="ad_package" property="adPackage" jdbcType="VARCHAR" />
+    <result column="audit_reject_reason" property="auditRejectReason" jdbcType="VARCHAR" />
+    <result column="cpa_bid" property="cpaBid" jdbcType="DECIMAL" />
+    <result column="cpa_skip_first_phrase" property="cpaSkipFirstPhrase" jdbcType="INTEGER" />
+    <result column="convert_id" property="convertId" jdbcType="VARCHAR" />
+    <result column="hide_if_converted" property="hideIfConverted" jdbcType="VARCHAR" />
+    <result column="page_info" property="pageInfo" jdbcType="VARCHAR" />
+    <result column="batch_code" property="batchCode" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    <result column="delivery_range" property="deliveryRange" jdbcType="VARCHAR" />
+    <result column="union_video_type" property="unionVideoType" jdbcType="VARCHAR" />
+    <result column="deep_bid_type" property="deepBidType" jdbcType="VARCHAR" />
+    <result column="deep_cpabid" property="deepCpabid" jdbcType="DECIMAL" />
+    <result column="unique_fk" property="uniqueFk" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jf.entity.ToutiaoAdInfoWithBLOBs" extends="BaseResultMap" >
+    <result column="schedule_time" property="scheduleTime" jdbcType="LONGVARCHAR" />
+    <result column="audience" property="audience" jdbcType="LONGVARCHAR" />
+    <result column="creative_dtl" property="creativeDtl" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, advertiser_id, campaign_id, ad_id, name, modify_time, ad_modify_time, ad_create_time, 
+    budget_mode, budget, hide_if_exists, status, opt_status, start_time, end_time, bid, 
+    pricing, schedule_type, flow_control_mode, open_url, download_type, external_url, 
+    download_url, app_type, ad_package, audit_reject_reason, cpa_bid, cpa_skip_first_phrase, 
+    convert_id, hide_if_converted, page_info, batch_code, create_by, create_date, update_by, 
+    update_date, remarks, del_flag, delivery_range, union_video_type, deep_bid_type, 
+    deep_cpabid, unique_fk
+  </sql>
+  <sql id="Blob_Column_List" >
+    schedule_time, audience, creative_dtl
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.jf.entity.ToutiaoAdInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from toutiao_ad_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ToutiaoAdInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from toutiao_ad_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from toutiao_ad_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from toutiao_ad_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.ToutiaoAdInfoExample" >
+    delete from toutiao_ad_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.ToutiaoAdInfoWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into toutiao_ad_info (advertiser_id, campaign_id, ad_id, 
+      name, modify_time, ad_modify_time, 
+      ad_create_time, budget_mode, budget, 
+      hide_if_exists, status, opt_status, 
+      start_time, end_time, bid, 
+      pricing, schedule_type, flow_control_mode, 
+      open_url, download_type, external_url, 
+      download_url, app_type, ad_package, 
+      audit_reject_reason, cpa_bid, cpa_skip_first_phrase, 
+      convert_id, hide_if_converted, page_info, 
+      batch_code, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag, delivery_range, union_video_type, 
+      deep_bid_type, deep_cpabid, unique_fk, 
+      schedule_time, audience, creative_dtl
+      )
+    values (#{advertiserId,jdbcType=VARCHAR}, #{campaignId,jdbcType=VARCHAR}, #{adId,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR}, #{adModifyTime,jdbcType=VARCHAR}, 
+      #{adCreateTime,jdbcType=VARCHAR}, #{budgetMode,jdbcType=VARCHAR}, #{budget,jdbcType=DECIMAL}, 
+      #{hideIfExists,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{optStatus,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{bid,jdbcType=DECIMAL}, 
+      #{pricing,jdbcType=VARCHAR}, #{scheduleType,jdbcType=VARCHAR}, #{flowControlMode,jdbcType=VARCHAR}, 
+      #{openUrl,jdbcType=VARCHAR}, #{downloadType,jdbcType=VARCHAR}, #{externalUrl,jdbcType=VARCHAR}, 
+      #{downloadUrl,jdbcType=VARCHAR}, #{appType,jdbcType=VARCHAR}, #{adPackage,jdbcType=VARCHAR}, 
+      #{auditRejectReason,jdbcType=VARCHAR}, #{cpaBid,jdbcType=DECIMAL}, #{cpaSkipFirstPhrase,jdbcType=INTEGER}, 
+      #{convertId,jdbcType=VARCHAR}, #{hideIfConverted,jdbcType=VARCHAR}, #{pageInfo,jdbcType=VARCHAR}, 
+      #{batchCode,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR}, #{deliveryRange,jdbcType=VARCHAR}, #{unionVideoType,jdbcType=VARCHAR}, 
+      #{deepBidType,jdbcType=VARCHAR}, #{deepCpabid,jdbcType=DECIMAL}, #{uniqueFk,jdbcType=VARCHAR}, 
+      #{scheduleTime,jdbcType=LONGVARCHAR}, #{audience,jdbcType=LONGVARCHAR}, #{creativeDtl,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.ToutiaoAdInfoWithBLOBs" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into toutiao_ad_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="advertiserId != null" >
+        advertiser_id,
+      </if>
+      <if test="campaignId != null" >
+        campaign_id,
+      </if>
+      <if test="adId != null" >
+        ad_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="adModifyTime != null" >
+        ad_modify_time,
+      </if>
+      <if test="adCreateTime != null" >
+        ad_create_time,
+      </if>
+      <if test="budgetMode != null" >
+        budget_mode,
+      </if>
+      <if test="budget != null" >
+        budget,
+      </if>
+      <if test="hideIfExists != null" >
+        hide_if_exists,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="optStatus != null" >
+        opt_status,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="bid != null" >
+        bid,
+      </if>
+      <if test="pricing != null" >
+        pricing,
+      </if>
+      <if test="scheduleType != null" >
+        schedule_type,
+      </if>
+      <if test="flowControlMode != null" >
+        flow_control_mode,
+      </if>
+      <if test="openUrl != null" >
+        open_url,
+      </if>
+      <if test="downloadType != null" >
+        download_type,
+      </if>
+      <if test="externalUrl != null" >
+        external_url,
+      </if>
+      <if test="downloadUrl != null" >
+        download_url,
+      </if>
+      <if test="appType != null" >
+        app_type,
+      </if>
+      <if test="adPackage != null" >
+        ad_package,
+      </if>
+      <if test="auditRejectReason != null" >
+        audit_reject_reason,
+      </if>
+      <if test="cpaBid != null" >
+        cpa_bid,
+      </if>
+      <if test="cpaSkipFirstPhrase != null" >
+        cpa_skip_first_phrase,
+      </if>
+      <if test="convertId != null" >
+        convert_id,
+      </if>
+      <if test="hideIfConverted != null" >
+        hide_if_converted,
+      </if>
+      <if test="pageInfo != null" >
+        page_info,
+      </if>
+      <if test="batchCode != null" >
+        batch_code,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="deliveryRange != null" >
+        delivery_range,
+      </if>
+      <if test="unionVideoType != null" >
+        union_video_type,
+      </if>
+      <if test="deepBidType != null" >
+        deep_bid_type,
+      </if>
+      <if test="deepCpabid != null" >
+        deep_cpabid,
+      </if>
+      <if test="uniqueFk != null" >
+        unique_fk,
+      </if>
+      <if test="scheduleTime != null" >
+        schedule_time,
+      </if>
+      <if test="audience != null" >
+        audience,
+      </if>
+      <if test="creativeDtl != null" >
+        creative_dtl,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="advertiserId != null" >
+        #{advertiserId,jdbcType=VARCHAR},
+      </if>
+      <if test="campaignId != null" >
+        #{campaignId,jdbcType=VARCHAR},
+      </if>
+      <if test="adId != null" >
+        #{adId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="adModifyTime != null" >
+        #{adModifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="adCreateTime != null" >
+        #{adCreateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="budgetMode != null" >
+        #{budgetMode,jdbcType=VARCHAR},
+      </if>
+      <if test="budget != null" >
+        #{budget,jdbcType=DECIMAL},
+      </if>
+      <if test="hideIfExists != null" >
+        #{hideIfExists,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="optStatus != null" >
+        #{optStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        #{bid,jdbcType=DECIMAL},
+      </if>
+      <if test="pricing != null" >
+        #{pricing,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleType != null" >
+        #{scheduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="flowControlMode != null" >
+        #{flowControlMode,jdbcType=VARCHAR},
+      </if>
+      <if test="openUrl != null" >
+        #{openUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadType != null" >
+        #{downloadType,jdbcType=VARCHAR},
+      </if>
+      <if test="externalUrl != null" >
+        #{externalUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="appType != null" >
+        #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="adPackage != null" >
+        #{adPackage,jdbcType=VARCHAR},
+      </if>
+      <if test="auditRejectReason != null" >
+        #{auditRejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="cpaBid != null" >
+        #{cpaBid,jdbcType=DECIMAL},
+      </if>
+      <if test="cpaSkipFirstPhrase != null" >
+        #{cpaSkipFirstPhrase,jdbcType=INTEGER},
+      </if>
+      <if test="convertId != null" >
+        #{convertId,jdbcType=VARCHAR},
+      </if>
+      <if test="hideIfConverted != null" >
+        #{hideIfConverted,jdbcType=VARCHAR},
+      </if>
+      <if test="pageInfo != null" >
+        #{pageInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="batchCode != null" >
+        #{batchCode,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="deliveryRange != null" >
+        #{deliveryRange,jdbcType=VARCHAR},
+      </if>
+      <if test="unionVideoType != null" >
+        #{unionVideoType,jdbcType=VARCHAR},
+      </if>
+      <if test="deepBidType != null" >
+        #{deepBidType,jdbcType=VARCHAR},
+      </if>
+      <if test="deepCpabid != null" >
+        #{deepCpabid,jdbcType=DECIMAL},
+      </if>
+      <if test="uniqueFk != null" >
+        #{uniqueFk,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleTime != null" >
+        #{scheduleTime,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="audience != null" >
+        #{audience,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="creativeDtl != null" >
+        #{creativeDtl,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.ToutiaoAdInfoExample" resultType="java.lang.Integer" >
+    select count(*) from toutiao_ad_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update toutiao_ad_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.advertiserId != null" >
+        advertiser_id = #{record.advertiserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.campaignId != null" >
+        campaign_id = #{record.campaignId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adId != null" >
+        ad_id = #{record.adId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.modifyTime != null" >
+        modify_time = #{record.modifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adModifyTime != null" >
+        ad_modify_time = #{record.adModifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adCreateTime != null" >
+        ad_create_time = #{record.adCreateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.budgetMode != null" >
+        budget_mode = #{record.budgetMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.budget != null" >
+        budget = #{record.budget,jdbcType=DECIMAL},
+      </if>
+      <if test="record.hideIfExists != null" >
+        hide_if_exists = #{record.hideIfExists,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.optStatus != null" >
+        opt_status = #{record.optStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bid != null" >
+        bid = #{record.bid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.pricing != null" >
+        pricing = #{record.pricing,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scheduleType != null" >
+        schedule_type = #{record.scheduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.flowControlMode != null" >
+        flow_control_mode = #{record.flowControlMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openUrl != null" >
+        open_url = #{record.openUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downloadType != null" >
+        download_type = #{record.downloadType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.externalUrl != null" >
+        external_url = #{record.externalUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.downloadUrl != null" >
+        download_url = #{record.downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appType != null" >
+        app_type = #{record.appType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adPackage != null" >
+        ad_package = #{record.adPackage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditRejectReason != null" >
+        audit_reject_reason = #{record.auditRejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cpaBid != null" >
+        cpa_bid = #{record.cpaBid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cpaSkipFirstPhrase != null" >
+        cpa_skip_first_phrase = #{record.cpaSkipFirstPhrase,jdbcType=INTEGER},
+      </if>
+      <if test="record.convertId != null" >
+        convert_id = #{record.convertId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hideIfConverted != null" >
+        hide_if_converted = #{record.hideIfConverted,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pageInfo != null" >
+        page_info = #{record.pageInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.batchCode != null" >
+        batch_code = #{record.batchCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.deliveryRange != null" >
+        delivery_range = #{record.deliveryRange,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unionVideoType != null" >
+        union_video_type = #{record.unionVideoType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deepBidType != null" >
+        deep_bid_type = #{record.deepBidType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deepCpabid != null" >
+        deep_cpabid = #{record.deepCpabid,jdbcType=DECIMAL},
+      </if>
+      <if test="record.uniqueFk != null" >
+        unique_fk = #{record.uniqueFk,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scheduleTime != null" >
+        schedule_time = #{record.scheduleTime,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.audience != null" >
+        audience = #{record.audience,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.creativeDtl != null" >
+        creative_dtl = #{record.creativeDtl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update toutiao_ad_info
+    set id = #{record.id,jdbcType=INTEGER},
+      advertiser_id = #{record.advertiserId,jdbcType=VARCHAR},
+      campaign_id = #{record.campaignId,jdbcType=VARCHAR},
+      ad_id = #{record.adId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      modify_time = #{record.modifyTime,jdbcType=VARCHAR},
+      ad_modify_time = #{record.adModifyTime,jdbcType=VARCHAR},
+      ad_create_time = #{record.adCreateTime,jdbcType=VARCHAR},
+      budget_mode = #{record.budgetMode,jdbcType=VARCHAR},
+      budget = #{record.budget,jdbcType=DECIMAL},
+      hide_if_exists = #{record.hideIfExists,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      opt_status = #{record.optStatus,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=VARCHAR},
+      end_time = #{record.endTime,jdbcType=VARCHAR},
+      bid = #{record.bid,jdbcType=DECIMAL},
+      pricing = #{record.pricing,jdbcType=VARCHAR},
+      schedule_type = #{record.scheduleType,jdbcType=VARCHAR},
+      flow_control_mode = #{record.flowControlMode,jdbcType=VARCHAR},
+      open_url = #{record.openUrl,jdbcType=VARCHAR},
+      download_type = #{record.downloadType,jdbcType=VARCHAR},
+      external_url = #{record.externalUrl,jdbcType=VARCHAR},
+      download_url = #{record.downloadUrl,jdbcType=VARCHAR},
+      app_type = #{record.appType,jdbcType=VARCHAR},
+      ad_package = #{record.adPackage,jdbcType=VARCHAR},
+      audit_reject_reason = #{record.auditRejectReason,jdbcType=VARCHAR},
+      cpa_bid = #{record.cpaBid,jdbcType=DECIMAL},
+      cpa_skip_first_phrase = #{record.cpaSkipFirstPhrase,jdbcType=INTEGER},
+      convert_id = #{record.convertId,jdbcType=VARCHAR},
+      hide_if_converted = #{record.hideIfConverted,jdbcType=VARCHAR},
+      page_info = #{record.pageInfo,jdbcType=VARCHAR},
+      batch_code = #{record.batchCode,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      delivery_range = #{record.deliveryRange,jdbcType=VARCHAR},
+      union_video_type = #{record.unionVideoType,jdbcType=VARCHAR},
+      deep_bid_type = #{record.deepBidType,jdbcType=VARCHAR},
+      deep_cpabid = #{record.deepCpabid,jdbcType=DECIMAL},
+      unique_fk = #{record.uniqueFk,jdbcType=VARCHAR},
+      schedule_time = #{record.scheduleTime,jdbcType=LONGVARCHAR},
+      audience = #{record.audience,jdbcType=LONGVARCHAR},
+      creative_dtl = #{record.creativeDtl,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update toutiao_ad_info
+    set id = #{record.id,jdbcType=INTEGER},
+      advertiser_id = #{record.advertiserId,jdbcType=VARCHAR},
+      campaign_id = #{record.campaignId,jdbcType=VARCHAR},
+      ad_id = #{record.adId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      modify_time = #{record.modifyTime,jdbcType=VARCHAR},
+      ad_modify_time = #{record.adModifyTime,jdbcType=VARCHAR},
+      ad_create_time = #{record.adCreateTime,jdbcType=VARCHAR},
+      budget_mode = #{record.budgetMode,jdbcType=VARCHAR},
+      budget = #{record.budget,jdbcType=DECIMAL},
+      hide_if_exists = #{record.hideIfExists,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      opt_status = #{record.optStatus,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=VARCHAR},
+      end_time = #{record.endTime,jdbcType=VARCHAR},
+      bid = #{record.bid,jdbcType=DECIMAL},
+      pricing = #{record.pricing,jdbcType=VARCHAR},
+      schedule_type = #{record.scheduleType,jdbcType=VARCHAR},
+      flow_control_mode = #{record.flowControlMode,jdbcType=VARCHAR},
+      open_url = #{record.openUrl,jdbcType=VARCHAR},
+      download_type = #{record.downloadType,jdbcType=VARCHAR},
+      external_url = #{record.externalUrl,jdbcType=VARCHAR},
+      download_url = #{record.downloadUrl,jdbcType=VARCHAR},
+      app_type = #{record.appType,jdbcType=VARCHAR},
+      ad_package = #{record.adPackage,jdbcType=VARCHAR},
+      audit_reject_reason = #{record.auditRejectReason,jdbcType=VARCHAR},
+      cpa_bid = #{record.cpaBid,jdbcType=DECIMAL},
+      cpa_skip_first_phrase = #{record.cpaSkipFirstPhrase,jdbcType=INTEGER},
+      convert_id = #{record.convertId,jdbcType=VARCHAR},
+      hide_if_converted = #{record.hideIfConverted,jdbcType=VARCHAR},
+      page_info = #{record.pageInfo,jdbcType=VARCHAR},
+      batch_code = #{record.batchCode,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      delivery_range = #{record.deliveryRange,jdbcType=VARCHAR},
+      union_video_type = #{record.unionVideoType,jdbcType=VARCHAR},
+      deep_bid_type = #{record.deepBidType,jdbcType=VARCHAR},
+      deep_cpabid = #{record.deepCpabid,jdbcType=DECIMAL},
+      unique_fk = #{record.uniqueFk,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.ToutiaoAdInfoWithBLOBs" >
+    update toutiao_ad_info
+    <set >
+      <if test="advertiserId != null" >
+        advertiser_id = #{advertiserId,jdbcType=VARCHAR},
+      </if>
+      <if test="campaignId != null" >
+        campaign_id = #{campaignId,jdbcType=VARCHAR},
+      </if>
+      <if test="adId != null" >
+        ad_id = #{adId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="adModifyTime != null" >
+        ad_modify_time = #{adModifyTime,jdbcType=VARCHAR},
+      </if>
+      <if test="adCreateTime != null" >
+        ad_create_time = #{adCreateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="budgetMode != null" >
+        budget_mode = #{budgetMode,jdbcType=VARCHAR},
+      </if>
+      <if test="budget != null" >
+        budget = #{budget,jdbcType=DECIMAL},
+      </if>
+      <if test="hideIfExists != null" >
+        hide_if_exists = #{hideIfExists,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="optStatus != null" >
+        opt_status = #{optStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="bid != null" >
+        bid = #{bid,jdbcType=DECIMAL},
+      </if>
+      <if test="pricing != null" >
+        pricing = #{pricing,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleType != null" >
+        schedule_type = #{scheduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="flowControlMode != null" >
+        flow_control_mode = #{flowControlMode,jdbcType=VARCHAR},
+      </if>
+      <if test="openUrl != null" >
+        open_url = #{openUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadType != null" >
+        download_type = #{downloadType,jdbcType=VARCHAR},
+      </if>
+      <if test="externalUrl != null" >
+        external_url = #{externalUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadUrl != null" >
+        download_url = #{downloadUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="appType != null" >
+        app_type = #{appType,jdbcType=VARCHAR},
+      </if>
+      <if test="adPackage != null" >
+        ad_package = #{adPackage,jdbcType=VARCHAR},
+      </if>
+      <if test="auditRejectReason != null" >
+        audit_reject_reason = #{auditRejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="cpaBid != null" >
+        cpa_bid = #{cpaBid,jdbcType=DECIMAL},
+      </if>
+      <if test="cpaSkipFirstPhrase != null" >
+        cpa_skip_first_phrase = #{cpaSkipFirstPhrase,jdbcType=INTEGER},
+      </if>
+      <if test="convertId != null" >
+        convert_id = #{convertId,jdbcType=VARCHAR},
+      </if>
+      <if test="hideIfConverted != null" >
+        hide_if_converted = #{hideIfConverted,jdbcType=VARCHAR},
+      </if>
+      <if test="pageInfo != null" >
+        page_info = #{pageInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="batchCode != null" >
+        batch_code = #{batchCode,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="deliveryRange != null" >
+        delivery_range = #{deliveryRange,jdbcType=VARCHAR},
+      </if>
+      <if test="unionVideoType != null" >
+        union_video_type = #{unionVideoType,jdbcType=VARCHAR},
+      </if>
+      <if test="deepBidType != null" >
+        deep_bid_type = #{deepBidType,jdbcType=VARCHAR},
+      </if>
+      <if test="deepCpabid != null" >
+        deep_cpabid = #{deepCpabid,jdbcType=DECIMAL},
+      </if>
+      <if test="uniqueFk != null" >
+        unique_fk = #{uniqueFk,jdbcType=VARCHAR},
+      </if>
+      <if test="scheduleTime != null" >
+        schedule_time = #{scheduleTime,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="audience != null" >
+        audience = #{audience,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="creativeDtl != null" >
+        creative_dtl = #{creativeDtl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jf.entity.ToutiaoAdInfoWithBLOBs" >
+    update toutiao_ad_info
+    set advertiser_id = #{advertiserId,jdbcType=VARCHAR},
+      campaign_id = #{campaignId,jdbcType=VARCHAR},
+      ad_id = #{adId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=VARCHAR},
+      ad_modify_time = #{adModifyTime,jdbcType=VARCHAR},
+      ad_create_time = #{adCreateTime,jdbcType=VARCHAR},
+      budget_mode = #{budgetMode,jdbcType=VARCHAR},
+      budget = #{budget,jdbcType=DECIMAL},
+      hide_if_exists = #{hideIfExists,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      opt_status = #{optStatus,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      bid = #{bid,jdbcType=DECIMAL},
+      pricing = #{pricing,jdbcType=VARCHAR},
+      schedule_type = #{scheduleType,jdbcType=VARCHAR},
+      flow_control_mode = #{flowControlMode,jdbcType=VARCHAR},
+      open_url = #{openUrl,jdbcType=VARCHAR},
+      download_type = #{downloadType,jdbcType=VARCHAR},
+      external_url = #{externalUrl,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      app_type = #{appType,jdbcType=VARCHAR},
+      ad_package = #{adPackage,jdbcType=VARCHAR},
+      audit_reject_reason = #{auditRejectReason,jdbcType=VARCHAR},
+      cpa_bid = #{cpaBid,jdbcType=DECIMAL},
+      cpa_skip_first_phrase = #{cpaSkipFirstPhrase,jdbcType=INTEGER},
+      convert_id = #{convertId,jdbcType=VARCHAR},
+      hide_if_converted = #{hideIfConverted,jdbcType=VARCHAR},
+      page_info = #{pageInfo,jdbcType=VARCHAR},
+      batch_code = #{batchCode,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      delivery_range = #{deliveryRange,jdbcType=VARCHAR},
+      union_video_type = #{unionVideoType,jdbcType=VARCHAR},
+      deep_bid_type = #{deepBidType,jdbcType=VARCHAR},
+      deep_cpabid = #{deepCpabid,jdbcType=DECIMAL},
+      unique_fk = #{uniqueFk,jdbcType=VARCHAR},
+      schedule_time = #{scheduleTime,jdbcType=LONGVARCHAR},
+      audience = #{audience,jdbcType=LONGVARCHAR},
+      creative_dtl = #{creativeDtl,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.ToutiaoAdInfo" >
+    update toutiao_ad_info
+    set advertiser_id = #{advertiserId,jdbcType=VARCHAR},
+      campaign_id = #{campaignId,jdbcType=VARCHAR},
+      ad_id = #{adId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=VARCHAR},
+      ad_modify_time = #{adModifyTime,jdbcType=VARCHAR},
+      ad_create_time = #{adCreateTime,jdbcType=VARCHAR},
+      budget_mode = #{budgetMode,jdbcType=VARCHAR},
+      budget = #{budget,jdbcType=DECIMAL},
+      hide_if_exists = #{hideIfExists,jdbcType=INTEGER},
+      status = #{status,jdbcType=VARCHAR},
+      opt_status = #{optStatus,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      bid = #{bid,jdbcType=DECIMAL},
+      pricing = #{pricing,jdbcType=VARCHAR},
+      schedule_type = #{scheduleType,jdbcType=VARCHAR},
+      flow_control_mode = #{flowControlMode,jdbcType=VARCHAR},
+      open_url = #{openUrl,jdbcType=VARCHAR},
+      download_type = #{downloadType,jdbcType=VARCHAR},
+      external_url = #{externalUrl,jdbcType=VARCHAR},
+      download_url = #{downloadUrl,jdbcType=VARCHAR},
+      app_type = #{appType,jdbcType=VARCHAR},
+      ad_package = #{adPackage,jdbcType=VARCHAR},
+      audit_reject_reason = #{auditRejectReason,jdbcType=VARCHAR},
+      cpa_bid = #{cpaBid,jdbcType=DECIMAL},
+      cpa_skip_first_phrase = #{cpaSkipFirstPhrase,jdbcType=INTEGER},
+      convert_id = #{convertId,jdbcType=VARCHAR},
+      hide_if_converted = #{hideIfConverted,jdbcType=VARCHAR},
+      page_info = #{pageInfo,jdbcType=VARCHAR},
+      batch_code = #{batchCode,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      delivery_range = #{deliveryRange,jdbcType=VARCHAR},
+      union_video_type = #{unionVideoType,jdbcType=VARCHAR},
+      deep_bid_type = #{deepBidType,jdbcType=VARCHAR},
+      deep_cpabid = #{deepCpabid,jdbcType=DECIMAL},
+      unique_fk = #{uniqueFk,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

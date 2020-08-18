@@ -1,0 +1,135 @@
+.free-price.cut-price .con-1 h3 {
+	margin-bottom: .46rem;
+}
+.free-price.cut-price .con-top img {
+	position: static;
+	width: 6.26rem;
+	margin: 0 auto;
+}
+
+.free-price .con-2 dt {
+	position: relative;
+	width: 2.4rem;
+	height: 2.4rem;
+}
+.free-price .con-2 dt div {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+	height: .4rem;
+	font-size: .24rem;
+	color: #fff;
+	background: rgba(0, 0, 0, .5);
+}
+.free-price .con-2 .btn-l {
+	margin-right: .2rem;
+	background: #fff;
+	color: #333;
+	border: 1px solid #bbb;
+}
+.free-price .con-2 dd h3 {
+	margin-bottom: .3rem;
+}
+.free-price .con-2 dd div {
+	position: static;
+}
+.free-price .con-2 dd div div {
+	padding: 0;
+}
+
+.free-price .tab-btn a.ico-tab1:before {
+	background-image: url(resources/ico-tab1.png);
+}
+
+.free-price .popup-main {
+	overflow: hidden;
+	position: relative;
+	width: 5.8rem;
+	padding: 0 .4rem .4rem;
+	background: #fff;
+	border-radius: .04rem;
+}
+.free-price .popup-con {
+	padding-bottom: .2rem;
+	max-height: calc(100vh - 4.22rem);
+}
+.sys-ios .free-price .popup-con {
+	max-height: calc(100vh - 4.22rem - 64px);
+}
+.sys-iosx .free-price .popup-con {
+	max-height: calc(100vh - 4.22rem - 88px);
+}
+.popup-free-detail h3 {
+	height: .86rem;
+	margin-top: .2rem;
+	font-size: .3rem;
+}
+.popup-free-detail h4 {
+	height: .86rem;
+	margin-bottom: .22rem;
+	font-size: .4rem;
+	font-weight: bold;
+}
+.popup-free-detail .btn-red {
+	width: 100%;
+	height: .8rem;
+	border-radius: .04rem;
+	background: #ff5050;
+	font-size: .3rem;
+	color: #fff;
+}
+
+.popup-free-detail dl {
+	height: .7rem;
+	font-size: .32rem;
+	margin-bottom: .2rem;
+}
+.popup-free-detail dt {
+	overflow: hidden;
+	width: .7rem;
+	height: .7rem;
+	margin-right: .2rem;
+	border-radius: 100%;
+}
+
+.free-price .con-list dl {
+	border-top: 1px solid #eee;
+	border-bottom: none;
+}
+.free-price .con-list dl:first-child {
+	border: none;
+}
+
+.free-price time {
+	margin-left: .05rem;
+}
+
+.popup-free-help h3 {
+	margin-top: .66rem;
+	font-size: .36rem;
+	font-weight: bold;
+	text-align: center;
+}
+.popup-free-help h3 a {
+	display: block;
+}
+
+.popup-rule-free p {
+	font-size: .28rem;
+}
+
+.free-price .tab-body .page-empty {
+	height: calc(100vh - 5.08rem);
+}
+.sys-app .free-price .page-empty {
+	height: calc(100vh - 4.2rem);
+}
+.sys-ios .free-price .page-empty {
+	height: calc(100vh - 4.2rem - 64px);
+}
+.sys-iosx .free-price .page-empty {
+	height: calc(100vh - 4.2rem - 88px);
+}
+

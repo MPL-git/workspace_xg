@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>醒购 - 正品大牌，限时特卖</title>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0 auto;
+		}
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 450px) {
+			html {
+				width: 450px;
+			}
+		}
+		body {
+			width: 4.5rem;
+		}
+
+		.article {
+			position: relative;
+			padding-bottom: .8rem;
+		}
+		.article img {
+			display: block;
+			border: none;
+			width: 100%;
+		}
+		.article .ct {
+			position: absolute;
+			top: 2.2rem;
+			right: 0;
+			z-index: 1;
+			width: 1.2rem;
+			height: .86rem;
+		}
+		.article .bt {
+			position: fixed;
+			bottom: 0;
+			left: 50%;
+			z-index: 1;
+			width: 100%;
+			height: .8rem;
+			margin-left: -2.25rem;
+			background: url(images/mangguo/mg-b.jpg) no-repeat;
+			background-size: contain;
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html'),
+			psd = {
+				w: 450,
+				h: false,
+				f: 100,
+				v: 1
+			};
+
+		function fontFix() {
+			var	a = html.offsetWidth,
+				b = psd.h ? html.offsetHeight * psd.w / a / psd.h : 0;
+
+			psd.v = a / psd.w * (b > 1 || !b ? 1 : b);
+			html.style.fontSize = psd.f * psd.v + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+</head>
+
+<body>
+	<div class="article">
+		<img src="images/mangguo/mg.jpg">
+		<a class="ct" href="https://itunes.apple.com/cn/app/id1250285750?mt=8"></a>
+		<a class="bt" href="https://itunes.apple.com/cn/app/id1250285750?mt=8"></a>
+	</div>
+
+	<script src="js/spread.js?var=1.0"></script>
+</body>
+</html>

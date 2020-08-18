@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CouponRainCustomMapper">
+
+    <select id="randomOneProductCoupon" parameterType="java.util.Map" resultType="com.jf.entity.Coupon">
+		select c.*
+		from bu_coupon c
+		left join (
+			select coupon_id,count(id) as memberRecCount
+			from bu_member_coupon
+			where member_id = #{memberId}
+			and del_flag = '0'
+			group by coupon_id
+		) recCount on c.id=recCount.coupon_id
+		left join (
+			select coupon_id,1 as memberTodayRec
+			from bu_member_coupon
+			where member_id = #{memberId}
+			and del_flag = '0'
+			and rec_date &gt;= #{startOfToday}
+		) todayRec on c.id=todayRec.coupon_id
+		where c.status = '1'
+		and c.del_flag = '0'
+		and c.coupon_type = '4'
+		and c.rec_type = '1'
+		AND c.is_integral_turntable = '0'
+		AND c.grant_quantity > c.rec_quantity
+		and c.rec_begin_date &lt;= #{now}
+		and c.rec_end_date &gt;= #{now}
+		and ((c.rec_limit_type = 1 and todayRec.memberTodayRec is null)
+			or (c.rec_limit_type = 2 and (recCount.memberRecCount is null or recCount.memberRecCount &lt; c.rec_each))
+			or c.rec_limit_type = 3
+			)
+		and exists(select p.id from bu_product p where p.id = c.type_ids and p.del_flag = '0' and p.status = '1')
+		order by RAND() limit 1
+	</select>
+
+    <select id="randomOnePlatformCoupon" parameterType="java.util.Map" resultType="com.jf.entity.Coupon">
+		select c.*
+		from bu_coupon c
+		left join (
+			select coupon_id,count(id) as memberRecCount
+			from bu_member_coupon
+			where member_id = #{memberId}
+			and del_flag = '0'
+			group by coupon_id
+		) recCount on c.id=recCount.coupon_id
+		left join (
+			select coupon_id,1 as memberTodayRec
+			from bu_member_coupon
+			where member_id = #{memberId}
+			and del_flag = '0'
+			and rec_date &gt;= #{startOfToday}
+		) todayRec on c.id=todayRec.coupon_id
+		where c.status = '1'
+		and c.del_flag = '0'
+		and c.rang = '1'
+		and c.is_support_coupon_rain = '1'
+		and c.rec_type = '1'
+		AND c.is_integral_turntable = '0'
+		and (c.limit_coupon_rain_score = 0 or c.limit_coupon_rain_score &lt; #{originScore})
+		AND c.grant_quantity > c.rec_quantity
+		and c.rec_begin_date &lt;= #{now}
+		and c.rec_end_date &gt;= #{now}
+		and ((c.rec_limit_type = 1 and todayRec.memberTodayRec is null)
+			or (c.rec_limit_type = 2 and (recCount.memberRecCount is null or recCount.memberRecCount &lt; c.rec_each))
+			or c.rec_limit_type = 3
+			)
+		order by RAND() limit 1
+	</select>
+
+    <select id="randomOneAreaCoupon" parameterType="java.util.Map" resultType="com.jf.entity.Coupon">
+		select c.*
+		from bu_coupon c
+		left join (
+			select coupon_id,count(id) as memberRecCount
+			from bu_member_coupon
+			where member_id = #{memberId}
+			and del_flag = '0'
+			group by coupon_id
+		) recCount on c.id=recCount.coupon_id
+		left join (
+			select coupon_id,1 as memberTodayRec
+			from bu_member_coupon
+			where member_id = #{memberId}
+			and del_flag = '0'
+			and rec_date &gt;= #{startOfToday}
+		) todayRec on c.id=todayRec.coupon_id
+		where c.status = '1'
+		and c.del_flag = '0'
+		and c.rang = '3'
+		and c.rec_type = '1'
+		AND c.is_integral_turntable = '0'
+		AND c.grant_quantity > c.rec_quantity
+		and c.rec_begin_date &lt;= #{now}
+		and c.rec_end_date &gt;= #{now}
+		and ((c.rec_limit_type = 1 and todayRec.memberTodayRec is null)
+			or (c.rec_limit_type = 2 and (recCount.memberRecCount is null or recCount.memberRecCount &lt; c.rec_each))
+			or c.rec_limit_type = 3
+			)
+		order by RAND() limit 1
+	</select>
+
+    <update id="increaseCouponRecCount">
+		UPDATE
+			bu_coupon
+		SET
+			rec_quantity = rec_quantity + 1
+		WHERE
+			id = #{couponId}
+			and grant_quantity > rec_quantity
+	</update>
+
+    <select id="getEnableFirstRain" parameterType="java.util.Map" resultType="com.jf.entity.dto.CouponRainDTO">
+		<choose>
+			<when test="memberId != null">
+				SELECT cr.*,
+					jc.joinCount joinCount,
+					sc.shareCount shareCount,
+					CASE WHEN (jc.joinCount IS NULL OR (jc.joinCount = 1 AND sc.shareCount > 0)) THEN 0 ELSE 1 END order1
+				FROM bu_coupon_rain cr
+				LEFT JOIN (SELECT coupon_rain_id,COUNT(id) joinCount FROM bu_coupon_rain_record WHERE member_id = #{memberId} and del_flag = '0' GROUP BY coupon_rain_id) jc ON cr.id=jc.coupon_rain_id
+				LEFT JOIN (SELECT coupon_rain_id,COUNT(id) shareCount FROM bu_coupon_rain_share_record WHERE member_id = #{memberId} and del_flag = '0' GROUP BY coupon_rain_id) sc ON cr.id=sc.coupon_rain_id
+				WHERE cr.status = '1' AND cr.del_flag = '0' AND cr.end_time &gt;= #{endTime}
+				ORDER BY order1,cr.start_time
+				limit 1
+			</when>
+			<otherwise>
+				SELECT cr.*
+				FROM bu_coupon_rain cr
+				WHERE cr.status = '1' AND cr.del_flag = '0' AND cr.end_time >= #{endTime} ORDER BY cr.start_time limit 1
+			</otherwise>
+		</choose>
+
+	</select>
+
+	<select id="countCouponRainParticipate" resultType="java.lang.Integer">
+		select count(DISTINCT member_id)
+		from bu_coupon_rain_record
+		where coupon_rain_id = #{couponRainId}
+	</select>
+</mapper>

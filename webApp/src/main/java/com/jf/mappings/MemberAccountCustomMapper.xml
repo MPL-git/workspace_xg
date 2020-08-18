@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberAccountCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberAccountCustom" extends="com.jf.dao.MemberAccountMapper.BaseResultMap">
+  
+  </resultMap>
+  
+  	<!-- #{freeze}如果是扣除的话前面传的是负数，反之是正数 -->
+  	<update id="updateMemberAccountFreeze" parameterType="com.jf.entity.MemberAccount">
+  		UPDATE
+			bu_member_account
+		SET
+			freeze = freeze + #{freeze},
+			update_by = #{updateBy},
+		 	update_date = #{updateDate}
+		WHERE
+			balance - freeze >= #{freeze}
+			and id = #{id}
+		  	and freeze + #{freeze} >= 0
+			and is_effect = '1'
+			and del_flag = '0'
+  	</update>
+  	
+  	<!-- #{balance}如果是扣除的话前面传的是负数，反之是正数 -->
+  	<update id="updateMemberAccountBalance" parameterType="com.jf.entity.MemberAccount">
+  		UPDATE
+			bu_member_account
+		SET
+			balance = balance + #{balance},
+			update_by = #{updateBy},
+		 	update_date = #{updateDate}
+		WHERE
+			balance - freeze + #{balance} >= 0
+			and id = #{id}
+			and is_effect = '1'
+			and del_flag = '0'
+  	</update>
+  	
+  	<!-- #{freeze}如果是扣除的话前面传的是负数，反之是正数 -->
+  	<update id="updateAccountProfitInviteFreece" parameterType="com.jf.entity.MemberAccount">
+  		UPDATE
+			bu_member_account
+		SET
+			profit_invite_freeze = profit_invite_freeze + #{freeze},
+		 	update_date = #{updateDate}
+		WHERE
+			profit_invite_balance - profit_invite_freeze >= #{freeze}
+			and id = #{id}
+		  	and profit_invite_freeze + #{freeze} >= 0
+			and is_effect = '1'
+			and del_flag = '0'
+  	</update>
+
+	<update id="increaseIntegral" parameterType="java.util.Map">
+  		UPDATE
+			bu_member_account
+		SET
+			integral = integral + #{increment},
+		 	update_date = now()
+		WHERE id = #{accountId}
+			and is_effect = '1'
+			and del_flag = '0'
+  	</update>
+
+	<update id="decreaseIntegral" parameterType="java.util.Map">
+  		UPDATE
+			bu_member_account
+		SET
+			integral = integral - #{decrement},
+		 	update_date = now()
+		WHERE id = #{accountId}
+			and is_effect = '1'
+			and del_flag = '0'
+			<if test="originIntegral!=null">
+				and integral = #{originIntegral}
+			</if>
+  	</update>
+</mapper>

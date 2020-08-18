@@ -1,0 +1,51 @@
+<div class="page winning-record" data-title="我的中奖记录" data-id="activity_pointsLottery_record">
+  <link rel="stylesheet" href="activity/pointsLottery/record/index.css">
+  <header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">我的中奖记录</p>
+		<div class="fn"></div>
+  </header>
+  <div class="winning-record-bg"></div>
+  <div class="winning-record-bg1"></div>
+  <div class="winning-record-template">
+    <script id="winningRecordTemplate" type="text/html">
+      <div class="winning-record-title">
+        <div class="winning-title-info">
+          <span>奖品</span>
+          <span class="winning-time">中奖时间</span>
+          <span></span>
+        </div>
+      </div>
+      <div class="winning-record-items">
+        <ul class="winning-record-detail"></ul>
+        <div class="winning-jagged" onclick="winningRecordApi.showMoreList()">更多记录<i></i></div>
+      </div>
+    </script>
+  </div>
+
+  <!-- 立即领取弹窗 -->
+  <div class="modal-mark popup" onclick="closeSelf(this)">
+    <div class="receive-prize popup-bottom" onclick="stopSelf()">
+      <i class="rp-close-mark" onclick="closeSelf(this)"></i>
+      <div class="rp-mark-content"></div>
+      <div class="rp-submit-btn" onclick="winningRecordApi.submit()">提交</div>
+    </div>
+  </div>
+
+  <!-- 提交成功 -->
+  <div class="rp-success-mark popup" onclick="closeSelf(this)">
+    <div class="rp-success" onclick="stopSelf()">
+      <h3>提交成功</h3>
+      <i onclick="closeSelf(this)"></i>
+      <div class="rp-success-img"></div>
+      <p>请在个人中心—我的订单中查看</p>
+      <div class="rp-success-btn" onclick="winningRecordApi.reset()">我知道了</div>
+    </div>
+  </div>
+
+  <!-- 放大图片 -->
+  <div class="popup rp-large-pic" onclick="closeSelf(this)">
+    <div class="rp-large-img flex jc ac"></div>
+  </div>
+  <script src="activity/pointsLottery/record/index.js"></script>
+</div>

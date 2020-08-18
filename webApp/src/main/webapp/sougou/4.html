@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>醒购 - 大牌特卖，正品保障</title>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0 auto;
+		}
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 640px) {
+			html {
+				width: 640px;
+			}
+		}
+		body {
+			width: 6.4rem;
+			margin: 0 auto;
+			font-size: .24rem;
+			font-family: "YouYuan685f43d6815e37", Verdana, Arial, Helvetica, sans-serif;
+			color: #555;
+			padding-bottom: .4rem;
+			text-rendering: optimizeLegibility;
+
+			-webkit-font-smoothing: antialiased;
+			-webkit-tap-highlight-color: transparent;
+		}
+		img {
+			display: block;
+			border: none;
+			width: 100%;
+		}
+
+		.downloads {
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: 1;
+			width: 6.4rem;
+			height: 1.14rem;
+			margin: 0 auto;
+			background: url(../images/sougou/2.jpg) no-repeat;
+			background-size: contain;
+		}
+		.section {
+			padding: 0;
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html'),
+			psd = {
+				w: 640,
+				h: false,
+				f: 100,
+				v: 1
+			};
+
+		function fontFix() {
+			var	a = html.offsetWidth,
+				b = psd.h ? html.offsetHeight * psd.w / a / psd.h : 0;
+
+			psd.v = a / psd.w * (b > 1 || !b ? 1 : b);
+			html.style.fontSize = psd.f * psd.v + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+</head>
+
+<body>
+	<div class="section" onclick="spreadDownload('http://xgbuy.cc/app/XG_SX_sougou_4.apk', 'http://uri6.com/tkio/yAZVFza')">
+		<img src="../images/sougou/1.jpg">
+		<a class="downloads flex jc ac"></a>
+	</div>
+
+	<script src="../js/spread.js?var=1.0"></script>
+</body>
+</html>

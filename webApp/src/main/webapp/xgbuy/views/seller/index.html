@@ -1,0 +1,286 @@
+<div class="page seller-common seller bgf4" data-title="" data-id="seller">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+	<link rel="stylesheet" href="seller/common.css?var=1.0">
+	<link rel="stylesheet" href="seller/index.css?var=1.0">
+
+	<header class="flex ac">
+		<div class="flex fn"><i class="back ico-btn" onclick="sellerApi.back()"></i></div>
+		<form onsubmit="sellerApi.submit(this)">
+			<div class="input-box">
+				<label class="fl" for="seller_search"></label>
+				<input id="seller_search" type="search" name="searchName" placeholder="商品名" autocomplete="off" onfocus="sellerApi.focus(this)">
+				<label class="fr cursor"></label>
+				<input class="hide" type="submit">
+			</div>
+		</form>
+		<div class="flex ac fg je">
+			<div class="ico-share ico-btn" onclick="sellerApi.share()"></div>
+			<div class="ico-more ico-btn" onclick="popupShow('.popup-menu')"></div>
+			<a class="cancel ac jc" onclick="sellerApi.back()">取消</a>
+		</div>
+	</header>
+
+	<div class="tab-body scroll-y" onscroll="sellerApi.scroll(this)">
+		<div class="scroll-more w75">
+			<div class="row-top">
+				<dl class="col-top flex ae">
+					<dt class="shop-logo"></dt>
+					<dd></dd>
+				</dl>
+				<div class="col-nav">
+					<div class="con">
+						<a class="flex ac jc tab-0" onclick="sellerApi.main(0)"><span>首页</span></a>
+						<a class="flex ac jc tab-1" onclick="sellerApi.main(1)"><span>商品</span></a>
+						<a class="flex ac jc tab-2" onclick="sellerApi.main(2)"><span>特卖</span></a>
+						<a class="flex ac jc tab-3" onclick="sellerApi.main(3)"><span>上新</span></a>
+					</div>
+				</div>
+				<div class="row-bg"></div>
+			</div>
+
+			<div class="shop-coupon scroll-x hide"></div>
+
+			<div class="content">
+				<div class="tab-con hide">
+					<div class="decorate"></div>
+					<div class="product-sp3 clearfix">
+						<div class="fl"></div>
+						<div class="fr"></div>
+					</div>
+				</div>
+
+				<div class="tab-con hide">
+					<div class="product-sp3 clearfix">
+						<div class="fl"></div>
+						<div class="fr"></div>
+					</div>
+				</div>
+
+				<div class="tab-con con-brand con-brand2 hide"></div>
+
+				<div class="tab-con hide">
+					<div class="product-sp3 clearfix">
+						<div class="fl"></div>
+						<div class="fr"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="dialog dialog-filter flex dc fg hide">
+			<div class="scroll-y">
+				<a class="flex ac jb row-f mb20" onclick="sellerApi.getFilter(this)">
+					全部商品
+					<i class="arrow-r ico"></i>
+				</a>
+				<div class="con-f"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer-tab">
+		<a class="flex ac jc dc ico-0 tab-0" onclick="sellerApi.main(0)">首页</a>
+		<a class="flex ac jc dc ico-1 tab-1" onclick="sellerApi.main(1)">全部商品</a>
+		<a class="flex ac jc dc ico-2" onclick="sellerApi.focus()">宝贝分类</a>
+		<a class="flex ac jc dc ico-3" onclick="sellerApi.server()">联系客服</a>
+	</div>
+
+	<div class="popup start right popup-menu" onclick="closeSelf(this)">
+		<div class="popup-con" onclick="stopSelf()">
+			<a class="flex m-home" onclick="getUrl('home')">
+				<span class="flex ac fg">首页</span>
+			</a>
+			<a class="flex ac m-cart" onclick="getQuickCart()">
+				<span class="flex ac fg btb">购物车</span>
+			</a>
+			<a class="flex ac m-collect" onclick="getUrl('my/collect/index.html', 'self')">
+				<span class="flex ac fg btb">我的收藏</span>
+			</a>
+<!--			<a class="flex ac m-info" onclick="sellerApi.info()">-->
+<!--				<span class="flex ac fg btb">店铺信息</span>-->
+<!--			</a>-->
+		</div>
+	</div>
+
+	<!-- 店铺优惠券 -->
+	<div class="popup seller-coupon" onclick="closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<i class="ico-btn delete stop-self coupon-close" onclick="closeSelf(this)"></i>
+			<div class="coupon-body flex ac jc">该券需要收藏店铺才能领取</div>
+			<div class="flex clear-btn">
+				<a class="flex ac jc btn-f50" onclick="sellerApi.save()">收藏并领取</a>
+			</div>
+		</div>
+	</div>
+
+	<script id="seller_top_tpl" type="text/html">
+		<h3 class="flex ac" onclick="sellerApi.info()">{{shopName}}
+			{{if manageSelf == '1'}}
+				<i class="manageSelf ml10">自营</i>
+			{{/if}}
+		</h3>
+		<div class="flex">
+			<a class="btn-service flex ac jc" onclick="sellerApi.server()">客服</a>
+			<a class="btn-collect flex ac jc on{{isCollectuonShop ? ' reminded' : ''}}"
+				onclick="sellerApi.getRemind(this)"
+				data-type="3"
+				data-id="{{mchtId}}">
+				{{if isCollectuonShop}}已{{/if}}收藏
+			</a>
+		</div>
+	</script>
+
+	<!-- 店铺信息 -->
+	<script id="seller_msg_tpl" type="text/html">
+		{{each shopCouponList value i}}
+		<div class="coupon" onclick="sellerApi.getCoupon(this,'{{value.couponId}}','{{value.msgType}}','{{value.careShopCanRec}}')">
+			{{if value.msgType == 2}}
+			<div class="header ff38a">
+			{{else}}
+			<div class="header">
+			{{/if}}
+				<div class="flex ac jc h90">
+					{{if value.couponPreferentialType == 1}}
+					<span class="flex ac jc fs26">￥</span>
+					<span class="flex ac jc">{{value.money}}</span>
+					{{else}}
+					<span class="flex ac jc">{{value.discount * 100 / 10}}</span>
+					<span class="flex ac jc fs26">折</span>
+					{{/if}}
+				</div>
+				<span class="flex ac jc fs18">{{value.useDescription}}</span>
+			</div>
+			{{if value.msgType == 0}}
+			<div class="flex ac jc footer">
+				立即领取
+			{{else if value.msgType == 1}}
+			<div class="flex ac jc footer ff38a">
+				已领取
+			{{else}}
+			<div class="flex ac jc footer ff38a">
+				已抢光
+			{{/if}}
+			</div>
+		</div>
+		{{/each}}
+	</script>
+
+	<!-- 商品 -->
+	<script id="seller_product_tpl" type="text/html">
+		{{each dataList value}}
+		<a onclick="getUrlGoods('{{value.productId}}')">
+			<div class="con-1">
+				<img src="{{value.productPic}}">
+				{{if value.stockSum == 0}}
+				<div class="no-stock" con="已售罄"></div>
+				{{/if}}
+			</div>
+			<div class="con-2">
+				<h3>
+					<em class="iflex ac">{{value.brandName}}</em>
+					{{value.productName}}
+				</h3>
+				<div class="flex ac scroll-x">
+					<strong class="f50">{{value.mallPrice}}</strong>
+					<s class="c9">{{value.tagPrice}}</s>
+
+					{{if value.activityTypeContent}}
+					<mark class="flex ac">{{value.activityTypeContent}}</mark>
+					{{/if}}
+				</div>
+				{{if value.commentCountStr}}
+				<p class="c9">
+					<span class="mr20">{{value.commentCountStr}}</span>
+					<span>{{value.goodProductScoreCountStr}}</span>
+				</p>
+				{{/if}}
+			</div>
+			{{if value.shopPreferentialInfo}}
+				{{if value.activityType == 0}}
+			<div class="con-3 f50 flex ac cursor" onclick="getSingleHot('{{value.activityId}}')">
+				<p class="ellipsis fg">{{value.shopPreferentialInfo}}</p>
+				<i class="fn"></i>
+			</div>
+				{{else}}
+			<div class="con-3 f50 flex ac">
+				<p class="ellipsis">{{value.shopPreferentialInfo}}</p>
+			</div>
+				{{/if}}
+			{{/if}}
+		</a>
+		{{/each}}
+	</script>
+
+	<!-- 特卖 -->
+	<script id="seller_brand_tpl" type="text/html">
+		{{each activityList value}}
+		<a class="mb20"
+			onclick="getUrlActive(this)"
+			data-name="{{value.activityName}}"
+			data-url="{{value.areaUrl}}"
+			data-activityid="{{value.activityId}}"
+			data-activityareaid="{{value.activityAreaId}}"
+			data-source="{{value.source}}">
+			<dl>
+				<dt class="h50vw">
+					<img src="{{value.entryPic}}">
+				</dt>
+
+				<dd>
+					<div class="row-1 flex ac jb">
+						<div class="flex ac">
+							<p class="ellipsis" title="{{value.activityName}}">{{value.activityName}}</p>
+						</div>
+						<time class="flex ac"><p class="ellipsis f50">{{value.activityTime}}</p></time>
+					</div>
+					<div class="row-2 elps">{{value.benefitPoint}}</div>
+				</dd>
+			</dl>
+		</a>
+		{{/each}}
+	</script>
+
+	<script id="seller_filter_tpl" type="text/html">
+		{{if brandList.length}}
+		<div>
+			<h4 class="flex ac row-f">{{brandList[0].name}}</h4>
+			<ul class="clearfix">
+				{{each brandList[0].dataList value}}
+				<li class="flex ac jc cursor" onclick="sellerApi.getFilter(this, 'brandId', '{{value.id}}', '{{value.name}}')">{{value.name}}</li>
+				{{/each}}
+			</ul>
+		</div>
+		{{/if}}
+
+		{{if classList.length}}
+		<div>
+			<h4 class="flex ac row-f">{{classList[0].name}}</h4>
+			<ul class="clearfix">
+				{{each classList[0].dataList value}}
+				<li class="flex ac jc cursor" onclick="sellerApi.getFilter(this, 'classId', '{{value.id}}', '{{value.name}}')">{{value.name}}</li>
+				{{/each}}
+			</ul>
+		</div>
+		{{/if}}
+
+		{{each categoryList value}}
+		<div>
+			<h4 class="flex ac row-f">{{value.name}}</h4>
+			<ul class="clearfix">
+				{{each value.dataList val}}
+				<li class="flex ac jc cursor" onclick="sellerApi.getFilter(this, 'productTypeId', '{{val.id}}', '{{val.name}}')">{{val.name}}</li>
+				{{/each}}
+			</ul>
+		</div>
+		{{/each}}
+	</script>
+
+	<script id="seller_empty_tpl" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>商家正在努力上架中</p>
+		</div>
+	</script>
+
+	<script src="seller/index.js?var=1.4" async></script>
+</div>

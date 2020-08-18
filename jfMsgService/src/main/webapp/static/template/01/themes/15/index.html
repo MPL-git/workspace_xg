@@ -1,0 +1,826 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../01/css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="../../../../css/module.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var globalNav = $("#nav .navwrap");
+            var navheight = globalNav.height(),navtop = globalNav.offset().top;
+            $(window).on("scroll",function(){
+                var scrolltop = $(this).scrollTop();
+                globalNav.removeAttr("style");
+                if(scrolltop > navtop){
+                    globalNav.addClass("global-nav-fix");
+                }else{
+                    globalNav.removeClass("global-nav-fix");
+                }
+            });
+
+            $(".global-catalog").hover(function(){
+                showGlobalCat();
+            }, function(){
+                hideGlobalCat();
+            });
+            var globalCatalog = $('.global-catalog'),
+                    globalCatCon = $('.gbc-blockcon'),
+                    gbcDuration = 200;
+            function showGlobalCat(){
+                globalCatCon.stop().slideDown(gbcDuration);
+                globalCatalog.addClass('global-catalog-open');
+            }
+            function hideGlobalCat(){
+                globalCatCon.stop().slideUp(gbcDuration);
+                globalCatalog.removeClass('global-catalog-open');
+            }
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'fade',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {
+
+                }
+            });
+        });
+    </script>
+</head>
+<body class="page-index">
+<div id="topbar">
+	<div class="topbar">
+        <div class="layout">
+	        <div class="toptools"></div>
+			<div class="toplinks">
+                <p><a href="#"><img src="images/ico-account.png" alt=""/>我的帐号</a></p>
+                <p><a href="#"><img src="images/ico-mobile.png" alt=""/>手机商城</a></p>
+			</div>
+	        <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+	        </div>
+		</div>
+    </div>
+</div>
+<div id="header">
+	<div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/pic/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+		</div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <div class="hdsearch-right">
+            搜索框右侧广告
+        </div>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus="true" x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+<div id="nav">
+    <div class="navwrap">
+        <div class="global-catalog">
+            <div class="gbc-wrap">
+                <h2 class="gbc-title"><span>全部商品分类</span></h2>
+                <div class="gbc-blockcon">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli tree-hover">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="sublayer">
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="layout">
+                <div class="textNav">
+                    <p><a class="current" href="http://www.genanx.com/">首页</a></p>
+                    <p><a href="#">购物商城</a></p>
+                    <p><a href="#">开心农场</a></p>
+                    <p><a href="#">家政服务</a></p>
+                    <p><a href="#">代驾服务</a></p>
+                    <p><a href="#">开心论坛</a></p>
+                    <p><a href="#">关于我们</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">上一张</a>
+            <a id="inslide_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+
+<style>
+td{line-height: 1;}
+.jmb-cat{ position: absolute; width: 130px; height: 500px; padding: 15px; overflow: auto;}
+.jmb-cat h3{ line-height: 26px; color: #f5b400; font-size: 14px; clear: both;}
+.jmb-cat p{display: inline-block; *display: inline; *zoom: 1; line-height: 24px; margin-right: 20px;}
+</style>
+    <br/>
+
+    <table width="1200" border="0" cellpadding="0" cellspacing="0" align="center">
+    <tr>
+        <td colspan="4" rowspan="3">
+            <img src="images/pic/jmb_01.jpg" width="680" height="390" alt=""></td>
+        <td width="10" height="391" colspan="2" rowspan="4">
+            <img src="images/pic/s.gif" width="10" height="391" alt=""></td>
+        <td rowspan="3">
+            <img src="images/pic/jmb_03.jpg" width="250" height="390" alt=""></td>
+        <td width="10" height="391" rowspan="4">
+            <img src="images/pic/s.gif" width="10" height="391" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_05.jpg" width="250" height="190" alt=""></td>
+    </tr>
+    <tr>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="images/pic/jmb_07.jpg" width="250" height="190" alt=""></td>
+    </tr>
+    <tr>
+        <td width="680" height="1" colspan="4">
+            <img src="images/pic/s.gif" width="680" height="1" alt=""></td>
+        <td width="250" height="1">
+            <img src="images/pic/s.gif" width="250" height="1" alt=""></td>
+        <td width="250" height="1">
+            <img src="images/pic/s.gif" width="250" height="1" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="9">
+            <img src="images/pic/jmb_11.png" width="1200" height="75" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="5">
+            <div class="jmb-cat">
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <br/><br/>
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+            </div>
+            <img src="images/pic/jmb_12.jpg" width="160" height="530" alt="">
+        </td>
+        <td width="10" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td colspan="2" rowspan="3">
+            <img src="images/pic/jmb_14.jpg" width="510" height="350" alt=""></td>
+        <td width="10" height="530" colspan="2" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_16.jpg" width="250" height="170" alt=""></td>
+        <td width="10" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_18.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="3">
+            <img src="images/pic/jmb_21.jpg" width="250" height="350" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_22.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="510" height="10" colspan="2">
+            <img src="images/pic/s.gif" width="510" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="images/pic/jmb_25.jpg" width="510" height="170" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_26.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="9">
+            <img src="images/pic/jmb_27.png" width="1200" height="75" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="5">
+            <div class="jmb-cat">
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <br/><br/>
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+            </div>
+            <img src="images/pic/jmb_28.jpg" width="160" height="530" alt=""></td>
+        <td width="10" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td colspan="2" rowspan="3">
+            <img src="images/pic/jmb_30.jpg" width="510" height="350" alt=""></td>
+        <td width="10" height="530" colspan="2" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_32.jpg" width="250" height="170" alt=""></td>
+        <td width="10" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_34.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="3">
+            <img src="images/pic/jmb_37.jpg" width="250" height="350" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_38.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="510" height="10" colspan="2">
+            <img src="images/pic/s.gif" width="510" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="images/pic/jmb_41.jpg" width="510" height="170" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_42.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="9">
+            <img src="images/pic/jmb_43.png" width="1200" height="75" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="5">
+            <div class="jmb-cat">
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <br/><br/>
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+            </div>
+            <img src="images/pic/jmb_44.jpg" width="160" height="530" alt=""></td>
+        <td width="11" height="530" colspan="2" rowspan="5">
+            <img src="images/pic/s.gif" width="11" height="530" alt=""></td>
+        <td colspan="2" rowspan="3">
+            <img src="images/pic/jmb_46.jpg" width="510" height="350" alt=""></td>
+        <td width="9" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="9" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_48.jpg" width="250" height="170" alt=""></td>
+        <td width="10" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_50.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="3">
+            <img src="images/pic/jmb_53.jpg" width="250" height="350" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_54.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="510" height="10" colspan="2">
+            <img src="images/pic/s.gif" width="510" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="images/pic/jmb_57.jpg" width="510" height="170" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_58.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="9">
+            <img src="images/pic/jmb_59.png" width="1200" height="75" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="5">
+            <div class="jmb-cat">
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <br/><br/>
+                <h3>热门标签</h3>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+                <p><a href="#">保温袋</a></p>
+                <p><a href="#">奶瓶</a></p>
+            </div>
+            <img src="images/pic/jmb_60.jpg" width="160" height="530" alt=""></td>
+        <td width="10" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td colspan="2" rowspan="3">
+            <img src="images/pic/jmb_62.jpg" width="510" height="350" alt=""></td>
+        <td width="10" height="530" colspan="2" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_64.jpg" width="250" height="170" alt=""></td>
+        <td width="10" height="530" rowspan="5">
+            <img src="images/pic/s.gif" width="10" height="530" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_66.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td rowspan="3">
+            <img src="images/pic/jmb_69.jpg" width="250" height="350" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_70.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td width="510" height="10" colspan="2">
+            <img src="images/pic/s.gif" width="510" height="10" alt=""></td>
+        <td width="250" height="10">
+            <img src="images/pic/s.gif" width="250" height="10" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="images/pic/jmb_73.jpg" width="510" height="170" alt=""></td>
+        <td>
+            <img src="images/pic/jmb_74.jpg" width="250" height="170" alt=""></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="images/pic/s.gif" width="160" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="10" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="1" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="509" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="1" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="9" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="250" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="10" height="1" alt=""></td>
+        <td>
+            <img src="images/pic/s.gif" width="250" height="1" alt=""></td>
+    </tr>
+    </table>
+</div>
+
+<style>
+    /*在线客服代码*/
+    .rides-cs { background:rgba(51,51,51,0.9); font-size: 12px; position: fixed; top: 200px; right: 0; _position: absolute; z-index: 999; filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#E5333333', endColorstr='#E5333333');}
+    .rides-cs a { color: #00A0E9;}
+    .rides-cs a:hover { color: #ff8100; text-decoration: none;}
+    .rides-cs .floatL { width: 36px; float:left; position: relative; z-index:1;}
+    .rides-cs .floatL a { font-size:0; text-indent: -999em; display: block;}
+    .rides-cs .floatR { width: 130px; float: left; padding: 5px; overflow:hidden;}
+    .rides-cs .floatR .cn { background: #fff; }
+    .rides-cs .cn h3 { font-size: 14px; color: #333; margin: 0; font-weight:600; line-height: 24px; padding: 5px}
+    .rides-cs .cn ul { margin: 0; padding: 0 0 0 8px;}
+    .rides-cs .cn ul li { margin: 0; padding: 0; line-height: 38px; height:38px; border-bottom: solid 1px #E6E4E4; overflow: hidden;}
+    .rides-cs .cn ul li span { color: #777;}
+    .rides-cs .cn ul li img { vertical-align: middle;}
+    .rides-cs .btnOpen, .rides-cs .btnCtn {  position: relative; z-index:9; top:0; left: 0;  background-image: url(css/kefu.png); background-repeat: no-repeat; display:block; width: 20px; height: 146px; padding: 8px;}
+    .rides-cs .btnOpen { background-position: 0 0;}
+    .rides-cs .btnCtn { background-position: -40px 0;}
+    .rides-cs ul li.top { border-bottom: solid #ACE5F9 1px;}
+    .rides-cs ul li.bot { border-bottom: none;}
+</style>
+<!--在线客服Begin-->
+<div id="floatTools" class="rides-cs">
+    <div class="floatL">
+        <a style="display: block" id="aFloatTools_Show" class="btnOpen" title="查看在线客服" href="javascript:void(0);">展开</a>
+        <a style="display: none" id="aFloatTools_Hide" class="btnCtn" title="关闭在线客服" href="javascript:void(0);">收缩</a>
+    </div>
+    <div id="divFloatToolsView" class="floatR" style="display: none">
+        <div class="cn">
+            <h3 class="titZx">在线客服</h3>
+            <ul>
+                <li><span>客服1</span><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=539851608&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:539851608:51" /></a></li>
+                <li><span>客服2</span><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2011158529&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:2011158529:51" /></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--在线客服End-->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+    $(function(){
+        var btn_show = $("#aFloatTools_Show");
+        var btn_hide = $("#aFloatTools_Hide");
+        btn_show.on("click",function(){
+            $('#divFloatToolsView').animate({
+                width: 'show', opacity: 'show'
+            }, 'normal',function(){ $('#divFloatToolsView').show();});
+            btn_show.hide();
+            btn_hide.show();
+        });
+        btn_hide.on("click",function(){
+            $('#divFloatToolsView').animate({
+                width: 'hide', opacity: 'hide'
+            }, 'normal',function(){ $('#divFloatToolsView').hide();});
+            btn_show.show();
+            btn_hide.hide();
+        });
+    });
+</script>
+<div id="footer">
+    <div class="footer">
+        <div class="footwarranty">
+            <div class="layout">
+                <table width="100%" height="55" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td><img src="images/pic/footer.png"/></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="footothers">
+            <div class="layout">
+                <div class="ftconlist">
+                    <dl>
+                        <dt>订购与支付</dt>
+                        <dd>
+                            <p><a href="#">新手注册与登录</a></p>
+                            <p><a href="#">如何购物</a></p>
+                            <p><a href="#">优惠券使用细则</a></p>
+                            <p><a href="#">在线支付宝</a></p>
+                            <p><a href="#">验收签收</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>快递与配送</dt>
+                        <dd>
+                            <p><a href="#">配送方式/时间</a></p>
+                            <p><a href="#">货到付款</a></p>
+                            <p><a href="#">运费说明</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>售后服务</dt>
+                        <dd>
+                            <p><a href="#">联系客服</a></p>
+                            <p><a href="#">订单查询</a></p>
+                            <p><a href="#">退换保修服务</a></p>
+                            <p><a href="#">退款方式</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt>关于海星家</dt>
+                        <dd>
+                            <p><a href="#">了解海星家</a></p>
+                            <p><a href="#">关注海星家</a></p>
+                            <p><a href="#">品牌文化</a></p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ftqrcode">
+                    <h3><span>手机无线端</span></h3>
+                    <ul>
+                        <li>
+                            <div><img src="images/pic/qrcode.png"/></div>
+                            <p>关注码上订</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ftfriends">
+                    <h3>友情链接：</h3>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                </div>
+                <div class="ftlinks">
+                    <p><a href="#">关于我们</a></p>
+                    <p><a href="#">网站地址</a></p>
+                    <p><a href="#">隐私条款</a></p>
+                    <p><a href="#">企业订购</a></p>
+                    <p><a href="#">加入我们</a></p>
+                    <p><a href="#">帮助中心</a></p>
+                    <p><a href="#">网站联盟</a></p>
+                    <p><a href="#">总裁邮箱</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

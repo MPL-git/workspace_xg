@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>醒购</title>
+	<style>
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 750px) {
+			html {
+				width: 750px;
+				margin: 0 auto;
+			}
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html');
+
+		function fontFix() {
+			html.style.fontSize = html.offsetWidth / 7.5 + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+	<link rel="stylesheet" href="../static/css/reset.css">
+	<link rel="stylesheet" href="../static/css/apply.css">
+</head>
+<body>
+	<form id="form_apply" class="flex dc">
+		<input type="hidden" name="settledType" value="1">
+		<article class="fg scroll-y">
+			<figure>
+				<figcaption class="flex ac">公司名称<em>*</em></figcaption>
+				<div class="con">
+					<input class="f-data" type="text" name="companyName" placeholder="填写您公司名称" required maxlength="128">
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">公司资本<em>*</em></figcaption>
+				<div class="con no-border zb flex ac">
+					<input class="f-data fn" type="text" name="regCapital" required pattern="^\d{1,8}(\.\d{1,4})?$">
+					万
+					<select class="f-data fn" name="regFeeType" required>
+						<option value="CNY" selected>人民币</option>
+						<option value="USD">美元</option>
+						<option value="HKD">港元</option>
+						<option value="EUR">欧元</option>
+					</select>
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">公司证件<em>*</em></figcaption>
+				<div class="con no-border zj flex">
+					<dl class="fn">
+						<dt>
+							<div class="img flex ac jc"><img src=""></div>
+							<input class="f-data" type="file" accept="image/*" required>
+						</dt>
+						<dd class="flex ac jc">营业执照</dd>
+					</dl>
+
+					<dl class="fn">
+						<dt>
+							<div class="img flex ac jc"><img src=""></div>
+							<input class="f-data" type="file" accept="image/*" required>
+						</dt>
+						<dd class="flex ac jc">银行开户许可证</dd>
+					</dl>
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">公司法人<em>*</em></figcaption>
+				<div class="con">
+					<input class="f-data" type="text" name="corporationName" placeholder="填写您公司法人姓名" required maxlength="256">
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">通讯地址<em>*</em></figcaption>
+				<div class="con">
+					<div class="distpicker flex">
+						<select class="f-data" data-val="" name="province" required></select>
+						<select class="f-data" data-val="" name="city" required></select>
+						<select class="f-data" data-val="" name="county" required></select>
+					</div>
+
+					<input class="f-data" type="text" name="address" placeholder="详细地址" required maxlength="256">
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">联系人<em>*</em></figcaption>
+				<div class="con">
+					<input class="f-data" type="text" name="contactName" placeholder="" required maxlength="16">
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">QQ<em>*</em></figcaption>
+				<div class="con">
+					<input class="f-data" type="text" name="qq" placeholder="" required maxlength="16" pattern="\d{4,16}">
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">联系人手机<em>*</em></figcaption>
+				<div class="con">
+					<input class="f-data" type="tel" name="phone" placeholder="" required pattern="^1\d{10}$">
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">联系邮箱<em>*</em></figcaption>
+				<div class="con">
+					<input class="f-data" type="email" name="email" placeholder="" required maxlength="64">
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">主营类目<em>*</em></figcaption>
+				<div class="con">
+					<select class="f-data" data-val="" id="productTypeId" name="productTypeId" required style="width: 200px;"></select>
+				</div>
+			</figure>
+
+			<figure>
+				<figcaption class="flex ac">运营品牌<em>*</em></figcaption>
+				<div class="con">
+					<textarea class="f-data" name="productBrandMain" required maxlength="256"></textarea>
+				</div>
+			</figure>
+		</article>
+
+		<input class="flex ac jc fn" type="submit" value="提交入驻">
+	</form>
+
+	<script>
+		var _userAgent = navigator.userAgent,
+			isiOSX = /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375),
+			isiOS = !!_userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+			isxgbuy = /xgbuy/.test(_userAgent) || /ios/.test(location.href.split('?sys=')[1]);
+
+		(isxgbuy && isiOS) && (document.body.style.paddingBottom = isiOSX ? '88px' : '64px');
+	</script>
+	<script src=../static/js/require.min.js data-main="../static/js/apply" async></script>
+</body>
+</html>

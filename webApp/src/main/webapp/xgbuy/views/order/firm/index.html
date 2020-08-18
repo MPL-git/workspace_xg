@@ -1,0 +1,225 @@
+<div class="page order-firm order-detail flex dc bgf4" data-title="确认订单" data-id="order_firm">
+	<link rel="stylesheet" href="../static/css/common-goods.css?var=1.2">
+	<link rel="stylesheet" href="order/detail/detail.css?var=1.0">
+	<link rel="stylesheet" href="order/firm/firm.css?var=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back(false, true)"></i></div>
+		<p class="ellipsis">确认订单</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="no-after-sale flex ac fn">温馨提示：微信端暂无售后功能，如有需要请下载APP处理~</div>
+
+	<div class="scroll-y fg scroll-more"></div>
+
+	<div class="order-detail-footer">
+		<div class="con-1"></div>
+
+		<div class="con-2 flex ac jb fn">
+			<div>
+				应付金额：<strong></strong>
+			</div>
+			<input class="btn-red" type="button" value="确认支付" onclick="orderFirm.submit()">
+		</div>
+	</div>
+
+	<script id="cart_detail_tpl" type="text/html">
+		<div class="row row-1">
+			<div class="con-3">
+				<dl class="t2 flex">
+					{{if addressMap.addressId}}
+					<dd class="flex ac jb fg" data-id="{{addressMap.addressId}}" onclick="orderFirm.addressMore(this)">
+						<div>
+							<h3><span>{{addressMap.recipientName}}</span><b>{{addressMap.recipientPhone}}</b></h3>
+							<p>{{addressMap.recipientAddressFullName}}</p>
+						</div>
+						<i class="arrow-r ico"></i>
+					</dd>
+					{{else}}
+					<dd class="flex ac jb fg" onclick="popupShow('.popup-set-address')">
+						<div class="no-addr fg">当前没有收货地址，去添加</div>
+						<i class="arrow-r ico"></i>
+					</dd>
+					{{/if}}
+				</dl>
+			</div>
+		</div>
+
+		<div class="row row-3 padd">
+			<div class="flex ac jb">商品金额：<span>¥{{totalProductAmount}}</span></div>
+			<div class="flex ac jb">运费：<span>¥{{freight}}</span></div>
+			<div class="flex ac jb">优惠金额：<span>¥{{preferentialAmount}}</span></div>
+		</div>
+
+		<div class="row row-4 padd">
+			{{if shopwnerEquityStr}}
+			<div class="flex ac jb">
+				<p class="flex ac integral">{{shopwnerEquityStr}}</p>
+				<i class="integral-tick tick ticked ico-btn"></i>
+			</div>
+			{{/if}}
+		</div>
+
+		{{if integral}}
+		<div class="padd">
+			<div class="flex ac jb" onclick="orderFirm.getIntegral(this)">
+				<p class="flex ac integral" data-integral="{{integral}}">可使用{{coinNum}}醒购积分抵扣{{integral}}元</p>
+				<i class="integral-tick tick ticked ico-btn"></i>
+			</div>
+		</div>
+		{{/if}}
+
+		<div class="popup-pay mt20 mb20">
+			<div class="bot bot-1 flex ac">支付方式</div>
+
+			<div class="bot bot-2">
+				{{each payMapList value i}}
+				<div class="flex ac jb tap-tick" onclick="orderFirm.getPayMethod(this)">
+					<span class="flex ac">
+						<i class="wx ico" style="background-image: url({{value.payIcon}});"></i>{{value.payName}}
+						{{if value.PayType == 6}}
+							<span class="flex ac jc huabei">支持花呗</span>
+						{{/if}}
+					</span>
+					<i class="tick ico-btn{{i ? '' : ' ticked'}}" data-type="{{value.PayType}}" data-id="{{value.payId}}"></i>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+
+		<div class="message flex ac">
+			买家留言：<input type="text" placeholder="亲，最多可输入50个中文哦~" maxlength="50" bindinput="getRemarks">
+		</div>
+
+		{{if valable.length}}
+		<div class="con-goods mb20">
+			{{each valable value i}}
+			<dl class="flex" data-id="{{value.productId}}" data-tpl="{{value.freightTemplateId}}" data-type="{{value.freightType}}" onclick="orderFirm.getFreightType(this)">
+				<dt class="fn">
+					<img src="{{value.skuPic}}">
+				</dt>
+				<dd class="fg">
+					<p>{{value.productName}}</p>
+					<p class="flex jb">
+						<span>{{value.productPropdesc}}</span>
+						<b>X{{value.quantity}}</b>
+					</p>
+					<div class="flex ac jb">
+						<div class="flex ac fg pos-r">
+							<strong class="flex jb">{{value.salePrice}}</strong>
+							<div class="f50" style="font-size: .22rem;">{{value.freightName}}</div>
+							{{if valable.freightType == 2}}
+							<i class="wenhao flex ac jc"></i>
+							{{/if}}
+
+							{{if value.depositStatus == 1}}
+							<div class="flex ac fg dep">
+								<span>已付定金{{value.depositSum}}</span>
+								<span>抵用<em class="f50">{{value.deductAmountSum}}</em></span>
+							</div>
+							{{/if}}
+						</div>
+						{{if value.stock <= 0}}
+						<em>(库存不足)</em>
+						{{/if}}
+						<em class="f50 is-has-stock hide">已售罄</em>
+					</div>
+				</dd>
+			</dl>
+			{{/each}}
+		</div>
+		{{/if}}
+
+		{{if invalid.length}}
+		<div class="con-goods con-invalid mb20">
+			<h4 class="flex ac">失效商品</h4>
+
+			{{each invalid value i}}
+				{{if i > 1}}
+			<dl class="flex more-hide hide" data-id="{{value.productId}}">
+				{{else}}
+			<dl class="flex" data-id="{{value.productId}}">
+				{{/if}}
+				<dt class="fn">
+					<img src="{{value.skuPic}}">
+				</dt>
+				<dd class="fg">
+					<p>{{value.productName}}</p>
+					<p class="flex jb">
+						<span>{{value.invalidReason}}</span>
+						<b>X{{value.quantity}}</b>
+					</p>
+					<div class="flex ac">
+						<strong class="flex jb">¥{{value.salePrice}}</strong>
+						{{if value.limitBuyNum}}
+						<span>{{value.limitBuyNum}}</span>
+						{{/if}}
+					</div>
+				</dd>
+			</dl>
+			{{/each}}
+
+			{{if invalid.length > 2}}
+			<div class="more-goods flex ac jc">
+				<i class="arrow-t"></i>
+			</div>
+			{{/if}}
+		</div>
+		{{/if}}
+	</script>
+
+	<div class="popup popup-set-address" onclick="closeSelf(this)">
+		<div class="popup-center flex dc" onclick="stopSelf()">
+			<div class="popup-header flex ac jc fn">请先设置收货地址</div>
+			<div class="popup-con fg">
+				<p class="flex ac jc">您还没有收货地址，快去设置吧!</p>
+				<img src="order/firm/resources/popup-center.png">
+			</div>
+			<div class="popup-footer fn flex">
+				<a onclick="closeSelf(this)" class="flex ac jc fg c9 bdr">取消</a>
+				<a onclick="orderFirm.addressSet()" class="flex ac jc fg f50">设置</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup order-firm-freight" onclick="closeSelf(this)">
+		<div class="popup-bottom flex dc" onclick="stopSelf()">
+			<h3 class="flex ac jc">
+				运费规则
+				<a class="ico-btn close-x" onclick="closeSelf(this)"></a>
+			</h3>
+			<div class="freight-con"></div>
+		</div>
+	</div>
+
+	<script id="order_firm_freight_tpl" type="text/html">
+		<div class="con-goods scroll-y mb20">
+			{{each list value i}}
+			<dl class="flex">
+				<dt class="fn">
+					<img src="{{value.skuPic}}">
+				</dt>
+				<dd class="fg">
+					<p>{{value.productName}}</p>
+					<p class="flex jb">
+						<span>{{value.productPropdesc}}</span>
+						<b>X{{value.quantity}}</b>
+					</p>
+					<div class="flex ac jb">
+						<div class="flex ac">
+							<strong class="flex jb">{{value.salePrice}}</strong>
+						</div>
+					</div>
+				</dd>
+			</dl>
+			{{/each}}
+		</div>
+		<div class="bot flex ac">
+			<strong>运费: ¥<b>{{price}}</b></strong>
+			<span>({{tag}})</span>
+		</div>
+	</script>
+
+	<script src="order/firm/firm.js?var=1.7" async></script>
+</div>

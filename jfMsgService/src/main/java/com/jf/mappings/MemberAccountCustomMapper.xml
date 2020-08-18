@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberAccountCustomMapper" >
+   <update id="updateAccountIntegralByPrimaryKey" >
+     update bu_member_account t set t.integral=t.integral+#{integral,jdbcType=INTEGER},t.update_date=SYSDATE() where t.id =  #{id, jdbcType=INTEGER}    
+  </update>
+  
+  <!-- #{balance}如果是扣除的话前面传的是负数，反之是正数 -->
+  <update id="updateMemberAccountBalanceAndFreeze" parameterType="com.jf.entity.MemberAccount">
+    UPDATE
+		bu_member_account
+	SET
+		freeze = freeze + #{freeze},
+		balance = balance + #{balance},
+	 	update_date = #{updateDate}
+	WHERE
+		freeze + #{freeze} >= 0
+		and id = #{id}
+		and is_effect = '1'
+		and del_flag = '0'
+  </update>
+  
+  <!-- #{freeze}如果是扣除的话前面传的是负数，反之是正数 -->
+ 	<update id="updateMemberAccountFreeze" parameterType="com.jf.entity.MemberAccount">
+	 	UPDATE
+			bu_member_account
+		SET
+			freeze = freeze + #{freeze},
+		 	update_date = #{updateDate}
+		WHERE
+			freeze + #{freeze} >= 0
+			and id = #{id}
+			and is_effect = '1'
+			and del_flag = '0'
+ 	</update>
+ 	
+ 	  
+ 	 <select id="selectMemberIdKey" resultMap="com.jf.dao.MemberAccountMapper.BaseResultMap">
+       select acc.* from bu_member_account acc where acc.del_flag='0' and acc.is_effect='1' and acc.member_id=#{memberId,jdbcType=INTEGER}
+     </select>
+</mapper>

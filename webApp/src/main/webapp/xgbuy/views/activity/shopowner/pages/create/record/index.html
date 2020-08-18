@@ -1,0 +1,45 @@
+<div class="page novaplan-record row-1 flex dc bgf4" data-title="开通记录" data-id="activity_shopowner_pages_create_record">
+	<link rel="stylesheet" href="activity/novaplan/pages/create/record/index.css?var=1.0">
+	
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">开通记录</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg scroll-y scroll-more flex dc"></div>
+
+	<script id="novaplan_create" type="text/html">
+		{{if returnData.dataList.length}}
+		<div class="con-brand con-brand2 list-order">
+			{{include 'novaplan_create_list'}}
+		</div>
+		{{else}}
+		<div class="page-empty empty-p empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="novaplan_create_list" type="text/html">
+		{{each returnData.dataList value}}
+		<div class="li">
+			<div class="row-1 pd20 bb1 flex ac">
+				<div class="dl fg flex">
+					<div class="dd fg flex-col jc">
+						<div class="h2 flex">{{value.title}}</div>
+						<div class="p c9">{{value.contractDateStr}}</div>
+					</div>
+				</div>
+			</div>
+			<div class="row-2 pd20 flex ac">{{value.planEffectiveDate}}</div>
+			<div class="row-3 pd20 flex">
+				开通协议：<a onclick="getUrl('{{value.informationtUrl}}', 'self')">{{value.informationtIdName}}</a>
+			</div>
+		</div>
+		{{/each}}
+	</script>
+	
+	<script src="activity/shopowner/pages/create/record/index.js?var=1.0"></script>
+</div>

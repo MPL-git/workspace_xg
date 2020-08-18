@@ -1,0 +1,61 @@
+<div class="page common-activity flex dc bgf4" data-id="activity_templet_brand_custom_brand">
+	<link rel="stylesheet" href="../static/css/common-activity.css">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-fix fg scroll-more">
+		<div class="swiper-container w75">
+			<ul class="swiper-wrapper">
+				<img src="">
+			</ul>
+		</div>
+		<div class="con-brand con-brand2 w75"></div>
+	</div>
+
+	<script id="brand_custom_brand_tpl" type="text/html">
+		{{if activityList.length}}
+		<div class="madjob flex ac jc">
+			<img src="../static/images/madjob.png">
+		</div>
+			{{each activityList value i}}
+		<a class="mb20"
+			onclick="getUrlActive(this, {pos: '{{page + i}}', data: brandCustomBrandApi.data})"
+			data-typeof="{{value.length}}"
+			data-name="{{value.name}}"
+			data-url="{{value.areaUrl}}"
+			data-activityid="{{value.activityId}}"
+			data-activityareaid="{{value.activityAreaId}}"
+			data-source="{{value.source}}"
+			data-type="{{value.type}}">
+			<dl>
+				<dt class="h50vw">
+					<img src="{{value.entryPic}}">
+				</dt>
+
+				<dd>
+					<div class="row-1 flex ac jb">
+						<div class="flex ac">
+							<p class="ellipsis" title="{{value.name}}">{{value.name}}</p>
+						</div>
+						<time class="flex ac"><p class="ellipsis f50">{{value.activityTime}}</p></time>
+					</div>
+					<div class="row-2">{{value.groups}}</div>
+				</dd>
+			</dl>
+		</a>
+			{{/each}}
+		{{else}}
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前商品为空</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="activity/templet/js/brand-detail.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,121 @@
+.novaplan-cash .scroll-y {
+	position: relative;
+}
+.novaplan-cash .row-1 {
+	background: #fff url(../../../newsign/draw/resources/bg.png) no-repeat 0 .13rem;
+	height: 3rem;
+	background-size: 100% auto;
+}
+.novaplan-cash header>div {
+	width: 1.4rem;
+}
+.novaplan-cash .role-text li {
+	white-space: nowrap;
+}
+.novaplan-cash .row-1 .col-2 {
+	padding: .69rem .2rem .3rem;
+}
+.novaplan-cash .row-1 .col-2 dt {
+	overflow: hidden;
+	width: 1.2rem;
+	height: 1.2rem;
+	margin-right: .2rem;
+	background: #eee;
+	border-radius: 100%;
+}
+.novaplan-cash .row-1 .col-2 dt img {
+	border-radius: 100%;
+}
+.novaplan-cash .row-1 .col-2 h3 {
+	max-width: 5.5rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+.novaplan-cash .row-1 .col-2 span {
+	font-size: .28rem;
+}
+.novaplan-cash .row-1 .col-2 em {
+	font-size: .5rem;
+	font-weight: bold;
+}
+.novaplan-cash .row-2 {
+	padding: 0 .2rem;
+}
+.novaplan-cash .row-2 .con p {
+	height: .54rem;
+	font-size: .3rem;
+}
+
+.novaplan-cash .row-2 .con a {
+	width: 1.6rem;
+	height: .52rem;
+	border-radius: .26rem;
+	font-size: .26rem;
+	color: #fff;
+}
+/* 输入框 */
+.novaplan-cash .h150 {
+	margin: 0 auto;
+	height: 1.1rem;
+	font-size: 26rpx;
+	font-weight: bold;
+}
+.novaplan-cash .h150 span {
+	width: 1.4rem;
+	height: 0.7rem;
+	text-align: left;
+}
+.novaplan-cash .h150 input,
+.novaplan-cash .h150 .select,
+.novaplan-cash .h150 .bank,
+.novaplan-cash .h150 .bank-name {
+	width: 4.45rem;
+	height: 0.7rem;
+	padding-left: 0.2rem;
+	background: #f0f0f0;
+	border: 1px solid #ccc;
+}
+.novaplan-cash .h150 select{
+	width: 50%;
+}
+.novaplan-cash .btn-f50 {
+	margin: 0.5rem auto;
+	width: 6rem;
+	height: 0.8rem;
+	border-radius: 0.04rem;
+	font-size: .3rem;
+	text-align: center;
+}
+.novaplan-cash .tab-by {
+	padding: 0.3rem;
+	min-height: 1rem;
+}
+.novaplan-cash .tab-head {
+	padding-top: .5rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+.novaplan-cash .popup-clear-con {
+	position: relative;
+	width: 6rem;
+	background-color: #fff;
+	border-radius: .16rem;
+	font-size: .32rem;
+}
+.novaplan-cash .clear-btn {
+	width: 100%;
+	border-top: 1px solid #ddd;
+}
+.novaplan-cash .clear-btn a {
+	width: 50%;
+	height: 0.8rem;
+}
+.novaplan-cash .bdrg {
+	border-right: 1px solid #ddd;
+}
+.novaplan-cash .ptb20 {
+	padding: .2rem 0;
+}
+.novaplan-cash .w150 {
+	width: 1.5rem;
+}

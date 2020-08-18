@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtMonthTradeCustomMapper" >
+  
+	<select id="selectNoMchtMonthTradeMchtList" parameterType="java.lang.String" resultMap="com.jf.dao.MchtInfoMapper.BaseResultMap" >
+		<![CDATA[
+			SELECT
+				*
+			FROM
+				bu_mcht_info mi
+			WHERE
+				mi.del_flag = '0'
+-- 			AND mi.mcht_type = 2
+			AND mi.`status` IN ('1', '2', '3')
+			AND NOT EXISTS (
+				SELECT
+					mmt.id
+				FROM
+					bu_mcht_month_trade mmt
+				WHERE
+					mmt.del_flag = '0'
+				AND	mmt.mcht_id = mi.id
+				AND	mmt.trade_month = #{tradeMonth }
+			)
+		]]>
+	</select>
+	
+	<select id="selectNoMchtMonthTradeOrderDtlList" parameterType="java.util.Map" resultType="java.util.Map" >
+		SELECT
+			so.mcht_id mcht_id,
+			SUM(od.settle_amount) sum_settle_amount,
+			SUM(od.pay_amount) sum_pay_amount
+		FROM
+			bu_combine_order co,
+			bu_sub_order so,
+			bu_order_dtl od
+		WHERE
+			co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		AND co.del_flag = '0'
+		AND so.del_flag = '0'
+		AND od.del_flag = '0'
+		AND co.status = '1'
+		AND od.is_give = '0'
+		<if test="productStatus != null">
+			AND od.product_status IN (${productStatus })
+			<![CDATA[
+				AND od.refund_date >= #{startDate }
+				AND od.refund_date <= #{endDate }
+			]]>
+		</if>
+		<if test="productStatus == null">
+			<![CDATA[
+				AND co.pay_date >= #{startDate }
+				AND co.pay_date <= #{endDate }
+			]]>
+		</if>
+		AND so.mcht_id NOT IN (
+			SELECT
+				mmt.mcht_id
+			FROM
+				bu_mcht_month_trade mmt
+			WHERE
+				mmt.del_flag = '0'
+         	AND	mmt.trade_month = #{tradeMonth }
+		)
+		GROUP BY so.mcht_id
+	</select>
+	
+	<select id="selectNoMchtMonthTradePayToMchtLogList" parameterType="java.util.Map" resultType="java.util.Map" >
+		SELECT
+			t.mcht_id mcht_id,
+			SUM(t.pay_amount) sum_pay_amount
+		FROM
+			bu_pay_to_mcht_log t
+		WHERE
+			t.del_flag = '0'
+		AND t.type = #{type }
+		<![CDATA[
+			AND t.pay_date >= #{startDate }
+			AND t.pay_date <= #{endDate }
+		]]>
+		AND t.mcht_id NOT IN (
+			SELECT
+				mmt.mcht_id
+			FROM
+				bu_mcht_month_trade mmt
+			WHERE
+				mmt.del_flag = '0'
+			AND	mmt.trade_month = #{tradeMonth }
+		)
+		GROUP BY t.mcht_id
+	</select>
+	
+	<select id="selectNoMchtMonthTradeMchtDepositDtlList" parameterType="java.util.Map" resultType="java.util.Map" >
+		SELECT
+			md.mcht_id mcht_id,
+			SUM(mdd.txn_amt) sum_txn_amt,
+			SUM(mdd.pay_amt) sum_pay_amt
+		FROM
+			bu_mcht_deposit md,
+			bu_mcht_deposit_dtl mdd
+		WHERE
+			md.del_flag = '0'
+		AND mdd.del_flag = '0'
+		AND md.id = mdd.deposit_id
+		<![CDATA[
+			AND mdd.create_date >= #{startDate }
+			AND mdd.create_date <= #{endDate }
+		]]>
+		<if test="txnType != null">
+			AND mdd.txn_type IN (${txnType })
+		</if>
+		AND md.mcht_id NOT IN (
+			SELECT
+				mmt.mcht_id
+			FROM
+				bu_mcht_month_trade mmt
+			WHERE
+				mmt.del_flag = '0'
+			AND	mmt.trade_month = #{tradeMonth }
+		)
+		GROUP BY md.mcht_id
+	</select>
+	
+	
+	
+  
+</mapper>

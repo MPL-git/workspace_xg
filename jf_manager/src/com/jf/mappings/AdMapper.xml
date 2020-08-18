@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jf.dao.AdFacadeMapper"> 
+	<select id="selectAds" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT
+		BAI.AD_ID,BAI.AD_NAME,BAI.AD_LINK,date_format(BAI.CREATE_DATE,'%Y-%m-%d
+		%h:%m:%s') CREATE_DATE,BAC.AD_CATALOG_NAME,SSI.STAFF_NAME
+		,BAI.ORDER_CODE
+		FROM BU_AD_INFO BAI ,BU_AD_CATALOG BAC,SYS_STAFF_INFO
+		SSI
+
+		WHERE BAC.AD_CATALOG_ID = BAI.AD_CATALOG_ID AND SSI.STAFF_ID =
+		BAI.CREATE_STAFF_ID 
+		AND BAI.STATUS = 'A' AND BAC.AD_CATALOG_ID = #{ID}
+   		
+   </select>
+	<sql id="queryadinfo">
+		SELECT
+		AD_ID,
+		AD_NAME,
+		AD_PICTURE,
+		AD_LINK,
+		AD_CATALOG_ID,
+		CREATE_DATE,
+		STATUS,
+		FUN_GET_STATUS_DESC('BU_AD_INFO', 'STATUS',
+		D.STATUS) STATUS_NAME,
+		STATUS_DATE,
+		CREATE_STAFF_ID,
+		(SELECT STAFF_NAME
+		FROM SYS_STAFF_INFO A WHERE
+		A.STAFF_ID=D.CREATE_STAFF_ID)
+		CREATE_STAFF_NAME,
+		MODIFY_STAFF_ID,
+		(SELECT STAFF_NAME FROM
+		SYS_STAFF_INFO A WHERE
+		A.STAFF_ID=D.MODIFY_STAFF_ID) MODIFY_STAFF_NAME,
+		AD_COLOR,
+		ORDER_CODE  
+		FROM BU_AD_INFO D
+		WHERE 1
+		= 1
+		 <if test="AD_NAME !=null and AD_NAME != ''">
+		 
+		 AND AD_NAME LIKE '%${AD_NAME}%'  
+		 </if>
+		 <if test="AD_ID !=null and AD_ID != ''">
+		 
+		 AND AD_ID = #{AD_ID}  
+		 </if>
+		  <if test="AD_CATALOG_ID!=null and AD_CATALOG_ID != ''">
+		  
+		 AND AD_CATALOG_ID = #{AD_CATALOG_ID}  
+		  </if>
+ </sql>
+
+	<select id="queryadinfoList" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT TB.* FROM (
+		<include refid="queryadinfo" />
+		ORDER BY AD_ID DESC
+		) TB
+		<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	       </if>
+	</select>
+
+	<select id="queryadinfoListTotal" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(1) from (
+		<include refid="queryadinfo" />
+		) TB
+	</select>
+	<update id="deleteadinfo" parameterType="java.util.HashMap">
+		UPDATE BU_AD_INFO D SET
+		D.STATUS ='P',STATUS_DATE =
+		SYSDATE(),MODIFY_STAFF_ID=#{LOGIN_MODIFY_STAFF_ID}
+		WHERE AD_ID IN(
+		${AD_ID} )
+	 	
+ </update>
+ <update id="retadinfo" parameterType="java.util.HashMap">
+		UPDATE BU_AD_INFO D SET
+		D.STATUS ='A',STATUS_DATE =
+		SYSDATE(),MODIFY_STAFF_ID=#{LOGIN_MODIFY_STAFF_ID}
+		WHERE AD_ID IN(
+		${AD_ID} )
+	 	
+ </update>
+	<insert id="insertadinfo" parameterType="java.util.HashMap">
+
+		INSERT INTO BU_AD_INFO
+		(
+		AD_NAME,
+		AD_PICTURE,
+		AD_LINK,
+		AD_CATALOG_ID,
+		CREATE_DATE,
+		STATUS,
+		STATUS_DATE,
+		CREATE_STAFF_ID,
+		MODIFY_STAFF_ID,
+		AD_COLOR,
+		ORDER_CODE )
+		VALUES(
+		#{AD_NAME},
+		#{AD_PICTURE},
+		#{AD_LINK},
+		#{AD_CATALOG_ID},
+		SYSDATE(),
+		'A',
+		SYSDATE(),
+		#{LOGIN_STAFF_ID},
+		#{LOGIN_STAFF_ID},
+		#{AD_COLOR},
+		#{ORDER_CODE} )
+	</insert>
+	<update id="updateadinfo" parameterType="java.util.HashMap">
+		UPDATE BU_AD_INFO
+		SET  
+		AD_NAME=#{AD_NAME},
+		 <if test="AD_PICTURE !=null and AD_PICTURE != ''">
+		AD_PICTURE=#{AD_PICTURE},
+		</if>
+		AD_LINK=#{AD_LINK}, 
+		STATUS_DATE=SYSDATE(),
+		CREATE_STAFF_ID=#{LOGIN_STAFF_ID},
+		MODIFY_STAFF_ID=#{LOGIN_STAFF_ID} 
+		WHERE AD_ID=#{AD_ID}
+    </update>
+	<select id="selectMaxOrderCode" resultType="String">
+		SELECT
+		MAX(BAI.ORDER_CODE)
+		FROM BU_AD_INFO BAI,BU_AD_CATALOG BAC
+		WHERE 1=1
+		AND
+		BAC.AD_CATALOG_ID = #{ID}
+		AND BAC.AD_CATALOG_ID = BAI.AD_CATALOG_ID
+	</select>
+	<select id="selectAdCatalogs" resultType="java.util.HashMap">
+		SELECT AD_CATALOG_ID
+		id,0 pid,AD_CATALOG_NAME text FROM BU_AD_CATALOG
+   </select> 
+</mapper>

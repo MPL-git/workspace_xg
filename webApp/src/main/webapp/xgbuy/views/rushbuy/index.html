@@ -1,0 +1,180 @@
+<div class="page rushbuy flex dc bgf4" data-title="限时秒杀" data-id="rushbuy">
+	<link rel="stylesheet" href="rushbuy/rushbuy.css?var=1.0">
+
+	<header class="sp1 sp2 flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more"></div>
+
+	<script id="rushbuy_tpl" type="text/html">
+		<div class="touchfix w75">
+			{{if topPic.length}}
+			<div class="swiper-container">
+				<ul class="swiper-wrapper">
+					{{each topPic value i}}
+					<li class="swiper-slide"
+						onclick="getBrandDef(this, {pos: '{{i}}', data: rushbuyApi.data})"
+						data-id="{{value.id}}"
+						data-productid="{{value.linkId}}"
+						data-url="{{value.areaUrl}}"
+						data-type="{{value.linkType}}"
+						data-link="{{value.linkUrl}}">
+						<img src="{{value.pic}}">
+					</li>
+					{{/each}}
+				</ul>
+				<div class="pagination"></div>
+			</div>
+			{{/if}}
+
+			<div class="tab-head">
+				<div class="nav flex ac jc">
+					{{each data value i}}
+					<a onclick="rushbuyApi.post(this)"
+						class="tab-btn flex dc ac jc fg"
+						data-beg="{{value.beginTime}}"
+						data-cur="{{value.currentTime}}"
+						data-end="{{value.endTime}}"
+						data-type="{{value.type}}"
+						data-content="{{value.content}}"
+					>
+						<strong>{{value.startHoursMin}}</strong>
+						{{value.beginTimeStr}}
+					</a>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="tab-body">
+				{{each data value i}}
+				<div class="tab-con hide">
+					<div class="list"></div>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+	</script>
+
+	<script id="rushbuy_tpl_time" type="text/html">
+		{{if type == 1 || type == 3}}
+		<h2>{{content}}</h2>
+		<div class="flex jc ac d-end"></div>
+		{{else if type == 2 || type == 4}}
+		<h2 class="h-start">{{content}}</h2>
+		<div class="flex jc ac d-start"></div>
+		{{else if type == 5}}
+		<h2>{{content}}</h2>
+		<div class="flex jc ac">
+			<time class="flex ac jc">已结束:<b class="flex ac jc">00</b>:<b class="flex ac jc">00</b>:<b class="flex ac jc">00</b></time>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="rushbuy_tpl_scroll" type="text/html">
+		{{if returnData.length}}
+		<div class="time flex dc jc ac"></div>
+			{{include 'rushbuy_tpl_con'}}
+		{{else}}
+			{{include 'rushbuy_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="rushbuy_tpl_con" type="text/html">
+		{{each returnData value i}}
+			{{if value.productInfoList.length}}
+	<div class="list-product">
+				{{each value.productInfoList val j}}
+		<a onclick="getUrlGoods('{{val.productId}}')" class="flex">
+			<!-- 流量统计 -->
+			<!-- {pos: '{{page * value.productInfoList.length + (i * value.productInfoList.length) + j}}'} -->
+			<div class="img-over fn">
+				<img src="{{val.productPic}}">
+			</div>
+			<dl class="flex dc jb fg">
+				<dt>
+					<h3 class="clampself">{{val.productName}}</h3>
+					{{if type == 1 || type == 3}}
+					<div class="ratio">
+						<span class="flex ac je" style="width: {{val.salesRatio}}%">{{val.salesRatio}}%</span>
+					</div>
+					<div class="stock flex ac je">
+						{{val.alreadyRobQuantity}}
+					</div>
+					{{else if type == 2 || type == 4}}
+					<div class="flex ac will">
+						{{val.limitButQuantity}}
+					</div>
+					{{/if}}
+				</dt>
+
+				<dd class="flex ae jb">
+					<div class="flex ac">
+						<strong>{{val.salePrice}}</strong>
+						<s>{{val.tagPrice}}</s>
+						{{if val.manageSelf == '1'}}
+						<i class="manageSelf ml10">自营</i>
+						{{/if}}
+					</div>
+
+					{{if type == 1 || type == 3}}
+						{{if val.stock > 0}}
+					<span class="btn-red flex ac jc">马上抢 <i class="arrow-rr ico"></i></span>
+						{{else}}
+					<span class="btn-red btn-gray flex ac jc">已抢光</span>
+						{{/if}}
+					{{else if type == 2 || type == 4}}
+					<span class="btn-red btn-yellow flex ac jc">即将开抢</span>
+					{{else if type == 5}}
+					<span class="btn-red btn-gray flex ac jc">已结束</span>
+					{{/if}}
+				</dd>
+			</dl>
+		</a>
+				{{/each}}
+	</div>
+			{{/if}}
+
+			{{if value.brandGroupList.length}}
+	<div class="list-brand">
+				{{each value.brandGroupList valu}}
+		<a onclick="getUrl('rushbuy/brand/index.html?type={{valu.brandGroupId}}')" style="background-image: url('{{valu.entryPic}}');" class="flex ae jb">
+					{{each valu.brandGroupProductInfoList val}}
+			<dl>
+				<dt class="img-over">
+					<img src="{{val.productPic}}">
+				</dt>
+				<dd>
+					<h3 class="elps">{{val.productName}}</h3>
+					<div class="flex jb">
+						<strong class="f50">{{val.salePrice}}</strong>
+						<s class="c9">{{val.tagPrice}}</s>
+					</div>
+				</dd>
+			</dl>
+					{{/each}}
+		</a>
+				{{/each}}
+	</div>
+			{{/if}}
+		{{/each}}
+	</script>
+
+	<script id="rushbuy_tpl_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>该页面暂无数据~</p>
+		</div>
+	</script>
+
+	<script id="rushbuy_tpl_emptys" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>该页面暂无数据~</p>
+		</div>
+	</script>
+
+	<script src="rushbuy/rushbuy.js?var=1.4" async></script>
+</div>

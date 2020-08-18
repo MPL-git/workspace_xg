@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CumulativeSignInSettingCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CumulativeSignInSettingCustom" extends="com.jf.dao.CumulativeSignInSettingMapper.BaseResultMap" >
+  </resultMap>
+  
+  <!-- 获取每月的签到设置 -->
+  <select id="getMonthCumulativeAward" parameterType="java.util.Map" resultType="com.jf.entity.CumulativeSignInSettingCustom">
+		SELECT
+		t.id,
+		t.reward_name,
+		t.integral,
+		t.product_code,
+		t.coupon_ids,
+		t.cumulative_sign_in_count,
+		t.stock
+		<if test="memberId != null and memberId != ''">
+			,
+			(
+				SELECT
+					count(1)
+				FROM
+					bu_member_cumulative_sign_in mcSignIn
+				WHERE
+					mcSignIn.member_id = #{memberId}
+				AND mcSignIn.cumulative_sign_in_setting_id = t.id
+				AND mcSignIn.del_flag = '0'
+			) AS membeCumulativeSignInCount
+		</if>
+		FROM
+			bu_cumulative_sign_in_setting t
+		WHERE
+			t.`status` = '1'
+		AND t.del_flag = '0'
+		AND t.sign_in_manage_id = #{signInManageId}
+		ORDER BY t.cumulative_sign_in_count
+  </select>
+  
+</mapper>

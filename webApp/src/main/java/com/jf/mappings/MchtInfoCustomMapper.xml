@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtInfoCustom" extends="com.jf.dao.MchtInfoMapper.BaseResultMap">
+   
+  </resultMap>
+  
+  <select id="getEveryDayShopList" parameterType="map" resultType="com.jf.entity.MchtInfoCustom">
+  		SELECT
+		mi.id,
+		mi.shop_logo,
+		mi.shop_name
+	FROM
+		bu_source_niche sn,
+		bu_mcht_info mi
+	WHERE
+		sn.link_id = mi.id
+	AND sn.type = '2'
+	AND sn.del_flag = '0'
+	AND sn.status = '0'
+	AND mi.`status` = '1'
+	AND mi.shop_status = '1'
+	AND mi.del_flag = '0'
+	<if test="productType1Id != null and productType1Id != ''">
+		AND EXISTS (
+			SELECT
+				mpt.id
+			FROM
+				bu_mcht_product_type mpt
+			WHERE
+			 	mpt.mcht_id = mi.id
+			AND	mpt.is_main = '1'
+			AND mpt.`status` = '1'
+			AND mpt.del_flag = '0'
+			AND mpt.product_type_id = #{productType1Id}
+		)
+	</if>
+	ORDER BY
+		IFNULL(sn.seq_no, 99999),
+		id DESC
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	
+</mapper>

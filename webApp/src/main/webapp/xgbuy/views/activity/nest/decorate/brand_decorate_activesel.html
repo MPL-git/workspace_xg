@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>活动详情</title>
+
+	<style>
+		html {
+			font-size: 100px;
+			overflow: auto;
+		}
+
+		.decorate .box-list {
+			padding: 0 !important;
+		}
+	</style>
+	<script>
+		var html = document.querySelector('html');
+		if (html.offsetWidth > 749) {
+			html.style.overflow = 'auto'
+			html.style.maxWidth = '750px'
+			html.style.margin = '0 auto'
+		}
+
+		function fontFix() {
+
+			html.style.fontSize = html.offsetWidth / 7.5 + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+	<link rel="stylesheet" href="../../../../static/css/reset.css?var=1.0">
+	<link rel="stylesheet" href="../../templet/css/brand-decorate.css?var=1.0">
+	<link rel="stylesheet" href="../../templet/css/single-day.css?var=1.0">
+	<link rel="stylesheet" href="../../../../static/css/common-brand.css?var=1.0">
+	<style>
+		.activity-single-day .product .con-2 p {
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 2;
+		}
+	</style>
+</head>
+
+<body class="decorate activity-single-day">
+	<h3 class="decorateInfoName" style="font-size:.36rem;font-weight:bold;color:#333;margin:.38rem .2rem"></h3>
+
+	<div class="content scroll-y scroll-more"></div>
+
+	<!-- 商品 -->
+	<script id="activity_decorate_product_tpl" type="text/html">
+		<div class="product clearfix w75">
+			{{each conmonProduct value i}}
+			<a class="mb20" onclick="getUrlGoods(this)" data-activityareaid="" data-productid="{{value.productId}}">
+				<div class="con-1">
+					<img src="{{value.pic}}">
+					{{if value.stockSum == 0}}
+					<div class="flex jc ac">已售罄</div>
+					<i class="no-goods-mask"></i>
+					{{/if}}
+				</div>
+				<div class="con-2">
+					<p title="{{value.productName}}">{{value.productName}}</p>
+					<div class="flex ac jb scroll-x">
+						<span>
+							<strong class="f50">{{value.salePrice}}</strong>
+							<s class="c9">{{value.tagPrice}}</s>
+						</span>
+						{{if value.discount}}
+						<mark class="btn-f50">{{value.discount}}折</mark>
+						{{/if}}
+					</div>
+					{{if value.svipSalePrice > 0}}
+					<div class="flex ac decorate-svip" onclick="getSvip(event)">
+						<img src="../../templet/images/svip.png">
+						<span>¥{{value.svipSalePrice}}</span>
+					</div>
+					{{/if}}
+				</div>
+			</a>
+			{{/each}}
+		</div>
+	</script>
+
+	<!-- 特卖 -->
+	<script id="activity_decorate_brand_tpl" type="text/html">
+		<div class="con-brand con-brand2">
+			{{each conmonBrand value i}}
+			<a class="mb20 w75" onclick="getUrlActive(this)" data-url="{{value.areaUrl}}"
+				data-activityid="{{value.activityId}}" data-activityareaid="{{value.activityAreaId}}"
+				data-source="{{value.source}}">
+				<dl>
+					<dt>
+						<img src="{{value.areaEntryPic}}">
+					</dt>
+
+					<dd>
+						<div class="row-1 flex ac jb">
+							<div class="flex ac">
+								<p class="ellipsis" title="{{value.activityAreaName}}">{{value.activityAreaName}}</p>
+							</div>
+							<time class="flex ac">
+								<p class="ellipsis f50">{{value.activityRemainingTime}}</p>
+							</time>
+						</div>
+						<div class="row-2">{{value.benefitPoint}}</div>
+					</dd>
+				</dl>
+			</a>
+			{{/each}}
+		</div>
+	</script>
+
+	<!-- 会场秒杀 -->
+	<script id="activity_decorate_seckill_tpl" type="text/html">
+		{{if seckillList.length}}
+		<div class="con-seckill con-seckill-6 con-box w75">
+			<div class="tab-nav flex">
+				{{each seckillList value i}}
+				<a onclick="seckillListNav6(this)" data-beg="{{value.beginTime}}" data-cur="{{value.currentTime}}"
+					data-end="{{value.endTime}}" class="fn flex dc ac jc">
+					{{value.beginTimeStr}}
+					<b class="flex ac jc">{{value.context}}</b>
+				</a>
+				{{/each}}
+			</div>
+			<div class="tab-time flex ac jc"></div>
+			<div class="tab-con scroll-x">
+				<div class="product-scroll flex">
+					{{include 'decorate_product_scroll'}}
+				</div>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 限时秒杀 -->
+	<script id="activity_decorate_rushbuy_seckill_tpl" type="text/html">
+		{{if seckillList.length}}
+		<div class="con-seckill-11">
+			<div class="con-seckill con-box w75">
+				<div class="tab-nav flex">
+					{{each seckillList value i}}
+					<a onclick="seckillListNav11(this)" data-beg="{{value.beginTime}}" data-cur="{{value.currentTime}}"
+						data-end="{{value.endTime}}" class="fn flex dc ac jc">
+						{{value.beginTimeStr}}
+						<b class="flex ac jc">{{value.context}}</b>
+					</a>
+					{{/each}}
+					<a onclick="getRushbuy()" class="fn flex dc ac jc see-more">
+						查看更多
+						<b class="flex ac jc">更多惊喜</b>
+					</a>
+				</div>
+				<div class="flex ac jc con-time">
+					<div class="tab-time flex ac jc"></div>
+				</div>
+				<div class="tab-con scroll-x">
+					<div class="product-scroll flex">
+						{{include 'decorate_product_scroll'}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="decorate_product_scroll" type="text/html">
+		{{if productInfoList.length}}
+		{{each productInfoList value}}
+		<a onclick="getUrlGoods(this)" data-productid="{{value.productId}}" class="fn{{value.stock ? '' : ' no-stock'}}">
+			<div class="img-cover">
+				<img src="{{value.productPic}}">
+			</div>
+			<div class="pad">
+				<h3>{{value.productName}}</h3>
+				<p class="ellipsis flex ac">
+					<span>¥<strong>{{value.salePrice}}</strong></span>
+					<s>{{value.tagPrice}}</s>
+				</p>
+			</div>
+
+			<div class="seckill-out"></div>
+		</a>
+		{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="graphic_text_tpl" type="text/html">
+		{{if graphicContent}}
+		<div class="text_m" style="margin: 0 .2rem;font-size:.28rem">
+			{{#graphicContent}}</div>
+		{{/if}}
+	</script>
+
+
+	<script src="../../../../static/js/jquery-3.2.1.min.js"></script>
+	<script src="../../../../static/js/jquery.mobile-events.min.js"></script>
+	<script src="../../../../static/js/require.min.js"></script>
+	<script src="../../../../static/js/qpTime.js"></script>
+	<script id="js_decorate" src="activity-brand-decorate_ls.js?var=2.5"></script>
+	<script>
+		$("body").on("click", "a", function () {
+			event.preventDefault();
+			var arrUrl = realUrl($(this).attr("href"))
+			console.log(arrUrl)
+			if (arrUrl[0] == "seller/index.html") {
+				var pos = arrUrl[1].split('?')[1]
+				arrpos = pos.split('&'),
+					_id = '';
+				for (var i = 0; i < arrpos.length; i++) {
+					if (arrpos[i].split("=")[0] == 'mchtId') {
+						_id = arrpos[i].split("=")[1]
+						break;
+					}
+				}
+				console.log(_id)
+				if (member.sys == 'ios') {
+					checkAppVer(43, function () {
+						callIntentTrailer('intentTrailerListNative', 'intentShopping', {
+							'mchtId': _id
+						});
+					}, function () {
+						getUrl('seller/index.html?mchtId=' + _id, 'self');
+					});
+				} else if (member.sys == 'android') {
+					checkAppVer(36, function () {
+						intentShopping(_id);
+					}, function () {
+						getUrl('seller/index.html?mchtId=' + _id, 'self');
+					});
+				} else {
+					getUrl('seller/index.html?mchtId=' + _id, 'self');
+				}
+			}else{
+				window.location.href = $(this).attr("href")
+			}
+		})
+
+		// 获取真实网络地址
+		function realUrl(_url) {
+			var redirect_url = '?redirect_url=', // URL分割标记
+				lead_url = '', // 前部分路径 (../webApp/xgbuy/)
+				_url1 = '',
+				_url0 = '';
+
+			if (/http/g.test(_url)) {
+				var _urls = _url.split(redirect_url);
+
+				if (_urls[1] && _urls[1].length) {
+					_urls[1] = _urls[1].split('==')[0];
+
+					try {
+						_urls[1] = base64Atob(_urls[1].split('&')[0]);
+					} catch (e) {}
+
+					if (_urls.length > 2) {
+						for (var i = 0; i < _urls.length; i++) {
+							i > 1 && (_urls[1] += redirect_url + _urls[i]);
+						}
+					}
+
+					_url = _urls[1].split('.html');
+
+					if (_url && _url.length > 1) {
+						if (_url.length > 2) {
+							for (var i = 0; i < _url.length; i++) {
+								i > 1 && (_url[1] += '.html' + _url[i]);
+							}
+						}
+						_url1 = _url[1];
+					}
+
+					_url0 = _url[0];
+				} else {
+					_url0 = 'home/index';
+				}
+			} else {
+				_url = _url.replace('null/xgbuy/views/#', ''); // 纠正错误链接
+				var _urls = _url.split('?');
+
+				if (_urls[1] && _urls[1].length) {
+					_url0 = _urls[0].replace(redirect_url, '') + (/\.html/g.test(_url) ? '' : (_urls[0].split('/').length >
+						1 ? '' : '/index'));
+					_url1 = '?' + _urls[1];
+				} else {
+					_url0 = _url.replace(redirect_url, '') + (/\.html/g.test(_url) ? '' : (_url.split('/').length > 1 ? '' :
+						'/index'));
+				}
+			}
+
+			_url0 = _url0.replace('.html', '') + '.html';
+			return [_url0, _url1]
+		}
+		// 解密
+		function base64Atob(e) {
+			return decodeURIComponent(escape(window.atob(e)));
+		}
+	</script>
+
+
+</body>

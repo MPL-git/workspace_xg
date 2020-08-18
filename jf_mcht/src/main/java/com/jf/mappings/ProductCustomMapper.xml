@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductCustom"  extends="com.jf.dao.ProductMapper.BaseResultMap">
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="product_brand_name" property="productBrandName" jdbcType="VARCHAR" />
+    <result column="first_product_type_name" property="firstProductTypeName" jdbcType="VARCHAR" />
+    <result column="second_product_type_name" property="secondProductTypeName" jdbcType="VARCHAR" />
+    <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+    <result column="activity_status_desc" property="activityStatusDesc" jdbcType="VARCHAR" />
+    <result column="mcht_name" property="mchtName" jdbcType="VARCHAR" />
+    <result column="mcht_type" property="mchtType" jdbcType="CHAR" />
+    <result column="season_desc" property="seasonDesc" jdbcType="VARCHAR" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="price_model" property="priceModel" jdbcType="VARCHAR" />
+    <result column="price_model_desc" property="priceModelDesc" jdbcType="VARCHAR" />
+    <result column="audit_status_desc" property="auditStatusDesc" jdbcType="VARCHAR" />
+    <result column="off_reason_desc" property="offReasonDesc" jdbcType="VARCHAR" />
+    
+    <result column="tag_price_min" property="tagPriceMin" jdbcType="DECIMAL" />
+    <result column="sale_price_min" property="salePriceMin" jdbcType="DECIMAL" />
+    <result column="mall_price_min" property="mallPriceMin" jdbcType="DECIMAL" />
+    <result column="cost_price_min" property="costPriceMin" jdbcType="DECIMAL" />
+    
+    <result column="tag_price_max" property="tagPriceMax" jdbcType="DECIMAL" />
+    <result column="sale_price_max" property="salePriceMax" jdbcType="DECIMAL" />
+    <result column="mall_price_max" property="mallPriceMax" jdbcType="DECIMAL" />
+    <result column="cost_price_max" property="costPriceMax" jdbcType="DECIMAL" />
+    
+    
+    <result column="discount_max" property="discountMax" jdbcType="DECIMAL" />
+    <result column="discount_min" property="discountMin" jdbcType="DECIMAL" />
+    <result column="discount_max_truncate" property="discountMaxTruncate" jdbcType="DECIMAL" />
+    <result column="discount_min_truncate" property="discountMinTruncate" jdbcType="DECIMAL" />
+    <result column="profitRate_max" property="profitRateMax" jdbcType="DECIMAL" />
+    <result column="profitRate_min" property="profitRateMin" jdbcType="DECIMAL" />
+    
+    <result column="pop_commission_rate" property="popCommissionRate" jdbcType="DECIMAL" />
+    <result column="seq_no" property="seqNo" jdbcType="INTEGER" />
+    <result column="activity_product_id" property="activityProductId" jdbcType="INTEGER" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="custom_types" property="customTypes" jdbcType="VARCHAR" />
+    <result column="skus" property="skus" jdbcType="VARCHAR" />
+    <result column="product_prop_values" property="productPropValues" jdbcType="VARCHAR" />
+    <result column="templet_name" property="templetName" jdbcType="VARCHAR" />
+    <result column="freight_templet_name" property="freightTempletName" jdbcType="VARCHAR" />
+    <result column="good_comment_count" property="goodCommentCount" jdbcType="INTEGER" />
+    <result column="total_comment_count" property="totalCommentCount" jdbcType="INTEGER" />
+    <result column="good_comment_rate" property="goodCommentRate" jdbcType="VARCHAR" />
+    <result column="total_sales_volume" property="totalSalesVolume" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jf.entity.ProductCustom" extends="BaseResultMap" >
+    <result column="product_desc" property="productDesc" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+ 	id, mcht_id, code, source, ref_id, name, status, off_reason, audit_status, audit_by, 
+    audit_remarks, brand_id, product_type1_id, product_type2_id, product_type_id, art_no, 
+    suit_sex, suit_group, year, season, limit_buy, cs_templet_id, remarks_color, sale_type, 
+    del_date, is_single_prop, shop_product_custom_type_id_group, weights, is_activity, 
+    is_show, min_sale_price_item_id, min_price_item_id, min_mall_price, min_sale_price, 
+    min_tag_price, sale_weight, freight_template_id, is_shop_show, search_fields, third_platform_coupon_info, 
+    sort, comment_weight, svip_discount, year_of_listing,create_by, create_date, update_by, update_date, 
+    remarks, del_flag,recommend_remarks,
+    (select a.name from bu_product_brand a where a.id=brand_id and a.del_flag='0') product_brand_name,
+    (select c.name from bu_product_type a,bu_product_type b,bu_product_type c where a.parent_id = b.id and b.parent_id = c.id and a.id=product_type_id) first_product_type_name,
+    (select b.name from bu_product_type a,bu_product_type b where a.parent_id = b.id and a.id=product_type_id) second_product_type_name,
+    (select a.name from bu_product_type a where a.id=product_type_id) product_type_name,
+    (select a.short_name from bu_mcht_info a where a.id=mcht_id) mcht_name,
+    (select a.mcht_type from bu_mcht_info a where a.id=mcht_id) mcht_type,
+    (select a.pop_commission_rate from bu_mcht_product_brand a where a.mcht_id=t.mcht_id and a.product_brand_id=t.brand_id and a.del_flag='0' and a.status='1' and a.audit_status='3') pop_commission_rate,
+    FUN_GET_STATUS_DESC("BU_PRODUCT","SEASON", season) season_desc,
+    FUN_GET_STATUS_DESC("BU_PRODUCT","AUDIT_STATUS", audit_status) audit_status_desc,
+    FUN_GET_STATUS_DESC("BU_PRODUCT","OFF_REASON", off_reason) off_reason_desc,
+    FUN_GET_STATUS_DESC("BU_MCHT_PRODUCT_BRAND","PRICE_MODEL", (select a.price_model from bu_mcht_product_brand a where a.mcht_id=t.mcht_id and a.product_brand_id=t.brand_id and a.del_flag='0' and a.status='1' and a.audit_status='3') ) price_model,
+    (select a.price_model_desc from bu_mcht_product_brand a where a.mcht_id=t.mcht_id and a.product_brand_id=t.brand_id and a.del_flag='0' and a.status='1' and a.audit_status='3') price_model_desc,
+    (select min(a.tag_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') tag_price_min,
+    (select min(a.cost_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') cost_price_min,
+    (select min(a.sale_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') sale_price_min,
+    (select min(a.mall_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') mall_price_min,
+    (select max(a.tag_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') tag_price_max,
+    (select max(a.cost_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') cost_price_max,
+    (select max(a.sale_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') sale_price_max,
+    (select max(a.mall_price) from bu_product_item a where a.product_id=t.id and a.del_flag='0') mall_price_max,
+    (select  ROUND(max(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=t.id and a.del_flag='0') discount_max,
+    (select  ROUND(min(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=t.id and a.del_flag='0') discount_min,
+    (select  ROUND(max(a.cost_price/a.sale_price),3) from bu_product_item a where a.product_id=t.id and a.del_flag='0') profitRate_max,
+    (select  ROUND(min(a.cost_price/a.sale_price),3) from bu_product_item a where a.product_id=t.id and a.del_flag='0') profitRate_min,
+    (select a.pic from bu_product_pic a where a.product_id=t.id and a.del_flag='0' and a.is_default='1') pic,
+    if(t.sale_type='1',FUN_GET_SHOP_PRODUCT_ACTIVITY_STATUS(id),FUN_GET_SINGLE_PRODUCT_ACTIVITY_STATUS(id))   activity_status_desc,
+    (select IFNULL(SUM(bpi.stock-bpi.locked_amount),0) from bu_product_item bpi where bpi.del_flag='0' and bpi.product_id=t.id) stock,
+    <![CDATA[(select GROUP_CONCAT(a.name separator '<br>') from bu_shop_product_custom_type a where FIND_IN_SET(a.id,t.shop_product_custom_type_id_group) and a.del_flag='0' and a.status='1')custom_types]]>,
+    (select GROUP_CONCAT(pi.sku) from bu_product_item pi where pi.product_id = t.id and pi.del_flag='0')skus,
+    (select GROUP_CONCAT(ppv.prop_value) from bu_product_item pi,bu_product_prop_value ppv where pi.product_id = t.id and pi.prop_val_id = ppv.id and pi.del_flag='0' and ppv.del_flag='0')product_prop_values,
+    (select pat.name from bu_product_after_templet pat where pat.id = t.cs_templet_id and pat.del_flag='0')templet_name,
+    (select ft.name from bu_freight_template ft where ft.id = t.freight_template_id and ft.del_flag='0')freight_templet_name,
+    (SELECT SUM(od.quantity) FROM bu_order_dtl od,bu_sub_order so,bu_combine_order co WHERE od.product_id = t.id AND od.sub_order_id = so.id AND so.combine_order_id = co.id AND co.`status`='1')total_sales_volume,
+    IFNULL(ROUND((SELECT COUNT(1) FROM bu_comment c WHERE c.product_id = t.id AND c.product_score>=4 and c.del_flag='0' and c.is_append_comment='0')/(SELECT COUNT(1) FROM bu_comment c WHERE c.product_id = t.id and c.del_flag='0' and c.is_append_comment='0'),2),1)good_comment_rate
+  </sql>
+  <sql id="Blob_Column_List" >
+    product_desc
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.jf.entity.ProductCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bu_product t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ProductCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_product t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bu_product t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.ProductCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_product t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getProductPropByProductId" parameterType="int" resultMap="com.jf.dao.ProductPropMapper.BaseResultMap">
+	SELECT a.* FROM bu_product_prop a WHERE a.id IN (SELECT b.prop_id FROM bu_product_prop_value b WHERE FIND_IN_SET(b.id,( SELECT c.prop_val_id FROM bu_product_item c WHERE c.product_id = #{productId,jdbcType=INTEGER} AND c.del_flag = '0' LIMIT 1)))
+  </select>
+  <select id="getProductPropNameByProductId" parameterType="int" resultType="java.util.HashMap">
+  	select d.prop_id,(select a.name from bu_product_prop a where a.id=d.prop_id) prop_name,group_concat(d.prop_value SEPARATOR " ") prop_value_str from (select distinct b.prop_id,b.prop_value from bu_product_prop_value b,bu_product_item c  where FIND_IN_SET(b.id,c.prop_val_id) and c.product_id = #{productId,jdbcType=INTEGER}  and c.del_flag = '0') d group by d.prop_id;
+  </select>
+  
+  <select id="getProductsByActivityId" parameterType="int" resultMap="BaseResultMap">
+  	SELECT
+		a.id AS activity_product_id,
+		t.id,
+		t.`name`,
+		MIN(b.tag_price)tag_price_min,
+		MIN(b.sale_price)sale_price_min,
+		c.pic 
+	FROM
+		bu_activity_product a,
+		bu_product t,
+		bu_product_item b,
+		bu_product_pic c
+	WHERE
+		a.activity_id = #{activityId} AND 
+		a.product_id = t.id AND 
+		t.id = b.product_id AND 
+		c.product_id=t.id AND 
+		a.refuse_flag = '0' AND
+		c.is_default='1' AND
+		a.del_flag = '0' AND 
+		t.del_flag = '0' AND 
+		b.del_flag='0' AND 
+		c.del_flag='0'
+	GROUP BY a.id
+	ORDER BY ifnull(a.seq_no,99999),b.sale_price asc
+  </select>
+  
+  <select id="getProductsByParamMap" parameterType="map" resultMap="BaseResultMap">
+  	select 
+	  	(select a.pic from bu_product_pic a where a.product_id=p.id and a.del_flag='0' and a.is_default='1') pic,
+	  	(select min(a.sale_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') sale_price_min,
+	  	(select max(a.sale_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') sale_price_max,
+    	(select ROUND(min(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=p.id and a.del_flag='0') discount_min,
+	  	(select ROUND(max(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=p.id and a.del_flag='0') discount_max,
+    	(select TRUNCATE(min(a.sale_price/a.tag_price)*10,2) from bu_product_item a where a.product_id=p.id and a.del_flag='0') discount_min_truncate,
+	  	(select TRUNCATE(max(a.sale_price/a.tag_price)*10,2) from bu_product_item a where a.product_id=p.id and a.del_flag='0') discount_max_truncate,
+	  	(select IFNULL(SUM(bpi.stock-bpi.locked_amount),0) from bu_product_item bpi where bpi.del_flag='0' and bpi.product_id=p.id) stock,
+	  	(select min(a.tag_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') tag_price_min,
+	  	(select max(a.tag_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') tag_price_max,
+	  	CONCAT(IFNULL(ROUND((SELECT COUNT(1) FROM bu_comment c WHERE c.product_id = p.id AND c.product_score>=4 and c.del_flag='0' and c.is_append_comment='0')*100/(SELECT COUNT(1) FROM bu_comment c WHERE c.product_id = p.id and c.del_flag='0' and c.is_append_comment='0'),2),100),"%")good_comment_rate,
+	  	(SELECT SUM(od.quantity) FROM bu_order_dtl od,bu_sub_order so,bu_combine_order co WHERE od.product_id = p.id AND od.sub_order_id = so.id AND so.combine_order_id = co.id AND co.`status`='1')total_sales_volume,
+	  	p.* 
+  	from 
+  		bu_product p 
+  	where 
+	  	p.mcht_id=#{mchtId} 
+	  	and p.del_flag='0' 
+	  	and FUN_GET_SINGLE_PRODUCT_ACTIVITY_STATUS(p.id) = '0' 
+	  	and EXISTS (SELECT pb.id from bu_mcht_product_brand mpb,bu_product_brand pb where p.brand_id=mpb.product_brand_id and mpb.mcht_id=p.mcht_Id and mpb.product_brand_id = pb.id and mpb.audit_status='3' and mpb.status='1' and pb.status='1')
+  	<if test="searchType==1">
+  	and p.code = #{code}
+  	</if>
+  	<if test="searchType==2">
+  	and p.art_no = #{artNo}
+  	</if>
+  	<if test="searchType==3">
+  	and p.name like concat('%',#{productName},'%')
+  	</if>
+  	<if test="auditStatusNotEqual != null">
+  	and p.audit_status != #{auditStatusNotEqual}
+  	</if>
+  	and p.sale_type = #{saleType}
+  	and NOT EXISTS (SELECT csis.id from bu_cumulative_sign_in_setting csis where csis.product_code=p.code and csis.del_flag='0')
+  	limit #{limitStart} , #{limitSize}
+  </select>
+  
+  <select id="countProductsByParamMap" parameterType="map" resultType="java.lang.Integer">
+  	select 
+	  	count(1) 
+  	from 
+  		bu_product p 
+  	where 
+	  	p.mcht_id=#{mchtId} 
+	  	and p.del_flag='0' 
+	  	and FUN_GET_SINGLE_PRODUCT_ACTIVITY_STATUS(p.id) = '0' 
+	  	and EXISTS (SELECT pb.id from bu_mcht_product_brand mpb,bu_product_brand pb where p.brand_id=mpb.product_brand_id and mpb.mcht_id=p.mcht_Id and mpb.product_brand_id = pb.id and mpb.audit_status='3' and mpb.status='1' and pb.status='1')
+  	<if test="searchType==1">
+  	and p.code = #{code}
+  	</if>
+  	<if test="searchType==2">
+  	and p.art_no = #{artNo}
+  	</if>
+  	<if test="searchType==3">
+  	and p.name like concat('%',#{productName},'%')
+  	</if>
+  	<if test="auditStatusNotEqual != null">
+  	and p.audit_status != #{auditStatusNotEqual}
+  	</if>
+  	and p.sale_type = #{saleType}
+  	and NOT EXISTS (SELECT csis.id from bu_cumulative_sign_in_setting csis where csis.product_code=p.code and csis.status='1' and csis.del_flag='0')
+  </select>
+  
+  <select id="getProductActivityStatus" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select FUN_GET_SHOP_PRODUCT_ACTIVITY_STATUS(#{id}) from dual;
+  </select>
+  <select id="getShopProductActivityStatus" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select FUN_GET_SHOP_PRODUCT_ACTIVITY_STATUS(#{id}) from dual;
+  </select>
+  <select id="getSingleProductActivityStatus" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select FUN_GET_SINGLE_PRODUCT_ACTIVITY_STATUS(#{id}) from dual;
+  </select>
+  <update id="outFreightTemplate" parameterType="java.util.List">
+  	update bu_product p set p.freight_template_id = NULL where p.id in
+  	<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+  </update>
+  
+  <update id="selectFreightTemplate" parameterType="map">
+  	update bu_product p set p.freight_template_id = #{freightTemplateId} where p.id in
+  	<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+  </update>
+  
+  <select id="countCurrentTemplate" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select count(1) from bu_product p where p.del_flag='0' and p.freight_template_id = #{freightTemplateId}
+  </select>
+  
+  <select id="countNoTemplate" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select count(1) from bu_product p where p.del_flag='0' and p.freight_template_id is null and p.mcht_id = #{mchtId}
+  </select>
+  
+  <select id="countOtherTemplateCount" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+  	select count(1) from bu_product p where p.del_flag='0' and p.freight_template_id !=#{freightTemplateId} and p.freight_template_id is not null and p.mcht_id = #{mchtId}
+  </select>
+
+    <select id="getProductSaleData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+			p.`name` AS product_name,
+			p.`code`,
+			p.art_no,
+			(
+				SELECT
+					pb.`name`
+				FROM
+					bu_product_brand pb
+				WHERE
+					pb.id = p.brand_id
+			) AS brand_name,
+			(
+				SELECT
+					pp.pic
+				FROM
+					bu_product_pic pp
+				WHERE
+					pp.product_id = p.id
+				AND pp.is_default = '1'
+				AND pp.del_flag = '0'
+				LIMIT 1
+			) AS sku_pic,
+            (
+            SELECT
+            IFNULL(SUM(od.quantity),0)
+            FROM
+            bu_order_dtl od,
+            bu_sub_order so,
+            bu_combine_order co
+            WHERE
+            od.product_id = p.id
+            AND od.sub_order_id = so.id
+            AND so.combine_order_id = co.id
+            AND co.pay_status = '1'
+            AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+            AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+            AND od.del_flag='0'
+            AND od.is_give='0'
+            AND so.del_flag='0'
+            AND co.del_flag='0'
+            ) product_count,
+            (
+            SELECT
+            IFNULL(SUM(od.pay_amount),0)
+            FROM
+            bu_order_dtl od,
+            bu_sub_order so,
+            bu_combine_order co
+            WHERE
+            od.product_id = p.id
+            AND od.sub_order_id = so.id
+            AND so.combine_order_id = co.id
+            AND co.pay_status = '1'
+            AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+            AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+            AND od.del_flag='0'
+            AND od.is_give='0'
+            AND so.del_flag='0'
+            AND co.del_flag='0'
+            ) pay_amount,
+			(
+				SELECT
+                    concat_ws('/',IFNULL(SUM(od.quantity * od.sale_price),0),
+                    IFNULL(SUM(od.mcht_preferential),0),
+                    IFNULL(SUM(od.platform_preferential + od.integral_preferential),0))
+				FROM
+					bu_order_dtl od,
+					bu_sub_order so,
+					bu_combine_order co
+				WHERE
+					od.product_id = p.id
+				AND od.sub_order_id = so.id
+				AND so.combine_order_id = co.id
+				AND co.pay_status = '1'
+				AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+				AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+				AND od.del_flag='0'
+				AND od.is_give='0'
+				AND so.del_flag='0'
+				AND co.del_flag='0'
+			) total_data
+		FROM
+			bu_product p
+		WHERE
+			p.del_flag = '0'
+			AND p.mcht_id = #{mchtId}
+        <if test="productName != null">
+            AND p.name like concat('%',#{productName},'%')
+        </if>
+        <if test="productCode != null">
+            AND p.code = #{productCode}
+        </if>
+        <if test="brandId != null">
+            AND p.brand_id = #{brandId}
+        </if>
+        <if test="orderByType == 0">
+            ORDER BY product_count DESC
+        </if>
+        <if test="orderByType == 1">
+            ORDER BY pay_amount DESC
+        </if>
+        <if test="limitStart!=null">
+        	limit #{limitStart} , #{limitSize}
+        </if>
+    </select>
+	
+	<select id="countProductSaleData" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			bu_product p
+		WHERE
+			p.del_flag = '0'
+			AND p.mcht_id = #{mchtId}
+        <if test="productName != null">
+            AND p.name like concat('%',#{productName},'%')
+        </if>
+        <if test="productCode != null">
+            AND p.code = #{productCode}
+        </if>
+        <if test="brandId != null">
+            AND p.brand_id = #{brandId}
+        </if>
+        <if test="limitStart!=null">
+        	limit #{limitStart} , #{limitSize}
+        </if>
+	</select>
+
+    <select id="selectShopDecorateList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            T1.*,
+            (select brand.name from bu_product_brand brand where brand.id = T1.brand_id and brand.del_flag = '0') as productBrandName,
+            (SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T1.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+            (select count(1) from bu_comment c where c.del_flag = '0' and c.product_score in(4,5) and (c.is_show is null or c.is_show = '1') and c.product_id = T1.id) good_comment_count,
+            (select count(1) from bu_comment c where c.del_flag = '0' and (c.is_show is null or c.is_show = '1') and c.is_append_comment = '0' and c.product_id = T1.id) total_comment_count
+        FROM
+            (
+            SELECT
+                p.id,
+                p.NAME,
+                p.brand_id,
+                p.min_mall_price,
+                p.min_sale_price,
+                p.min_tag_price
+            FROM
+                bu_product p
+            WHERE
+                p.del_flag = '0'
+                AND p.STATUS = '1'
+                AND p.audit_status = '2'
+                AND p.sale_type = '1'
+                AND p.mcht_id = #{0}
+                and p.id not in(
+                 select
+                   acProduct.product_id
+                 from bu_activity_area area,bu_activity ac,bu_activity_product acProduct
+                 where ac.activity_area_id = area.id
+                 and acProduct.activity_id = ac.id
+                 and area.del_flag = '0'
+                 and area.status = '1'
+                 and area.activity_begin_time &lt;= now()
+                 and area.activity_end_time &gt;= now()
+                 and ac.del_flag = '0'
+                 and ac.status = '6'
+                 and acProduct.del_flag = '0'
+                 and acProduct.coo_audit_status = '2'
+                 and acProduct.refuse_flag = 0
+                 and area.mcht_id = #{0}
+                )
+            ORDER BY
+                ifnull( p.sort, 99999 ),
+                ifnull( p.weights, 99999 ),
+                id DESC
+                LIMIT 0, 6
+            ) T1
+    </select>
+    <update id="updateSvipDiscount" parameterType="java.lang.Integer">
+    	update bu_product p set p.svip_discount = NULL where p.id =#{id}
+    </update>
+    
+	  <select id="getLastProduct4UsebleProductType" parameterType="int" resultMap="com.jf.dao.ProductMapper.BaseResultMap">
+	  	SELECT a.product_type1_id,a.product_type2_id,a.product_type_id from bu_product a where a.product_type1_id in (select t.id from bu_product_type t where t.status='1' and  t.id in (select mpt.product_type_id from bu_mcht_product_type mpt where mpt.status='1' and mpt.mcht_id= #{mchtId,jdbcType=INTEGER})) and a.mcht_id=#{mchtId,jdbcType=INTEGER} order by a.id desc limit 1
+	  </select>
+
+    <resultMap id="BatchBaseResultMap" type="com.jf.entity.ProductCustom"  extends="com.jf.dao.ProductMapper.BaseResultMap">
+        <result column="pic" property="pic"/>
+        <collection property="productItemList" javaType="List" ofType="com.jf.entity.ProductItemCustom">
+            <id column="productItemId" property="id"/>
+            <id column="productId" property="productId"/>
+            <result column="sub_order_id" property="subOrderId"/>
+            <result column="prop_val_id" property="propValId"/>
+            <result column="stock" property="stock"/>
+            <result column="locked_amount" property="lockedAmount"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Batch_Base_Column_List" >
+ 	bp.id,bp.mcht_id, bp.code, bp.name,bp.art_no,bp.is_single_prop,bpi.id as productItemId,bpi.product_id as productId,bpi.prop_val_id,bpi.stock,bpi.locked_amount,
+ 	(select a.pic from bu_product_pic a where a.product_id=bp.id and a.del_flag='0' and a.is_default='1') pic
+  </sql>
+    <select id="selectProductAndPropValue" resultMap="BatchBaseResultMap" parameterType="com.jf.entity.ProductCustomExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Batch_Base_Column_List" />
+        from bu_product bp,bu_product_item bpi
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        order by bp.id desc
+    </select>
+
+</mapper>

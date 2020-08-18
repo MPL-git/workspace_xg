@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.VideoCustomMapper" >
+
+	<select id="statisticDailyPlayCount" resultType="com.jf.entity.dto.SimpleCountDTO">
+ <![CDATA[
+		select a.id,ifnull(b.totalCount,0) as totalCount
+		from bu_video a
+		left join (
+			select video_id,count(video_id) as totalCount
+			from bu_video_play_record
+			where create_date >= #{dateBegin,jdbcType=TIMESTAMP}
+			and create_date <= #{dateEnd,jdbcType=TIMESTAMP}
+			and del_flag = '0'
+			group by video_id
+		) b on a.id=b.video_id
+		where a.del_flag='0'
+		]]>
+	</select>
+
+	<select id="statisticDailyLikeCount" resultType="com.jf.entity.dto.SimpleCountDTO">
+ <![CDATA[
+		select a.id,ifnull(b.totalCount,0) as totalCount
+		from bu_video a
+		left join (
+			select video_id,count(video_id) as totalCount
+			from bu_video_like
+			where create_date >= #{dateBegin,jdbcType=TIMESTAMP}
+			and create_date <= #{dateEnd,jdbcType=TIMESTAMP}
+			and del_flag = '0'
+			group by video_id
+		) b on a.id=b.video_id
+		where a.del_flag='0'
+		]]>
+	</select>
+
+	<select id="statisticDailyCommentCount" resultType="com.jf.entity.dto.SimpleCountDTO">
+ <![CDATA[
+		select a.id,ifnull(b.totalCount,0) as totalCount
+		from bu_video a
+		left join (
+			select video_id,count(video_id) as totalCount
+			from bu_video_comment
+			where create_date >= #{dateBegin,jdbcType=TIMESTAMP}
+			and create_date <= #{dateEnd,jdbcType=TIMESTAMP}
+			and del_flag = '0'
+			group by video_id
+		) b on a.id=b.video_id
+		where a.del_flag='0'
+		]]>
+	</select>
+
+	<select id="statisticDailyCollectCount" resultType="com.jf.entity.dto.SimpleCountDTO">
+ <![CDATA[
+		select a.id,ifnull(b.totalCount,0) as totalCount
+		from bu_video a
+		left join (
+			select remind_id as video_id,count(remind_id) as totalCount
+			from bu_member_remind
+			where remind_type = '4'
+			and create_date >= #{dateBegin,jdbcType=TIMESTAMP}
+			and create_date <= #{dateEnd,jdbcType=TIMESTAMP}
+			and del_flag = '0'
+			group by remind_id
+		) b on a.id=b.video_id
+		where a.del_flag='0'
+		]]>
+	</select>
+
+	<select id="findPlayTop10Video" resultType="java.lang.Integer">
+ <![CDATA[
+        SELECT a.video_id FROM
+            (SELECT video_id,SUM(play_count) AS playCount
+            FROM bu_video_pv_statistical
+            WHERE statistical_date>=#{dateBegin}
+            AND statistical_date<=#{endDateStr}
+            AND del_flag="0"
+            GROUP BY video_id
+            ORDER BY playCount DESC
+            LIMIT 10) a
+		]]>
+	</select>
+
+    <select id="getTop10VideoLast7DayCount" resultType="com.jf.entity.dto.Top10VideoLast7DayCount">
+            SELECT SUM(play_count) as playCount,SUM(like_count) as likeCount,SUM(comment_count) as commentCount,SUM(collect_count) as collectCount
+            FROM bu_video_pv_statistical
+            <![CDATA[
+            WHERE statistical_date>=#{dateBegin}
+            AND statistical_date<=#{endDateStr}
+            ]]>
+            AND del_flag="0"
+            AND video_id IN
+            <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+                #{listItem}
+            </foreach>
+
+	</select>
+
+	<select id="countVideoLast7Day" resultType="com.jf.entity.VideoPvStatistical">
+        SELECT video_id,SUM(play_count) AS playCount,SUM(like_count) AS likeCount,SUM(comment_count) AS commentCount,SUM(collect_count) AS collectCount
+        FROM bu_video_pv_statistical
+		<![CDATA[
+            WHERE statistical_date>=#{dateBegin}
+            AND statistical_date<=#{endDateStr}
+            ]]>
+            AND del_flag="0"
+            group by video_id
+	</select>
+
+    <select id="findVideoSeasonAndManualWeight" resultType="com.jf.entity.dto.VideoWeightDTO">
+        SELECT v.id,max(pw.season_weight) as season_weight,v.manual_weicht as manual_weicht
+        FROM bu_video v
+        left join bu_video_product vp on v.id=vp.video_id
+        left join bu_product_weight pw on vp.product_id=pw.product_id
+        AND v.del_flag="0"
+        and vp.del_flag="0"
+        and pw.del_flag="0"
+        group by v.id
+	</select>
+</mapper>

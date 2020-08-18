@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberInfoCustom" extends="com.jf.dao.MemberInfoMapper.BaseResultMap">
+  </resultMap>
+  
+  <select id="getMemberFollowUser" parameterType="java.util.Map" resultType="com.jf.entity.MemberInfoCustom">
+  		select
+		b.nick,
+		b.pic,
+		b.sex_type,
+		b.invitation_member_id,
+		b.id,
+		b.reg_area,
+		a.shielding_dynamics,
+		<choose>
+			<when test="type == '4'.toString()">
+				(select count(1) from bu_member_attention ma1 where ma1.member_id = b.id and ma1.attention_member_id = #{currentLoginMemberId} and ma1.del_flag = '0') attentionMeNum,
+				(select count(1) from bu_member_attention ma2 where ma2.attention_member_id = b.id and ma2.member_id = #{currentLoginMemberId} and ma2.del_flag = '0') followNum
+			</when>
+			<otherwise>
+				(SELECT count(1) from bu_member_attention ma where ma.del_flag = '0' and ma.member_id = a.attention_member_id and ma.attention_member_id = #{memberId}) followNum
+			</otherwise>
+		</choose>
+		from bu_member_attention a,bu_member_info b
+		WHERE a.attention_member_id = b.id
+		and b.del_flag = '0'
+		and a.del_flag = '0'
+		and a.member_id = #{memberId}
+		<choose>
+			<when test="invitationMemberId != null and invitationMemberId != ''">
+				ORDER BY FIELD(a.attention_member_id ,#{invitationMemberId}) desc,a.update_date desc
+			</when>
+			<otherwise>
+				ORDER BY a.update_date desc
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="currentPage != null and pageSize != null">
+				limit #{currentPage},#{pageSize}
+			</when>
+			<otherwise>
+				limit 0,10
+			</otherwise>
+		</choose>
+  	</select>
+  	
+  	<select id="getMemberFansUser" parameterType="java.util.Map" resultType="com.jf.entity.MemberInfoCustom">
+  		select
+		b.nick,
+		b.pic,
+		b.sex_type,
+		b.invitation_member_id,
+		b.id,
+		b.reg_area,
+		<choose>
+			<when test="type == '5'.toString()">
+				(select count(1) from bu_member_attention ma1 where ma1.member_id = a.member_id and ma1.attention_member_id = #{currentLoginMemberId} and ma1.del_flag = '0') attentionMeNum,
+				(select count(1) from bu_member_attention ma2 where ma2.attention_member_id = a.member_id and ma2.member_id = #{currentLoginMemberId} and ma2.del_flag = '0') followNum
+			</when>
+			<otherwise>
+				(SELECT count(1) from bu_member_attention ma where ma.del_flag = '0' and ma.attention_member_id = a.member_id and ma.member_id = #{memberId}) followNum
+			</otherwise>
+		</choose>
+		
+		from bu_member_attention a,bu_member_info b
+		WHERE b.id = a.member_id
+		and b.del_flag = '0'
+		and a.del_flag = '0'
+		and a.attention_member_id = #{memberId}
+		<choose>
+			<when test="invitationMemberId != null and invitationMemberId != ''">
+				ORDER BY FIELD(a.member_id ,#{invitationMemberId}) desc,a.update_date desc
+			</when>
+			<otherwise>
+				ORDER BY a.update_date desc
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="currentPage != null and pageSize != null">
+				limit #{currentPage},#{pageSize}
+			</when>
+			<otherwise>
+				limit 0,10
+			</otherwise>
+		</choose>
+  	</select>
+  	
+  	<select id="getMemberRecommendUser" parameterType="java.util.Map" resultType="com.jf.entity.MemberInfoCustom">
+  		select
+  		a.id,
+		a.nick,
+		a.pic,
+		a.sex_type,
+		a.reg_area,
+		(select COUNT(1) from bu_combine_order co where co.member_id = a.id and co.`status` = '1' and co.del_flag = '0') payOrderCount
+		from bu_member_info a
+		where a.invitation_member_id = #{memberId}
+		ORDER BY a.invitation_code_bind_time desc
+		<choose>
+			<when test="currentPage != null and pageSize != null">
+				limit #{currentPage},#{pageSize}
+			</when>
+			<otherwise>
+				limit 0,10
+			</otherwise>
+		</choose>
+  	</select>
+</mapper>

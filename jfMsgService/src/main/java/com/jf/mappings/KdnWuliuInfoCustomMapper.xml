@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.KdnWuliuInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.KdnWuliuInfoCustom"  extends="com.jf.dao.KdnWuliuInfoMapper.BaseResultMap">
+    <result column="expressCompany" property="expressCompany" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getExpressInfo" parameterType="java.util.Map" resultType="com.jf.entity.KdnWuliuInfoCustom">
+  		select
+		kdn.tract_info,
+		kdn.status,
+		kdn.subscribe_status,
+		exp.name as expressCompany
+		from bu_kdn_wuliu_info kdn
+		left join bu_express exp on exp.id = kdn.express_id
+		where kdn.del_flag = '0'
+		and exp.del_flag = '0'
+		and kdn.logistic_code = #{expressNo}
+		<if test="expressId != null and expressId != ''">
+			and kdn.express_id = #{expressId}
+		</if>
+  	</select>
+  	
+  	<select id="getKdnLogisticsInfo" parameterType="java.util.Map" resultType="com.jf.entity.KdnWuliuInfoCustom">
+		select
+		kdn.tract_info,
+		kdn.status,
+		kdn.logistic_code,
+		kdn.subscribe_status,
+		kdn.merchant_code,
+		exp.name as expressCompany,
+		exp.kdn_code as kdnCode
+		from bu_kdn_wuliu_info kdn
+		left join bu_express exp on exp.id = kdn.express_id
+		where kdn.del_flag = '0'
+		and exp.del_flag = '0'
+		and kdn.subscribe_status = '1'
+		and kdn.try_times <![CDATA[ < ]]> 5
+		and kdn.status='0'
+		and kdn.create_date &gt;= date_sub(now(),interval 5 DAY)
+		and kdn.create_date &lt;= date_sub(now(),interval 1 DAY)
+		order by kdn.subscribe_time
+	</select>
+  	
+  	<select id="getKdnLogisticsInfoByDate" parameterType="java.util.Map" resultType="com.jf.entity.KdnWuliuInfoCustom">
+		select
+		kdn.tract_info,
+		kdn.status,
+		kdn.logistic_code,
+		kdn.subscribe_status,
+		exp.name as expressCompany,
+		exp.kdn_code as kdnCode
+		from bu_kdn_wuliu_info kdn
+		left join bu_express exp on exp.id = kdn.express_id
+		where kdn.del_flag = '0'
+		and exp.del_flag = '0'
+		and kdn.subscribe_status = '1'
+		and kdn.status='0'
+		and kdn.create_date &gt;= #{beginDate,jdbcType=TIMESTAMP}
+		and kdn.create_date &lt;= #{endDate,jdbcType=TIMESTAMP}
+  	</select>
+
+  	<select id="findSelectByZZYList" parameterType="java.util.Map" resultType="com.jf.entity.dto.ZzySubscribeDTO">
+		SELECT
+			kwi.id,
+			( SELECT e.zzy_code FROM bu_express e WHERE e.del_flag = '0' AND id = kwi.express_id ) expressCompanyCode,
+			kwi.logistic_code expressCode
+		FROM
+			bu_kdn_wuliu_info kwi
+		WHERE
+			kwi.del_flag = '0'
+			AND kwi.create_date <![CDATA[ >= ]]> #{createDate}
+			AND kwi.try_times <![CDATA[ >= ]]> #{tryTimes}
+            <if test="subscribeStatus != null and subscribeStatus != ''">
+                AND kwi.subscribe_status = #{subscribeStatus}
+            </if>
+			AND kwi.STATUS IN ( '0', '1', '2', '201' )
+			AND NOT EXISTS (
+				SELECT
+					id
+				FROM
+					bu_kdn_wuliu_info kdn
+				WHERE
+					kdn.id = kwi.id
+					AND kdn.try_times = 8
+					AND kdn.subscribe_status = '0'
+					AND kdn.tract_info IS NULL
+					AND kdn.STATUS = '0'
+			)
+  	</select>
+
+	<select id="findZZYBatchSubscribeList" parameterType="java.util.Map" resultType="String">
+		SELECT
+		kwi.logistic_code
+		FROM
+		bu_kdn_wuliu_info kwi
+		WHERE
+		kwi.del_flag = '0'
+		AND kwi.create_date <![CDATA[ >= ]]> #{createDate}
+		<if test="subscribeStatus != null and subscribeStatus != ''">
+			AND kwi.subscribe_status = #{subscribeStatus}
+		</if>
+		<if test="expressId != null and expressId != ''">
+			AND kwi.express_id = #{expressId}
+		</if>
+		AND kwi.STATUS IN ( '0', '1', '2', '201' )
+	</select>
+
+	<select id="findZZyBatchQuertList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		kwi.zzy_task_name AS zzyTag,
+		kwi.express_id AS expressId
+		FROM
+		bu_kdn_wuliu_info kwi
+		WHERE
+		kwi.del_flag = '0'
+		AND kwi.create_date <![CDATA[ >= ]]> #{createDate}
+		<if test="subscribeStatus != null and subscribeStatus != ''">
+			AND kwi.subscribe_status = #{subscribeStatus}
+		</if>
+		AND kwi.zzy_task_name IS NOT NULL
+		AND kwi.STATUS IN ( '0', '1', '2', '201' )
+		GROUP BY
+		kwi.zzy_task_name
+	</select>
+
+	<update id="updateKdnByExample" parameterType="java.util.Map" >
+		update bu_kdn_wuliu_info
+		set
+		<if test="subscribeStatus != null and subscribeStatus != ''">
+		   subscribe_status = #{subscribeStatus},
+		</if>
+		<if test="subscribeFailedReason != null and subscribeFailedReason != ''">
+            subscribe_failed_reason = #{subscribeFailedReason},
+		</if>
+		<if test="subscribeTime != null and subscribeTime != ''">
+			subscribe_time = #{subscribeTime},
+		</if>
+		<if test="status != null and status != ''">
+			status = #{status},
+		</if>
+		<if test="tractInfo != null and tractInfo != ''">
+			tract_info = #{tractInfo},
+		</if>
+		<if test="zzyTag != null and zzyTag != ''">
+			zzy_task_name = #{zzyTag},
+		</if>
+		<if test="tractInfoSource != null and tractInfoSource != ''">
+			tract_info_source = #{tractInfoSource},
+		</if>
+		<if test="tryTimes != null and tryTimes != ''">
+			try_times = #{tryTimes},
+		</if>
+		<if test="tryTimesAuto != null and tryTimesAuto != ''">
+			try_times = try_times+1,
+		</if>
+        update_by = #{updateBy},
+        update_date = #{updateDate}
+		where
+			1 = 1
+		<if test="kdnId != null and kdnId != ''">
+			and id = #{kdnId}
+		</if>
+		<if test="expressId != null and expressId != ''">
+			and express_id = #{expressId}
+		</if>
+		<if test="expressNo != null and expressNo != ''">
+			and logistic_code = #{expressNo}
+		</if>
+		<if test="zzyTagEqualsTo != null and zzyTagEqualsTo != ''">
+			and zzy_task_name = #{zzyTagEqualsTo}
+		</if>
+		<if test="logisticCodes != null and logisticCodes.size > 0">
+			and logistic_code in
+			<foreach collection="logisticCodes" item="logisticCode" open="(" close=")" separator="," >
+				#{logisticCode}
+			</foreach>
+		</if>
+	</update>
+</mapper>

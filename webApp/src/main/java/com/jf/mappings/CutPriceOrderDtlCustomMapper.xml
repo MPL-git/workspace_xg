@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CutPriceOrderDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CutPriceOrderDtlCustom" extends="com.jf.dao.CutPriceOrderDtlMapper.BaseResultMap">
+  
+  </resultMap>
+  
+  <select id="getMemberCutOrderDtlList" parameterType="java.util.Map" resultType="CutPriceOrderDtlCustom">
+  		select
+		dtl.amount,
+		dtl.member_id,
+		m.nick,
+		m.weixin_head as weixinHead,
+		m.pic
+		from bu_cut_price_order_dtl dtl,bu_member_info m
+		where dtl.member_id = m.id
+		and dtl.cut_price_order_id = #{cutOrderId}
+		and dtl.del_flag = '0'
+		and m.del_flag = '0'
+		order by dtl.id desc
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	<select id="getAlreadyInvitedCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select count(1) from bu_cut_price_order co,bu_cut_price_order_dtl dtl
+		where co.id = dtl.cut_price_order_id
+		and co.del_flag = '0'
+		and co.activity_type = #{activityType}
+		and dtl.del_flag = '0'
+		<if test="type != null and type == '1'.toString()">
+			and dtl.status = '1'
+		</if>
+		<if test="mIds != null">
+			and dtl.member_id in
+			<foreach collection="mIds" index="index" item="memberId" open="(" separator="," close=")">
+		             #{memberId}
+		     </foreach>
+		</if>
+		<if test="cutOrderId != null and cutOrderId != ''">
+			and co.id = #{cutOrderId}
+		</if>
+  	</select>
+
+	<select id="findMemberAssistanceLog" resultType="com.jf.entity.CutPriceOrderDtl">
+		select cpod.*
+		from bu_cut_price_order_dtl cpod
+		left join bu_cut_price_order cpo on cpod.cut_price_order_id =cpo.id
+		where cpod.member_id=#{memberId} and cpo.activity_type =10 and cpod.del_flag='0' and cpo.del_flag = '0'
+	</select>
+  	
+  	<select id="getInviteDetail" parameterType="java.util.Map" resultType="CutPriceOrderDtlCustom">
+  		select
+		dtl.status,
+		dtl.member_id,
+		mi.weixin_head as weixinHead,
+		mi.pic,
+		mi.nick,
+		dtl.amount,
+		dtl.create_date
+		from bu_cut_price_order co,bu_cut_price_order_dtl dtl,bu_member_info mi
+		where co.id = dtl.cut_price_order_id and dtl.member_id = mi.id
+		and co.del_flag = '0'
+		and dtl.del_flag = '0'
+		and mi.del_flag = '0'
+		and co.activity_type = #{activityType}
+		and co.id = #{cutOrderId}
+		<if test="memberId != null and memberId != ''">
+			and co.member_id = #{memberId}
+		</if>
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getCutPriceOrderDtlModelByOrderId" parameterType="int" resultType="CutPriceOrderDtl">
+  		select
+		dtl.*
+		from bu_cut_price_order_dtl dtl
+		where dtl.del_flag = '0'
+		and dtl.cut_price_order_id = #{cutOrderId}
+  	</select>
+</mapper>

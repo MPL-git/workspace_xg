@@ -1,0 +1,305 @@
+body {
+    margin: 0;
+    padding: 0;
+
+}
+
+.containers {
+    width: 500px;
+    margin: 0 auto;
+}
+
+.red {
+    background: rgb(255, 80, 80);
+}
+
+.red-color {
+    color: rgb(255, 80, 80);
+}
+
+.c9 {
+    color: #999;
+    font-size: 20px;
+    display: inline-block;
+    margin: 0px 10px;
+}
+
+.naiKe {
+    margin: 0 auto;
+    width: 750px;
+    position: relative;
+    -webkit-transform: scale(.666666);
+    transform: scale(.666666);
+    -webkit-transform-origin: top left;
+    transform-origin: top left;
+}
+
+.naiKe nav img {
+    opacity: 0.4;
+}
+
+.naiKe header {
+    height: 400px;
+    background-image: url('../img/jia.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.naiKe nav img {
+    width: 750px;
+    height: 131px;
+}
+
+.naiKe .headImg {
+    margin-top: 66px;
+    position: relative;
+}
+
+.naiKe .headImg .shopImg {
+    width: 103px;
+    height: 103px;
+    display: inline-block;
+    margin: 20px;
+}
+
+.naiKe .headImg .shopImg img {
+    width: 100%;
+    height: 100%;
+}
+
+.naiKe .headImg .title {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+}
+
+.naiKe .headImg .title .kefu {
+    width: 90px;
+    height: 35px;
+    background: #999;
+    color: aliceblue;
+    text-align: center;
+    font-size: 25px;
+    border-radius: 20px;
+    line-height: 35px;
+    display: inline-block;
+}
+
+.naiKe .headImg .title .shoucang {
+    width: 90px;
+    height: 35px;
+    background: rgb(255, 80, 80);
+    color: aliceblue;
+    text-align: center;
+    font-size: 25px;
+    border-radius: 20px;
+    line-height: 35px;
+    display: inline-block;
+}
+
+.tab {
+    height: 85px;
+    width: 100%;
+    text-align: center;
+    line-height: 85px;
+}
+
+.tab ul {
+    list-style: none;
+}
+
+.tab ul li {
+    display: inline-block;
+    margin: 0px 70px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.tab ul li:nth-child(1) {
+    margin-left: 0px;
+    color: rgb(255, 80, 80)
+}
+
+.tab ul li:nth-child(1) h2 {
+    height: 40px;
+    border-bottom: 4px rgb(255, 80, 80) solid;
+}
+
+.naiKe .main {
+    background-color: rgb(245, 245, 244);
+    position: relative;
+    overflow-y: auto;
+    height: 1100px;
+}
+
+.main .shangpin {
+    margin: 10px 10px 10px 5px;
+    width: 341px;
+    background-color: #fff;
+    display: inline-block;
+}
+.main .shangpin .shangpinImg {
+    width: 341px;
+    height: 320px;
+}
+
+.main .shangpin .shangpinImg img {
+    width: 100%;
+    height: 100%;
+}
+
+.main .shangpin .shangpinName {
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    margin-left: 20px;
+}
+
+.main .shangpin .shangpinName .biaoqian {
+    width: 80px;
+    height: 36px;
+    margin: 20px 20px 10px 0px;
+    background-color: rgb(255, 216, 73);
+    font-size: 20px;
+    text-align: center;
+    line-height: 36px;
+    display: inline-block;
+}
+
+.main .shangpin .shangpinName span {
+    font-size: 25px;
+}
+
+.main .price {
+    margin: 20px;
+}
+
+.main .price .shopPrice {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.main .price .shopActive {
+    width: 100px;
+    height: 25px;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 20px;
+    line-height: 25px;
+    display: inline-block;
+    border: 1px solid rgb(255, 80, 80)
+}
+.shopLogoImg{
+   border-radius: 50%;
+}
+.main .shopPingjia {
+    padding: 0 20px 20px;
+    color: #999;
+    font-size: 20px;
+}
+
+.pr20 {
+    padding-right: 20px;
+}
+
+.main .youhui {
+    height: 90px;
+    line-height: 90px;
+    padding-left: 20px;
+    font-size: 20px;
+    background-color: rgb(255, 239, 239);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: rgb(255, 80, 80)
+}
+
+.foot {
+    height: 150px;
+    width: 750px;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    position: fixed;
+    bottom: -150px;
+}
+
+.foot img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.foot .shopimg {
+    width: 72px;
+    height: 72px;
+    margin: 0 56px;
+    flex-direction: column;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.foot .gouwu {
+    width: 72px;
+    height: 55px;
+}
+
+.foot .shopimg span {
+    display: block;
+    width: 90px;
+}
+
+.main .module-header {
+    width: 100%;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.module-header button {
+    width: 120px;
+    height: 40px;
+    font-size: 20px;
+    text-align: center;
+    margin: 0 20px;
+}
+
+.module-header button:nth-child(3) {
+    margin-left: 95px;
+}
+
+.textSpan {
+    width: 100%;
+    text-align: center;
+    margin: 200px auto;
+    font-size: 30px;
+    display: inline-block;
+}
+
+.textFoot {
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    position: absolute;
+    bottom: 0;
+}
+
+.module-header {
+    position: relative;
+}
+
+.module-header .btns-img {
+    position: absolute;
+    top: 0;
+}
+
+
+
+
+     
+       

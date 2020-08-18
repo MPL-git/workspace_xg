@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtShopDynamicCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtShopDynamicCustom"  extends="com.jf.dao.MchtShopDynamicMapper.BaseResultMap">
+  	<result column="product_codes" property="productCodes" jdbcType="VARCHAR" />
+  	<result column="creater" property="creator" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    t.*,
+	(SELECT GROUP_CONCAT(p.code SEPARATOR ',') FROM bu_product p WHERE p.del_flag='0' AND FIND_IN_SET(p.id,t.product_ids)) product_codes,
+	(SELECT u.user_name FROM `bu_mcht_user` u WHERE u.id = t.create_by) creater,
+	(SELECT u.user_code FROM `bu_mcht_user` u WHERE u.id = t.create_by) creat_code,
+	(SELECT STAFF_NAME FROM sys_staff_info s WHERE s.STAFF_ID = t.audit_by) staff_name
+  </sql>
+  
+  <select id="countByExample" parameterType="com.jf.entity.MchtShopDynamicCustomExample" resultType="java.lang.Integer" >
+    select count(id) from bu_mcht_shop_dynamic t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="setProductIdsNull" parameterType="java.lang.Integer" >
+  	UPDATE `bu_mcht_shop_dynamic` SET `product_ids` = null  
+  	 <if test="_parameter!=null and _parameter!=''">
+            WHERE `id` = ${_parameter};
+        </if>
+  </select>
+  
+  
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtShopDynamicCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_shop_dynamic t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+</mapper>

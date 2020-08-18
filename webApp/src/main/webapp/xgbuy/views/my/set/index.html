@@ -1,0 +1,120 @@
+<div class="page set flex dc" data-id="my_set">
+	<link rel="stylesheet" href="my/set/index.css?var=1.0">
+	<link rel="stylesheet" href="../static/js/need/MultiPicker.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="getUrl('my/index.html','self')"></i></div>
+		<!-- <div class="flex fn"><i class="back ico-btn" onclick="back(false, true)"></i></div> -->
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y content"></div>
+
+	<div class="popup alert-tip popup-sex" onclick="closeSelf(this)">
+		<div class="popup-center" onclick="stopSelf()">
+			<div data-type="1" class="flex ac jb">男</div>
+			<div data-type="0" class="flex ac jb">女</div>
+		</div>
+	</div>
+	<div id="targetContainer2"></div>
+
+	<script id="my_set_list" type="text/html">
+		<figure>
+			<a class="flex ac jb set-self-pic">
+				<span>头像</span>
+				<div class="flex ac">
+					<img src="{{returnData.pic}}">
+					<i class="ico arrow-r fn"></i>
+				</div>
+			</a>
+			<input type="file" accept="image/gif,image/jpg,image/jpeg,image/bmp,image/png" onchange="selfPicChange(this)">
+		</figure>
+
+		<a class="flex ac jb" onclick="getUrl('register/nick/index.html')">
+			<span>昵称</span>
+			<div class="flex ac">
+				<b class="elps w550">{{returnData.nick}}</b>
+				<i class="ico arrow-r"></i>
+			</div>
+		</a>
+
+		{{if returnData.isWeiXin}}
+		<a class="flex ac jb" onclick="reBindingWx('{{returnData.weixinUnionid}}')">
+			<span>微信</span>
+			{{if returnData.isHasBindingWx}}
+			<div class="flex ac">
+				<b>(更换绑定)</b>
+				{{else}}
+				<div class="flex ac">
+					<b>未关联</b>
+					{{/if}}
+					<i class="ico arrow-r"></i>
+				</div>
+		</a>
+		{{/if}}
+
+		<a class="flex ac jb" onclick="getUrl('register/mobile/index.html')">
+			{{if returnData.mobile}}
+			<span>更换绑定手机</span>
+			<div class="flex ac">
+				<b>{{returnData.mobile}}</b>
+				{{else}}
+				<span>绑定手机</span>
+				<div class="flex ac">
+					<b>未绑定</b>
+					{{/if}}
+					<i class="ico arrow-r"></i>
+				</div>
+		</a>
+
+		<a class="flex ac jb set-self-sex">
+			<span>性别</span>
+			<div class="flex ac">
+				<b data-type="{{returnData.sexType}}">
+					{{if returnData.sexType == 1}}男{{/if}}
+					{{if returnData.sexType == 0}}女{{/if}}
+				</b>
+				<i class="ico arrow-r"></i>
+			</div>
+		</a>
+
+		<label class="flex ac jb set-self-bir" for="my_set_bir">
+			<span>生日</span>
+			<div class="flex ac">
+				{{if returnData.birthday}}
+				<input type="date" id="my_set_bir" value="{{returnData.birthday}}">
+				{{else}}
+				<input type="date" id="my_set_bir" value="">
+					{{/if}}
+					<i class="ico arrow-r fn"></i>
+			</div>
+		</label>
+
+		{{if returnData.isHasPwd != true}}
+		<a class="flex ac jb" onclick="registerRevise(1)">
+			<span>设置密码</span>
+			{{else}}
+			<a class="flex ac jb" onclick="registerRevise()">
+				<span>修改密码</span>
+				{{/if}}
+				<i class="ico arrow-r"></i>
+			</a>
+			<figure>
+				<a class="flex ac jb">
+					<span onclick="">省市</span>
+					<div class="flex ac">
+						<b>{{returnData.regArea}}</b>
+						<i class="ico arrow-r"></i>
+					</div>
+				</a>
+				<input type="text" id="multiPickerInput2" readonly="readonly">
+			</figure>
+
+			{{if !returnData.isApp}}
+			<input class="btn-submit" type="button" value="退出" onclick="outLogin()">
+			{{/if}}
+	</script>
+
+	<script src="my/set/index.js?var=1.1" async></script>
+</div>

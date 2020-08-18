@@ -1,0 +1,20 @@
+.activity-brand .common-activity-con {
+	padding-top: .2rem;
+}
+.activity-brand .common-activity-con dt {
+	overflow: hidden;
+	height: 3.75rem;
+}
+.activity-brand .common-activity-con dd {
+	overflow: hidden;
+	height: .8rem;
+	padding: .2rem;
+	background: #fff;
+}
+.activity-brand .common-activity-con dd img {
+	width: 1.2rem;
+	margin-right: .2rem;
+}
+.activity-brand .common-activity-con p {
+	max-width: 4.3rem;
+}

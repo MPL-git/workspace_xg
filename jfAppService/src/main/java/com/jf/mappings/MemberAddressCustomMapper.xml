@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberAddressCustomMapper" >
+<resultMap id="BaseResultCustomMap" type="com.jf.entity.MemberAddressCustom" extends="com.jf.dao.MemberAddressMapper.BaseResultMap" >
+	<result column="provinceName" property="provinceName" jdbcType="VARCHAR" />
+	<result column="cityName" property="cityName" jdbcType="VARCHAR" />
+	<result column="countyName" property="countyName" jdbcType="VARCHAR" />
+	<result column="fullAddressName" property="fullAddressName" jdbcType="VARCHAR" />
+</resultMap>
+  	<update id="updateDefaultAddressByMemberId" parameterType="java.lang.Integer" >
+  		update bu_member_address addr set addr.is_primary = 'N'
+  		where addr.member_id = #{memberId,jdbcType=INTEGER}
+  	</update>
+  	
+  	<update id="updateDefaultAddressById" parameterType="java.lang.Integer" >
+  		update bu_member_address addr set addr.is_primary = 'Y'
+  		where addr.id = #{id,jdbcType=INTEGER}
+  	</update>
+  	
+  	<select id="getMemberAddressList" parameterType="java.util.Map" resultType="com.jf.entity.MemberAddressCustom">
+  		select 
+		addr.id,
+		addr.phone,
+		addr.recipient,
+		addr.address,
+		addr.is_primary,
+		addr.province,
+		province.AREA_NAME as provinceName,
+		addr.city,
+		city.AREA_NAME as cityName,
+		addr.county,
+		county.AREA_NAME as countyName
+		from bu_member_address addr
+		left join bu_p_area province on province.AREA_ID = addr.province
+		left join bu_p_area city on city.AREA_ID = addr.city
+		left join bu_p_area county on county.AREA_ID = addr.county
+		where addr.del_flag = '0'
+		and addr.member_id = #{memberId}
+		order by addr.is_primary desc,id desc
+		limit #{currentPage} , #{pageSize} 
+  	</select>
+  	
+  	<select id="getMemberAddressCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select count(*)
+		from bu_member_address addr
+		left join bu_p_area province on province.AREA_ID = addr.province
+		left join bu_p_area city on city.AREA_ID = addr.city
+		left join bu_p_area county on county.AREA_ID = addr.county
+		where 
+		addr.del_flag = '0'
+		and addr.member_id = #{memberId}
+  	</select>
+  	
+  	
+  	<select id="getAddressByMemberId" parameterType="java.util.Map" resultType="com.jf.entity.MemberAddressCustom">
+  		select 
+		addr.id,
+		addr.phone,
+		addr.recipient,
+		addr.address,
+		addr.is_primary,
+		addr.province,
+		province.AREA_NAME as provinceName,
+		addr.city,
+		city.AREA_NAME as cityName,
+		addr.county,
+		county.AREA_NAME as countyName
+		from bu_member_address addr
+		left join bu_p_area province on province.AREA_ID = addr.province
+		left join bu_p_area city on city.AREA_ID = addr.city
+		left join bu_p_area county on county.AREA_ID = addr.county
+		where addr.del_flag = '0'
+		and addr.member_id = #{memberId}
+		<choose>
+			<when test="addressId != null and addressId != ''">
+				and addr.id = #{addressId}
+			</when>
+			<otherwise>
+				and addr.is_primary = 'Y'
+			</otherwise>
+		</choose>
+		limit 1
+  	</select>
+  	
+  	<select id="getAddressById" parameterType="java.util.Map" resultType="com.jf.entity.MemberAddressCustom">
+  		select 
+		addr.id,
+		addr.phone,
+		addr.recipient,
+		addr.address,
+		addr.is_primary,
+		addr.province,
+		province.area_name as provinceName,
+		FUN_GET_ADDRESS_NAME(addr.id) as fullAddressName
+		from bu_member_address addr
+		left join bu_p_area province on province.AREA_ID = addr.province
+		left join bu_p_area city on city.AREA_ID = addr.city
+		left join bu_p_area county on county.AREA_ID = addr.county
+		where addr.del_flag = '0'
+		and addr.member_id = #{memberId}
+		and addr.id = #{addressId}
+		limit 1
+  	</select>
+</mapper>

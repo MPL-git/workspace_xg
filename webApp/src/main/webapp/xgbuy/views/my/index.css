@@ -1,0 +1,444 @@
+.my .row {
+	background: #fff;
+}
+
+.my .row a span {
+	font-size: .26rem;
+	color: #999;
+}
+
+.my .row a i {
+	margin-left: .1rem;
+}
+
+.my .my-top {
+	height: 2rem;
+}
+
+.my .my-top a {
+	width: 100%;
+	padding: 0 .3rem;
+}
+
+.my .my-top dt {
+	width: 1.2rem;
+	height: 1.2rem;
+	margin-right: .2rem;
+	border-radius: 100%;
+}
+
+.my .my-top h3 {
+	max-width: 5rem;
+	margin-bottom: .1rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+
+.my .my-top a span {
+	height: .28rem;
+	padding: 0 .14rem;
+	font-size: .18rem;
+	line-height: .22rem;
+	border-radius: .14rem;
+	background: #ddd;
+	color: #666;
+}
+
+.novaplan-yq {
+	height: .28rem;
+	margin-left: .1rem;
+	font-size: .2rem;
+}
+
+.my .row-1>a {
+	padding: 0 .3rem;
+	height: .8rem;
+	font-size: .3rem;
+	border-bottom: 1px solid #eee;
+}
+
+.my .row-1>div {
+	height: 1.38rem;
+}
+
+.my .row-1>div a {
+	position: relative;
+	padding-top: .3rem;
+	text-align: center;
+	font-size: .24rem;
+}
+
+.my .row-1 .ico-radius {
+	top: .13rem;
+	right: .4rem;
+}
+
+.my .row-1>div a:before {
+	display: block;
+	content: '';
+	width: .38rem;
+	height: .34rem;
+	margin: 0 auto .2rem;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+}
+
+.my .row-1>div a.pay:before {
+	background-image: url(resources/order-pay.png);
+}
+
+.my .row-1>div a.deliver:before {
+	background-image: url(resources/order-deliver.png);
+}
+
+.my .row-1>div a.received:before {
+	background-image: url(resources/order-received.png);
+}
+
+.my .row-1>div a.refunds:before {
+	background-image: url(resources/order-refunds.png);
+}
+
+.my .row-1>div a.evalua:before {
+	background-image: url(resources/order-evalua.png);
+}
+
+.my .row-1>div a:active {
+	background: rgba(0, 0, 0, .1);
+	color: #ff6060;
+}
+
+.my .row-2 {
+	padding-top: .3rem;
+	font-size: .22rem;
+}
+
+.my .row-2 a {
+	width: 20%;
+	line-height: .38rem;
+	text-align: center;
+	margin-bottom: .22rem;
+}
+
+.my .row-2 .ico-radius {
+	top: 0;
+	right: 50%;
+	width: auto;
+	min-width: .28rem;
+	height: .28rem;
+	padding: 0 .03rem;
+	margin-right: -.43rem;
+	border-radius: .14rem;
+	font-size: .2rem;
+}
+
+.my .row-2 a div:before {
+	content: '';
+	width: .5rem;
+	height: .66rem;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: .36rem .36rem;
+}
+
+.my .row-2 a div.remind:before {
+	background-image: url(resources/my-remind.png);
+	background-size: .47rem .44rem;
+}
+
+.my .row-2 a div.history:before {
+	background-image: url(resources/my-history.png);
+	background-size: .38rem .44rem;
+}
+
+.my .row-2 a div.address:before {
+	background-image: url(resources/my-address.png);
+	background-size: .38rem .48rem;
+}
+
+.my .row-2 a div.coupon:before {
+	background-image: url(resources/my-coupon.png);
+	background-size: .5rem .38rem;
+}
+
+.my .row-2 a div.integral:before {
+	background-image: url(resources/my-integral.png);
+	background-size: .49rem .42rem;
+}
+
+.my .row-2 a div.set:before {
+	background-image: url(resources/my-set.png);
+	background-size: .32rem .36rem;
+}
+
+.my .row-2 a div.about:before {
+	background-image: url(resources/my-about.png);
+	background-size: .39rem .34rem;
+}
+
+.my .row-2 a div.app:before {
+	background-image: url(resources/my-share.png);
+	background-size: .34rem .33rem;
+}
+
+.my .row-2 a div.server:before {
+	background-image: url(resources/my-server.png);
+}
+
+.my .row-2 a div.customer:before {
+	background-image: url(resources/my-customer.png);
+	background-size: .38rem .38rem;
+}
+
+.my .row-2 a div.my-opinion:before {
+	background-image: url(resources/my-opinion.png);
+	background-size: .34rem .36rem;
+}
+
+.my .row-2 a div.help:before {
+	background-image: url(resources/my-help.png);
+}
+
+.my .row-2 a div.settled:before {
+	background-image: url(resources/my-settled.png);
+	background-size: .38rem .36rem;
+}
+
+.my .row-2 a div.rule:before {
+	background-image: url(resources/my-rule.png);
+	background-size: .3rem .36rem;
+}
+
+.my .row-2 a div.novaplan:before {
+	background-image: url(resources/my-novaplan.png);
+	background-size: .64rem .64rem;
+}
+
+/*推荐/关注*/
+.my-nova .tab-top {
+	height: .88rem;
+}
+
+.my-nova .tab-top a {
+	padding: 0 .31rem;
+}
+
+.my-nova .tab-top .active {
+	font-weight: bold;
+}
+
+.my-nova li {
+	background: #fff;
+}
+
+.my-nova dl {
+	padding: .2rem .3rem;
+}
+
+.my-nova dt {
+	width: .8rem;
+	height: .8rem;
+	margin-right: .2rem;
+	border-radius: 100%;
+}
+
+.my-nova dd>.flex {
+	height: .4rem;
+}
+
+.my-nova h3 {
+	min-width: 5.94rem;
+	font-size: .28rem;
+	font-weight: bold;
+}
+
+.my-nova .bg-head-sec {
+	width: 1.5rem;
+}
+
+.my-nova .bg-head-sec-f {
+	width: 3.06rem;
+}
+
+.my-nova dd div {
+	font-size: .22rem;
+}
+
+.my-nova dd p {
+	font-size: .24rem;
+}
+
+.my-nova dd p span {
+	max-width: 3.1rem;
+}
+
+.my-nova .turn-from {
+	max-width: 2.5rem;
+	white-space: nowrap;
+}
+
+.my-nova .btn-1 {
+	width: .94rem;
+	height: .44rem;
+	border: .02rem solid rgba(255, 80, 80, 1);
+	border-radius: .22rem;
+	color: rgba(255, 80, 80, 1);
+	font-size: .24rem;
+}
+
+.my-nova .btn-2 img {
+	width: .22rem;
+	height: .13rem;
+	margin-left: .30rem;
+
+}
+
+.my-nova .col-2,
+.my-nova .col-3 {
+	padding: 0 .30rem;
+	margin-bottom: .30rem;
+	word-break: break-all;
+	letter-spacing: .01rem;
+}
+
+.my-nova .col-2 {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+}
+
+.my-nova .col-2.clamp-3 {
+	-webkit-line-clamp: 3;
+}
+
+.my-nova .btn-row-1 {
+	color: rgba(31, 135, 252, 1);
+	margin-bottom: .34rem;
+	padding: 0 .30rem;
+}
+
+.my-nova .col-3 a {
+	width: 2.23rem;
+	height: 2.23rem;
+	margin: 0 0 .1rem .1rem;
+}
+
+.my-nova .col-3 a:nth-child(3n + 1) {
+	margin-left: 0;
+}
+
+.my-nova .footer {
+	height: .8rem;
+	font-size: .28rem;
+	padding: 0 .40rem;
+	color: rgba(51, 51, 51, 1);
+	border-top: 1px solid #eee;
+}
+
+.my-nova .footer .btn-group-left {
+	color: rgba(153, 153, 153, 1);
+}
+
+.my-nova .footer .btn-group-right a {
+	margin-left: .4rem;
+}
+
+.my-nova .footer a i {
+	width: .28rem;
+	height: .28rem;
+	margin-right: .1rem;
+	background-image: url(resources/share.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+.my-nova .footer .fabulous i {
+	background-image: url(resources/fabulous.png);
+}
+
+.my-nova .footer .fabulous-1 {
+	color: #ff5050;
+}
+
+.my-nova .footer .fabulous-1 i {
+	background-image: url(resources/fabulous-1.png);
+}
+
+.my .ico-back-top {
+	bottom: 1.5rem;
+}
+
+/* 动态操作弹窗框 */
+.popup-dynamic .head {
+	height: .80rem
+}
+
+.popup-dynamic .head img {
+	height: .19rem;
+	width: .38rem;
+}
+
+.popup-dynamic .foot {
+	height: 1.30rem;
+}
+
+.popup-dynamic .foot button {
+	width: 6.00rem;
+	height: .74rem;
+	background: rgba(221, 221, 221, 1);
+	border-radius: .37rem;
+}
+
+.popup-dynamic .con {
+	height: auto;
+}
+
+.popup-dynamic .con .li {
+	padding: .25rem;
+	border-bottom: .01rem solid rgba(238, 238, 238, 1);
+}
+
+.popup-dynamic .con .li:last-child {
+	border-bottom: none
+}
+
+.popup-dynamic .con .li img {
+	width: .80rem;
+	height: .80rem;
+	margin-right: .25rem;
+}
+
+.popup-dynamic .con .li .t1 {
+	font-size: .30rem;
+	font-weight: bold;
+	color: rgba(51, 51, 51, 1);
+}
+
+.popup-dynamic .con .li .t2 {
+	font-size: .22rem;
+	color: rgba(153, 153, 153, 1);
+	margin-top: .06rem;
+}
+
+/* 转发弹窗 */
+.popup-share-reduce .h4,
+.popup-share-reduce .foot {
+	height: .9rem;
+	font-size: .3rem;
+}
+
+.popup-share-reduce .foot {
+	font-size: .32rem;
+	border-top: 1px solid #eee;
+}
+
+.popup-share-reduce .share-bt {
+	padding: .09rem 0 .40rem;
+}
+
+.popup-share-reduce .share-bt .wx-ico {
+	width: .9rem;
+	height: .9rem;
+}

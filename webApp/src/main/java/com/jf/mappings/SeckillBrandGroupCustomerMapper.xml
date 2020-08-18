@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SeckillBrandGroupCustomerMapper" >
+<resultMap id="BaseResultCustomMap" type="com.jf.entity.SeckillBrandGroupCustom" extends="com.jf.dao.SeckillBrandGroupMapper.BaseResultMap" >
+
+</resultMap>
+  	<select id="getSeckillBrandGroup" parameterType="java.util.Map" resultType="com.jf.entity.SeckillBrandGroup">
+  		select * from(
+  		select 
+		brandGroup.id,
+		brandGroup.entry_pic,
+		brandGroup.poster_pic,
+		brandGroup.name
+		from bu_seckill_brand_group brandGroup, 
+		bu_seckill_brand_group_product sbgp,
+		bu_single_product_activity single,
+		bu_product pro
+		where brandGroup.id = sbgp.seckill_brand_group_id 
+		and sbgp.single_product_activity_id = single.id
+		and single.product_id = pro.id and pro.status = '1' 
+		and single.seckill_type = #{seckillType}
+		and pro.audit_status = '2'	
+		and brandGroup.del_flag = '0' and sbgp.del_flag = '0' and single.del_flag = '0'
+		and brandGroup.status = '1'
+		and brandGroup.begin_time = FROM_UNIXTIME(#{beginTime})
+		order by brandGroup.id) apiA
+		group by apiA.id
+		having count(1) >= #{havingBy}
+		limit #{currentPage} ,#{pageSize}
+  	</select>
+</mapper>

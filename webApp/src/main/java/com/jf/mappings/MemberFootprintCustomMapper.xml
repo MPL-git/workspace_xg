@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberFootprintCustomMapper" >
+<resultMap id="BaseResultCustomMap" type="com.jf.entity.MemberFootprintCustom" extends="com.jf.dao.MemberFootprintMapper.BaseResultMap" >
+	<result column="tag_price" property="tagPrice" jdbcType="DECIMAL"/>
+	<result column="sale_price" property="salePrice" jdbcType="DECIMAL"/>
+	<result column="pic" property="pic" jdbcType="VARCHAR"/>
+	<result column="name" property="name" jdbcType="VARCHAR"/>
+</resultMap>
+  	<select id="getMemberFootprintList" parameterType="java.util.Map" resultType="com.jf.entity.MemberFootprintCustom">
+  		select bmf.id, 
+  		bmf.product_id, 
+  		bp.name, 
+		(select item.tag_price from bu_product_item item where item.del_flag = '0' and item.product_id = bp.id order by item.sale_price limit 1) as tag_price,
+		(select item.sale_price from bu_product_item item where item.del_flag = '0' and item.product_id = bp.id order by item.sale_price limit 1) as sale_price,
+		pic.pic as pic
+		from bu_product bp 
+		left join bu_member_footprint bmf on bp.id = bmf.product_id
+		left join bu_product_pic pic on pic.product_id = bp.id
+		where bmf.del_flag = '0' 
+		and pic.del_flag = '0'
+		and pic.is_default = '1'
+		and bmf.member_id = #{memberId}
+		AND NOT EXISTS(SELECT spa.id FROM bu_single_product_activity spa WHERE spa.product_id = bmf.product_id AND spa.status = '1' AND spa.`type` IN(7,8,10))
+		order by bmf.create_date desc
+		limit #{currentPage} , #{pageSize} 
+  	</select>
+
+	<select id="getMemberFootprintListCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1)
+		from bu_product bp
+		left join bu_member_footprint bmf on bp.id = bmf.product_id
+		left join bu_product_pic pic on pic.product_id = bp.id
+		where bmf.del_flag = '0'
+		and pic.del_flag = '0'
+		and pic.is_default = '1'
+		and FUN_GET_PRODUCT_ACTIVITY_STATUS(bp.id) in (2,3,4)
+		and bmf.member_id = #{memberId}
+		AND NOT EXISTS(SELECT spa.id FROM bu_single_product_activity spa WHERE spa.product_id = bmf.product_id AND spa.status = '1' AND spa.`type` IN(7,8,10))
+	</select>
+
+	<select id="findMemberRecentlyScanProductType3" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select distinct p.product_type_id
+		from bu_member_footprint bmf
+		left join bu_product p on bmf.product_id = p.id
+		where bmf.member_id = #{memberId} and bmf.create_date &gt;= DATE_SUB(CURDATE(), INTERVAL 90 DAY) and bmf.del_flag = '0'
+		and p.del_flag = 0
+		order by bmf.create_date desc
+		limit 5
+	</select>
+
+	<select id="findMemberFootprint" parameterType="java.util.Map" resultType="com.jf.entity.MemberFootprintCustom">
+		SELECT a.id,a.product_id,bp.name,
+			(CASE bp.sale_type
+				WHEN 1 THEN bp.min_tag_price
+				ELSE (SELECT item.tag_price FROM bu_product_item item WHERE item.id = bp.min_sale_price_item_id)
+				END) AS tag_price,
+			(CASE bp.sale_type
+				WHEN 1 THEN bp.min_mall_price
+				ELSE (SELECT item.sale_price FROM bu_product_item item WHERE item.id = bp.min_sale_price_item_id)
+				END) AS saleOrMallPrice,
+			(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = bp.id AND pic.del_flag = '0' AND pic.is_default = '1' LIMIT 1) AS pic
+		FROM (
+			SELECT bmf.id,bmf.product_id
+			FROM bu_member_footprint bmf
+			LEFT JOIN bu_product p ON bmf.product_id = p.id
+			LEFT JOIN bu_mcht_info mi ON p.mcht_id = mi.id
+			LEFT JOIN bu_product_brand pb ON p.brand_id = pb.id
+			LEFT JOIN bu_mcht_product_brand mpb ON p.brand_id = mpb.product_brand_id AND mpb.mcht_id = mi.id
+			WHERE bmf.id IN (SELECT d.id FROM (SELECT id FROM bu_member_footprint WHERE member_id = #{memberId} ORDER BY update_date DESC LIMIT 1000) d)
+			AND p.del_flag = '0' AND p.status = '1' AND p.audit_status = '2' AND mi.del_flag = '0' AND mi.status = '1'
+			AND pb.del_flag = '0' AND pb.status = '1' AND mpb.del_flag ='0' AND mpb.status = '1' AND mpb.audit_status = '3'
+			AND bmf.product_id != #{currentProductId}
+			AND NOT EXISTS(SELECT spa.id FROM bu_single_product_activity spa WHERE spa.product_id = bmf.product_id AND spa.status = '1' AND spa.`type` IN(7,8,10))
+			GROUP BY bmf.product_id
+			ORDER BY bmf.update_date DESC
+			LIMIT #{currentPage} , #{pageSize}
+		) a
+		LEFT JOIN bu_product bp ON a.product_id = bp.id
+	</select>
+  	
+  	<select id="getMemberFootprintCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select count(*)
+		from bu_product bp 
+		left join bu_member_footprint bmf on bp.id = bmf.product_id
+		where bmf.del_flag = '0' 
+		and FUN_GET_PRODUCT_ACTIVITY_STATUS(bp.id) in (2,3,4)
+		and bmf.member_id = #{memberId}
+  	</select>
+  	
+  	<select id="countMemberFootprint30Days" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		SELECT
+			COUNT(1)
+		FROM
+			bu_member_footprint mf
+		WHERE
+			mf.del_flag = '0'
+		AND mf.member_id = #{memberId}
+		AND mf.create_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+  	</select>
+</mapper>

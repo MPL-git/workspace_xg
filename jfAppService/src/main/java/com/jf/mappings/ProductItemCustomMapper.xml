@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductItemCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductItemCustom"  extends="com.jf.dao.ProductItemMapper.BaseResultMap">
+    <result column="artNo" property="artNo" jdbcType="VARCHAR" />
+    <result column="productName" property="productName" jdbcType="VARCHAR" />
+    <result column="brandName" property="brandName" jdbcType="VARCHAR" />
+     <result column="feeRate" property="feeRate" jdbcType="DECIMAL" />
+     <result column="brandId" property="brandId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="getProductInfoByItemId" parameterType="java.lang.Integer" resultType="com.jf.entity.ProductItemCustom">
+  		select
+		item.product_id,
+		item.pic,
+		item.sku,
+		item.prop_val_id,
+		item.cost_price,
+		item.stock,
+		item.locked_amount,
+		item.sale_price,
+		item.mall_price,
+		pro.art_no as artNo,
+		pro.name as productName,
+		brand.name as brandName
+		from bu_product_item item
+		left join bu_product pro on pro.id = item.product_id
+		left join bu_product_brand brand on brand.id = pro.brand_id
+		where item.id = #{productItemId}
+		and item.del_flag = '0'
+		and pro.del_flag = '0'
+		and brand.del_flag = '0'
+  	</select>
+
+	<update id="deductSkuLockedAmount" parameterType="java.util.Map">
+		UPDATE bu_product_item item
+		SET item.locked_amount = (item.locked_amount - #{quantity})
+		WHERE
+		item.id = #{productItemId}
+	</update>
+  	
+  	<select id="getProductInfoByActivityId" parameterType="java.util.Map" resultType="com.jf.entity.ProductItemCustom">
+  		select
+		item.product_id,
+		item.pic,
+		item.sku,
+		item.prop_val_id,
+		item.cost_price,
+		item.tag_price,
+		item.sale_price,
+		item.mall_price,
+		pro.art_no as artNo,
+		pro.name as productName,
+		pro.brand_id as brandId,
+		pro.product_type1_id,
+		pro.product_type2_id,
+		pro.product_type_id,
+		brand.name as brandName,
+		(select ac.fee_rate from bu_activity ac where ac.id = #{activityId}) as feeRate
+		from bu_product_item item
+		left join bu_product pro on pro.id = item.product_id
+		left join bu_product_brand brand on brand.id = pro.brand_id
+		where item.id = #{productItemId}
+		and item.del_flag = '0'
+		and pro.del_flag = '0'
+		and brand.del_flag = '0'
+  	</select>
+  	
+  	<select id="findIdByForUpdate" parameterType="java.lang.Integer" resultType="com.jf.entity.ProductItem">
+  		select * from bu_product_item item
+		where item.id = #{productItemId}
+		for update
+  	</select>
+  	
+  	<update id="updateSkuLockedAmount" parameterType="java.util.Map">
+  		UPDATE bu_product_item item
+		SET item.locked_amount = (item.locked_amount + #{quantity})
+		WHERE
+			item.id = #{productItemId} 
+		AND item.stock - #{quantity} >=
+		<choose>
+			<when test="cloudProductItemId != null and cloudProductItemId != ''">
+			(
+			SELECT
+				T.cloudLockedAmount
+			FROM
+				(
+					SELECT
+						sum(locked_amount) AS cloudLockedAmount
+					FROM
+						bu_product_item
+					WHERE
+						cloud_product_item_id = #{cloudProductItemId}
+					AND del_flag = '0'
+				) T
+			)
+			</when>
+			<otherwise>
+				item.locked_amount
+			</otherwise>
+		</choose>
+  	</update>
+  	
+  	<select id="getSpecPic" parameterType="java.util.Map" resultType="com.jf.entity.ProductItem">
+  		select
+		item.pic
+		from bu_product_item item
+		where item.product_id = #{productId}
+		and FIND_IN_SET(#{propValId},item.prop_val_id)
+		and item.del_flag = '0'
+		limit 1
+  	</select>
+  	
+  	<select id="getProductItemPropDesc" parameterType="java.util.Map" resultType="String">
+  		select FUN_GET_PRODUCT_ITEM_PROP_DESC(#{productItemId},#{mark}) from dual
+  	</select>
+  	
+  	<select id="getSkuByProductId" parameterType="int" resultType="com.jf.entity.ProductItem">
+  		select
+		item.id,
+		item.sale_price,
+		item.mall_price,
+		item.tag_price
+		from bu_product_item item
+		where item.product_id = #{productId}
+		and (item.stock - item.locked_amount) > 0
+		and item.del_flag = '0'
+		order by item.sale_price,item.tag_price desc,id desc
+  	</select>
+
+	<select id="findSkuByProductId" parameterType="int" resultType="com.jf.entity.ProductItem">
+  		select
+		item.id,
+		item.sale_price,
+		item.mall_price,
+		item.tag_price
+		from bu_product_item item
+		where item.product_id = #{productId}
+		and item.del_flag = '0'
+		order by item.sale_price,item.tag_price desc,id desc
+  	</select>
+  	
+  	<!-- 获取库存 -->
+  	<select id="getProductStockInfo" parameterType="map" resultType="com.jf.entity.ProductItem">
+  		select
+  		item.id,
+  		ifnull(sum(item.stock),0) as stock,
+  		ifnull(sum(item.locked_amount),0) as lockedAmount
+		from bu_product_item item
+		where item.del_flag = '0'
+		<choose>
+			<when test="productId != null and productId != ''">
+				and item.product_id = #{productId}
+			</when>
+			<when test="cloudProductItemId != null and cloudProductItemId != ''">
+				and item.cloud_product_item_id = #{cloudProductItemId}
+			</when>
+			<otherwise>
+				and 1 = 2
+			</otherwise>
+		</choose>
+  	</select>
+  	
+  	<!-- 获取供应商经销代码 -->
+  	<select id="getCloudSellingPrice" parameterType="int" resultType="com.jf.entity.ProductItemCustom">
+  		SELECT
+			cp.selling_price
+		FROM
+			jybao.bu_cloud_product cp
+		WHERE
+			cp.id IN (
+				SELECT
+					item.cloud_product_id
+				FROM
+					jybao.bu_cloud_product_item item
+				WHERE
+					item.id = #{cloudProductItemId}
+			)
+  	</select>
+  	
+  	
+  	<select id="getCodeBreakingPreferenceSize" parameterType="java.util.Map" resultType="com.jf.entity.ProductItemCustom">
+  		SELECT
+	t.*
+FROM
+	(
+		SELECT
+			p.product_type2_id,
+			pt.name as productTypeName,
+			pt.seq_no,
+			GROUP_CONCAT(item.prop_val_id) AS prop_val_id
+		FROM
+			bu_source_niche sn,
+			bu_product p,
+			bu_product_type pt,
+			bu_product_item item,
+			bu_mcht_info mi
+		WHERE
+			sn.link_id = p.id
+		AND p.mcht_id = mi.id
+		AND p.id = item.product_id
+		AND p.product_type2_id = pt.id
+		AND sn.type = #{type}
+		AND sn.del_flag = '0'
+		AND sn. STATUS = '0'
+		AND sn.audit_status = '1'
+		AND sn.up_date &lt;= now()
+		AND p.`status` = '1'
+		AND p.audit_status = '2'
+		AND p.sale_type = '1'
+		AND p.del_flag = '0'
+		<if test="productType1Id != null and productType1Id != ''">
+			AND p.product_type1_id = #{productType1Id}
+		</if>
+		<if test="productType2Ids != null and productType2Ids.size() > 0">
+			and p.product_type2_id in
+			<foreach collection="productType2Ids" item="productType2Id" open="(" close=")" separator="," >
+            	#{productType2Id}
+            </foreach>
+        </if>
+		<if test="brandId != null and brandId != ''">
+			AND p.brand_id = #{brandId}
+		</if>
+		AND mi.`status` = '1'
+		AND mi.shop_status = '1'
+		AND mi.del_flag = '0'
+		AND item.del_flag = '0'
+		AND (item.stock-item.locked_amount) > 0
+		AND pt.del_flag = '0'
+		AND pt.`status` = '1'
+		AND EXISTS (
+			SELECT
+				mpb.id
+			FROM
+				bu_mcht_product_brand mpb
+			WHERE
+				mpb.product_brand_id = p.brand_id
+			AND mpb.mcht_id = mi.id
+			AND mpb.`status` = '1'
+			AND mpb.audit_status = '3'
+			AND mpb.del_flag = '0'
+		)
+		GROUP BY
+			p.product_type2_id
+	) t
+ORDER BY
+	t.seq_no
+  	</select>
+</mapper>

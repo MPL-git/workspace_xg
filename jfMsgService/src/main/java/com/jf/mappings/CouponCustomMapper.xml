@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CouponCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.Coupon" extends="com.jf.dao.CouponMapper.BaseResultMap" >
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, rang, belong, activity_area_id, money, minimum, status, rec_type, need_integral, 
+    rec_begin_date, rec_end_date, min_member_group, expiry_type, expiry_begin_date, expiry_end_date, 
+    expiry_days, grant_quantity, rec_quantity, rec_limit_type, rec_each, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CouponCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_coupon t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_coupon t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.CouponCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_coupon t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_coupon t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rang != null" >
+        rang = #{record.rang,jdbcType=CHAR},
+      </if>
+      <if test="record.belong != null" >
+        belong = #{record.belong,jdbcType=CHAR},
+      </if>
+      <if test="record.activityAreaId != null" >
+        activity_area_id = #{record.activityAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.money != null" >
+        money = #{record.money,jdbcType=DECIMAL},
+      </if>
+      <if test="record.minimum != null" >
+        minimum = #{record.minimum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.recType != null" >
+        rec_type = #{record.recType,jdbcType=CHAR},
+      </if>
+      <if test="record.needIntegral != null" >
+        need_integral = #{record.needIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="record.recBeginDate != null" >
+        rec_begin_date = #{record.recBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recEndDate != null" >
+        rec_end_date = #{record.recEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.minMemberGroup != null" >
+        min_member_group = #{record.minMemberGroup,jdbcType=INTEGER},
+      </if>
+      <if test="record.expiryType != null" >
+        expiry_type = #{record.expiryType,jdbcType=CHAR},
+      </if>
+      <if test="record.expiryBeginDate != null" >
+        expiry_begin_date = #{record.expiryBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expiryEndDate != null" >
+        expiry_end_date = #{record.expiryEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expiryDays != null" >
+        expiry_days = #{record.expiryDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.grantQuantity != null" >
+        grant_quantity = #{record.grantQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.recQuantity != null" >
+        rec_quantity = #{record.recQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.recLimitType != null" >
+        rec_limit_type = #{record.recLimitType,jdbcType=CHAR},
+      </if>
+      <if test="record.recEach != null" >
+        rec_each = #{record.recEach,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <update id="addGrantQuantity" >
+	<![CDATA[
+		UPDATE bu_coupon_add_task_config cc
+		LEFT JOIN bu_coupon c ON c.id = cc.coupon_id
+		SET c.grant_quantity = c.grant_quantity + cc.add_count,c.rec_begin_date=DATE_ADD(c.rec_begin_date,INTERVAL 1 DAY),
+		 c.update_date = now()
+		WHERE
+			c.del_flag = '0'
+		AND cc.del_flag = '0'
+		AND cc. STATUS = '1'
+		AND cc.begin_date <= now()
+		AND cc.end_date >= now()
+        AND c.rec_begin_date < now()
+	]]>
+        <if test="activityType != null and activityType != ''">
+          AND c.activity_type = #{activityType,jdbcType=INTEGER}
+        </if>
+  </update>
+
+  <insert id="batchGiveCoupontoMember" >
+    INSERT INTO `bu_member_coupon`
+    (`id`, `member_id`, `coupon_id`, `rec_date`, `expiry_begin_date`, `expiry_end_date`, `status`, `use_date`, `order_id`
+    , `receive_type`, `is_give`, `from_order_dtl_id`, `create_by`, `create_date`, `update_by`, `update_date`, `remarks`, `del_flag`)
+    VALUES
+    <if test="resultMapList != null" >
+      <foreach collection="resultMapList" item="item" separator=",">
+        (null, #{item.member_id}, #{memberCoupon.couponId}, #{memberCoupon.recDate}, #{memberCoupon.expiryBeginDate}, #{memberCoupon.expiryEndDate}
+        , '0', NULL, NULL, #{memberCoupon.receiveType}, '0', NULL, NULL,  #{memberCoupon.createDate}, NULL, NULL, NULL, '0')
+      </foreach>
+    </if>
+  </insert>
+
+  <update id="updateCouponRecQuantity" parameterType="int">
+    UPDATE bu_coupon SET rec_quantity = rec_quantity + #{size} WHERE id = #{couponId}
+  </update>
+</mapper>

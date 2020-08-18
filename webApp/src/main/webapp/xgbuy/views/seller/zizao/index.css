@@ -1,0 +1,99 @@
+.seller-zizao {
+	font-size: .26rem;
+}
+
+.seller-zizao .row-1 {
+	width: 6.88rem;
+	padding-bottom: .6rem;
+	margin: .3rem auto .2rem;
+	background: #fff;
+	border-radius: .06rem;
+	border: 1px solid #ddd;
+}
+.seller-zizao .row-2 {
+	padding: 0 .3rem;
+	font-size: .22rem;
+	color: #999;
+}
+
+.seller-zizao .row-1 h2 {
+	height: .89rem;
+	padding: 0 .19rem;
+	font-size: .28rem;
+	border-bottom: 1px solid #ddd;
+}
+.seller-zizao .row-1 h3 {
+	height: .88rem;
+	margin-top: .13rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+.seller-zizao .row-1 .c9 {
+	padding: 0 .2rem;
+}
+
+.seller-zizao .col-1 {
+	width: 6.3rem;
+	padding-bottom: .49rem;
+	margin: .16rem auto .6rem;
+	border: 1px solid #ddd;
+}
+.seller-zizao .col-1 p {
+	height: .85rem;
+	margin-top: .18rem;
+}
+.seller-zizao .con-text {
+	width: 1.8rem;
+	height: .6rem;
+	padding: 0 .2rem;
+	text-align: center;
+	border: 1px solid #ddd;
+	background: #fafafa;
+	box-sizing: border-box;
+}
+.seller-zizao .con-submit {
+	width: 1.2rem;
+	height: .48rem;
+	margin-top: 0.05rem;
+	text-align: center;
+	background: #333;
+	color: #fff;
+}
+.seller-zizao .con-code {
+	position: relative;
+	margin-top: .4rem;
+	right: .4rem;
+}
+.seller-zizao .get-vcode {
+	width: 1.74rem;
+	height: .6rem;
+}
+.seller-zizao .get-vcode img {
+	height: 100%;
+}
+.seller-zizao .con-code span {
+	position: absolute;
+	top: 0;
+	right: -.88rem;
+	width: .88rem;
+	height: 100%;
+	color: #0769a8;
+	font-size: .2rem;
+}
+.seller-zizao .col-2 {
+	width: 6.3rem;
+	height: .8rem;
+	margin: 0 auto;
+	font-size: .3rem;
+}
+
+.seller-zizao .col-3 {
+	line-height: .48rem;
+	padding: .2rem .2rem .4rem;
+}
+.seller-zizao .col-4 {
+	padding: 0 .2rem;
+}
+.seller-zizao .col-4 em {
+	color: #0769a8;
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.BrandteamTypeadInfoCustomMapper" >
+  <resultMap id="BaseResultCustomMap" type="com.jf.entity.BrandteamTypeadInfoCustom" extends="com.jf.dao.BrandteamTypeadInfoMapper.BaseResultMap">
+   <result column="link_type_desc" property="linkTypeDesc" jdbcType="VARCHAR"/>
+   <result column="productType_name" property="productTypeName" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="brandteamtype_name" property="brandteamtypeName" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="mall_name" property="mallName" jdbcType="VARCHAR" />
+    <result column="product_type_names" property="productTypeNames" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, brand_team_type_id, pic, link_type, link_value, status, seq_no, up_date, down_date, 
+    create_by, create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_AD_INFO","LINK_TYPE", bta.link_type) link_type_desc,
+    (select pt.name from bu_product_type pt where pt.del_flag='0' and pt.status='1' and pt.id=bta.link_value)productType_name,
+    (select m.mcht_code from bu_mcht_info m where m.id=bta.link_value and m.del_flag='0')mcht_code,
+    (select brt.name from bu_brand_team_type brt where brt.id=bta.link_value and brt.del_flag='0')brandteamtype_name,
+    (select p.code from bu_product p where p.del_flag='0' and p.id=bta.link_value)product_code,
+    (select mc.category_name from bu_mall_category mc where mc.del_flag='0' and mc.id=bta.link_value)mall_name,
+    (select group_concat(pt.name) from bu_product_type pt where pt.del_flag='0' and find_in_set(pt.id,bta.link_value))product_type_names
+  </sql>
+  <select id="brandteamTypeadInfoCustomselectByExample" resultMap="BaseResultCustomMap" parameterType="com.jf.entity.BrandteamTypeadInfoCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_brand_team_type_ad_info bta
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="brandteamTypeadInfoCustomselectByPrimaryKey" resultMap="BaseResultCustomMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_brand_team_type_ad_info bta
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="brandteamTypeadInfoCountByExample" parameterType="com.jf.entity.BrandteamTypeadInfoCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_brand_team_type_ad_info bta
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+
+</mapper>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CombineOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CombineOrderCustom" extends="com.jf.dao.CombineOrderMapper.BaseResultMap">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="getNoPaidOrderList" parameterType="map" resultType="com.jf.entity.CombineOrderCustom">
+  		select DISTINCT co.member_id,co.id,mi.mobile from bu_combine_order co,bu_member_info mi
+		where co.member_id = mi.id
+		and mi.mobile is not NULL
+		and mi.del_flag = '0'
+		and co.`status` = '0'
+		and co.del_flag = '0'
+		and co.create_date &gt;= date_add(now(), interval #{max} minute)
+		and co.create_date &lt;= date_add(now(), interval #{min} minute)
+		and co.member_id not in(
+			select 
+			c.member_id 
+			from bu_combine_order c 
+			where c.del_flag = '0' 
+			and c.status = '1'
+			and c.create_date &gt;= #{beginDate}
+			and c.create_date &lt;= #{endDate}
+		)
+		and co.member_id not in(
+			select 
+			msg.member_id 
+			from bu_order_cancel_msg_send msg
+			where msg.del_flag = '0' 
+			and msg.create_date &gt;= #{beginDate}
+			and msg.create_date &lt;= #{endDate}
+			and msg.msg_send_type = '0'
+		)
+  	</select>
+  	
+  	<select id="getOrderAddressInfo" parameterType="java.lang.Integer" resultType="com.jf.entity.CombineOrderCustom">
+		select
+		combine.id,
+		combine.receiver_address,
+		combine.receiver_phone,
+		combine.receiver_name,
+		(select p1.AREA_NAME from bu_p_area p1 where p1.AREA_ID = addr.province) as provinceName,
+		(select p2.AREA_NAME from bu_p_area p2 where p2.AREA_ID = addr.city) as cityName,
+		(select p3.AREA_NAME from bu_p_area p3 where p3.AREA_ID = addr.county) as countyName
+		from bu_sub_order sub,bu_combine_order combine,bu_member_address addr
+		WHERE sub.combine_order_id = combine.id
+		and combine.address_id = addr.id
+		and sub.id = #{subOrderId}
+  	</select>
+
+  	<select id="getCombineOrderCustomByLogisticCode" resultType="com.jf.entity.CombineOrderCustom">
+		select
+		combine.id,
+		combine.receiver_address,
+		combine.receiver_phone,
+		combine.receiver_name
+		from bu_sub_order sub,bu_combine_order combine,bu_express e
+		WHERE sub.combine_order_id = combine.id
+		and sub.express_id = e.id
+		and e.kdn_code = #{kdnCode}
+		and sub.express_no = #{logisticCode}
+  	</select>
+  	
+  	<select id="findSuperiorGetFristOrderReward" resultType="com.jf.entity.CombineOrderCustom">
+		SELECT
+		t.id,
+		t.member_id,
+		mi.invitation_member_id
+	FROM
+		bu_combine_order t,
+		bu_member_info mi
+	WHERE
+		t.member_id = mi.id
+	AND t.del_flag = '0'
+	AND t.`status` = '1'
+	AND t.pay_date > DATE_ADD(NOW(), INTERVAL - 20 MINUTE)
+	AND mi.del_flag = '0'
+	AND mi.invitation_member_id IS NOT NULL
+	AND NOT EXISTS (
+		SELECT
+			a.id
+		FROM
+			bu_combine_order a
+		WHERE
+			a.member_id = t.member_id
+		AND a.del_flag = '0'
+		AND a.id &lt; t.id
+		AND t.pay_status >= mi.invitation_code_bind_time
+	)
+  	</select>
+
+
+	<select id="getMemberList" parameterType="map" resultType="com.jf.entity.CombineOrderCustom">
+  	 SELECT
+	     c.member_id,
+	     c.id
+	FROM
+		bu_combine_order c,
+        bu_sub_order s
+	WHERE
+		c.del_flag = '0'
+		AND c.STATUS = '1'
+		AND c.pay_status = '1'
+		AND c.order_type = '2'
+		AND c.pay_date &lt;= #{payDate}
+		AND s.combine_order_id=c.id
+		AND s.audit_status NOT IN ('1')
+	    AND s.status NOT IN ('4','5')
+		AND s.del_flag='0'
+  	</select>
+  	
+  <select id="getCombineOrderList" parameterType="map" resultType="com.jf.entity.CombineOrderCustom">
+  	SELECT
+	    c.member_id
+	FROM
+		bu_combine_order c,
+        bu_sub_order s
+	WHERE
+		c.del_flag = '0'
+		AND c.order_type = '2'
+		AND s.combine_order_id=c.id
+		AND s.audit_status NOT IN ('1')
+		AND s.del_flag='0'
+		AND s.status NOT IN ('4','5')
+        AND c.member_id= #{memberId}
+   </select>
+</mapper>

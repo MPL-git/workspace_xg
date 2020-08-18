@@ -1,0 +1,54 @@
+.help-detail ul {
+	padding: .2rem;
+	box-sizing: border-box;
+}
+.help-detail li {
+	overflow: hidden;
+}
+.help-detail li h3,
+.help-detail li pre {
+	padding-left: .4rem;
+}
+.help-detail li h3 {
+	height: .32rem;
+	margin: .37rem 0 .2rem;
+	font-size: .26rem;
+	line-height: .32rem;
+}
+.help-detail li:first-child h3 {
+	margin-top: 0;
+}
+.help-detail li pre {
+	line-height: .3rem;
+	font-size: .24rem;
+	color: #666;
+}
+.help-detail li h3:before,
+.help-detail li pre:before {
+	float: left;
+	width: .32rem;
+	height: .32rem;
+	margin-left: -.4rem;
+	content: '答';
+	color: #fff;
+	font-size: .22rem;
+	background: #509eff;
+
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-align-items: center;
+	align-items: center;
+}
+.help-detail li h3:before {
+	content: '问';
+	background: #ff5050;
+}
+
+.help-detail .page-empty {
+	height: calc(100vh - 1.28rem);
+}
+.sys-app .help-detail .page-empty {
+	height: calc(100vh - .4rem);
+}

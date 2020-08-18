@@ -1,0 +1,80 @@
+<div class="page order-firm order-detail order-firmpre flex dc bgf4" data-title="确认订单" data-id="order_firmpre">
+	<link rel="stylesheet" href="../static/css/common-goods.css?var=1.2">
+	<link rel="stylesheet" href="order/detail/detail.css?var=1.0">
+	<link rel="stylesheet" href="order/firm/firm.css?var=1.0">
+	<link rel="stylesheet" href="order/firmpre/firm.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back(false, true)"></i></div>
+		<p class="ellipsis">确认订单</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="no-after-sale flex ac fn">温馨提示：微信端暂无售后功能，如有需要请下载APP处理~</div>
+
+	<div class="scroll-y fg scroll-more"></div>
+
+	<div class="order-detail-footer">
+		<div class="con-2 flex ac jb fn">
+			<div>
+				应付金额：<strong></strong>
+			</div>
+			<input class="btn-red" type="button" value="确认支付" onclick="orderFirmpre.submit()">
+		</div>
+	</div>
+
+	<script id="order_firmpre_con_tpl" type="text/html">
+		<div class="popup-pay mt20 mb20">
+			<div class="bot bot-1 flex ac">支付方式</div>
+
+			<div class="bot bot-2">
+				{{each payMapList value}}
+				<div class="flex ac jb tap-tick" onclick="orderFirmpre.getPayId(this)">
+					<span class="flex ac">
+						<i class="wx ico" style="background-image: url({{value.payIcon}});"></i>{{value.payName}}
+					</span>
+					<i class="tick ico-btn{{value.defaultPay == 1 ? ' ticked' : ''}}" data-type="{{value.PayType}}" data-id="{{value.payId}}"></i>
+				</div>
+				{{/each}}
+			</div>
+		</div>
+
+		<div class="message flex ac">
+			买家留言：<input type="text" placeholder="亲，最多可输入50个中文哦~" maxlength="50">
+		</div>
+
+		<div class="con-goods">
+			<dl class="flex">
+				<dt class="fn">
+					<img src="{{skuPic}}">
+				</dt>
+				<dd class="fg">
+					<p>{{productName}}</p>
+					<p class="flex jb">
+						<span>{{productPropdesc}}</span>
+						<b>X{{quantity}}</b>
+					</p>
+					<div class="flex ac jb">
+						<div class="flex ac">
+							<strong class="flex jb">{{salePrice}}</strong>
+						</div>
+					</div>
+				</dd>
+			</dl>
+		</div>
+
+		<div class="stage">
+			<div class="row-1 flex ac f50">{{stageOne}}</div>
+			<div class="row-2">
+				<div class="col-1 flex ac">{{stageTwo}}</div>
+				<div class="col-2 flex ac">{{payTailMoneyDate}}</div>
+				<div class="col-3 flex ac jb">
+					<span>我已同意定金不退预售协议<a onclick="getUrl('link/information.html?type=2')" class="iflex ac jc">?</a></span>
+					<i class="tick ico-btn" onclick="orderFirmpre.protocol(this)"></i>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script src="order/firmpre/firm.js?var=1.3" async></script>
+</div>

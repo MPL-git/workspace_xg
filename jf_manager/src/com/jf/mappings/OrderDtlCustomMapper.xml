@@ -1,0 +1,3468 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.OrderDtlCustomMapper">
+	<resultMap id="BaseResultMap" type="com.jf.entity.OrderDtlCustom"
+		extends="com.jf.dao.OrderDtlMapper.BaseResultMap">
+		<result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+		<result column="sub_order_code" property="subOrderCode"
+			jdbcType="VARCHAR" />
+		<result column="sub_order_create_date" property="subOrderCreateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+		<result column="delivery_date" property="deliveryDate"
+			jdbcType="TIMESTAMP" />
+		<result column="complete_date" property="completeDate"
+			jdbcType="TIMESTAMP" />
+		<result column="sub_status_desc" property="subStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="service_type_desc" property="serviceTypeDesc"
+			jdbcType="VARCHAR" />
+		<result column="service_status_desc" property="serviceStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="product_brand_name" property="productBrandName"
+			jdbcType="VARCHAR" />
+		<result column="product_name" property="productName" jdbcType="VARCHAR" />
+		<result column="product_code" property="productCode" jdbcType="VARCHAR" />
+		<result column="product_art_no" property="productArtNo"
+			jdbcType="VARCHAR" />
+		<result column="is_manage_self" property="isManageSelf"
+			jdbcType="VARCHAR" />
+		<result column="is_manage_self_desc" property="isManageSelfDesc"
+			jdbcType="VARCHAR" />
+		<result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+		<result column="mcht_shop_name" property="mchtShopName"
+			jdbcType="VARCHAR" />
+		<result column="balance_money" property="balanceMoney"
+			jdbcType="DECIMAL" />
+		<result column="commission_money" property="commissionMoney"
+			jdbcType="DECIMAL" />
+		<result column="need_pay_moeny" property="needPayMoeny"
+			jdbcType="DECIMAL" />
+		<result column="profit_moeny" property="profitMoeny" jdbcType="DECIMAL" />
+		<result column="appeal_order_id" property="appealOrderId"
+			jdbcType="INTEGER" />
+		<result column="appeal_status_desc" property="appealStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="product_status_desc" property="productStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="receiver_name" property="receiverName"
+			jdbcType="VARCHAR" />
+		<result column="member_id" property="memberId" jdbcType="INTEGER" />
+		<result column="payment_name" property="paymentName" jdbcType="VARCHAR" />
+		<result column="mcht_type" property="mchtType" jdbcType="VARCHAR" />
+		<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+		<result column="mcht_short_name" property="mchtShortName"
+			jdbcType="VARCHAR" />
+		<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+		<result column="pay_status_desc" property="payStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="each_day" property="eachDay" jdbcType="VARCHAR" />
+		<result column="each_day_pay_amount" property="eachDayPayAmount"
+			jdbcType="DECIMAL" />
+		<result column="each_day_preferential_amount" property="eachDayPreferentialAmount"
+			jdbcType="DECIMAL" />
+		<result column="each_day_preferential_rate" property="eachDayPreferentialRate"
+			jdbcType="DECIMAL" />
+		<result column="each_day_complete_pay_amount" property="eachDayCompletePayAmount"
+			jdbcType="DECIMAL" />
+		<result column="each_day_complete_preferential_amount"
+			property="eachDayCompletePreferentialAmount" jdbcType="DECIMAL" />
+		<result column="each_day_complete_preferential_rate" property="eachDayCompletePreferentialRate"
+			jdbcType="DECIMAL" />
+		<result column="total_sale_amount" property="totalSaleAmount"
+			jdbcType="DECIMAL" />
+		<result column="total_quantity" property="totalQuantity"
+			jdbcType="INTEGER" />
+		<result column="pop_total_quantity" property="popTotalQuantity"
+			jdbcType="INTEGER" />
+		<result column="pool_total_quantity" property="poolTotalQuantity"
+			jdbcType="INTEGER" />
+		<result column="pop_total_settle_amount" property="popTotalSettleAmount"
+			jdbcType="DECIMAL" />
+		<result column="pool_total_settle_amount" property="poolTotalSettleAmount"
+			jdbcType="DECIMAL" />
+		<result column="total_settle_amount" property="totalSettleAmount"
+			jdbcType="DECIMAL" />
+		<result column="buy_user_count" property="buyUserCount"
+			jdbcType="INTEGER" />
+		<result column="order_count" property="orderCount" jdbcType="INTEGER" />
+		<result column="product_count" property="productCount"
+			jdbcType="INTEGER" />
+		<result column="product_sale_price" property="productSalePrice"
+			jdbcType="DECIMAL" />
+		<result column="total_mcht_preferential" property="totalMchtPreferential"
+			jdbcType="DECIMAL" />
+		<result column="total_platform_preferential" property="totalPlatformPreferential"
+			jdbcType="DECIMAL" />
+		<result column="total_pay_amount" property="totalPayAmount"
+			jdbcType="DECIMAL" />
+		<result column="unit_price" property="unitPrice" jdbcType="DECIMAL" />
+		<result column="mcht_discount_rate" property="mchtDiscountRate"
+			jdbcType="DECIMAL" />
+		<result column="plat_discount_rate" property="platDiscountRate"
+			jdbcType="DECIMAL" />
+		<result column="gross_profit_rate" property="grossProfitRate"
+			jdbcType="DECIMAL" />
+		<result column="product_type_name" property="productTypeName"
+			jdbcType="VARCHAR" />
+		<result column="average_price" property="averagePrice"
+			jdbcType="DECIMAL" />
+		<result column="source_client_desc" property="sourceClientDesc"
+			jdbcType="VARCHAR" />
+		<result column="area_name" property="areaName" jdbcType="VARCHAR" />
+		<result column="combine_order_status_desc" property="combineOrderStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="second_product_type_name" property="secondProductTypeName"
+			jdbcType="VARCHAR" />
+		<result column="first_product_type_name" property="firstProductTypeName"
+			jdbcType="VARCHAR" />
+		<result column="mobile_brand" property="mobileBrand" jdbcType="VARCHAR" />
+		<result column="sub_order_count" property="subOrderCount"
+			jdbcType="INTEGER" />
+		<result column="consume_count" property="consumeCount"
+			jdbcType="INTEGER" />
+		<result column="conversion_rate" property="conversionRate"
+			jdbcType="FLOAT" />
+		<result column="total_integral_preferential" property="totalIntegralPreferential"
+			jdbcType="DECIMAL" />
+		<result column="each_hour" property="eachHour" jdbcType="DECIMAL" />
+		<result column="active_count" property="activeCount" jdbcType="INTEGER" />
+		<result column="customer_service_id" property="customerServiceId"
+			jdbcType="INTEGER" />
+		<result column="sub_order_status" property="subOrderStatus"
+			jdbcType="VARCHAR" />
+		<result column="service_pro_status" property="serviceProStatus"
+			jdbcType="VARCHAR" />
+		<result column="single_product_activity_type" property="singleProductActivityType"
+			jdbcType="VARCHAR" />
+		<result column="intervention_order_id" property="interventionOrderId"
+			jdbcType="INTEGER" />
+		<result column="order_product_snapshot_id" property="orderProductSnapshotId"
+			jdbcType="INTEGER" />
+		<result column="producttype_name1" property="producttypeName1"
+			jdbcType="VARCHAR" />
+		<result column="producttype_name2" property="producttypeName2"
+			jdbcType="VARCHAR" />
+		<result column="producttype_name3" property="producttypeName3"
+			jdbcType="VARCHAR" />
+		<result column="receiver_phone" property="receiverPhone"
+			jdbcType="VARCHAR" />
+		<result column="receiver_address" property="receiverAddress"
+			jdbcType="VARCHAR" />
+		<result column="combine_order_code" property="combineOrdercode"
+			jdbcType="VARCHAR" />
+		<result column="ex_name" property="exName" jdbcType="VARCHAR" />
+		<result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+		<result column="order_dtl_express_name" property="orderDtlExpressName"
+			jdbcType="VARCHAR" />
+		<result column="activity_area_name" property="activityAreaName"
+			jdbcType="VARCHAR" />
+		<result column="activity_area_source" property="activityAreaSource"
+			jdbcType="VARCHAR" />
+		<result column="single_activity_name" property="singleActivityName"
+			jdbcType="VARCHAR" />
+		<result column="promotion_type" property="promotionType"
+			jdbcType="CHAR" />
+		<result column="shopowner_amount" property="shopownerAmount"
+			jdbcType="VARCHAR" />
+		<result column="manage_self_freight" property="manageSelfFreight"
+				jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, sub_order_id, activity_id, activity_area_id,
+		single_product_activity_id, product_id,
+		product_item_id,
+		cloud_product_item_id, sku_pic, sku, product_name, art_no,
+		brand_name,
+		product_prop_desc, quantity, tag_price, sale_price, pay_amount,
+		settle_price,
+		pop_commission_rate,
+		platform_preferential,
+		mcht_preferential, integral_preferential, settle_amount,
+		commission_amount,
+		refund_date, product_status, is_give,
+		mcht_settle_order_id, freight,
+		original_price,
+		is_svip_buy,
+		svip_discount, selling_price, dtl_express_id, dtl_express_no,
+		delivery_status,
+		delivery_date, marked_out_of_stock, create_by,
+		create_date, update_by, update_date,
+		remarks, del_flag,
+		(select b.pic
+		from bu_product_pic b where b.product_id=a.product_id and
+		b.del_flag='0' and b.is_default='1') product_pic,
+		(select
+		b.sub_order_code from bu_sub_order b where b.id=a.sub_order_id)
+		sub_order_code,
+		(select b.create_date from bu_sub_order b where
+		b.id=a.sub_order_id)
+		sub_order_create_date,
+		(select c.pay_date from
+		bu_sub_order b,bu_combine_order c where
+		b.id=a.sub_order_id and
+		c.id=b.combine_order_id) pay_date,
+		(select b.complete_date from
+		bu_sub_order b where b.id=a.sub_order_id)
+		complete_date,
+		(select
+		b.delivery_date from bu_sub_order b where b.id=a.sub_order_id)
+		delivery_date,
+		FUN_GET_STATUS_DESC("BU_SUB_ORDER", "STATUS", (select
+		b.status from bu_sub_order b where
+		b.id=a.sub_order_id))
+		sub_status_desc,
+		FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER",
+		"SERVICE_TYPE",
+		(select b.service_type from bu_customer_service_order b
+		where
+		b.order_dtl_id=a.id and b.del_flag=0 order by b.id desc limit 1))
+		service_type_desc,
+		FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER",
+		"STATUS", (select b.status from bu_customer_service_order b where
+		b.order_dtl_id=a.id and b.del_flag=0 order by b.id desc limit 1))
+		service_status_desc,
+		(select c.name from bu_product b, bu_product_brand
+		c where b.id=a.product_id
+		and c.id=b.brand_id) product_brand_name,
+		(select b.name from bu_product b where b.id = a.product_id)
+		product_name,
+		(select b.code from bu_product b where b.id =
+		a.product_id)
+		product_code,
+		(select b.art_no from bu_product b where
+		b.id=a.product_id) product_art_no,
+		(select c.is_manage_self from
+		bu_sub_order b, bu_mcht_info c where
+		b.id=a.sub_order_id and
+		c.id=b.mcht_id) is_manage_self,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO",
+		"IS_MANAGE_SELF", (select
+		c.is_manage_self from bu_sub_order b,
+		bu_mcht_info c where
+		b.id=a.sub_order_id and c.id=b.mcht_id))
+		is_manage_self_desc,
+		(select b.mcht_id from bu_sub_order b where
+		b.id=a.sub_order_id) mcht_id,
+		(select c.shop_name from bu_sub_order b,
+		bu_mcht_info c where
+		b.id=a.sub_order_id and c.id=b.mcht_id)
+		mcht_shop_name,
+		(sale_price*quantity-mcht_preferential)*(1-pop_commission_rate)
+		balance_money,
+		(sale_price*quantity-mcht_preferential)*pop_commission_rate
+		commission_money,
+		(settle_price*quantity-mcht_preferential)
+		need_pay_moeny,
+		(pay_amount-(settle_price*quantity-mcht_preferential))
+		profit_moeny,
+		(select b.id from bu_appeal_order b where
+		b.order_dtl_id=a.id and
+		b.del_flag=0 order by b.id desc limit 1)
+		appeal_order_id,
+		FUN_GET_STATUS_DESC("BU_APPEAL_ORDER", "STATUS",
+		(select b.status from
+		bu_appeal_order b where b.order_dtl_id=a.id and
+		b.del_flag=0 order by
+		b.id desc limit 1)) appeal_status_desc,
+		FUN_GET_STATUS_DESC("BU_ORDER_DTL", "PRODUCT_STATUS",
+		a.product_status) product_status_desc,
+		(select co.receiver_name from
+		bu_sub_order so,bu_combine_order co where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id)receiver_name,
+		(select co.member_id from
+		bu_sub_order so,bu_combine_order co where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id)member_id,
+		(select sp.remarks as payment_name
+		from bu_sub_order so,bu_combine_order
+		co,sys_payment sp where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id and
+		sp.id=co.payment_id)payment_name,
+		(select mi.mcht_type from
+		bu_sub_order so,bu_mcht_info mi where
+		so.id=a.sub_order_id and
+		so.mcht_id=mi.id)mcht_type,
+		(select mi.mcht_code from bu_sub_order
+		so,bu_mcht_info mi where
+		so.id=a.sub_order_id and
+		so.mcht_id=mi.id)mcht_code,
+		(select mi.short_name as mcht_short_name
+		from bu_sub_order so,bu_mcht_info mi
+		where so.id=a.sub_order_id and
+		so.mcht_id=mi.id)mcht_short_name,
+		FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","PAY_STATUS",(select
+		b.pay_status from bu_mcht_settle_order b where b.id =
+		a.mcht_settle_order_id and b.del_flag=0))pay_status_desc,
+		(select
+		mi.company_name from bu_sub_order so,bu_mcht_info mi where
+		so.id=a.sub_order_id and so.mcht_id=mi.id and
+		mi.del_flag='0')company_name,
+		(select pt.name from bu_product
+		p,bu_product_type pt where p.id =
+		a.product_id and p.product_type_id =
+		pt.id and pt.del_flag='0' and
+		a.del_flag='0')product_type_name,
+		FUN_GET_STATUS_DESC("BU_COMBINE_ORDER","SOURCE_CLIENT",(select
+		co.source_client from bu_sub_order so,bu_combine_order co where
+		so.id=a.sub_order_id and so.combine_order_id=co.id and
+		co.del_flag='0'))source_client_desc,
+		FUN_GET_AREA_NAME((select
+		ma.province from bu_sub_order so,bu_combine_order
+		co,bu_member_address
+		ma where so.id=a.sub_order_id and
+		so.combine_order_id=co.id and
+		co.address_id =ma.id and
+		co.del_flag='0'),(select ma.city from
+		bu_sub_order so,bu_combine_order
+		co,bu_member_address ma where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id and co.address_id
+		=ma.id and
+		co.del_flag='0'),(select ma.county from bu_sub_order
+		so,bu_combine_order co,bu_member_address ma where so.id=a.sub_order_id
+		and so.combine_order_id=co.id and co.address_id =ma.id and
+		co.del_flag='0'))area_name,
+		FUN_GET_STATUS_DESC("BU_COMBINE_ORDER","STATUS",(select co.status from
+		bu_sub_order so,bu_combine_order co where so.id=a.sub_order_id and
+		so.combine_order_id=co.id and
+		co.del_flag='0'))combine_order_status_desc,
+		(select fpt.name from
+		bu_product p,bu_product_type pt, bu_product_type fpt
+		where p.id =
+		a.product_id and p.product_type_id = pt.id and
+		pt.parent_id = fpt.id
+		and pt.del_flag='0' and
+		a.del_flag='0')second_product_type_name,
+		(select gpt.name from bu_product p,bu_product_type pt, bu_product_type
+		fpt,bu_product_type gpt where p.id = a.product_id and
+		p.product_type_id = pt.id and pt.parent_id = fpt.id and fpt.parent_id
+		= gpt.id and pt.del_flag='0' and
+		a.del_flag='0')first_product_type_name,
+		(select b.id from
+		bu_customer_service_order b where b.order_dtl_id=a.id and
+		b.del_flag=
+		'0' order by b.id desc limit 1) customer_service_id,
+		(select b.status
+		from bu_sub_order b where b.id = a.sub_order_id and
+		b.del_flag = '0')
+		sub_order_status,
+		(select b.pro_status from bu_customer_service_order b
+		where
+		b.order_dtl_id=a.id and b.del_flag=0 order by b.id desc limit
+		1)service_pro_status,
+		(select spa.type from bu_single_product_activity
+		spa where spa.del_flag='0'
+		and spa.id = a.single_product_activity_id
+		limit
+		1)single_product_activity_type,
+		(select io.id from
+		bu_customer_service_order cso, bu_intervention_order io
+		where
+		cso.del_flag = '0' and io.del_flag = '0' and cso.order_dtl_id =
+		a.id
+		and cso.id = io.service_order_id order by io.id desc limit 1 )
+		intervention_order_id,
+		(select ops.id from bu_order_product_snapshot
+		ops where ops.del_flag = '0'
+		and ops.order_dtl_id = a.id limit 1 )
+		order_product_snapshot_id,
+		(select e.name from bu_express e where
+		a.dtl_express_id =
+		e.id)order_dtl_express_name
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.jf.entity.OrderDtlExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from bu_order_dtl a
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="limitStart != null and limitStart>=0">
+			limit #{limitStart} , #{limitSize}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from bu_order_dtl a
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<select id="countByExample" parameterType="com.jf.entity.OrderDtlExample"
+		resultType="java.lang.Integer">
+		select count(*) from bu_order_dtl a
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<select id="getOrderDtlsBySubOrderId" parameterType="int"
+		resultMap="BaseResultMap">
+		select distinct a.* from bu_order_dtl a where
+		a.sub_order_id=#{subOrderId,jdbcType=INTEGER}
+	</select>
+
+
+	<sql id="Base_Column_List2">
+		a.id,
+		a.sub_order_id,
+		a.product_id,
+		a.product_item_id,
+		a.sku_pic,
+		a.sku,
+		a.product_name,
+		a.art_no,
+		a.brand_name,
+		a.product_prop_desc,
+		a.quantity,
+		a.tag_price,
+		a.sale_price,
+		a.pay_amount,
+		a.settle_price,
+		a.pop_commission_rate,
+		a.platform_preferential,
+		a.mcht_preferential,
+		a.integral_preferential,
+		a.settle_amount,
+		a.commission_amount,
+		a.refund_date,
+		a.product_status,
+		a.is_give,
+		a.mcht_settle_order_id,
+		a.freight,
+		a.distribution_member_id,
+		a.distribution_amount,
+		a.distribution_settle_status,
+		a.distribution_settle_date,
+		c.receiver_name,
+		c.pay_date,
+		c.order_type,
+		c.receiver_phone,
+		c.receiver_address,
+		c.combine_order_code,
+		c.promotion_type as promotion_type,
+		c.distribution_amount,
+		b.distribution_amount,
+		FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","PAY_STATUS",(select
+		b.pay_status from bu_mcht_settle_order b where b.id =
+		a.mcht_settle_order_id and b.del_flag='0'))pay_status_desc,
+		b.sub_order_code AS sub_order_code,
+		FUN_GET_STATUS_DESC (
+		"BU_ORDER_DTL",
+		"PRODUCT_STATUS",
+		a.product_status
+		) product_status_desc,
+		b.mcht_id,
+		b.mcht_type as mchtType,
+		b.is_manage_self as isManageSelf,
+		b.express_no,
+		d.mcht_code,
+		d.short_name as mcht_short_name,
+		d.company_name as company_name,
+		d.company_name,
+		p.code,
+		(select spa.type
+		from bu_single_product_activity spa where spa.del_flag='0'
+		and spa.id =
+		a.single_product_activity_id limit
+		1)single_product_activity_type,
+		(select sp.remarks from sys_payment sp where sp.id=c.payment_id)
+		payment_name,
+		(select pt.name from bu_product_type pt where
+		pt.id=p.product_type1_id)
+		producttype_name1,
+		(select pt.name from
+		bu_product_type pt where pt.id=p.product_type2_id)
+		producttype_name2,
+		(select pt.name from bu_product_type pt where pt.id=p.product_type_id)
+		producttype_name3,
+		(select ex.name from bu_express ex where
+		b.express_id=ex.id)ex_name, 
+		( SELECT opi.preferential_amount FROM bu_order_preferential_info opi WHERE opi.order_dtl_id = a.id AND opi.preferential_type = '9' LIMIT 1 ) shopowner_amount,
+		(select ode.manage_self_freight from bu_order_dtl_extend ode where ode.order_dtl_id = a.id and ode.del_flag = '0') manage_self_freight
+	</sql>
+	<select id="selectByExample2" resultMap="BaseResultMap"
+		parameterType="com.jf.entity.OrderDtlExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List2" />
+		from bu_order_dtl a, bu_sub_order b, bu_combine_order c, bu_mcht_info
+		d,bu_product p
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="limitStart != null and limitStart>=0">
+			limit #{limitStart} , #{limitSize}
+		</if>
+	</select>
+	<select id="countByExample2" parameterType="com.jf.entity.OrderDtlExample"
+		resultType="java.lang.Integer">
+		select count(a.id) from bu_order_dtl a, bu_sub_order b,
+		bu_combine_order c, bu_mcht_info d,bu_product p
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<select id="getSumOrderDtlByExample" parameterType="com.jf.entity.OrderDtlCustomExample"
+		resultType="java.util.HashMap">
+		select IFNULL(sum(a.quantity),0) as SumQ,
+		IFNULL(sum(a.pay_amount),0)
+		as SumP,
+		IFNULL(sum(a.settle_amount),0) as SumS,
+		IFNULL(sum(a.commission_amount),0) as SumC
+		from bu_order_dtl a,
+		bu_sub_order b, bu_combine_order c, bu_mcht_info
+		d,bu_product p
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<select id="platformPreferentialEachDayCountList" resultMap="BaseResultMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		t.each_day,
+		IFNULL((SELECT SUM(od.pay_amount) FROM bu_order_dtl
+		od,bu_sub_order so,bu_combine_order co WHERE od.sub_order_id = so.id
+		AND so.combine_order_id = co.id
+		AND od.del_flag = "0" AND
+		DATE_FORMAT(co.pay_date, '%Y-%m-%d') =
+		t.each_day ),0) AS
+		each_day_pay_amount,
+		IFNULL((SELECT
+		SUM(od.platform_preferential) FROM
+		bu_order_dtl od,bu_sub_order
+		so,bu_combine_order co WHERE
+		od.sub_order_id = so.id AND
+		so.combine_order_id = co.id
+		AND od.del_flag
+		= "0" AND DATE_FORMAT(co.pay_date, '%Y-%m-%d') =
+		t.each_day ),0) AS
+		each_day_preferential_amount,
+		IFNULL((SELECT
+		SUM(od.pay_amount) FROM
+		bu_order_dtl od,bu_sub_order
+		so,bu_combine_order co WHERE
+		od.sub_order_id = so.id AND
+		so.combine_order_id = co.id
+		AND od.del_flag
+		= "0" AND DATE_FORMAT(so.complete_date,'%Y-%m-%d') =
+		t.each_day ),0) AS
+		each_day_complete_pay_amount,
+		IFNULL((SELECT
+		SUM(od.platform_preferential) FROM bu_order_dtl od,bu_sub_order
+		so,bu_combine_order co WHERE od.sub_order_id = so.id AND
+		so.combine_order_id = co.id
+		AND od.del_flag = "0" AND
+		DATE_FORMAT(so.complete_date,'%Y-%m-%d') =
+		t.each_day ),0) AS
+		each_day_complete_preferential_amount
+		FROM
+		(
+		SELECT
+		DISTINCT
+		DATE_FORMAT(co.pay_date, '%Y-%m-%d') each_day
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co
+		WHERE
+		od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.pay_date is not null
+		AND
+		co.del_flag =
+		"0"
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{dateBegin,jdbcType=VARCHAR}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{dateEnd,jdbcType=VARCHAR}
+		) AS t
+	</select>
+
+	<select id="countCompletePayAmount" parameterType="java.util.HashMap"
+		resultType="java.math.BigDecimal">
+		SELECT IFNULL(SUM(od.pay_amount),0) FROM bu_order_dtl od,bu_sub_order
+		so,bu_combine_order co WHERE od.sub_order_id = so.id AND
+		so.combine_order_id = co.id AND od.del_flag="0" AND so.complete_date <![CDATA[ >= ]]>
+		#{dateStrStart,jdbcType=VARCHAR} AND so.complete_date <![CDATA[ <= ]]>
+		#{dateStrEnd,jdbcType=VARCHAR }
+	</select>
+
+	<select id="countCompletePreferentialAmount" parameterType="java.util.HashMap"
+		resultType="java.math.BigDecimal">
+		SELECT IFNULL(SUM(od.platform_preferential),0) FROM bu_order_dtl
+		od,bu_sub_order so,bu_combine_order co WHERE od.sub_order_id = so.id
+		AND so.combine_order_id = co.id AND od.del_flag="0" AND
+		so.complete_date <![CDATA[ >= ]]>
+		#{dateStrStart,jdbcType=VARCHAR } AND so.complete_date <![CDATA[ <= ]]>
+		#{dateStrEnd,jdbcType=VARCHAR }
+	</select>
+
+	<select id="eachDayNeedPayCount" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT
+		tmp.*,(tmp.pop_total_settle_amount+tmp.pool_total_settle_amount)total_settle_amount
+		FROM
+		(SELECT t.each_day,
+		(SELECT SUM(co.total_pay_amount) FROM
+		bu_combine_order co,bu_sub_order
+		so,bu_mcht_info mi WHERE co.id =
+		so.combine_order_id AND so.mcht_id =
+		mi.id AND co.del_flag='0' AND
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d')=t.each_day
+		<if test="mchtCode != null"> AND mi.mcht_code=#{mchtCode}</if>
+		) total_sale_amount,
+		(SELECT SUM(od.quantity) FROM bu_order_dtl
+		od,bu_sub_order so,
+		bu_combine_order co,bu_mcht_info mi WHERE
+		od.sub_order_id = so.id AND
+		so.combine_order_id = co.id AND so.mcht_id
+		= mi.id AND
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d')=t.each_day AND
+		od.del_flag='0' AND
+		od.is_give='0'
+		<if test="mchtCode != null"> AND mi.mcht_code=#{mchtCode}</if>
+		)total_quantity,
+		(SELECT SUM(od.quantity) FROM bu_order_dtl
+		od,bu_sub_order so,
+		bu_combine_order co,bu_mcht_info mi WHERE
+		od.sub_order_id = so.id AND
+		so.combine_order_id = co.id AND so.mcht_id
+		= mi.id AND
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d')=t.each_day AND
+		od.del_flag='0' AND
+		od.is_give='0' AND mi.mcht_type='2'
+		<if test="mchtCode != null"> AND mi.mcht_code=#{mchtCode}</if>
+		)pop_total_quantity,
+		(SELECT SUM(od.quantity) FROM bu_order_dtl
+		od,bu_sub_order so,
+		bu_combine_order co,bu_mcht_info mi WHERE
+		od.sub_order_id = so.id AND
+		so.combine_order_id = co.id AND so.mcht_id
+		= mi.id AND
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d')=t.each_day AND
+		od.del_flag='0' AND
+		od.is_give='0' AND mi.mcht_type='1'
+		<if test="mchtCode != null"> AND mi.mcht_code=#{mchtCode}</if>
+		)pool_total_quantity,
+		(SELECT SUM(od.settle_amount) FROM bu_order_dtl
+		od,bu_sub_order so,
+		bu_combine_order co,bu_mcht_info mi WHERE
+		od.sub_order_id = so.id AND
+		so.combine_order_id = co.id AND so.mcht_id
+		= mi.id AND
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d')=t.each_day AND
+		od.del_flag='0' AND
+		od.is_give='0' AND mi.mcht_type='2'
+		<if test="mchtCode != null"> AND mi.mcht_code=#{mchtCode}</if>
+		)pop_total_settle_amount,
+		(SELECT SUM(od.settle_amount) FROM
+		bu_order_dtl od,bu_sub_order so,
+		bu_combine_order co,bu_mcht_info mi
+		WHERE od.sub_order_id = so.id AND
+		so.combine_order_id = co.id AND
+		so.mcht_id = mi.id AND
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d')=t.each_day
+		AND od.del_flag='0' AND
+		od.is_give='0' AND mi.mcht_type='1'
+		<if test="mchtCode != null"> AND mi.mcht_code=#{mchtCode}</if>
+		)pool_total_settle_amount
+		from
+		(SELECT
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d') each_day FROM bu_combine_order
+		co,bu_sub_order so,bu_mcht_info mi WHERE co.id=so.combine_order_id AND
+		so.mcht_id = mi.id AND co.pay_date is NOT NULL AND co.pay_date <![CDATA[ >= ]]>#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>#{payDateEnd}
+		AND co.del_flag='0'
+		<if test="mchtCode != null"> AND mi.mcht_code=#{mchtCode}</if>
+		GROUP BY DATE_FORMAT(co.pay_date,'%Y-%m-%d'))t)tmp
+	</select>
+
+	<select id="dayReport" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT
+		t.*,
+		IFNULL(ROUND(t.total_pay_amount / t.order_count, 2), 0)
+		unit_price,
+		IFNULL(ROUND(t.total_mcht_preferential*100 /
+		t.product_sale_price, 4), 0) mcht_discount_rate,
+		IFNULL(ROUND(t.total_platform_preferential*100 / t.product_sale_price,
+		4), 0) plat_discount_rate,
+		IFNULL(((1 - ROUND(t.total_settle_amount /
+		t.total_pay_amount, 4))*100), 0) gross_profit_rate
+		FROM
+		(SELECT
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d') each_day,
+		COUNT(DISTINCT
+		co.create_by) buy_user_count,
+		COUNT(DISTINCT co.id) order_count,
+		SUM(od.quantity) product_count,
+		SUM(od.quantity*od.sale_price)
+		product_sale_price,
+		SUM(od.mcht_preferential) total_mcht_preferential,
+		SUM(od.platform_preferential+od.integral_preferential)
+		total_platform_preferential,
+		SUM(od.pay_amount) total_pay_amount,
+		SUM(od.settle_amount) total_settle_amount
+		FROM bu_combine_order
+		co,bu_sub_order
+		so,bu_order_dtl od,
+		bu_mcht_info mi
+		<if test="mchtCode != null">,bu_mcht_info m</if>
+		<if test="productTypeId != null">,bu_product p,bu_product_type pt,bu_product_type fpt</if>
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		<if test="activityType != null">
+			<if test="activityType == -1 || activityType == 0">
+				,bu_activity_area aa
+			</if>
+			<if
+				test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,bu_single_product_activity spa
+			</if>
+		</if>
+		WHERE
+		co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		AND
+		co.del_flag='0'
+		AND od.is_give='0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator="," close=")">
+				#{listSpecMchtCode}
+			</foreach>
+		</if>
+		<if test="mchtCode != null">
+			AND so.mcht_id = m.id AND m.mcht_code=#{mchtCode}
+		</if>
+		<if test="status != null">
+			<if test="status == 0">
+				AND co.status in (0,4)
+			</if>
+			<if test="status == 1">
+				AND co.status = #{status}
+			</if>
+		</if>
+		<if test="productTypeId != null">
+			AND od.product_id = p.id AND p.product_type_id = pt.id AND
+			pt.parent_id = fpt.id AND fpt.parent_id = #{productTypeId}
+		</if>
+		<if test="platformContactId!=null">
+			AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND
+			mpc.status = '1'
+			AND mpc.platform_contact_id=#{platformContactId}
+		</if>
+		<if test="activityType != null">
+			<if test="activityType == -1">
+				and od.ACTIVITY_AREA_ID = aa.id and aa.source = '2'
+			</if>
+			<if test="activityType == 0">
+				and od.ACTIVITY_AREA_ID = aa.id and aa.source = '1'
+			</if>
+			<if test="activityType == 1">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'1' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 2">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'2' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 3">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'3' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 4">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'4' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 5">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'5' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 6">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'6' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 8">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'7' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 9">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'8' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 7">
+				and od.activity_id IS NULL and od.activity_area_id IS
+				NULL and
+				od.single_product_activity_id IS NULL and od.del_flag='0'
+			</if>
+		</if>
+		<!-- <if test="mchtIds!=null"> AND so.mcht_id in <foreach collection="mchtIds" 
+			index="index" item="item" open="(" separator="," close=")"> #{item} </foreach> 
+			</if> -->
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.status = '1'
+		GROUP BY DATE_FORMAT(co.pay_date,'%Y-%m-%d'))t
+	</select>
+	<select id="weekReport" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		SELECT
+		t.*,
+		IFNULL(ROUND(t.total_pay_amount / t.order_count, 2), 0)
+		unit_price,
+		IFNULL(ROUND(t.total_mcht_preferential*100 /
+		t.product_sale_price, 4), 0) mcht_discount_rate,
+		IFNULL(ROUND(t.total_platform_preferential*100 / t.product_sale_price,
+		4), 0) plat_discount_rate,
+		IFNULL(((1 - ROUND(t.total_settle_amount /
+		t.total_pay_amount, 4))*100), 0) gross_profit_rate
+		FROM
+		(SELECT
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d') each_day,
+		COUNT(DISTINCT
+		co.create_by) buy_user_count,
+		COUNT(DISTINCT co.id) order_count,
+		SUM(od.quantity) product_count,
+		SUM(od.quantity*od.sale_price)
+		product_sale_price,
+		SUM(od.mcht_preferential) total_mcht_preferential,
+		SUM(od.platform_preferential+od.integral_preferential)
+		total_platform_preferential,
+		SUM(od.pay_amount) total_pay_amount,
+		SUM(od.settle_amount) total_settle_amount, 
+		datediff(co.pay_date, #{payDateBegin}) <![CDATA[ div ]]> 7 as d7
+		FROM bu_combine_order co force index(index_combine_order_03),
+		bu_sub_order so,
+		bu_order_dtl od,
+		bu_mcht_info mi
+		<if test="productTypeId != null">,bu_product p</if>
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		<if test="activityType != null">
+			<if test="activityType == -1 || activityType == 0">
+				,bu_activity_area aa
+			</if>
+			<if
+				test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,bu_single_product_activity spa
+			</if>
+		</if>
+		WHERE
+		co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		AND co.del_flag='0'
+		AND od.is_give='0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode1" open="(" separator="," close=")">
+				#{listSpecMchtCode1}
+			</foreach>
+		</if>
+		<if test="mchtCode != null">
+			AND so.mcht_id = mi.id AND mi.mcht_code=#{mchtCode}
+		</if>
+		<if test="status != null">
+			<if test="status == 0">
+				AND co.status in (0,4)
+			</if>
+			<if test="status == 1">
+				AND co.status = #{status}
+			</if>
+		</if>
+		<if test="productTypeId != null">
+			AND od.product_id = p.id AND p.product_type1_id = #{productTypeId}
+		</if>
+		<if test="platformContactId!=null">
+			AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND
+			mpc.status = '1'
+			AND mpc.platform_contact_id=#{platformContactId}
+		</if>
+		<if test="activityType != null">
+			<if test="activityType == -1">
+				and od.ACTIVITY_AREA_ID = aa.id and aa.source = '2'
+			</if>
+			<if test="activityType == 0">
+				and od.ACTIVITY_AREA_ID = aa.id and aa.source = '1'
+			</if>
+			<if test="activityType == 1">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'1' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 2">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'2' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 3">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'3' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 4">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'4' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 5">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'5' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 6">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'6' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 8">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'7' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 9">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type =
+				'8' and
+				spa.del_flag='0'
+			</if>
+			<if test="activityType == 7">
+				and od.activity_id IS NULL and od.activity_area_id IS
+				NULL and
+				od.single_product_activity_id IS NULL and od.del_flag='0'
+			</if>
+		</if>
+		<!-- <if test="mchtIds!=null"> AND so.mcht_id in <foreach collection="mchtIds" 
+			index="index" item="item" open="(" separator="," close=")"> #{item} </foreach> 
+			</if> -->
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.status = '1'
+		GROUP BY d7 
+		ORDER BY d7 DESC
+		)t
+	</select>
+	<select id="productTypeReport" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT 
+			t.*,
+			ROUND(t.total_pay_amount / t.product_count, 2) average_price,
+			ROUND(t.total_mcht_preferential*100 / t.product_sale_price, 4) mcht_discount_rate,
+			ROUND(t.total_platform_preferential*100 / t.product_sale_price, 4) plat_discount_rate,
+			((1 - ROUND(t.total_settle_amount / t.total_pay_amount,4))*100) gross_profit_rate
+		FROM
+			(SELECT 
+				t1.`name`
+				product_type_name,t2.*
+			FROM
+				(SELECT 
+					fpt.id,fpt.`name`,
+					fpt.seq_no 
+				from
+					bu_product_type fpt 
+				WHERE
+					fpt.del_flag='0' AND fpt.t_level='2'
+					<if test="productTypeId != null">
+					AND fpt.parent_id=#{productTypeId}
+					</if>
+				) t1
+			LEFT JOIN
+			(SELECT
+				pt.parent_id,
+				COUNT(DISTINCT co.create_by) buy_user_count,
+				SUM(od.quantity) product_count,
+				SUM(od.quantity*od.sale_price)
+				product_sale_price,
+				SUM(od.mcht_preferential) total_mcht_preferential,
+				SUM(od.platform_preferential+od.integral_preferential)
+				total_platform_preferential,
+				SUM(od.pay_amount) total_pay_amount,
+				SUM(od.settle_amount) total_settle_amount
+			FROM
+				bu_combine_order co,
+				bu_sub_order so,
+				bu_order_dtl od,
+				bu_product p,
+				bu_product_type pt,
+				bu_mcht_info mi
+				<if test="mchtCode != null">,bu_mcht_info m</if>
+				<if test="productTypeId != null">,bu_product_type fpt</if>
+				<if test="platformContactId!=null">
+					,bu_mcht_platform_contact mpc
+				</if>
+			WHERE
+				co.id = so.combine_order_id
+				AND so.id = od.sub_order_id
+				AND	od.product_id = p.id
+				AND p.product_type_id = pt.id
+				AND co.del_flag='0'
+				AND od.is_give='0'
+				AND so.mcht_id=mi.id
+		        AND mi.del_flag='0'
+		        <if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			        AND mi.mcht_code NOT in
+			      <foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator="," close=")">
+				     #{listSpecMchtCode}
+			      </foreach>
+		        </if>
+	            <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+				<if test="mchtCode != null">
+					AND so.mcht_id = m.id AND m.mcht_code=#{mchtCode}
+				</if>
+				<if test="status != null">
+					<if test="status == 0">
+						AND co.status in (0,4)
+					</if>
+					<if test="status == 1">
+						AND co.status = #{status}
+					</if>
+				</if>
+				<if test="productTypeId != null">
+					AND pt.parent_id = fpt.id AND fpt.parent_id = #{productTypeId}
+				</if>
+				<if test="platformContactId!=null">
+					AND so.mcht_id = mpc.mcht_id 
+					AND mpc.del_flag = '0' 
+					AND	mpc.status = '1'
+					AND mpc.platform_contact_id=#{platformContactId}
+				</if>
+				<!-- <if test="mchtIds!=null"> AND so.mcht_id in <foreach collection="mchtIds" 
+					index="index" item="item" open="(" separator="," close=")"> #{item} </foreach> 
+					</if> -->
+					AND co.pay_date <![CDATA[ >= ]]>#{payDateBegin}
+					AND co.pay_date <![CDATA[ <= ]]>#{payDateEnd}
+					AND co.status = '1'
+				GROUP BY pt.parent_id)t2
+			ON t1.id = t2.parent_id
+			ORDER BY
+			t1.seq_no ASC)t
+	</select>
+
+	<select id="totalOrderCount" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT t.*
+		FROM
+		(SELECT
+		COUNT(DISTINCT co.id) order_count,
+		COUNT(DISTINCT
+		so.id) sub_order_count,
+		COUNT(DISTINCT co.member_id) consume_count,
+		IFNULL(SUM(od.quantity*od.sale_price), 0) product_sale_price,
+		IFNULL(SUM(od.platform_preferential), 0) total_platform_preferential,
+		IFNULL(SUM(od.integral_preferential), 0) total_integral_preferential,
+		IFNULL(SUM(od.mcht_preferential), 0) total_mcht_preferential,
+		IFNULL(SUM(od.pay_amount), 0) total_pay_amount
+		FROM
+		bu_combine_order co,
+		bu_sub_order so,
+		bu_order_dtl od
+		<if test="mchtCode != null">
+			,bu_mcht_info mi
+		</if>
+		<if
+			test="sprChnl != null || reqMobileBrand != null || searchType == 3 || consumePeople == 3 || consumePeople == 4 || channel != null || spreadname != null || spreadActivityGroupId != null || sprChnlName != null">
+			,bu_member_info m
+		</if>
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			,bu_mcht_info mif
+		</if>
+		<if test="province != null || city != null">
+			,bu_member_address ma,bu_p_area area
+		</if>
+		<if test="firstProductTypeId !=null">
+			,bu_product p
+			,bu_product_type pt
+			,bu_product_type fpt
+		</if>
+		<if test="sprChnlName != null">
+			,sys_status ss
+		</if>
+		<if test="channel != null || spreadname != null || spreadActivityGroupId != null">
+			,bu_track_data btd
+			
+			<if test="visitType == 'orderVisit' ">
+			,bu_combine_order_extend coe
+		    </if>
+		    		
+		</if>
+		<if test="spreadActivityGroupId != null">
+			,bu_spread_name sn
+		</if>
+		WHERE
+		co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		<if test="mchtCode != null">
+			AND so.mcht_id = mi.id
+		</if>
+		 
+		 <if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			   AND so.mcht_id=mif.id  AND mif.mcht_code NOT in
+			 <foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator="," close=")">
+				 #{listSpecMchtCode}
+			 </foreach>
+		 </if>
+			<!-- AND mif.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		
+		<if
+			test="sprChnl != null || reqMobileBrand != null || searchType == 3 || consumePeople == 3 || consumePeople == 4 || channel != null || spreadname != null || spreadActivityGroupId != null || sprChnlName != null">
+			AND co.member_id = m.id AND m.del_flag = '0'
+		</if>
+		<if test="province != null || city != null">
+			AND co.address_id = ma.id
+		</if>
+		<if test="firstProductTypeId !=null || secondProductTypeId !=null">
+			AND od.product_id = p.id
+			AND p.product_type_id = pt.id
+			AND
+			pt.parent_id = fpt.id
+		</if>
+		AND co.del_flag = '0'
+		AND od.is_give='0'
+		<if test="sprChnl != null">
+			AND m.spr_chnl = #{sprChnl}
+		</if>
+		<if test="sprChnlName != null">
+			AND ss.table_name='BU_MEMBER_INFO' and
+			ss.col_name='SPR_CHNL' and
+			m.spr_chnl=ss.status_value and
+			ss.status_desc like #{sprChnlName}
+		</if>
+		<if test="channel != null || spreadname != null || spreadActivityGroupId != null">
+			AND m.reg_client = #{regClient} AND m.req_imei IS NOT NULL AND
+			m.req_imei not like '000000%'
+			AND btd.del_flag = '0'
+			<!--首次访问和最新访问  -->
+			<if test="visitType == 'firstVisit' || visitType == 'newVisit'">
+				<if test="regClient == 1">
+					AND btd.idfa = m.req_imei
+					AND NOT EXISTS (select td2.id from
+					bu_track_data td2 where
+					td2.idfa=btd.idfa and td2.id <![CDATA[ < ]]>
+					btd.id)
+				</if>
+				<if test="regClient == 2">
+					AND btd.imei = m.req_imei
+					AND NOT EXISTS (select td2.id from
+					bu_track_data td2 where
+					td2.imei=btd.imei and td2.id <![CDATA[ < ]]>
+					btd.id)
+				</if>
+				<if test="channel != null">
+					AND btd.channel = #{channel}
+				</if>
+				<if test="spreadname != null">
+					AND btd.spreadname = #{spreadname}
+				</if>
+				<if test="spreadActivityGroupId != null">
+					<!-- <if test="visitType != 'firstVisit'">
+						AND btd.spreadname = sn.spread_name
+					</if>
+					<if test="visitType != 'newVisit'">
+						AND btd.firstSpreadname = sn.spread_name
+					</if> -->
+					<if test="visitType == 'firstVisit'">
+						AND btd.firstSpreadname = sn.spread_name
+					</if>
+					<if test="visitType == 'newVisit'">
+					    AND btd.spreadname = sn.spread_name
+					</if>
+					AND sn.device_type = '1'
+					AND sn.activity_group_id =
+					#{spreadActivityGroupId}
+				</if>
+			</if>
+			<!--下单访问  -->
+			<if test="visitType == 'orderVisit'">
+				<if test="regClient == 1">
+					AND btd.idfa = m.req_imei
+				</if>
+				<if test="regClient == 2">
+					AND btd.imei = m.req_imei
+				</if>
+				<if test="channel != null">
+					AND coe.channel = #{channel}
+				</if>
+				<if test="spreadname != null">
+					AND coe.spreadname = #{spreadname}
+				</if>
+				<if test="spreadActivityGroupId != null">
+				
+					AND sn.spread_name = coe.spreadname
+					AND co.id = coe.combine_order_id
+					
+					AND sn.device_type = '1'
+					AND sn.activity_group_id =
+					#{spreadActivityGroupId}
+				</if>
+			 </if>
+			
+			
+		</if>
+		
+		
+		<if test="mchtCode != null">
+			AND mi.mcht_code = #{mchtCode}
+		</if>
+		<if test="province != null">
+			AND ma.province = area.AREA_ID AND
+			area.AREA_NAME=#{province}
+		</if>
+		<if test="city != null">
+			AND ma.city = area.AREA_ID AND area.AREA_NAME=#{city}
+		</if>
+		<if test="status != null">
+			<if test="status == 0">
+				AND co.status in (0,4)
+			</if>
+			<if test="status == 1">
+				AND co.status = #{status}
+			</if>
+		</if>
+		<if test="sysPayment != null">
+			AND co.payment_id = #{sysPayment}
+		</if>
+		<if test="sysPayment != null">
+			AND co.payment_id = #{sysPayment}
+		</if>
+		<if test="brandName != null">
+			AND od.brand_name = #{brandName}
+		</if>
+		<if test="firstProductTypeId != null">
+			AND fpt.parent_id = #{firstProductTypeId}
+		</if>
+		<if test="secondProductTypeId != null">
+			AND pt.parent_id = #{secondProductTypeId}
+		</if>
+		<if test="activityId != null">
+			AND od.activity_id = #{activityId}
+		</if>
+		<if test="activityAreaId != null">
+			AND od.activity_area_id = #{activityAreaId}
+		</if>
+		<if test="reqMobileBrand != null">
+			AND m.req_mobile_brand = #{reqMobileBrand}
+		</if>
+		<if test="sourceClient != null">
+			AND co.source_client = #{sourceClient}
+		</if>
+		<if test="consumePeople == 1">
+			AND co.member_id NOT IN (SELECT DISTINCT p.member_id FROM
+			bu_combine_order p WHERE p.del_flag='0' and p.STATUS = '1' AND p.id <![CDATA[ < ]]>
+			co.id)
+		</if>
+		<if test="consumePeople == 2">
+			AND co.member_id IN (SELECT DISTINCT p.member_id FROM
+			bu_combine_order p WHERE p.del_flag='0' and p.STATUS = '1' AND p.id <![CDATA[ < ]]>
+			co.id)
+		</if>
+		<if test="consumePeople == 3">
+			AND DATE_FORMAT(co.create_date, '%Y-%m-%d') =
+			DATE_FORMAT(m.create_date, '%Y-%m-%d')
+		</if>
+		<if test="consumePeople == 4">
+			AND DATE_FORMAT(co.create_date, '%Y-%m-%d') !=
+			DATE_FORMAT(m.create_date, '%Y-%m-%d')
+		</if>
+		AND co.create_date <![CDATA[ >= ]]>
+		#{orderDateBegin}
+		AND co.create_date <![CDATA[ <= ]]>
+		#{orderDateEnd}
+		)t
+	</select>
+
+	<select id="orderCount" parameterType="java.util.HashMap"
+		resultMap="BaseResultMap">
+		SELECT t.*
+		FROM
+		(SELECT
+		<if test="searchType == 1 ">
+			DATE_FORMAT(co.create_date, '%Y-%m-%d') each_day,
+		</if>
+		<if test="searchType == 2 ">
+			DATE_FORMAT(co.create_date, '%H') each_hour,
+		</if>
+		<if test="searchType == 3 ">
+			m.req_mobile_brand mobile_brand,
+		</if>
+		COUNT(DISTINCT co.id) order_count,
+		COUNT(DISTINCT so.id)
+		sub_order_count,
+		COUNT(DISTINCT co.member_id) consume_count,
+		IFNULL(SUM(od.quantity*od.sale_price), 0) product_sale_price,
+		IFNULL(SUM(od.platform_preferential), 0) total_platform_preferential,
+		IFNULL(SUM(od.integral_preferential), 0) total_integral_preferential,
+		IFNULL(SUM(od.mcht_preferential), 0) total_mcht_preferential,
+		IFNULL(SUM(od.pay_amount), 0) total_pay_amount
+		FROM
+		bu_combine_order co,
+		bu_sub_order so,
+		bu_order_dtl od
+		<if test="mchtCode != null">
+			,bu_mcht_info mi
+		</if>
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			,bu_mcht_info mif
+		</if>
+		<if
+			test="sprChnl != null || reqMobileBrand != null || searchType == 3 || consumePeople == 3 || consumePeople == 4 || channel != null || spreadname != null || spreadActivityGroupId != null || sprChnlName != null">
+			,bu_member_info m
+		</if>
+		<if test="province != null || city != null">
+			,bu_member_address ma,bu_p_area area
+		</if>
+		<if test="firstProductTypeId !=null || secondProductTypeId !=null">
+			,bu_product p
+			,bu_product_type pt
+			,bu_product_type fpt
+		</if>
+		<if test="sprChnlName != null">
+			,sys_status ss
+		</if>
+		<if test="channel != null || spreadname != null || spreadActivityGroupId != null">
+			,bu_track_data btd
+			<if test="visitType == 'orderVisit' ">
+			,bu_combine_order_extend coe
+		    </if>
+		</if>
+		<if test="spreadActivityGroupId != null">
+			,bu_spread_name sn
+		</if>
+
+		WHERE
+		co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		<if test="mchtCode != null">
+			AND so.mcht_id = mi.id
+		</if>
+		<!-- <if test="appointMchtCode == 1">
+			AND so.mcht_id = mif.id
+			AND mif.mcht_code NOT in ('P193103', 'P193093', 'P193076')
+		</if> -->
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			  AND so.mcht_id=mif.id AND mif.mcht_code NOT in
+			 <foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode1" open="(" separator="," close=")">
+				 #{listSpecMchtCode1}
+			 </foreach>
+		 </if>
+		<if
+			test="sprChnl != null || reqMobileBrand != null || searchType == 3 || consumePeople == 3 || consumePeople == 4 || channel != null || spreadname != null || spreadActivityGroupId != null || sprChnlName != null">
+			AND co.member_id = m.id AND m.del_flag = '0'
+		</if>
+		<if test="province != null || city != null">
+			AND co.address_id = ma.id
+		</if>
+		<if test="firstProductTypeId !=null || secondProductTypeId !=null">
+			AND od.product_id = p.id
+			AND p.product_type_id = pt.id
+			AND
+			pt.parent_id = fpt.id
+		</if>
+		AND co.del_flag = '0'
+		AND od.is_give='0'
+		<if test="sprChnl != null">
+			AND m.spr_chnl = #{sprChnl}
+		</if>
+		<if test="sprChnlName != null">
+			AND ss.table_name='BU_MEMBER_INFO' and
+			ss.col_name='SPR_CHNL' and
+			m.spr_chnl=ss.status_value and
+			ss.status_desc like #{sprChnlName}
+		</if>
+		<if test="channel != null || spreadname != null || spreadActivityGroupId != null">
+			AND m.reg_client = #{regClient} AND m.req_imei IS NOT NULL AND
+			m.req_imei not like '000000%'
+			AND btd.del_flag = '0'
+			<!--首次访问和最新访问  -->
+			<if test="visitType == 'firstVisit' || visitType == 'newVisit'">
+				<if test="regClient == 1">
+					AND btd.idfa = m.req_imei
+					AND NOT EXISTS (select td2.id from
+					bu_track_data td2 where
+					td2.idfa=btd.idfa and td2.id <![CDATA[ < ]]>
+					btd.id)
+				</if>
+				<if test="regClient == 2">
+					AND btd.imei = m.req_imei
+					AND NOT EXISTS (select td2.id from
+					bu_track_data td2 where
+					td2.imei=btd.imei and td2.id <![CDATA[ < ]]>
+					btd.id)
+				</if>
+				<if test="channel != null">
+					AND btd.channel = #{channel}
+				</if>
+				<if test="spreadname != null">
+					AND btd.spreadname = #{spreadname}
+				</if>
+				<if test="spreadActivityGroupId != null">
+					<!--<if test="visitType != 'firstVisit'">
+						AND btd.spreadname = sn.spread_name
+					</if>
+					<if test="visitType != 'newVisit'">
+						AND btd.firstSpreadname = sn.spread_name
+					</if> -->
+					
+					<if test="visitType == 'firstVisit'">
+						AND btd.firstSpreadname = sn.spread_name
+					</if>
+					<if test="visitType == 'newVisit'">
+					    AND btd.spreadname = sn.spread_name
+					</if>
+					<if test="visitType == 'orderVisit'">
+					AND sn.spread_name = coe.spreadname
+					AND co.id = coe.combine_order_id
+					</if>
+					
+					AND sn.device_type = '1'
+					AND sn.activity_group_id =
+					#{spreadActivityGroupId}
+				</if>
+			</if>
+			<!--下单访问  -->
+			<if test="visitType == 'orderVisit'">
+				<if test="regClient == 1">
+					AND btd.idfa = m.req_imei
+				</if>
+				<if test="regClient == 2">
+					AND btd.imei = m.req_imei
+				</if>
+				<if test="channel != null">
+					AND coe.channel = #{channel}
+				</if>
+				<if test="spreadname != null">
+					AND coe.spreadname = #{spreadname}
+				</if>
+				<if test="spreadActivityGroupId != null">
+				
+					AND sn.spread_name = coe.spreadname
+					AND co.id = coe.combine_order_id
+					
+					AND sn.device_type = '1'
+					AND sn.activity_group_id =
+					#{spreadActivityGroupId}
+				</if>
+			 </if>
+			
+			
+		</if>
+		<if test="mchtCode != null">
+			AND mi.mcht_code = #{mchtCode}
+		</if>
+		<if test="province != null">
+			AND ma.province = area.AREA_ID AND
+			area.AREA_NAME=#{province}
+		</if>
+		<if test="city != null">
+			AND ma.city = area.AREA_ID AND area.AREA_NAME=#{city}
+		</if>
+		<if test="status != null">
+			<if test="status == 0">
+				AND co.status in (0,4)
+			</if>
+			<if test="status == 1">
+				AND co.status = #{status}
+			</if>
+		</if>
+		<if test="sysPayment != null">
+			AND co.payment_id = #{sysPayment}
+		</if>
+		<if test="sysPayment != null">
+			AND co.payment_id = #{sysPayment}
+		</if>
+		<if test="brandName != null">
+			AND od.brand_name = #{brandName}
+		</if>
+		<if test="firstProductTypeId != null">
+			AND fpt.parent_id = #{firstProductTypeId}
+		</if>
+		<if test="secondProductTypeId != null">
+			AND pt.parent_id = #{secondProductTypeId}
+		</if>
+		<if test="activityId != null">
+			AND od.activity_id = #{activityId}
+		</if>
+		<if test="activityAreaId != null">
+			AND od.activity_area_id = #{activityAreaId}
+		</if>
+		<if test="reqMobileBrand != null">
+			AND m.req_mobile_brand = #{reqMobileBrand}
+		</if>
+		<if test="sourceClient != null">
+			AND co.source_client = #{sourceClient}
+		</if>
+		<if test="consumePeople == 1">
+			AND co.member_id NOT IN (SELECT DISTINCT p.member_id FROM
+			bu_combine_order p WHERE p.del_flag='0' and p.STATUS = '1' AND p.id <![CDATA[ < ]]>
+			co.id)
+		</if>
+		<if test="consumePeople == 2">
+			AND co.member_id IN (SELECT DISTINCT p.member_id FROM
+			bu_combine_order p WHERE p.del_flag='0' and p.STATUS = '1' AND p.id <![CDATA[ < ]]>
+			co.id)
+		</if>
+		<if test="consumePeople == 3">
+			AND DATE_FORMAT(co.create_date, '%Y-%m-%d') =
+			DATE_FORMAT(m.create_date,
+			'%Y-%m-%d')
+		</if>
+		<if test="consumePeople == 4">
+			AND DATE_FORMAT(co.create_date, '%Y-%m-%d') !=
+			DATE_FORMAT(m.create_date, '%Y-%m-%d')
+		</if>
+		AND co.create_date <![CDATA[ >= ]]>
+		#{orderDateBegin}
+		AND co.create_date <![CDATA[ <= ]]>
+		#{orderDateEnd}
+		<if test="searchType == 1 ">
+			GROUP BY DATE_FORMAT(co.create_date, '%Y-%m-%d')
+		</if>
+		<if test="searchType == 2 ">
+			GROUP BY DATE_FORMAT(co.create_date, '%H')
+		</if>
+		<if test="searchType == 3 ">
+			GROUP BY m.req_mobile_brand
+		</if>
+		)t
+	</select>
+	<select id="activityTypeSaleCount" parameterType="java.util.HashMap"
+			resultType="java.util.HashMap">
+		SELECT
+		t.each_day,
+		CAST( sum( t.brand_sale_amount_quantity ) AS CHAR ) brand_sale_amount_quantity,
+		CAST( sum( t.brand_sale_amount ) AS CHAR ) brand_sale_amount,
+		CAST( sum( t.area_sale_quantity ) AS CHAR ) area_sale_quantity,
+		CAST( sum( t.area_sale_amount ) AS CHAR ) area_sale_amount,
+		CAST( sum( t.new_user_sale_quantity ) AS CHAR ) new_user_sale_quantity,
+		CAST( sum( t.new_user_sale_amount ) AS CHAR ) new_user_sale_amount,
+		CAST( sum( t.new_user_kill_quantity ) AS CHAR ) new_user_kill_quantity,
+		CAST( sum( t.new_user_kill_amount ) AS CHAR ) new_user_kill_amount,
+		CAST( sum( t.single_product_quantity ) AS CHAR ) single_product_quantity,
+		CAST( sum( t.single_product_amount ) AS CHAR ) single_product_amount,
+		CAST( sum( t.xg_kill_quantity ) AS CHAR ) xg_kill_quantity,
+		CAST( sum( t.xg_kill_amount ) AS CHAR ) xg_kill_amount,
+		CAST( sum( t.integral_quantity ) AS CHAR ) integral_quantity,
+		CAST( sum( t.integral_amount ) AS CHAR ) integral_amount,
+		CAST( sum( t.broken_code_quantity ) AS CHAR ) broken_code_quantity,
+		CAST( sum( t.broken_code_amount ) AS CHAR ) broken_code_amount,
+		CAST( sum( t.mall_sale_quantity ) AS CHAR ) mall_sale_quantity,
+		CAST( sum( t.mall_sale_amount ) AS CHAR ) mall_sale_amount
+		FROM
+		(
+		SELECT
+		DATE_FORMAT( co.pay_date, '%Y-%m-%d' ) each_day,
+		IF
+		( aa.source = '2', SUM( od.quantity ), 0 ) brand_sale_amount_quantity,
+		IF
+		( aa.source = '2', SUM( od.pay_amount ), 0 ) brand_sale_amount,
+		IF
+		( aa.source = '1', SUM( od.quantity ), 0 ) area_sale_quantity,
+		IF
+		( aa.source = '1', SUM( od.pay_amount ), 0 ) area_sale_amount,
+		0 new_user_sale_quantity,
+		0 new_user_sale_amount,
+		0 new_user_kill_quantity,
+		0 new_user_kill_amount,
+		0 single_product_quantity,
+		0 single_product_amount,
+		0 xg_kill_quantity,
+		0 xg_kill_amount,
+		0 integral_quantity,
+		0 integral_amount,
+		0 broken_code_quantity,
+		0 broken_code_amount,
+		0 mall_sale_quantity,
+		0 mall_sale_amount
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area aa,
+		bu_mcht_info mi
+		<if test="productTypeId!=null">
+			,bu_product p,bu_product_type pt,bu_product_type fpt
+		</if>
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		WHERE
+		od.sub_order_id = so.id
+		AND so.combine_order_id = co.id
+		AND od.activity_area_id = aa.id
+		<if test="productTypeId!=null">
+			AND od.product_id = p.id
+			AND p.product_type_id = pt.id
+			AND pt.parent_id = fpt.id
+			AND fpt.parent_id = #{productTypeId}
+		</if>
+		<if test="platformContactId!=null">
+			AND so.mcht_id = mpc.mcht_id
+			AND mpc.del_flag = '0'
+			AND mpc.status = '1'
+			AND mpc.platform_contact_id=#{platformContactId}
+		</if>
+		AND co.`status` = '1'
+		AND od.is_give = '0'
+		AND co.pay_date<![CDATA[ >= ]]>#{payDateBegin}
+		AND co.pay_date<![CDATA[ <= ]]>#{payDateEnd}
+		AND od.del_flag = '0'
+		AND co.del_flag = '0'
+		AND aa.del_flag = '0'
+		AND so.mcht_id = mi.id
+		AND mi.del_flag = '0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode1" open="(" separator="," close=")">
+				#{listSpecMchtCode1}
+			</foreach>
+		</if>
+		GROUP BY
+		aa.source,
+		each_day UNION
+		SELECT
+		DATE_FORMAT( co.pay_date, '%Y-%m-%d' ) each_day,
+		0 brand_sale_amount_quantity,
+		0 brand_sale_amount,
+		0 area_sale_quantity,
+		0 area_sale_amount,
+		IF
+		( spa.type = '1', SUM( od.quantity ), 0 ) new_user_sale_quantity,
+		IF
+		( spa.type = '1', SUM( od.pay_amount ), 0 ) new_user_sale_amount,
+		IF
+		( spa.type = '4', SUM( od.quantity ), 0 ) new_user_kill_quantity,
+		IF
+		( spa.type = '4', SUM( od.pay_amount ), 0 ) new_user_kill_amount,
+		IF
+		( spa.type = '2', SUM( od.quantity ), 0 ) single_product_quantity,
+		IF
+		( spa.type = '2', SUM( od.pay_amount ), 0 ) single_product_amount,
+		IF
+		( spa.type = '3', SUM( od.quantity ), 0 ) xg_kill_quantity,
+		IF
+		( spa.type = '3', SUM( od.pay_amount ), 0 ) xg_kill_amount,
+		IF
+		( spa.type = '5', SUM( od.quantity ), 0 ) integral_quantity,
+		IF
+		( spa.type = '5', SUM( od.pay_amount ), 0 ) integral_amount,
+		IF
+		( spa.type = '6', SUM( od.quantity ), 0 ) broken_code_quantity,
+		IF
+		( spa.type = '6', SUM( od.pay_amount ), 0 ) broken_code_amount,
+
+		0 mall_sale_quantity,
+		0 mall_sale_amount
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_single_product_activity spa,
+		bu_mcht_info mi
+		<if test="productTypeId!=null">
+			,bu_product p,bu_product_type pt,bu_product_type fpt
+		</if>
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		WHERE
+		od.sub_order_id = so.id
+		AND so.combine_order_id = co.id
+		AND od.single_product_activity_id = spa.id
+		<if test="productTypeId!=null">
+			AND od.product_id = p.id
+			AND p.product_type_id = pt.id
+			AND pt.parent_id = fpt.id
+			AND fpt.parent_id = #{productTypeId}
+		</if>
+		<if test="platformContactId!=null">
+			AND so.mcht_id=mpc.mcht_id
+			AND mpc.del_flag = '0'
+			AND mpc.status = '1'
+			AND mpc.platform_contact_id=#{platformContactId}
+		</if>
+		AND co.`status` = '1'
+		AND od.is_give = '0'
+		AND co.pay_date<![CDATA[ >= ]]>#{payDateBegin}
+		AND co.pay_date<![CDATA[ <= ]]>#{payDateEnd}
+		AND od.del_flag = '0'
+		AND co.del_flag = '0'
+		AND spa.del_flag = '0'
+		AND so.mcht_id = mi.id
+		AND mi.del_flag = '0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode2" open="(" separator="," close=")">
+				#{listSpecMchtCode2}
+			</foreach>
+		</if>
+		GROUP BY
+		spa.type,
+		each_day UNION
+		SELECT
+		DATE_FORMAT( co.pay_date, '%Y-%m-%d' ) each_day,
+		0 brand_sale_amount_quantity,
+		0 brand_sale_amount,
+		0 area_sale_quantity,
+		0 area_sale_amount,
+		0 new_user_sale_quantity,
+		0 new_user_sale_amount,
+		0 new_user_kill_quantity,
+		0 new_user_kill_amount,
+		0 single_product_quantity,
+		0 single_product_amount,
+		0 xg_kill_quantity,
+		0 xg_kill_amount,
+		0 integral_quantity,
+		0 integral_amount,
+		0 broken_code_quantity,
+		0 broken_code_amount,
+		SUM( od.quantity ) mall_sale_quantity,
+		SUM( od.pay_amount ) mall_sale_amount
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_mcht_info mi
+		<if test="productTypeId!=null">
+			,bu_product p,bu_product_type pt,bu_product_type fpt
+		</if>
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		WHERE
+		od.sub_order_id = so.id
+		AND so.combine_order_id = co.id
+		<if test="productTypeId!=null">
+			AND od.product_id = p.id
+			AND p.product_type_id = pt.id
+			AND pt.parent_id = fpt.id
+			AND fpt.parent_id = #{productTypeId}
+		</if>
+		<if test="platformContactId!=null">
+			AND so.mcht_id=mpc.mcht_id
+			AND mpc.del_flag = '0'
+			AND mpc.status = '1'
+			AND mpc.platform_contact_id=#{platformContactId}
+		</if>
+		AND co.`status` = '1'
+		AND od.is_give = '0'
+		AND od.activity_id IS NULL
+		AND od.activity_area_id IS NULL
+		AND od.single_product_activity_id IS NULL
+		AND co.pay_date<![CDATA[ >= ]]>#{payDateBegin}
+		AND co.pay_date<![CDATA[ <= ]]>#{payDateEnd}
+		AND od.del_flag = '0'
+		AND co.del_flag = '0'
+		AND so.mcht_id = mi.id
+		AND mi.del_flag = '0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode3" open="(" separator="," close=")">
+				#{listSpecMchtCode3}
+			</foreach>
+		</if>
+		GROUP BY
+		each_day
+		) t
+		GROUP BY
+		t.each_day
+		ORDER BY
+		t.each_day
+		LIMIT 31;
+	</select>
+	<select id="getOrderCount" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT
+		0 as type,
+		COUNT(DISTINCT co.id) as order_count,
+		SUM(od.quantity)
+		as quantity,
+		SUM(od.pay_amount) as pay_amount,
+		SUM(od.pay_amount-od.settle_amount) as commission_amount,
+		IFNULL(SUM(od.pay_amount-od.settle_amount)/IFNULL(SUM(od.pay_amount),1)*100,0) rate,
+		'A' as tot_type,
+		'' as activity_sale_quantity,
+		'' as
+		activity_area_sale_quantity
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag = '0'
+		AND
+		od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` =
+		'1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND mi.del_flag='0'
+		AND so.mcht_id=mi.id
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCode1" open="(" separator="," close=")">
+				#{listMchtCode1}
+			</foreach>
+		</if>
+		<!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		UNION
+		SELECT
+		aa.source as type,
+		COUNT(DISTINCT co.id) as order_count,
+		SUM(od.quantity) as quantity,
+		SUM(od.pay_amount) as pay_amount,
+		SUM(od.pay_amount-od.settle_amount)
+		as commission_amount,
+		IFNULL(SUM(od.pay_amount-od.settle_amount)/IFNULL(SUM(od.pay_amount),1)*100,0) rate,
+		'B' as
+		tot_type,
+		(
+		SELECT
+		GROUP_CONCAT(t.activity_name_quantity separator '、')
+		FROM
+		(
+		SELECT
+		CONCAT(
+		"【ID:",
+		a.id,
+		" ",
+		a.`name`,
+		":",
+		SUM(od.quantity),
+		"件】"
+		)
+		activity_name_quantity
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area aa,
+		bu_activity a,
+		bu_mcht_info mi
+		WHERE
+		od.is_give =
+		'0' AND
+		od.del_flag = '0'AND
+		od.sub_order_id = so.id AND
+		so.combine_order_id = co.id AND
+		od.activity_area_id = aa.id AND
+		od.activity_id = a.id AND
+		aa.id = a.activity_area_id AND
+		co.`status` =
+		'1' AND
+		co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin} AND
+		co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd} AND
+		aa.source = '1' AND
+		co.del_flag = '0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCode2" open="(" separator="," close=")">
+				#{listMchtCode2}
+			</foreach>
+		</if>
+	   <!--  AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		a.id
+		ORDER BY
+		SUM(od.quantity) DESC
+		LIMIT 10
+		) t
+		) activity_sale_quantity,
+		(
+		SELECT
+		GROUP_CONCAT(t.activity_area_name_quantity)
+		FROM
+		(
+		SELECT
+		CONCAT(
+		"【ID:",
+		aa.id,
+		" ",
+		aa.`name`,
+		":",
+		SUM(od.quantity),
+		"件】"
+		)
+		activity_area_name_quantity
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area aa,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0' AND
+		od.del_flag = '0'AND
+		od.sub_order_id = so.id AND
+		so.combine_order_id =
+		co.id AND
+		od.activity_area_id = aa.id AND
+		co.`status` = '1' AND
+		co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin} AND
+		co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd} AND
+		aa.source = '2' AND
+		co.del_flag = '0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCode3" open="(" separator="," close=")">
+				#{listMchtCode3}
+			</foreach>
+		</if>
+	   <!--  AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		aa.id
+		ORDER BY
+		SUM(od.quantity) DESC
+		LIMIT 10
+		) t
+		) activity_area_sale_quantity
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area aa,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag = '0'
+		AND
+		od.sub_order_id = so.id
+		AND so.combine_order_id = co.id
+		AND
+		od.activity_area_id = aa.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCode4" open="(" separator="," close=")">
+				#{listMchtCode4}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY aa.source
+		UNION
+		SELECT
+		spa.type,
+		COUNT(DISTINCT co.id) as order_count,
+		SUM(od.quantity) as
+		quantity,
+		SUM(od.pay_amount) as pay_amount,
+		SUM(od.pay_amount-od.settle_amount) as commission_amount,
+		IFNULL(SUM(od.pay_amount-od.settle_amount)/IFNULL(SUM(od.pay_amount),1)*100,0) rate,
+		'C' as
+		tot_type,
+		'' as activity_sale_quantity,
+		'' as
+		activity_area_sale_quantity
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_single_product_activity spa,
+		bu_mcht_info mi
+		WHERE
+		od.is_give =
+		'0'
+		AND od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.single_product_activity_id
+		=spa.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCode5" open="(" separator="," close=")">
+				#{listMchtCode5}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		spa.type
+		UNION
+		SELECT
+		gpt.`name` as type,
+		COUNT(DISTINCT
+		co.id) as order_count,
+		SUM(od.quantity) as quantity,
+		SUM(od.pay_amount)
+		as pay_amount,
+		SUM(od.pay_amount-od.settle_amount) as
+		commission_amount,
+		IFNULL(SUM(od.pay_amount-od.settle_amount)/IFNULL(SUM(od.pay_amount),1)*100,0) rate,
+		'D' as
+		tot_type,
+		'' as activity_sale_quantity,
+		'' as
+		activity_area_sale_quantity
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_product p,
+		bu_product_type pt,
+		bu_product_type
+		fpt,
+		bu_product_type gpt,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag = '0'
+		AND
+		od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND od.product_id
+		= p.id
+		AND
+		p.product_type_id = pt.id
+		AND pt.parent_id = fpt.id
+		AND
+		fpt.parent_id =
+		gpt.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCode6" open="(" separator="," close=")">
+				#{listMchtCode6}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY fpt.parent_id
+		UNION
+		SELECT
+		0 as type,
+		COUNT(DISTINCT co.id) as order_count,
+		SUM(od.quantity) as
+		quantity,
+		SUM(od.pay_amount) as pay_amount,
+		SUM(od.pay_amount-od.settle_amount) as commission_amount,
+		IFNULL(SUM(od.pay_amount-od.settle_amount)/IFNULL(SUM(od.pay_amount),1)*100,0) rate,
+		'E' as
+		tot_type,
+		'' AS activity_sale_quantity,
+		'' AS
+		activity_area_sale_quantity
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area aa,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND
+		od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND so.combine_order_id =
+		co.id
+		AND od.activity_area_id = aa.id
+		AND aa.source = '1'
+		AND aa.type =
+		'3'
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCode7" open="(" separator="," close=")">
+				#{listMchtCode7}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+	</select>
+	<select id="getBrandCount" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		(SELECT
+		T.*
+		FROM
+		(
+		SELECT
+		0 as type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity)
+		AS quantity,
+		'A' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give =
+		'0'
+		AND od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.product_id = p.id
+		AND
+		p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeO" open="(" separator="," close=")">
+				#{listMchtCodeO}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		p.brand_id
+		)T
+		LEFT JOIN
+		(
+		SELECT
+		0 as type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'A' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag = '0'
+		AND
+		od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` =
+		'1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.product_id = p.id
+		AND
+		p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeT" open="(" separator="," close=")">
+				#{listMchtCodeT}
+			</foreach>
+		</if>
+	   <!--  AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		p.brand_id
+		)Q on T.type=Q.type and T.quantity<![CDATA[ < ]]>
+		Q.quantity
+		GROUP BY T.type, T.quantity HAVING count(T.quantity)<![CDATA[ < ]]>10
+		ORDER BY
+		T.type,
+		T.quantity DESC)
+		UNION
+
+		(SELECT
+		T.*
+		FROM
+		(
+		SELECT
+		aa.source as
+		type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'B' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area aa,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give =
+		'0'
+		AND od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.activity_area_id = aa.id
+		AND od.product_id = p.id
+		AND p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeS" open="(" separator="," close=")">
+				#{listMchtCodeS}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		aa.source,
+		p.brand_id
+		)T
+		LEFT JOIN
+		(
+		SELECT
+		aa.source as type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'B' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area aa,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag = '0'
+		AND
+		od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` =
+		'1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.activity_area_id = aa.id
+		AND od.product_id = p.id
+		AND p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeF" open="(" separator="," close=")">
+				#{listMchtCodeF}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		aa.source,
+		p.brand_id
+		)Q on T.type=Q.type and T.quantity<![CDATA[ < ]]>
+		Q.quantity
+		GROUP BY T.type, T.quantity HAVING count(T.quantity)<![CDATA[ < ]]>10
+		ORDER BY
+		T.type,
+		T.quantity DESC)
+
+		UNION
+		(SELECT
+		T.*
+		FROM
+		(
+		SELECT
+		spa.type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'C' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_single_product_activity spa,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.single_product_activity_id
+		= spa.id
+		AND od.product_id = p.id
+		AND p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeV" open="(" separator="," close=")">
+				#{listMchtCodeV}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		spa.type,
+		p.brand_id
+		)T
+		LEFT JOIN
+		(
+		SELECT
+		spa.type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'C' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_single_product_activity spa,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag =
+		'0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND
+		co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.single_product_activity_id
+		= spa.id
+		AND od.product_id = p.id
+		AND p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeX" open="(" separator="," close=")">
+				#{listSpecMchtCodeX}
+			</foreach>
+		</if>
+	   <!--  AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		spa.type,
+		p.brand_id
+		)Q on T.type=Q.type and T.quantity <![CDATA[ < ]]>
+		Q.quantity
+		GROUP BY T.type, T.quantity HAVING count(T.quantity)<![CDATA[ < ]]>10
+		ORDER BY
+		T.type,
+		T.quantity DESC)
+		UNION
+		(SELECT
+		T.*
+		FROM
+		(
+		SELECT
+		gpt.name AS
+		type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'D' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_product_type pt,
+		bu_product_type fpt,
+		bu_product_type gpt,
+		bu_product
+		p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND od.del_flag = '0'
+		AND
+		od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` =
+		'1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.product_id = p.id
+		AND
+		p.product_type_id = pt.id
+		AND pt.parent_id = fpt.id
+		AND fpt.parent_id =
+		gpt.id
+		AND p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeE" open="(" separator="," close=")">
+				#{listMchtCodeE}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		gpt.id,
+		p.brand_id
+		)T
+		LEFT JOIN
+		(
+		SELECT
+		gpt.name AS type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS
+		quantity,
+		'D' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_product_type pt,
+		bu_product_type fpt,
+		bu_product_type gpt,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give =
+		'0'
+		AND od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id = co.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.product_id = p.id
+		AND
+		p.product_type_id = pt.id
+		AND pt.parent_id = fpt.id
+		AND fpt.parent_id =
+		gpt.id
+		AND p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeU" open="(" separator="," close=")">
+				#{listMchtCodeU}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		gpt.id,
+		p.brand_id
+		)Q on
+		T.type=Q.type and T.quantity <![CDATA[ < ]]>
+		Q.quantity
+		GROUP BY T.type, T.quantity HAVING count(T.quantity)<![CDATA[ < ]]>10
+		ORDER BY
+		T.type,
+		T.quantity DESC)
+		UNION
+		(SELECT
+		T.*
+		FROM
+		(
+		SELECT
+		3 as type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'E' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area
+		aa,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND
+		od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id =
+		co.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.activity_area_id = aa.id
+		AND aa.source = '1'
+		AND aa.type = '3'
+		AND od.product_id = p.id
+		AND
+		p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeN" open="(" separator="," close=")">
+				#{listMchtCodeN}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		p.brand_id
+		)T
+		LEFT JOIN
+		(
+		SELECT
+		3 as type,
+		p.brand_id,
+		pb.`name`,
+		SUM(od.quantity) AS quantity,
+		'E' AS tot_type
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_activity_area
+		aa,
+		bu_product p,
+		bu_product_brand pb,
+		bu_mcht_info mi
+		WHERE
+		od.is_give = '0'
+		AND
+		od.del_flag = '0'
+		AND od.sub_order_id = so.id
+		AND
+		so.combine_order_id =
+		co.id
+		AND co.`status` = '1'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND co.del_flag = '0'
+		AND od.activity_area_id = aa.id
+		AND aa.source = '1'
+		AND aa.type = '3'
+		AND od.product_id = p.id
+		AND
+		p.brand_id = pb.id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listMchtCode!='' and listMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listMchtCode" index="index" item="listMchtCodeW" open="(" separator="," close=")">
+				#{listMchtCodeW}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		GROUP BY
+		p.brand_id
+		)Q on T.type=Q.type and T.quantity<![CDATA[ < ]]>
+		Q.quantity
+		GROUP BY T.type, T.quantity HAVING count(T.quantity)<![CDATA[ < ]]>10
+		ORDER BY
+		T.type,
+		T.quantity DESC)
+	</select>
+	<select id="getEachHourCount" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT
+		DATE_FORMAT(co.pay_date, '%H')hour,
+		COUNT(DISTINCT
+		co.id)order_count,
+		SUM(od.quantity)product_quantity,
+		SUM(od.sale_price*od.quantity)product_price,
+		SUM(od.mcht_preferential)mcht_preferential,
+		SUM(od.platform_preferential+od.integral_preferential)platform_preferential,
+		SUM(od.pay_amount)pay_amount,
+		SUM(od.settle_amount)settle_amount,
+		ROUND(SUM(od.pay_amount)/COUNT(DISTINCT co.id),2) unit_price,
+		CONCAT(ROUND(SUM(od.mcht_preferential)*100/SUM(od.sale_price*od.quantity),2),'%')
+		mcht_preferential_rate,
+		CONCAT(ROUND(SUM(od.platform_preferential+od.integral_preferential)*100/SUM(od.sale_price*od.quantity),2),'%')
+		platform_preferential_rate,
+		CONCAT(ROUND((1-SUM(od.settle_amount)/SUM(od.pay_amount))*100,2),'%')
+		gross_rate
+		FROM
+		bu_order_dtl od,
+		bu_sub_order so,
+		bu_combine_order co,
+		bu_mcht_info mi
+		<if test="brandId!=null">
+			,bu_product p
+		</if>
+		<if test="mchtCode!=null || shopName!=null">
+			,bu_mcht_info mi
+		</if>
+		<if test="productTypeId!=null">
+			,bu_product p,bu_product_type pt,bu_product_type fpt
+		</if>
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		WHERE
+		od.sub_order_id = so.id
+		AND so.combine_order_id = co.id
+		AND
+		co.`status` = '1'
+		AND od.is_give = '0'
+		AND co.pay_date <![CDATA[ >= ]]>
+		#{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]>
+		#{payDateEnd}
+		AND od.del_flag = '0'
+		AND co.del_flag = '0'
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator="," close=")">
+				#{listSpecMchtCode}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		<if test="brandId!=null">
+			AND od.product_id = p.id
+			AND p.brand_id = #{brandId}
+		</if>
+		<if test="mchtCode!=null || shopName!=null">
+			AND so.mcht_id = mi.id
+			<if test="mchtCode!=null">
+				AND mi.mcht_code = #{mchtCode}
+			</if>
+			<if test="shopName!=null">
+				AND mi.shop_name = #{shopName}
+			</if>
+		</if>
+		<if test="productTypeId != null">
+			AND od.product_id = p.id AND p.product_type_id = pt.id AND
+			pt.parent_id
+			= fpt.id AND fpt.parent_id = #{productTypeId}
+		</if>
+		<if test="platformContactId!=null">
+			AND so.mcht_id=mpc.mcht_id AND mpc.del_flag = '0' and
+			mpc.status = '1'
+			AND mpc.platform_contact_id=#{platformContactId}
+		</if>
+		<!-- <if test="mchtIds!=null"> AND so.mcht_id in <foreach collection="mchtIds" 
+			index="index" item="item" open="(" separator="," close=")"> #{item} </foreach> 
+			</if> -->
+		GROUP BY
+		DATE_FORMAT(co.pay_date, '%H')
+	</select>
+
+
+	<!-- 母订单详情 -->
+	<select id="getSubOrderDtlList" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT
+		od.sku_pic sku_pic,
+		so.id sub_order_id,
+		so.sub_order_code sub_order_code,
+		so.delivery_date delivery_date,
+		FUN_GET_STATUS_DESC (
+		"BU_SUB_ORDER",
+		"STATUS",
+		so. STATUS
+		)
+		sub_status_desc,
+		FUN_GET_STATUS_DESC (
+		"BU_CUSTOMER_SERVICE_ORDER",
+		"SERVICE_TYPE",
+		(
+		SELECT
+		cso.service_type
+		FROM
+		bu_customer_service_order
+		cso
+		WHERE
+		cso.del_flag = '0'
+		AND cso.order_dtl_id = od.id
+		ORDER BY
+		cso.id
+		DESC
+		LIMIT 1
+		)
+		) service_type_desc,
+		FUN_GET_STATUS_DESC (
+		"BU_CUSTOMER_SERVICE_ORDER",
+		"STATUS",
+		(
+		SELECT
+		cso. STATUS
+		FROM
+		bu_customer_service_order cso
+		WHERE
+		cso.del_flag = '0'
+		AND
+		cso.order_dtl_id = od.id
+		ORDER BY
+		cso.id DESC
+		LIMIT 1
+		)
+		)
+		service_status_desc,
+		od.product_id product_id,
+		od.brand_name brand_name,
+		od.product_name product_name,
+		od.art_no art_no,
+		od.product_prop_desc
+		product_prop_desc,
+		od.tag_price tag_price,
+		od.sale_price sale_price,
+		od.settle_price settle_price,
+		od.quantity quantity,
+		od.mcht_preferential mcht_preferential,
+		od.freight freight,
+		od.platform_preferential platform_preferential,
+		od.integral_preferential integral_preferential,
+		od.pay_amount
+		pay_amount,
+		FUN_GET_STATUS_DESC (
+		"BU_MCHT_INFO",
+		"IS_MANAGE_SELF",
+		so.is_manage_self
+		) is_manage_self_desc,
+		mi.shop_name mcht_shop_name,
+		od.pop_commission_rate pop_commission_rate,
+		(
+		od.sale_price *
+		od.quantity - od.mcht_preferential
+		) * (1 - od.pop_commission_rate)
+		pop_balance_money,
+		(
+		od.sale_price * od.quantity - od.mcht_preferential
+		) * od.pop_commission_rate commission_money,
+		(
+		od.settle_price *
+		od.quantity - od.mcht_preferential
+		) need_pay_moeny,
+		(
+		od.pay_amount - (
+		od.settle_price * od.quantity - od.mcht_preferential
+		)
+		) profit_moeny
+		FROM
+		bu_sub_order so,
+		bu_order_dtl od,
+		bu_mcht_info mi
+		WHERE
+		so.del_flag =
+		'0'
+		AND od.del_flag = '0'
+		AND mi.del_flag = '0'
+		AND so.id =
+		od.sub_order_id
+		AND so.mcht_id = mi.id
+		AND so.combine_order_id =
+		${combineOrderId }
+		AND mi.mcht_type = #{mchtType }
+	</select>
+
+	<!-- 一级类目销售报表 -->
+	<select id="selectOrderDtlPayAmounList" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT
+		date_format(co.pay_date, '%Y-%m-%d') pay_date,
+		ptb.parent_id
+		top_parent_id,
+		ifnull(sum(od.pay_amount), 0) pay_amount_sum
+		FROM
+		bu_combine_order co,
+		bu_sub_order so,
+		bu_order_dtl od,
+		bu_product p,
+		bu_product_type pta,
+		bu_product_type ptb,
+		bu_mcht_info mi
+		<if test="activityType != null and activityType != ''">
+			<if test="activityType == -1 || activityType == 0">
+				,bu_activity_area aa
+			</if>
+			<if
+				test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,bu_single_product_activity spa
+			</if>
+		</if>
+		WHERE
+		co.del_flag = '0'
+		AND co.status = '1'
+		AND co.pay_date <![CDATA[ >= ]]>#{beginPayDate
+		}
+		AND co.pay_date <![CDATA[ <= ]]>#{endPayDate
+		}
+		AND so.del_flag = '0'
+		AND so.combine_order_id = co.id
+		AND od.del_flag =
+		'0'
+		AND od.sub_order_id = so.id
+		AND p.id = od.product_id
+		AND pta.id =
+		p.product_type_id
+		AND ptb.id = pta.parent_id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator="," close=")">
+				#{listSpecMchtCode}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		<if test="activityType != null and activityType != ''">
+			<if test="activityType == -1">
+				AND od.activity_area_id = aa.id AND aa.source = '2'
+			</if>
+			<if test="activityType == 0">
+				AND od.activity_area_id = aa.id AND aa.source = '1'
+			</if>
+			<if test="activityType == 1">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'1'
+			</if>
+			<if test="activityType == 2">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'2'
+			</if>
+			<if test="activityType == 3">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'3'
+			</if>
+			<if test="activityType == 4">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'4'
+			</if>
+			<if test="activityType == 5">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'5'
+			</if>
+			<if test="activityType == 6">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'6'
+			</if>
+			<if test="activityType == 8">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'7'
+			</if>
+			<if test="activityType == 9">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'8'
+			</if>
+			<if test="activityType == 7">
+				AND od.activity_id IS NULL AND od.activity_area_id IS
+				NULL AND od.single_product_activity_id IS NULL
+			</if>
+		</if>
+		GROUP BY
+		date_format(co.pay_date, '%Y-%m-%d'),
+		ptb.parent_id
+		ORDER BY
+		pay_date,
+		top_parent_id
+	</select>
+	<select id="selectOrderDtlPayAmounSum" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT
+		ptb.parent_id top_parent_id,
+		ifnull(sum(od.pay_amount), 0)
+		pay_amount_sum
+		FROM
+		bu_combine_order co,
+		bu_sub_order so,
+		bu_order_dtl od,
+		bu_product p,
+		bu_product_type pta,
+		bu_product_type ptb,
+		bu_mcht_info mi
+		<if test="activityType != null and activityType != ''">
+			<if test="activityType == -1 || activityType == 0">
+				,bu_activity_area aa
+			</if>
+			<if
+				test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,bu_single_product_activity spa
+			</if>
+		</if>
+		WHERE
+		co.del_flag = '0'
+		AND co.status = '1'
+		AND co.pay_date <![CDATA[ >= ]]>#{beginPayDate
+		}
+		AND co.pay_date <![CDATA[ <= ]]>#{endPayDate
+		}
+		AND so.del_flag = '0'
+		AND so.combine_order_id = co.id
+		AND od.del_flag =
+		'0'
+		AND od.sub_order_id = so.id
+		AND p.id = od.product_id
+		AND pta.id =
+		p.product_type_id
+		AND ptb.id = pta.parent_id
+		AND so.mcht_id=mi.id
+		AND mi.del_flag='0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode1" open="(" separator="," close=")">
+				#{listSpecMchtCode1}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		<if test="activityType != null and activityType != ''">
+			<if test="activityType == -1">
+				AND od.activity_area_id = aa.id AND aa.source = '2'
+			</if>
+			<if test="activityType == 0">
+				AND od.activity_area_id = aa.id AND aa.source = '1'
+			</if>
+			<if test="activityType == 1">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'1'
+			</if>
+			<if test="activityType == 2">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'2'
+			</if>
+			<if test="activityType == 3">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'3'
+			</if>
+			<if test="activityType == 4">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'4'
+			</if>
+			<if test="activityType == 5">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'5'
+			</if>
+			<if test="activityType == 6">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'6'
+			</if>
+			<if test="activityType == 8">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'7'
+			</if>
+			<if test="activityType == 9">
+				AND od.single_product_activity_id = spa.id AND spa.type =
+				'8'
+			</if>
+			<if test="activityType == 7">
+				AND od.activity_id IS NULL AND od.activity_area_id IS
+				NULL AND od.single_product_activity_id IS NULL
+			</if>
+		</if>
+		GROUP BY
+		ptb.parent_id
+		ORDER BY
+		top_parent_id
+	</select>
+
+	<select id="getMonthDatas" parameterType="java.util.HashMap"
+		resultType="com.jf.entity.OperateData">
+		SELECT
+		t1.product_type1_id AS productType1Id,
+		t2.pay_date AS
+		payDate,
+		IFNULL(t3.pay_amount, 0) AS payAmount,
+		IFNULL(t3.settle_amount, 0) AS settleAmount,
+		SUM(IFNULL(t.pay_amount,
+		0)) AS allPayAmount
+		FROM
+		bu_order_dtl t
+		LEFT JOIN bu_product t1 ON t1.id
+		= t.product_id
+		INNER JOIN (
+		SELECT
+		p.id,
+		DATE_FORMAT( p1.pay_date, '%Y-%m'
+		) AS pay_date
+		FROM
+		bu_sub_order p
+		LEFT JOIN bu_combine_order p1 ON p1.id
+		= p.combine_order_id
+		LEFT JOIN bu_mcht_info mi ON p.mcht_id
+		= mi.id
+		WHERE
+		p1.STATUS = "1"
+		AND p1.pay_date &gt;=
+		#{beginTime}
+		AND P1.pay_date &lt;= #{endTime}
+		AND p1.pay_status = "1"
+		AND mi.del_flag='0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode1" open="(" separator="," close=")">
+				#{listSpecMchtCode1}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		)
+		AS t2 ON t2.id = t.sub_order_id
+		LEFT JOIN (
+		SELECT
+		t1.product_type1_id,
+		t2.pay_date,
+		SUM(IFNULL(t.pay_amount, 0)) AS pay_amount,
+		SUM(IFNULL(t.settle_amount, 0)) AS settle_amount
+		FROM
+		bu_order_dtl t
+		LEFT JOIN bu_product t1 ON t1.id = t.product_id
+		INNER JOIN (
+		SELECT
+		p.id,
+		DATE_FORMAT( p1.pay_date, '%Y-%m' ) AS pay_date
+		FROM
+		bu_sub_order p
+		LEFT JOIN bu_combine_order p1 ON p1.id = p.combine_order_id
+		LEFT JOIN bu_mcht_info mi ON p.mcht_id
+		= mi.id
+		WHERE
+		p1.STATUS = "1"
+		AND p1.pay_date &gt;= #{beginTime}
+		AND P1.pay_date &lt;=
+		#{endTime}
+		AND p1.pay_status = "1"
+		AND mi.del_flag='0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode2" open="(" separator="," close=")">
+				#{listSpecMchtCode2}
+			</foreach>
+		</if>
+	    <!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+		) AS t2 ON t2.id = t.sub_order_id
+		WHERE
+		t.product_status = "1"
+		GROUP BY
+		t2.pay_date,
+		t1.product_type1_id
+		) AS
+		t3 ON t3.product_type1_id = t1.product_type1_id AND t3.pay_date =
+		t2.pay_date
+		GROUP BY
+		t2.pay_date,
+		t1.product_type1_id
+		ORDER BY
+		t2.pay_date
+		DESC,
+		t1.product_type1_id;
+	</select>
+
+	<sql id="Base_Column_List3">
+		a.id as id, a.sub_order_id as sub_order_id, a.activity_id
+		as activity_id, a.activity_area_id as activity_area_id,
+		a.single_product_activity_id as single_product_activity_id,
+		a.product_id as product_id,
+		a.product_item_id as product_item_id,
+		a.cloud_product_item_id as cloud_product_item_id, a.sku_pic as
+		sku_pic, a.sku as sku, a.product_name as product_name, a.art_no as
+		art_no,
+		a.brand_name as brand_name,
+		a.product_prop_desc as
+		product_prop_desc, a.quantity as quantity, a.tag_price as tag_price,
+		a.sale_price as sale_price, a.pay_amount as pay_amount, a.settle_price
+		as settle_price,
+		a.pop_commission_rate as pop_commission_rate,
+		a.platform_preferential as platform_preferential, a.mcht_preferential
+		as mcht_preferential, a.integral_preferential as
+		integral_preferential, a.settle_amount as settle_amount,
+		a.commission_amount as commission_amount,
+		a.refund_date as refund_date,
+		a.product_status as product_status, a.product_status_date as product_status_date, a.is_give as is_give,
+		a.mcht_settle_order_id as mcht_settle_order_id, a.freight as freight,
+		a.original_price as original_price,
+		a.is_svip_buy as is_svip_buy,
+		a.svip_discount as svip_discount, a.selling_price as selling_price,
+		a.dtl_express_id as dtl_express_id, a.dtl_express_no as
+		dtl_express_no,
+		a.delivery_status as delivery_status,
+		a.delivery_date as
+		delivery_date, a.marked_out_of_stock as marked_out_of_stock,a.distribution_member_id as distribution_member_id,
+		a.distribution_amount as distribution_amount,a.distribution_settle_status as distribution_settle_status,a.distribution_settle_date as distribution_settle_date,
+		a.create_by as create_by, a.create_date as create_date, a.update_by as
+		update_by, a.update_date as update_date,
+		a.remarks as remarks,
+		a.del_flag as del_flag,
+		(select b.pic from bu_product_pic b where
+		b.product_id=a.product_id and
+		b.del_flag='0' and b.is_default='1')
+		product_pic,
+		(select b.sub_order_code from bu_sub_order b where
+		b.id=a.sub_order_id)
+		sub_order_code,
+		(select b.create_date from
+		bu_sub_order b where b.id=a.sub_order_id)
+		sub_order_create_date,
+		(select c.pay_date from bu_sub_order b,bu_combine_order c where
+		b.id=a.sub_order_id and c.id=b.combine_order_id) pay_date,
+		(select
+		b.complete_date from bu_sub_order b where b.id=a.sub_order_id)
+		complete_date,
+		(select b.delivery_date from bu_sub_order b where
+		b.id=a.sub_order_id)
+		delivery_date,
+		FUN_GET_STATUS_DESC("BU_SUB_ORDER",
+		"STATUS", (select b.status from bu_sub_order b where
+		b.id=a.sub_order_id)) sub_status_desc,
+		FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "SERVICE_TYPE",
+		(select b.service_type from bu_customer_service_order b where
+		b.order_dtl_id=a.id and b.del_flag=0 order by b.id desc limit 1))
+		service_type_desc,
+		FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER",
+		"STATUS", (select b.status from bu_customer_service_order b where
+		b.order_dtl_id=a.id and b.del_flag=0 order by b.id desc limit 1))
+		service_status_desc,
+		(select c.name from bu_product b, bu_product_brand
+		c where b.id=a.product_id
+		and c.id=b.brand_id) product_brand_name,
+		(select b.name from bu_product b where b.id = a.product_id)
+		product_name,
+		(select b.code from bu_product b where b.id =
+		a.product_id)
+		product_code,
+		(select b.art_no from bu_product b where
+		b.id=a.product_id) product_art_no,
+		(select c.is_manage_self from
+		bu_sub_order b, bu_mcht_info c where
+		b.id=a.sub_order_id and
+		c.id=b.mcht_id) is_manage_self,
+		FUN_GET_STATUS_DESC("BU_MCHT_INFO",
+		"IS_MANAGE_SELF", (select
+		c.is_manage_self from bu_sub_order b,
+		bu_mcht_info c where
+		b.id=a.sub_order_id and c.id=b.mcht_id))
+		is_manage_self_desc,
+		(select b.mcht_id from bu_sub_order b where
+		b.id=a.sub_order_id) mcht_id,
+		(select c.shop_name from bu_sub_order b,
+		bu_mcht_info c where
+		b.id=a.sub_order_id and c.id=b.mcht_id)
+		mcht_shop_name,
+		(sale_price*quantity-mcht_preferential)*(1-pop_commission_rate)
+		balance_money,
+		(sale_price*quantity-mcht_preferential)*pop_commission_rate
+		commission_money,
+		(settle_price*quantity-mcht_preferential)
+		need_pay_moeny,
+		(pay_amount-(settle_price*quantity-mcht_preferential))
+		profit_moeny,
+		(select b.id from bu_appeal_order b where
+		b.order_dtl_id=a.id and
+		b.del_flag=0 order by b.id desc limit 1)
+		appeal_order_id,
+		FUN_GET_STATUS_DESC("BU_APPEAL_ORDER", "STATUS",
+		(select b.status from
+		bu_appeal_order b where b.order_dtl_id=a.id and
+		b.del_flag=0 order by
+		b.id desc limit 1)) appeal_status_desc,
+		FUN_GET_STATUS_DESC("BU_ORDER_DTL", "PRODUCT_STATUS",
+		a.product_status) product_status_desc,
+		(select co.receiver_name from
+		bu_sub_order so,bu_combine_order co where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id)receiver_name,
+		(select co.member_id from
+		bu_sub_order so,bu_combine_order co where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id)member_id,
+		(select sp.remarks as payment_name
+		from bu_sub_order so,bu_combine_order
+		co,sys_payment sp where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id and
+		sp.id=co.payment_id)payment_name,
+		(select mi.mcht_type from
+		bu_sub_order so,bu_mcht_info mi where
+		so.id=a.sub_order_id and
+		so.mcht_id=mi.id)mcht_type,
+		(select mi.mcht_code from bu_sub_order
+		so,bu_mcht_info mi where
+		so.id=a.sub_order_id and
+		so.mcht_id=mi.id)mcht_code,
+		(select mi.short_name as mcht_short_name
+		from bu_sub_order so,bu_mcht_info mi
+		where so.id=a.sub_order_id and
+		so.mcht_id=mi.id)mcht_short_name,
+		FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","PAY_STATUS",(select
+		b.pay_status from bu_mcht_settle_order b where b.id =
+		a.mcht_settle_order_id and b.del_flag=0))pay_status_desc,
+		(select
+		mi.company_name from bu_sub_order so,bu_mcht_info mi where
+		so.id=a.sub_order_id and so.mcht_id=mi.id and
+		mi.del_flag='0')company_name,
+		(select pt.name from bu_product
+		p,bu_product_type pt where p.id =
+		a.product_id and p.product_type_id =
+		pt.id and pt.del_flag='0' and
+		a.del_flag='0')product_type_name,
+		FUN_GET_STATUS_DESC("BU_COMBINE_ORDER","SOURCE_CLIENT",(select
+		co.source_client from bu_sub_order so,bu_combine_order co where
+		so.id=a.sub_order_id and so.combine_order_id=co.id and
+		co.del_flag='0'))source_client_desc,
+		FUN_GET_AREA_NAME((select
+		ma.province from bu_sub_order so,bu_combine_order
+		co,bu_member_address
+		ma where so.id=a.sub_order_id and
+		so.combine_order_id=co.id and
+		co.address_id =ma.id and
+		co.del_flag='0'),(select ma.city from
+		bu_sub_order so,bu_combine_order
+		co,bu_member_address ma where
+		so.id=a.sub_order_id and
+		so.combine_order_id=co.id and co.address_id
+		=ma.id and
+		co.del_flag='0'),(select ma.county from bu_sub_order
+		so,bu_combine_order co,bu_member_address ma where so.id=a.sub_order_id
+		and so.combine_order_id=co.id and co.address_id =ma.id and
+		co.del_flag='0'))area_name,
+		FUN_GET_STATUS_DESC("BU_COMBINE_ORDER","STATUS",(select co.status from
+		bu_sub_order so,bu_combine_order co where so.id=a.sub_order_id and
+		so.combine_order_id=co.id and
+		co.del_flag='0'))combine_order_status_desc,
+		(select fpt.name from
+		bu_product p,bu_product_type pt, bu_product_type fpt
+		where p.id =
+		a.product_id and p.product_type_id = pt.id and
+		pt.parent_id = fpt.id
+		and pt.del_flag='0' and
+		a.del_flag='0')second_product_type_name,
+		(select gpt.name from bu_product p,bu_product_type pt, bu_product_type
+		fpt,bu_product_type gpt where p.id = a.product_id and
+		p.product_type_id = pt.id and pt.parent_id = fpt.id and fpt.parent_id
+		= gpt.id and pt.del_flag='0' and
+		a.del_flag='0')first_product_type_name,
+		(select b.id from
+		bu_customer_service_order b where b.order_dtl_id=a.id and
+		b.del_flag=
+		'0' order by b.id desc limit 1) customer_service_id,
+		(select b.status
+		from bu_sub_order b where b.id = a.sub_order_id and
+		b.del_flag = '0')
+		sub_order_status,
+		(select b.pro_status from bu_customer_service_order b
+		where
+		b.order_dtl_id=a.id and b.del_flag=0 order by b.id desc limit
+		1)service_pro_status,
+		(select spa.type from bu_single_product_activity
+		spa where spa.del_flag='0'
+		and spa.id = a.single_product_activity_id
+		limit
+		1)single_product_activity_type,
+		(select io.id from
+		bu_customer_service_order cso, bu_intervention_order io
+		where
+		cso.del_flag = '0' and io.del_flag = '0' and cso.order_dtl_id =
+		a.id
+		and cso.id = io.service_order_id order by io.id desc limit 1 )
+		intervention_order_id,
+		(select ops.id from bu_order_product_snapshot
+		ops where ops.del_flag = '0'
+		and ops.order_dtl_id = a.id limit 1 )
+		order_product_snapshot_id,
+		(select e.name from bu_express e where
+		a.dtl_express_id = e.id)
+		order_dtl_express_name,
+		(select e.name from bu_activity_area e where
+		a.activity_area_id = e.id) activity_area_name,
+		(select e.source from
+		bu_activity_area e where a.activity_area_id = e.id)
+		activity_area_source,
+		(select e.type from bu_single_product_activity e
+		where a.single_product_activity_id = e.id) single_activity_name
+	</sql>
+	<select id="selectByExampleSource" resultMap="BaseResultMap"
+		parameterType="com.jf.entity.OrderDtlExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List3" />
+		from bu_order_dtl a
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="limitStart != null and limitStart>=0">
+			limit #{limitStart} , #{limitSize}
+		</if>
+	</select>
+
+	<select id="selectByExampleCustom" parameterType="java.lang.Integer" resultType="com.jf.entity.OrderDtlCustom">
+		select od.*,pi.self_operated_freight selfOperatedFreight
+		from bu_order_dtl od,bu_product_item pi
+		where
+		od.product_item_id = pi.id
+		and od.mcht_settle_order_id = ${mchtSettleOrderId}
+		and od.del_flag = '0'
+		and pi.del_flag = '0'
+	</select>
+</mapper>

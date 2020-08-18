@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtInfoHisMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtInfoHis" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="mcht_type" property="mchtType" jdbcType="CHAR" />
+    <result column="cooperate_begin_date" property="cooperateBeginDate" jdbcType="DATE" />
+    <result column="is_manage_self" property="isManageSelf" jdbcType="CHAR" />
+    <result column="agreement_begin_date" property="agreementBeginDate" jdbcType="DATE" />
+    <result column="agreement_end_date" property="agreementEndDate" jdbcType="DATE" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="shop_catalog" property="shopCatalog" jdbcType="VARCHAR" />
+    <result column="business_firms" property="businessFirms" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="shop_type" property="shopType" jdbcType="CHAR" />
+    <result column="shop_name_audit_status" property="shopNameAuditStatus" jdbcType="CHAR" />
+    <result column="shop_name_audit_remarks" property="shopNameAuditRemarks" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="company_type" property="companyType" jdbcType="CHAR" />
+    <result column="company_reg_name" property="companyRegName" jdbcType="VARCHAR" />
+    <result column="uscc" property="uscc" jdbcType="VARCHAR" />
+    <result column="company_address" property="companyAddress" jdbcType="VARCHAR" />
+    <result column="founded_date" property="foundedDate" jdbcType="TIMESTAMP" />
+    <result column="reg_capital" property="regCapital" jdbcType="DECIMAL" />
+    <result column="reg_fee_type" property="regFeeType" jdbcType="VARCHAR" />
+    <result column="corporation_name" property="corporationName" jdbcType="VARCHAR" />
+    <result column="corporation_idcard_no" property="corporationIdcardNo" jdbcType="VARCHAR" />
+    <result column="corporation_mobile" property="corporationMobile" jdbcType="VARCHAR" />
+    <result column="corporation_idcard_img_1" property="corporationIdcardImg1" jdbcType="VARCHAR" />
+    <result column="corporation_idcard_img_2" property="corporationIdcardImg2" jdbcType="VARCHAR" />
+    <result column="bl_pic" property="blPic" jdbcType="VARCHAR" />
+    <result column="occ_pic" property="occPic" jdbcType="VARCHAR" />
+    <result column="trc_pic" property="trcPic" jdbcType="VARCHAR" />
+    <result column="atq_pic" property="atqPic" jdbcType="VARCHAR" />
+    <result column="boaal_pic" property="boaalPic" jdbcType="VARCHAR" />
+    <result column="yearly_inspection_date" property="yearlyInspectionDate" jdbcType="TIMESTAMP" />
+    <result column="company_tel" property="companyTel" jdbcType="VARCHAR" />
+    <result column="contact_province" property="contactProvince" jdbcType="INTEGER" />
+    <result column="contact_city" property="contactCity" jdbcType="INTEGER" />
+    <result column="contact_county" property="contactCounty" jdbcType="INTEGER" />
+    <result column="contact_address" property="contactAddress" jdbcType="VARCHAR" />
+    <result column="is_company_inf_perfect" property="isCompanyInfPerfect" jdbcType="CHAR" />
+    <result column="company_inf_audit_remarks" property="companyInfAuditRemarks" jdbcType="VARCHAR" />
+    <result column="deposit_content" property="depositContent" jdbcType="VARCHAR" />
+    <result column="biz_id" property="bizId" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, mcht_code, short_name, mcht_type, cooperate_begin_date, is_manage_self, 
+    agreement_begin_date, agreement_end_date, shop_name, shop_catalog, business_firms, 
+    product_type, brand, shop_type, shop_name_audit_status, shop_name_audit_remarks, 
+    status, company_name, company_type, company_reg_name, uscc, company_address, founded_date, 
+    reg_capital, reg_fee_type, corporation_name, corporation_idcard_no, corporation_mobile, 
+    corporation_idcard_img_1, corporation_idcard_img_2, bl_pic, occ_pic, trc_pic, atq_pic, 
+    boaal_pic, yearly_inspection_date, company_tel, contact_province, contact_city, contact_county, 
+    contact_address, is_company_inf_perfect, company_inf_audit_remarks, deposit_content, 
+    biz_id, create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtInfoHisExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_info_his
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_info_his
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_info_his
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtInfoHisExample" >
+    delete from bu_mcht_info_his
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtInfoHis" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_info_his (mcht_id, mcht_code, short_name, 
+      mcht_type, cooperate_begin_date, is_manage_self, 
+      agreement_begin_date, agreement_end_date, shop_name, 
+      shop_catalog, business_firms, product_type, 
+      brand, shop_type, shop_name_audit_status, 
+      shop_name_audit_remarks, status, company_name, 
+      company_type, company_reg_name, uscc, 
+      company_address, founded_date, reg_capital, 
+      reg_fee_type, corporation_name, corporation_idcard_no, 
+      corporation_mobile, corporation_idcard_img_1, 
+      corporation_idcard_img_2, bl_pic, occ_pic, 
+      trc_pic, atq_pic, boaal_pic, 
+      yearly_inspection_date, company_tel, contact_province, 
+      contact_city, contact_county, contact_address, 
+      is_company_inf_perfect, company_inf_audit_remarks, 
+      deposit_content, biz_id, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{mchtId,jdbcType=INTEGER}, #{mchtCode,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, 
+      #{mchtType,jdbcType=CHAR}, #{cooperateBeginDate,jdbcType=DATE}, #{isManageSelf,jdbcType=CHAR}, 
+      #{agreementBeginDate,jdbcType=DATE}, #{agreementEndDate,jdbcType=DATE}, #{shopName,jdbcType=VARCHAR}, 
+      #{shopCatalog,jdbcType=VARCHAR}, #{businessFirms,jdbcType=VARCHAR}, #{productType,jdbcType=VARCHAR}, 
+      #{brand,jdbcType=VARCHAR}, #{shopType,jdbcType=CHAR}, #{shopNameAuditStatus,jdbcType=CHAR}, 
+      #{shopNameAuditRemarks,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{companyName,jdbcType=VARCHAR}, 
+      #{companyType,jdbcType=CHAR}, #{companyRegName,jdbcType=VARCHAR}, #{uscc,jdbcType=VARCHAR}, 
+      #{companyAddress,jdbcType=VARCHAR}, #{foundedDate,jdbcType=TIMESTAMP}, #{regCapital,jdbcType=DECIMAL}, 
+      #{regFeeType,jdbcType=VARCHAR}, #{corporationName,jdbcType=VARCHAR}, #{corporationIdcardNo,jdbcType=VARCHAR}, 
+      #{corporationMobile,jdbcType=VARCHAR}, #{corporationIdcardImg1,jdbcType=VARCHAR}, 
+      #{corporationIdcardImg2,jdbcType=VARCHAR}, #{blPic,jdbcType=VARCHAR}, #{occPic,jdbcType=VARCHAR}, 
+      #{trcPic,jdbcType=VARCHAR}, #{atqPic,jdbcType=VARCHAR}, #{boaalPic,jdbcType=VARCHAR}, 
+      #{yearlyInspectionDate,jdbcType=TIMESTAMP}, #{companyTel,jdbcType=VARCHAR}, #{contactProvince,jdbcType=INTEGER}, 
+      #{contactCity,jdbcType=INTEGER}, #{contactCounty,jdbcType=INTEGER}, #{contactAddress,jdbcType=VARCHAR}, 
+      #{isCompanyInfPerfect,jdbcType=CHAR}, #{companyInfAuditRemarks,jdbcType=VARCHAR}, 
+      #{depositContent,jdbcType=VARCHAR}, #{bizId,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtInfoHis" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_info_his
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="mchtCode != null" >
+        mcht_code,
+      </if>
+      <if test="shortName != null" >
+        short_name,
+      </if>
+      <if test="mchtType != null" >
+        mcht_type,
+      </if>
+      <if test="cooperateBeginDate != null" >
+        cooperate_begin_date,
+      </if>
+      <if test="isManageSelf != null" >
+        is_manage_self,
+      </if>
+      <if test="agreementBeginDate != null" >
+        agreement_begin_date,
+      </if>
+      <if test="agreementEndDate != null" >
+        agreement_end_date,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="shopCatalog != null" >
+        shop_catalog,
+      </if>
+      <if test="businessFirms != null" >
+        business_firms,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="shopType != null" >
+        shop_type,
+      </if>
+      <if test="shopNameAuditStatus != null" >
+        shop_name_audit_status,
+      </if>
+      <if test="shopNameAuditRemarks != null" >
+        shop_name_audit_remarks,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="companyType != null" >
+        company_type,
+      </if>
+      <if test="companyRegName != null" >
+        company_reg_name,
+      </if>
+      <if test="uscc != null" >
+        uscc,
+      </if>
+      <if test="companyAddress != null" >
+        company_address,
+      </if>
+      <if test="foundedDate != null" >
+        founded_date,
+      </if>
+      <if test="regCapital != null" >
+        reg_capital,
+      </if>
+      <if test="regFeeType != null" >
+        reg_fee_type,
+      </if>
+      <if test="corporationName != null" >
+        corporation_name,
+      </if>
+      <if test="corporationIdcardNo != null" >
+        corporation_idcard_no,
+      </if>
+      <if test="corporationMobile != null" >
+        corporation_mobile,
+      </if>
+      <if test="corporationIdcardImg1 != null" >
+        corporation_idcard_img_1,
+      </if>
+      <if test="corporationIdcardImg2 != null" >
+        corporation_idcard_img_2,
+      </if>
+      <if test="blPic != null" >
+        bl_pic,
+      </if>
+      <if test="occPic != null" >
+        occ_pic,
+      </if>
+      <if test="trcPic != null" >
+        trc_pic,
+      </if>
+      <if test="atqPic != null" >
+        atq_pic,
+      </if>
+      <if test="boaalPic != null" >
+        boaal_pic,
+      </if>
+      <if test="yearlyInspectionDate != null" >
+        yearly_inspection_date,
+      </if>
+      <if test="companyTel != null" >
+        company_tel,
+      </if>
+      <if test="contactProvince != null" >
+        contact_province,
+      </if>
+      <if test="contactCity != null" >
+        contact_city,
+      </if>
+      <if test="contactCounty != null" >
+        contact_county,
+      </if>
+      <if test="contactAddress != null" >
+        contact_address,
+      </if>
+      <if test="isCompanyInfPerfect != null" >
+        is_company_inf_perfect,
+      </if>
+      <if test="companyInfAuditRemarks != null" >
+        company_inf_audit_remarks,
+      </if>
+      <if test="depositContent != null" >
+        deposit_content,
+      </if>
+      <if test="bizId != null" >
+        biz_id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtCode != null" >
+        #{mchtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtType != null" >
+        #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="cooperateBeginDate != null" >
+        #{cooperateBeginDate,jdbcType=DATE},
+      </if>
+      <if test="isManageSelf != null" >
+        #{isManageSelf,jdbcType=CHAR},
+      </if>
+      <if test="agreementBeginDate != null" >
+        #{agreementBeginDate,jdbcType=DATE},
+      </if>
+      <if test="agreementEndDate != null" >
+        #{agreementEndDate,jdbcType=DATE},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopCatalog != null" >
+        #{shopCatalog,jdbcType=VARCHAR},
+      </if>
+      <if test="businessFirms != null" >
+        #{businessFirms,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        #{shopType,jdbcType=CHAR},
+      </if>
+      <if test="shopNameAuditStatus != null" >
+        #{shopNameAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="shopNameAuditRemarks != null" >
+        #{shopNameAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyType != null" >
+        #{companyType,jdbcType=CHAR},
+      </if>
+      <if test="companyRegName != null" >
+        #{companyRegName,jdbcType=VARCHAR},
+      </if>
+      <if test="uscc != null" >
+        #{uscc,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="foundedDate != null" >
+        #{foundedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regCapital != null" >
+        #{regCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="regFeeType != null" >
+        #{regFeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationName != null" >
+        #{corporationName,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationIdcardNo != null" >
+        #{corporationIdcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationMobile != null" >
+        #{corporationMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationIdcardImg1 != null" >
+        #{corporationIdcardImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationIdcardImg2 != null" >
+        #{corporationIdcardImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="blPic != null" >
+        #{blPic,jdbcType=VARCHAR},
+      </if>
+      <if test="occPic != null" >
+        #{occPic,jdbcType=VARCHAR},
+      </if>
+      <if test="trcPic != null" >
+        #{trcPic,jdbcType=VARCHAR},
+      </if>
+      <if test="atqPic != null" >
+        #{atqPic,jdbcType=VARCHAR},
+      </if>
+      <if test="boaalPic != null" >
+        #{boaalPic,jdbcType=VARCHAR},
+      </if>
+      <if test="yearlyInspectionDate != null" >
+        #{yearlyInspectionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="companyTel != null" >
+        #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactProvince != null" >
+        #{contactProvince,jdbcType=INTEGER},
+      </if>
+      <if test="contactCity != null" >
+        #{contactCity,jdbcType=INTEGER},
+      </if>
+      <if test="contactCounty != null" >
+        #{contactCounty,jdbcType=INTEGER},
+      </if>
+      <if test="contactAddress != null" >
+        #{contactAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isCompanyInfPerfect != null" >
+        #{isCompanyInfPerfect,jdbcType=CHAR},
+      </if>
+      <if test="companyInfAuditRemarks != null" >
+        #{companyInfAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="depositContent != null" >
+        #{depositContent,jdbcType=VARCHAR},
+      </if>
+      <if test="bizId != null" >
+        #{bizId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtInfoHisExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_info_his
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_info_his
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtCode != null" >
+        mcht_code = #{record.mchtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shortName != null" >
+        short_name = #{record.shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtType != null" >
+        mcht_type = #{record.mchtType,jdbcType=CHAR},
+      </if>
+      <if test="record.cooperateBeginDate != null" >
+        cooperate_begin_date = #{record.cooperateBeginDate,jdbcType=DATE},
+      </if>
+      <if test="record.isManageSelf != null" >
+        is_manage_self = #{record.isManageSelf,jdbcType=CHAR},
+      </if>
+      <if test="record.agreementBeginDate != null" >
+        agreement_begin_date = #{record.agreementBeginDate,jdbcType=DATE},
+      </if>
+      <if test="record.agreementEndDate != null" >
+        agreement_end_date = #{record.agreementEndDate,jdbcType=DATE},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopCatalog != null" >
+        shop_catalog = #{record.shopCatalog,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessFirms != null" >
+        business_firms = #{record.businessFirms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productType != null" >
+        product_type = #{record.productType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null" >
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopType != null" >
+        shop_type = #{record.shopType,jdbcType=CHAR},
+      </if>
+      <if test="record.shopNameAuditStatus != null" >
+        shop_name_audit_status = #{record.shopNameAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.shopNameAuditRemarks != null" >
+        shop_name_audit_remarks = #{record.shopNameAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.companyName != null" >
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyType != null" >
+        company_type = #{record.companyType,jdbcType=CHAR},
+      </if>
+      <if test="record.companyRegName != null" >
+        company_reg_name = #{record.companyRegName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uscc != null" >
+        uscc = #{record.uscc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyAddress != null" >
+        company_address = #{record.companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.foundedDate != null" >
+        founded_date = #{record.foundedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.regCapital != null" >
+        reg_capital = #{record.regCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="record.regFeeType != null" >
+        reg_fee_type = #{record.regFeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.corporationName != null" >
+        corporation_name = #{record.corporationName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.corporationIdcardNo != null" >
+        corporation_idcard_no = #{record.corporationIdcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.corporationMobile != null" >
+        corporation_mobile = #{record.corporationMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.corporationIdcardImg1 != null" >
+        corporation_idcard_img_1 = #{record.corporationIdcardImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.corporationIdcardImg2 != null" >
+        corporation_idcard_img_2 = #{record.corporationIdcardImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blPic != null" >
+        bl_pic = #{record.blPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.occPic != null" >
+        occ_pic = #{record.occPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trcPic != null" >
+        trc_pic = #{record.trcPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.atqPic != null" >
+        atq_pic = #{record.atqPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.boaalPic != null" >
+        boaal_pic = #{record.boaalPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yearlyInspectionDate != null" >
+        yearly_inspection_date = #{record.yearlyInspectionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.companyTel != null" >
+        company_tel = #{record.companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactProvince != null" >
+        contact_province = #{record.contactProvince,jdbcType=INTEGER},
+      </if>
+      <if test="record.contactCity != null" >
+        contact_city = #{record.contactCity,jdbcType=INTEGER},
+      </if>
+      <if test="record.contactCounty != null" >
+        contact_county = #{record.contactCounty,jdbcType=INTEGER},
+      </if>
+      <if test="record.contactAddress != null" >
+        contact_address = #{record.contactAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isCompanyInfPerfect != null" >
+        is_company_inf_perfect = #{record.isCompanyInfPerfect,jdbcType=CHAR},
+      </if>
+      <if test="record.companyInfAuditRemarks != null" >
+        company_inf_audit_remarks = #{record.companyInfAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.depositContent != null" >
+        deposit_content = #{record.depositContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bizId != null" >
+        biz_id = #{record.bizId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_info_his
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      mcht_code = #{record.mchtCode,jdbcType=VARCHAR},
+      short_name = #{record.shortName,jdbcType=VARCHAR},
+      mcht_type = #{record.mchtType,jdbcType=CHAR},
+      cooperate_begin_date = #{record.cooperateBeginDate,jdbcType=DATE},
+      is_manage_self = #{record.isManageSelf,jdbcType=CHAR},
+      agreement_begin_date = #{record.agreementBeginDate,jdbcType=DATE},
+      agreement_end_date = #{record.agreementEndDate,jdbcType=DATE},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      shop_catalog = #{record.shopCatalog,jdbcType=VARCHAR},
+      business_firms = #{record.businessFirms,jdbcType=VARCHAR},
+      product_type = #{record.productType,jdbcType=VARCHAR},
+      brand = #{record.brand,jdbcType=VARCHAR},
+      shop_type = #{record.shopType,jdbcType=CHAR},
+      shop_name_audit_status = #{record.shopNameAuditStatus,jdbcType=CHAR},
+      shop_name_audit_remarks = #{record.shopNameAuditRemarks,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=CHAR},
+      company_name = #{record.companyName,jdbcType=VARCHAR},
+      company_type = #{record.companyType,jdbcType=CHAR},
+      company_reg_name = #{record.companyRegName,jdbcType=VARCHAR},
+      uscc = #{record.uscc,jdbcType=VARCHAR},
+      company_address = #{record.companyAddress,jdbcType=VARCHAR},
+      founded_date = #{record.foundedDate,jdbcType=TIMESTAMP},
+      reg_capital = #{record.regCapital,jdbcType=DECIMAL},
+      reg_fee_type = #{record.regFeeType,jdbcType=VARCHAR},
+      corporation_name = #{record.corporationName,jdbcType=VARCHAR},
+      corporation_idcard_no = #{record.corporationIdcardNo,jdbcType=VARCHAR},
+      corporation_mobile = #{record.corporationMobile,jdbcType=VARCHAR},
+      corporation_idcard_img_1 = #{record.corporationIdcardImg1,jdbcType=VARCHAR},
+      corporation_idcard_img_2 = #{record.corporationIdcardImg2,jdbcType=VARCHAR},
+      bl_pic = #{record.blPic,jdbcType=VARCHAR},
+      occ_pic = #{record.occPic,jdbcType=VARCHAR},
+      trc_pic = #{record.trcPic,jdbcType=VARCHAR},
+      atq_pic = #{record.atqPic,jdbcType=VARCHAR},
+      boaal_pic = #{record.boaalPic,jdbcType=VARCHAR},
+      yearly_inspection_date = #{record.yearlyInspectionDate,jdbcType=TIMESTAMP},
+      company_tel = #{record.companyTel,jdbcType=VARCHAR},
+      contact_province = #{record.contactProvince,jdbcType=INTEGER},
+      contact_city = #{record.contactCity,jdbcType=INTEGER},
+      contact_county = #{record.contactCounty,jdbcType=INTEGER},
+      contact_address = #{record.contactAddress,jdbcType=VARCHAR},
+      is_company_inf_perfect = #{record.isCompanyInfPerfect,jdbcType=CHAR},
+      company_inf_audit_remarks = #{record.companyInfAuditRemarks,jdbcType=VARCHAR},
+      deposit_content = #{record.depositContent,jdbcType=VARCHAR},
+      biz_id = #{record.bizId,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtInfoHis" >
+    update bu_mcht_info_his
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtCode != null" >
+        mcht_code = #{mchtCode,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtType != null" >
+        mcht_type = #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="cooperateBeginDate != null" >
+        cooperate_begin_date = #{cooperateBeginDate,jdbcType=DATE},
+      </if>
+      <if test="isManageSelf != null" >
+        is_manage_self = #{isManageSelf,jdbcType=CHAR},
+      </if>
+      <if test="agreementBeginDate != null" >
+        agreement_begin_date = #{agreementBeginDate,jdbcType=DATE},
+      </if>
+      <if test="agreementEndDate != null" >
+        agreement_end_date = #{agreementEndDate,jdbcType=DATE},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopCatalog != null" >
+        shop_catalog = #{shopCatalog,jdbcType=VARCHAR},
+      </if>
+      <if test="businessFirms != null" >
+        business_firms = #{businessFirms,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        shop_type = #{shopType,jdbcType=CHAR},
+      </if>
+      <if test="shopNameAuditStatus != null" >
+        shop_name_audit_status = #{shopNameAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="shopNameAuditRemarks != null" >
+        shop_name_audit_remarks = #{shopNameAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="companyType != null" >
+        company_type = #{companyType,jdbcType=CHAR},
+      </if>
+      <if test="companyRegName != null" >
+        company_reg_name = #{companyRegName,jdbcType=VARCHAR},
+      </if>
+      <if test="uscc != null" >
+        uscc = #{uscc,jdbcType=VARCHAR},
+      </if>
+      <if test="companyAddress != null" >
+        company_address = #{companyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="foundedDate != null" >
+        founded_date = #{foundedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="regCapital != null" >
+        reg_capital = #{regCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="regFeeType != null" >
+        reg_fee_type = #{regFeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationName != null" >
+        corporation_name = #{corporationName,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationIdcardNo != null" >
+        corporation_idcard_no = #{corporationIdcardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationMobile != null" >
+        corporation_mobile = #{corporationMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationIdcardImg1 != null" >
+        corporation_idcard_img_1 = #{corporationIdcardImg1,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationIdcardImg2 != null" >
+        corporation_idcard_img_2 = #{corporationIdcardImg2,jdbcType=VARCHAR},
+      </if>
+      <if test="blPic != null" >
+        bl_pic = #{blPic,jdbcType=VARCHAR},
+      </if>
+      <if test="occPic != null" >
+        occ_pic = #{occPic,jdbcType=VARCHAR},
+      </if>
+      <if test="trcPic != null" >
+        trc_pic = #{trcPic,jdbcType=VARCHAR},
+      </if>
+      <if test="atqPic != null" >
+        atq_pic = #{atqPic,jdbcType=VARCHAR},
+      </if>
+      <if test="boaalPic != null" >
+        boaal_pic = #{boaalPic,jdbcType=VARCHAR},
+      </if>
+      <if test="yearlyInspectionDate != null" >
+        yearly_inspection_date = #{yearlyInspectionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="companyTel != null" >
+        company_tel = #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="contactProvince != null" >
+        contact_province = #{contactProvince,jdbcType=INTEGER},
+      </if>
+      <if test="contactCity != null" >
+        contact_city = #{contactCity,jdbcType=INTEGER},
+      </if>
+      <if test="contactCounty != null" >
+        contact_county = #{contactCounty,jdbcType=INTEGER},
+      </if>
+      <if test="contactAddress != null" >
+        contact_address = #{contactAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="isCompanyInfPerfect != null" >
+        is_company_inf_perfect = #{isCompanyInfPerfect,jdbcType=CHAR},
+      </if>
+      <if test="companyInfAuditRemarks != null" >
+        company_inf_audit_remarks = #{companyInfAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="depositContent != null" >
+        deposit_content = #{depositContent,jdbcType=VARCHAR},
+      </if>
+      <if test="bizId != null" >
+        biz_id = #{bizId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtInfoHis" >
+    update bu_mcht_info_his
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      mcht_code = #{mchtCode,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      mcht_type = #{mchtType,jdbcType=CHAR},
+      cooperate_begin_date = #{cooperateBeginDate,jdbcType=DATE},
+      is_manage_self = #{isManageSelf,jdbcType=CHAR},
+      agreement_begin_date = #{agreementBeginDate,jdbcType=DATE},
+      agreement_end_date = #{agreementEndDate,jdbcType=DATE},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      shop_catalog = #{shopCatalog,jdbcType=VARCHAR},
+      business_firms = #{businessFirms,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      shop_type = #{shopType,jdbcType=CHAR},
+      shop_name_audit_status = #{shopNameAuditStatus,jdbcType=CHAR},
+      shop_name_audit_remarks = #{shopNameAuditRemarks,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      company_type = #{companyType,jdbcType=CHAR},
+      company_reg_name = #{companyRegName,jdbcType=VARCHAR},
+      uscc = #{uscc,jdbcType=VARCHAR},
+      company_address = #{companyAddress,jdbcType=VARCHAR},
+      founded_date = #{foundedDate,jdbcType=TIMESTAMP},
+      reg_capital = #{regCapital,jdbcType=DECIMAL},
+      reg_fee_type = #{regFeeType,jdbcType=VARCHAR},
+      corporation_name = #{corporationName,jdbcType=VARCHAR},
+      corporation_idcard_no = #{corporationIdcardNo,jdbcType=VARCHAR},
+      corporation_mobile = #{corporationMobile,jdbcType=VARCHAR},
+      corporation_idcard_img_1 = #{corporationIdcardImg1,jdbcType=VARCHAR},
+      corporation_idcard_img_2 = #{corporationIdcardImg2,jdbcType=VARCHAR},
+      bl_pic = #{blPic,jdbcType=VARCHAR},
+      occ_pic = #{occPic,jdbcType=VARCHAR},
+      trc_pic = #{trcPic,jdbcType=VARCHAR},
+      atq_pic = #{atqPic,jdbcType=VARCHAR},
+      boaal_pic = #{boaalPic,jdbcType=VARCHAR},
+      yearly_inspection_date = #{yearlyInspectionDate,jdbcType=TIMESTAMP},
+      company_tel = #{companyTel,jdbcType=VARCHAR},
+      contact_province = #{contactProvince,jdbcType=INTEGER},
+      contact_city = #{contactCity,jdbcType=INTEGER},
+      contact_county = #{contactCounty,jdbcType=INTEGER},
+      contact_address = #{contactAddress,jdbcType=VARCHAR},
+      is_company_inf_perfect = #{isCompanyInfPerfect,jdbcType=CHAR},
+      company_inf_audit_remarks = #{companyInfAuditRemarks,jdbcType=VARCHAR},
+      deposit_content = #{depositContent,jdbcType=VARCHAR},
+      biz_id = #{bizId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

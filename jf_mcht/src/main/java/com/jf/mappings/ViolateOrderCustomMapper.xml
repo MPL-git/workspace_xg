@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ViolateOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ViolateOrderCustom"  extends="com.jf.dao.ViolateOrderMapper.BaseResultMap">
+  	<result column="violate_type_desc" property="violateTypeDesc" jdbcType="VARCHAR" />
+  	<result column="violate_action_desc" property="violateActionDesc" jdbcType="VARCHAR" />
+  	<result column="belong_activity" property="belongActivity" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    t.*,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_TYPE", violate_type) violate_type_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_ACTION", violate_action) violate_action_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","STATUS", status) status_desc,
+    (select a.sub_order_code from bu_sub_order a where a.id = t.sub_order_id) sub_order_code
+  </sql>
+  
+  <select id="countByExample" parameterType="com.jf.entity.ViolateOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_violate_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ViolateOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_violate_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="getViolateTypesByMchtId" resultType="java.lang.String" parameterType="Integer" >
+   	SELECT DISTINCT t.violate_type FROM bu_violate_order t WHERE t.mcht_id=#{mchtId} and t.del_flag=0
+  </select>
+  
+  <select id="getSubOrderIdByActivityId" resultType="java.lang.Integer" parameterType="Integer">
+  	SELECT a.sub_order_id FROM bu_violate_order a,bu_order_dtl b WHERE a.sub_order_id = b.sub_order_id AND b.activity_id=#{activityId} and a.del_flag=0
+  </select>
+  
+  <select id="getDebitRecordList" resultType="com.jf.vo.DebitRecord" parameterType="map">
+  	 SELECT TAB.* FROM (
+	  	 SELECT
+				tab.activity_id as activityId,tab.name as name, SUM(tab.money) as totalDeductions
+			 FROM
+				(
+				SELECT
+					tmp.activity_id,
+					tmp.name,	
+					vo.money
+				FROM
+					(
+						SELECT DISTINCT
+							od.sub_order_id,od.activity_id,a.`name`
+						FROM
+							bu_order_dtl od,
+							bu_activity a,
+							bu_activity_area aa
+						WHERE
+							od.activity_id = a.id
+							and a.activity_area_id = aa.id
+							and od.del_flag=0
+							and a.del_flag=0
+						GROUP BY
+							od.activity_id,
+							od.sub_order_id
+						order by aa.activity_begin_time desc	
+					) tmp,	bu_violate_order vo,bu_mcht_info mi
+						WHERE tmp.sub_order_id = vo.sub_order_id and vo.del_flag=0 and mi.del_flag=0
+						and vo.audit_status = "1" AND vo.mcht_id = mi.id AND mi.id = #{mchtId}
+				)tab GROUP BY tab.activity_id
+  	 )TAB where 1=1
+  	 <if test="activityId !=null and activityId != ''">
+		and TAB.activityId =#{activityId}
+	 </if>
+  	 <if test="activity !=null and activity != ''">
+		and TAB.name like  CONCAT('%','${activity}','%' ) 
+	 </if>
+  </select>
+</mapper>

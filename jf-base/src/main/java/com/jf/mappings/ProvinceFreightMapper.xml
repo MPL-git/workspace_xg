@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProvinceFreightMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProvinceFreight" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="freight_template_id" property="freightTemplateId" jdbcType="INTEGER" />
+    <result column="area_ids" property="areaIds" jdbcType="VARCHAR" />
+    <result column="first_freight" property="firstFreight" jdbcType="DECIMAL" />
+    <result column="additional_freight" property="additionalFreight" jdbcType="DECIMAL" />
+    <result column="is_full_reduction_freight" property="isFullReductionFreight" jdbcType="CHAR" />
+    <result column="full_number" property="fullNumber" jdbcType="INTEGER" />
+    <result column="full_reduction_freight" property="fullReductionFreight" jdbcType="DECIMAL" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, freight_template_id, area_ids, first_freight, additional_freight, is_full_reduction_freight, 
+    full_number, full_reduction_freight, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ProvinceFreightExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_province_freight
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_province_freight
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_province_freight
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.ProvinceFreightExample" >
+    delete from bu_province_freight
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.ProvinceFreight" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_province_freight (mcht_id, freight_template_id, area_ids, 
+      first_freight, additional_freight, is_full_reduction_freight, 
+      full_number, full_reduction_freight, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{mchtId,jdbcType=INTEGER}, #{freightTemplateId,jdbcType=INTEGER}, #{areaIds,jdbcType=VARCHAR}, 
+      #{firstFreight,jdbcType=DECIMAL}, #{additionalFreight,jdbcType=DECIMAL}, #{isFullReductionFreight,jdbcType=CHAR}, 
+      #{fullNumber,jdbcType=INTEGER}, #{fullReductionFreight,jdbcType=DECIMAL}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.ProvinceFreight" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_province_freight
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="freightTemplateId != null" >
+        freight_template_id,
+      </if>
+      <if test="areaIds != null" >
+        area_ids,
+      </if>
+      <if test="firstFreight != null" >
+        first_freight,
+      </if>
+      <if test="additionalFreight != null" >
+        additional_freight,
+      </if>
+      <if test="isFullReductionFreight != null" >
+        is_full_reduction_freight,
+      </if>
+      <if test="fullNumber != null" >
+        full_number,
+      </if>
+      <if test="fullReductionFreight != null" >
+        full_reduction_freight,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="freightTemplateId != null" >
+        #{freightTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="areaIds != null" >
+        #{areaIds,jdbcType=VARCHAR},
+      </if>
+      <if test="firstFreight != null" >
+        #{firstFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="additionalFreight != null" >
+        #{additionalFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="isFullReductionFreight != null" >
+        #{isFullReductionFreight,jdbcType=CHAR},
+      </if>
+      <if test="fullNumber != null" >
+        #{fullNumber,jdbcType=INTEGER},
+      </if>
+      <if test="fullReductionFreight != null" >
+        #{fullReductionFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.ProvinceFreightExample" resultType="java.lang.Integer" >
+    select count(*) from bu_province_freight
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_province_freight
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.freightTemplateId != null" >
+        freight_template_id = #{record.freightTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaIds != null" >
+        area_ids = #{record.areaIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.firstFreight != null" >
+        first_freight = #{record.firstFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.additionalFreight != null" >
+        additional_freight = #{record.additionalFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isFullReductionFreight != null" >
+        is_full_reduction_freight = #{record.isFullReductionFreight,jdbcType=CHAR},
+      </if>
+      <if test="record.fullNumber != null" >
+        full_number = #{record.fullNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.fullReductionFreight != null" >
+        full_reduction_freight = #{record.fullReductionFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_province_freight
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      freight_template_id = #{record.freightTemplateId,jdbcType=INTEGER},
+      area_ids = #{record.areaIds,jdbcType=VARCHAR},
+      first_freight = #{record.firstFreight,jdbcType=DECIMAL},
+      additional_freight = #{record.additionalFreight,jdbcType=DECIMAL},
+      is_full_reduction_freight = #{record.isFullReductionFreight,jdbcType=CHAR},
+      full_number = #{record.fullNumber,jdbcType=INTEGER},
+      full_reduction_freight = #{record.fullReductionFreight,jdbcType=DECIMAL},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.ProvinceFreight" >
+    update bu_province_freight
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="freightTemplateId != null" >
+        freight_template_id = #{freightTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="areaIds != null" >
+        area_ids = #{areaIds,jdbcType=VARCHAR},
+      </if>
+      <if test="firstFreight != null" >
+        first_freight = #{firstFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="additionalFreight != null" >
+        additional_freight = #{additionalFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="isFullReductionFreight != null" >
+        is_full_reduction_freight = #{isFullReductionFreight,jdbcType=CHAR},
+      </if>
+      <if test="fullNumber != null" >
+        full_number = #{fullNumber,jdbcType=INTEGER},
+      </if>
+      <if test="fullReductionFreight != null" >
+        full_reduction_freight = #{fullReductionFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.ProvinceFreight" >
+    update bu_province_freight
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      freight_template_id = #{freightTemplateId,jdbcType=INTEGER},
+      area_ids = #{areaIds,jdbcType=VARCHAR},
+      first_freight = #{firstFreight,jdbcType=DECIMAL},
+      additional_freight = #{additionalFreight,jdbcType=DECIMAL},
+      is_full_reduction_freight = #{isFullReductionFreight,jdbcType=CHAR},
+      full_number = #{fullNumber,jdbcType=INTEGER},
+      full_reduction_freight = #{fullReductionFreight,jdbcType=DECIMAL},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

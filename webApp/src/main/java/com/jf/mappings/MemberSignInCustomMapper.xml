@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberSignInCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberSignInCustom"  extends="com.jf.dao.MemberSignInMapper.BaseResultMap" >
+ 
+  </resultMap>
+  
+  	<select id="getMemberSignInModels" parameterType="int" resultType="com.jf.entity.MemberSignInCustom">
+  		select t.* from bu_member_sign_in t 
+  		where t.del_flag = '0' and t.member_id = #{memberId}
+  		order by t.id desc
+  		limit 0,1
+  	</select>
+
+  
+</mapper>

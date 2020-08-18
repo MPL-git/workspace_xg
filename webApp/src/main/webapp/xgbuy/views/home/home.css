@@ -1,0 +1,149 @@
+.swiper-container, .swiper-container li {
+	height: 2.77rem;
+}
+
+.home .nav {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 11;
+	width: 6.6rem;
+	height: .8rem;
+	margin: 0 auto;
+	font-size: .28rem;
+	line-height: .28rem;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+	-webkit-user-select: none;
+	-webkit-transition: .3s linear;
+	transition: .3s linear;
+	margin-right: .9rem;
+}
+.home .nav-righ{
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: .9rem;
+	height: .8rem;
+	text-align: center;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+	z-index: 11;
+
+}
+.home .nav-righ img,.home .nav-head img{
+	width: .32rem;
+	height: .26rem;
+}
+.home .nav-head img{
+	transform: rotate(90deg);
+}
+.home .nav-all {
+	width: 7.5rem;
+	margin-right: 0rem;
+	background: #fff;
+	height: auto;
+	top: .8rem;
+}
+.home #navAll{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 7.5rem;
+    height: 100vh;
+    z-index: 13;
+    background: rgba(0,0,0,.3);
+}
+.home .nav-head {
+	height: .8rem;
+	width: 100%;
+	padding: 0 .3rem;
+    background: #fff;
+    z-index: 13;
+}
+/* .home .nav-head{
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 7.5rem;
+	height: .8rem;
+} */
+.home .nav .scroll-x {
+	height: 100%;
+}
+.home .nav a {
+	position: relative;
+	/* min-width: .6rem; */
+	height: .8rem;
+	margin: 0 .35rem;
+	white-space: nowrap;
+}
+.home .nav a:after {
+	position: absolute;
+	bottom: .04rem;
+	left: 0;
+	content: '';
+	width: 100%;
+	height: .04rem;
+	background: transparent;
+}
+.home .nav a.on:after {
+	background: #ff5050;
+}
+.home .nav.nav-hide {
+	opacity: 0;
+	-webkit-transform: translate3d(0, -.8rem, 0);
+	transform: translate3d(0, -.8rem, 0);
+}
+
+.home .banner {
+	margin-top: .8rem;
+}
+
+/*今日特惠*/
+.brand-title {
+	height: .9rem;
+	font-size: .3rem;
+	font-weight: bold;
+	background: #fff;
+}
+.brand-title img {
+	width: .34rem;
+	margin-right: .1rem;
+}
+.brand-title b {
+	margin: 0 .05rem;
+}
+
+.home .ico-back-top {
+	bottom: 1.5rem;
+}
+.sys-ios .home .ico-back-top {
+	bottom: calc(1.5rem + 64px);
+}
+.sys-iosx .home .ico-back-top {
+	bottom: calc(1.5rem + 88px);
+}
+
+.home .drop-down {
+	height: 0rem;
+	width: 100%;
+	position: fixed;
+	top: .8rem;
+	left: 0;
+	background: #f4f4f4;
+	display: none;
+}
+
+.home .drop-down img {
+	width: 4rem;
+	margin: 0 auto;
+}
+
+.home .home-content {
+	margin-top: 0rem;
+}
+.home .hidden {
+	display: none;
+}

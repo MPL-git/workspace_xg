@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CatalogCustomMapper">
+
+     <resultMap type="com.gzs.common.beans.Menu" id="resultProcType">
+    	<id column="id" property="menuID" />
+		<result column="back_name" property="menuName" />
+		<result column="remarks" property="menuDesc" />
+		<result column="parent_id" property="parentID" />
+		<result column="menu_path" property="menuPath" />
+		<result column="create_date" property="createDate" />
+		<result column="status" property="status" />
+		<result column="update_date" property="statusDate" />
+		<result column="seq_no" property="menuOrder" />
+    </resultMap>
+	
+      <select id="selectCatalog" resultMap="resultProcType">  
+       select tt.*
+            from(select id,
+                    back_name,
+                    parent_id,
+                    create_date,
+                    status,
+                    update_date,
+                    seq_no,
+                    remarks
+		  from bu_catalog a
+		 where a.del_flag = '0'
+		 order by seq_no)tt 
+    </select>
+    
+    <select id="queryDataCount" parameterType="java.util.HashMap" resultType="String">  
+		 select count(*) totalnum
+		  from bu_catalog a
+		 where a.del_flag = '0'
+		 <if test="ISNO==0">
+		 and a.id = #{id}
+		 </if>
+		 <if test="ISNO!=0">
+		 and a.parent_id = #{id}
+		 </if>
+    </select>
+    
+    <select id="selectProductTypeList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select 
+		        id,
+				front_name,
+				back_name,
+				catalog,
+				parent_id,
+				(select x.front_name from bu_catalog x where x.id=a.parent_id) parent_name,
+                status,
+                FUN_GET_STATUS_DESC("BU_CATALOG","STATUS", a.status) status_desc,
+		        seq_no,
+		        create_by,
+		        create_date,
+		        update_by,
+		        update_date,
+		        remarks
+		  from bu_catalog a
+		 where a.del_flag = '0'
+		 <if test="ISNO ==0">
+		 and a.id = #{id}
+		 </if>
+		 
+		 <if test="search !=null and search != ''">
+			and a.front_name like CONCAT('%',#{search},'%')
+			or a.back_name like CONCAT('%',#{search},'%')
+		 </if>
+		 <if test="ISNO !=0">
+		 and a.parent_id = #{id}
+		 </if>
+		 order by seq_no
+		 <if test="MAX_NUM!=null and MAX_NUM!=''">
+		   limit #{MIN_NUM},#{MAX_NUM}
+	     </if>   
+    </select>
+    
+    
+    <select id="selectProductTypeListByid" parameterType="java.util.HashMap" resultType="java.util.HashMap">  
+		 select  id,
+				front_name,
+				back_name,
+				catalog,
+				parent_id,
+				(select x.front_name from bu_catalog x where x.id=a.parent_id) parent_name,
+                status,
+                FUN_GET_STATUS_DESC("BU_CATALOG","STATUS", a.status) status_desc,
+		        seq_no,
+		        create_by,
+		        create_date,
+		        update_by,
+		        update_date,
+		        remarks
+		  from bu_catalog a
+		 where a.del_flag = '0'
+		 and a.id =#{id}
+		 
+    </select>
+    
+    <select id="getparentByid" parameterType="java.util.HashMap" resultType="String">  
+		 select back_name from bu_catalog a
+		 where a.del_flag = '0'
+		 and a.id =#{id}
+    </select>
+    
+</mapper>

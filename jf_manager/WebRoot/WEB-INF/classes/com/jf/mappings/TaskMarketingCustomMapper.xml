@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.TaskMarketingCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.TaskMarketingCustom" extends="com.jf.dao.TaskMarketingMapper.BaseResultMap" >
+    <result column="task_send_channel" property="taskSendChannel" jdbcType="VARCHAR" />
+    <result column="task_name" property="taskName" jdbcType="VARCHAR" />
+    <result column="task_task_explain" property="taskTaskExplain" jdbcType="VARCHAR" />
+    <result column="task_content" property="taskContent" jdbcType="VARCHAR" />
+    <result column="task_send_mode" property="taskSendMode" jdbcType="VARCHAR" />
+    <result column="task_send_date" property="taskSendDate" jdbcType="TIMESTAMP" />
+    <result column="task_time_interval" property="taskTimeInterval" jdbcType="INTEGER" />
+    <result column="task_send_count" property="taskSendCount" jdbcType="INTEGER" />
+    <result column="task_send_type" property="taskSendType" jdbcType="VARCHAR" />
+    <result column="task_file_path" property="taskFilePath" jdbcType="VARCHAR" />
+    <result column="task_send_values" property="taskSendValues" jdbcType="LONGVARCHAR" />
+    <result column="task_label_group_ids" property="taskLabelGroupIds" jdbcType="VARCHAR" />
+    <result column="task_status" property="taskStatus" jdbcType="VARCHAR" />
+    <result column="task_send_channel_desc" property="taskSendChannelDesc" jdbcType="VARCHAR" />
+    <result column="task_status_desc" property="taskStatusDesc" jdbcType="VARCHAR" />
+    <result column="create_staff_name" property="createStaffName" jdbcType="VARCHAR" />
+    <result column="audit_staff_name" property="auditStaffName" jdbcType="VARCHAR" />
+    <result column="approval_staff_name" property="approvalStaffName" jdbcType="VARCHAR" />
+    <result column="execute_staff_name" property="executeStaffName" jdbcType="VARCHAR" />
+    <result column="cancel_staff_name" property="cancelStaffName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    t.*,
+    a.send_channel task_send_channel,
+    a.name task_name,
+    a.task_explain task_task_explain,
+    a.content task_content,
+    a.send_mode task_send_mode,
+    a.send_date task_send_date,
+    a.time_interval task_time_interval,
+    a.send_count task_send_count,
+    a.send_type task_send_type,
+    a.file_path task_file_path,
+    a.send_values task_send_values,
+    a.label_group_ids task_label_group_ids,
+    a.status task_status,
+    FUN_GET_STATUS_DESC("BU_TASK", "SEND_CHANNEL", a.send_channel ) task_send_channel_desc,
+    FUN_GET_STATUS_DESC("BU_TASK", "STATUS", a.status ) task_status_desc,
+    (select st.staff_name from sys_staff_info st where t.create_by = st.staff_id ) create_staff_name,
+    (select st.staff_name from bu_task_log tl inner join sys_staff_info st on tl.create_by = st.staff_id where tl.del_flag = '0' and tl.operator_type = '1' and tl.task_id = t.task_id order by tl.id desc limit 1 ) audit_staff_name, 
+    (select st.staff_name from bu_task_log tl inner join sys_staff_info st on tl.create_by = st.staff_id where tl.del_flag = '0' and tl.operator_type = '2' and tl.task_id = t.task_id order by tl.id desc limit 1 ) approval_staff_name, 
+    (select st.staff_name from bu_task_log tl inner join sys_staff_info st on tl.create_by = st.staff_id where tl.del_flag = '0' and tl.operator_type = '3' and tl.task_id = t.task_id order by tl.id desc limit 1 ) execute_staff_name, 
+    (select st.staff_name from bu_task_log tl inner join sys_staff_info st on tl.create_by = st.staff_id where tl.del_flag = '0' and tl.operator_type = '4' and tl.task_id = t.task_id order by tl.id desc limit 1 ) cancel_staff_name
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.TaskMarketingCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_task_marketing t
+    	INNER JOIN bu_task a ON t.task_id = a.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_task_marketing t
+    	INNER JOIN bu_task a ON t.task_id = a.id
+    where t.id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.TaskMarketingCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_task_marketing t
+    	INNER JOIN bu_task a ON t.task_id = a.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_task_marketing t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.iosContext != null" >
+        ios_context = #{record.iosContext,jdbcType=CHAR},
+      </if>
+      <if test="record.iosTitle != null" >
+        ios_title = #{record.iosTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.androidContext != null" >
+        android_context = #{record.androidContext,jdbcType=CHAR},
+      </if>
+      <if test="record.androidTitle != null" >
+        android_title = #{record.androidTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bigPushDuration != null" >
+        big_push_duration = #{record.bigPushDuration,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

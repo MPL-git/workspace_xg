@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ActivityCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ActivityCustom"  extends="com.jf.dao.ActivityMapper.BaseResultMap">
+  	<result column="product_brand_name" property="productBrandName" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="accept_product_count" property="acceptProductCount" jdbcType="INTEGER" />
+  	<result column="refuse_product_count" property="refuseProductCount" jdbcType="INTEGER" />
+  	<result column="sale_quantity" property="saleQuantity" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, activity_area_id, mcht_id, product_type_id, product_type_second_id, brand_limit_type, 
+    product_brand_id, fee_rate, submit_time, expected_start_time, entry_pic, poster_pic, 
+    poster_link_id, status, operate_audit_by, operate_audit_status, operate_audit_remarks, 
+    design_audit_by, design_audit_status, design_audit_remarks, law_audit_by, law_audit_status, 
+    law_audit_remarks, coo_audit_by, coo_audit_status, coo_audit_remarks, seq_no, activity_group_id, 
+    is_sign, pre_sell_audit_status, pre_sell_audit_remarks, create_by, create_date, update_by, 
+    update_date, remarks, del_flag,design_reject_reason, brand_team_pic,
+    (select pb.name from bu_product_brand pb where pb.del_flag='0' and pb.id = t.product_brand_id)product_brand_name,
+    FUN_GET_STATUS_DESC("BU_ACTIVITY","STATUS",status)status_desc,
+    (select count(1) from bu_activity_product ap where ap.activity_id= t.id and ap.del_flag='0' and ap.refuse_flag='0')accept_product_count,
+    (select count(1) from bu_activity_product ap where ap.activity_id= t.id and ap.del_flag='0' and ap.refuse_flag='1')refuse_product_count,
+    (select IFNULL(SUM(od.quantity),0) from bu_order_dtl od,bu_sub_order so,bu_combine_order co where od.sub_order_id = so.id and so.combine_order_id = co.id and co.status = '1' and od.activity_id = t.id and od.del_flag='0')sale_quantity
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ActivityExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_activity t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="getActivityStatusByProductId" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	select a.status from bu_activity a,bu_activity_product ap where a.id = ap.activity_id and ap.del_flag='0' and ap.product_id=#{productId}
+  </select>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SvipBindProductCustomMapper" >
+
+  <select id="countSvipBindProductCustomByExample" parameterType="map" resultType="java.lang.Integer">
+    select
+    count(1)
+    from bu_svip_bind_product sbp,bu_product p
+    where
+    sbp.product_id = p.id
+    and sbp.del_flag = '0'
+    and p.del_flag = '0'
+    <if test="mchtCode != null and mchtCode != ''">
+      and p.mcht_id = (select mi.id from bu_mcht_info mi where mi.mcht_code = #{mchtCode} and mi.del_flag = '0')
+    </if>
+    <if test="companyName != null and companyName != ''">
+      and p.mcht_id = (select mi.id from bu_mcht_info mi where mi.company_name = #{companyName} and mi.del_flag = '0')
+    </if>
+    <if test="searchFields != null and searchFields != ''">
+      and p.search_fields like concat('%',#{searchFields},'%')
+    </if>
+  </select>
+
+  <select id="selectSvipBindProductCustomByExample" parameterType="map" resultType="com.jf.entity.SvipBindProductCustom">
+    select
+    sbp.id,
+    sbp.product_id productId,
+    (select a.pic from bu_product_pic a where a.product_id=p.id and a.del_flag='0' and a.is_default=1 order by a.id desc limit 1) pic,
+    p.code,
+    (select a.name from bu_product_type a where a.id=p.product_type_id) productTypeName,
+    (select a.name from bu_product_brand a where a.id=brand_id) productBrandName,
+    p.name,
+    p.art_no artNo,
+    (select min(a.tag_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') tagPriceMin,
+    (select min(a.mall_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') mallPriceMin,
+    (select min(a.sale_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') salePriceMin,
+    (select max(a.tag_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') tagPriceMax,
+    (select max(a.mall_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') mallPriceMax,
+    (select max(a.sale_price) from bu_product_item a where a.product_id=p.id and a.del_flag='0') salePriceMax,
+    p.svip_discount svipDiscount,
+    (select i.company_name from bu_mcht_info i where i.id=p.mcht_id) companyName
+    from bu_svip_bind_product sbp,bu_product p,bu_mcht_info mi,bu_mcht_product_brand mpb
+    where
+    sbp.product_id = p.id
+    and p.mcht_id = mi.id
+    and p.mcht_id = mpb.mcht_id
+    and p.brand_id = mpb.product_brand_id
+    and p.status = '1'
+    and p.sale_type = '1'
+    and mi.status = '1'
+    and mpb.status = '1'
+    and mpb.audit_status = '3'
+    and mi.shop_status = '1'
+    and sbp.del_flag = '0'
+    and p.del_flag = '0'
+    and mi.del_flag = '0'
+    and mpb.del_flag = '0'
+    <if test="mchtCode != null and mchtCode != ''">
+        and p.mcht_id = (select mi.id from bu_mcht_info mi where mi.mcht_code = #{mchtCode} and mi.del_flag = '0')
+    </if>
+    <if test="companyName != null and companyName != ''">
+        and p.mcht_id = (select mi.id from bu_mcht_info mi where mi.company_name like concat('%',#{companyName},'%')  and mi.del_flag = '0')
+    </if>
+    <if test="searchFields != null and searchFields != ''">
+        and p.search_fields like concat('%',#{searchFields},'%')
+    </if>
+    order by sbp.create_date desc
+  </select>
+
+  <select id="selectProductList" parameterType="list" resultType="Integer">
+    select
+    p.*
+    from bu_product p
+    where
+    p.code in
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+       #{item}
+    </foreach>
+    and p.del_flag = '0'
+  </select>
+</mapper>

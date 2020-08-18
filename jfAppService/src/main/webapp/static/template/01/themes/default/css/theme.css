@@ -1,0 +1,76 @@
+/*top*/
+.topbar{background: #424242; color: #cccccc;}
+.linkfav{position: relative; padding-left: 20px; background: #7d7d7d;}
+.linkfav i{position: absolute; left: 3px; top: 2px; width: 15px; height: 14px; background: url(../images/ico-fav.gif) no-repeat;}
+.toplogin{line-height: 18px; margin-top: 8px; margin-left: 15px;}
+.toplogin .loginlink{ background: #b90001; color: #fff; padding: 0 10px;}
+.toplinks{ margin-right: 15px;}
+.toplinks a{ color: #cccccc;}
+.toptools{ padding-top: 0; height: 35px;}
+
+/*nav*/
+.nav{border-top: 3px solid #b90001; overflow: hidden; background: #424242;}
+.nav .textNav a{color: #fff; padding: 0 12px;}
+.nav .textNav a.current{background: #b90001;}
+
+/*header*/
+.cartbtn{ color: #fff; background: #b90001;}
+.cartbtn i{position: absolute; left: 7px; top: 6px; width: 19px; height: 17px; background: url(../images/ico-shopcart.gif) no-repeat;}
+
+/*footer*/
+.footer{margin-top: 20px; color: #7c7c7c;}
+.footer .layout{border-top: 1px solid #f2f2f2;}
+#footDesc{margin: 14px 0 0 90px;}
+#footDesc dl{float: left; width: 120px; padding-left: 48px; margin-left: 8px; display: inline; background-position: 0 0; background-repeat: no-repeat;}
+#footDesc dt{color: #504f4f; font-weight: bold; font-size: 14px; line-height: 28px;}
+#footDesc dd{ line-height: 21px;}
+#shopGuide{background-image: url(../images/footico-1.gif);}
+#deliveryType{background-image: url(../images/footico-2.gif);}
+#paymentType{background-image: url(../images/footico-3.gif);}
+#afterSail{background-image: url(../images/footico-4.gif);}
+#specialService{background-image: url(../images/footico-5.gif);}
+#copyright{padding: 55px 0 10px; margin-top: 10px; background: url(../images/footlogo.png) no-repeat 50% 6px; text-align: center;}
+
+/*sidebar*/
+.sideblock .blocktitle{line-height: 28px; font-size: 14px; padding-left: 14px; font-weight: bold; border-top: 3px solid #b90001; margin: 0 -1px;}
+
+/*main*/
+.filter-sort .sort-on{border-color: #b90001; background-color: #b90001; color: #fff;}
+.pagination .page-cur,.page-go button{background: #b90001; border:1px solid #950f0f; color: #fff;}
+
+/*page*/
+.block .blocktitle{border-bottom: 2px solid #bababa; color: #b90001;}
+.block .blocktitle span{ margin-bottom: -2px; border-bottom: 2px solid #b90001;}
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected{border-color: #e13f38;}
+.goodspromotion .promote i{ background: #b90001;}
+.prop-list li a:hover,.prop-list li.selected a{border-color:#b90001;}
+.prop-list li.selected i{background: url(../images/prod_selected.gif) no-repeat;}
+.detail-tabbar .selected{border-top: 3px solid #b90001; margin-top: -3px;}
+.detail-bd .hd{background: #b90001; color: #fff;}
+.review-rate span{color: #e13f38;}
+.sumratebar span{background: #e13f38;}
+
+/*refund*/
+.tabnav{border-top: 3px solid #b90001;}
+.tabnav li a{ border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;}
+.tabnav li a.current{color: #fff; background: #b90001;}
+
+/*goods-set*/
+.combobuy-hd h3,.combobuy-ft h3{ color: #b90001;}
+
+/*payment*/
+.tabbar .selected{margin-top: -3px; border-top: 3px solid #b90001;}
+.payment .tabbar .selected a{border-top: 3px solid #b90001; padding-top: 0;}
+
+/*news*/
+.newslist h3{border-bottom: 2px solid #b90001;}
+.newslist .title a:hover{color: #b90001;}
+.newstop{border-bottom: 2px solid #b90001;}
+
+/*mycenter*/
+.mcmenu-home{ margin-bottom: 10px; background-color: #b90001;}
+.mcmenu{border-top: 4px solid #b90001;}
+.mctitle span{margin-bottom: -2px; border-bottom: 2px solid #b90001;}
+.link-back{background: #b90001;}

@@ -1,0 +1,94 @@
+<div class="page flex dc information" data-id="link_information">
+	<style>
+		.information .main {
+			padding: .2rem;
+			font-size: .26rem;
+		}
+		.information .main p {
+			margin-top: .2rem;
+			word-break: break-all;
+		}
+
+		.information table {
+			width: 100% !important;
+		}
+	</style>
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">醒购商城</p>
+		<div class="fn rule-download"></div>
+	</header>
+
+	<div class="scroll-y main"></div>
+
+	<script defer>
+		var link_information = $('.page[data-id="link_information"]:visible');
+
+		var linkInformation = {
+			data: {
+
+			},
+
+			init: function () {
+				var _ts = this,
+					_td = _ts.data,
+					_type = 1,
+					_id = '',
+					_pattern = '';
+
+				if (search_url) {
+					for (var i = 0; i < search_url.length; i++) {
+						var _a = search_url[i].split('='),
+							_b = _a[1];
+
+						switch (_a[0]) {
+							case 'type': _type = _b; break;
+							case 'id': _id = _b; break;
+							case 'pattern': _pattern = _b; break;
+						}
+					}
+				}
+
+				new ajax(getApi.getInformation, {
+					data: {
+						type: _type,
+						id: _id
+					},
+					success: function (res) {
+						var _l = res.returnData;
+
+						_td.file = _l.fileSite;
+
+						if (_type == 6 && _td.file) {
+							$('.page:visible header .rule-download').append('<a class="fn" download="醒购平台评论规则" href='+ _td.file +'>下载</a>');
+						}
+						if (_pattern && _td.file) {
+							$('.page:visible header .rule-download').append('<a class="fn copy-bt" onclick="linkInformation.copy(this)">下载</a>');
+						}
+
+						setTitle(_l.title);
+						$('.page:visible .main').html(_l.content);
+					}
+				});
+
+				traffic.setPv();
+			},
+
+			copy: function (_this) {
+				var _ts = this,
+					_td = _ts.data;
+
+				alertTip('请复制链接' + $(_this).attr('data-clipboard-text') + '到浏览器下载文件', {
+					btn: '复制'
+				});
+
+				var _btn = link_information.find('.confirm-tip .btn');
+
+				_btn.attr('data-clipboard-text', _td.file);
+				clipHnad(_btn[0]);
+			}
+		};
+
+		linkInformation.init();
+	</script>
+</div>

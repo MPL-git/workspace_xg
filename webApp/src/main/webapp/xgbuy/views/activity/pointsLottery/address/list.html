@@ -1,0 +1,60 @@
+<div class="page address-list flex dc bgf4" data-title="选择地址" data-id="activity_pointsLottery_address_list">
+	<link rel="stylesheet" href="activity/pointsLottery/address/list.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="getUrl(`activity/pointsLottery/record/index.html`)"></i></div>
+		<p class="ellipsis">选择地址</p>
+		<div class="fn">
+			管理
+			<!-- <a onclick="getUrl('activity/pointsLottery/address/manage.html', 'self')">管理</a> -->
+		</div>
+	</header>
+
+	<div class="fg flex dc scroll-more"></div>
+
+	<script id="address_list_tpl" type="text/html">
+		{{if returnData.length}}
+		<ul class="fg scroll-y">
+			{{each returnData value i}}
+			<li class="flex" data-id="{{value.id}}" onclick="addressList.default(this)">
+				<div class="con-2 flex ac jc fn">
+					<div class="flex ac">
+						<i class="ico-btn tick{{addressIdStorage? (value.id == addressIdStorage? ' ticked' : '') : (value.isPrimary == 'Y'? ' ticked' : '')}}"></i>
+					</div>
+				</div>
+
+				<div class="con-1 fg">
+					<h3 class="flex ac">
+						<span>{{value.recipient}}</span>
+						<b>{{value.phone}}</b>
+						{{if value.isPrimary == "Y"}}
+						<mark class="btn-f50">默认地址</mark>
+						{{/if}}
+					</h3>
+					<p>
+						{{value.provinceName}}
+						{{value.cityName}}
+						{{value.countyName}}
+						{{value.address}}
+					</p>
+				</div>
+			</li>
+			{{/each}}
+		</ul>
+
+		{{else}}
+		{{include 'address_list_tpl_empty'}}
+		{{/if}}
+
+		<div class="add-address-btn" onclick="getUrl(`activity/pointsLottery/address/edit.html`, 'self')">+新增地址</div>
+	</script>
+
+	<script id="address_list_tpl_empty" type="text/html">
+		<div class="page-empty empty-address flex dc ac jc fg">
+			<i></i>
+			<p>当前还没有收获地址哦</p>
+		</div>
+	</script>
+
+	<script src="activity/pointsLottery/address/list.js?var=1.0" async></script>
+</div>

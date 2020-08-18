@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ViolateOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ViolateOrderCustom"  extends="com.jf.dao.ViolateOrderMapper.BaseResultMap">
+  	<result column="violate_type_desc" property="violateTypeDesc" jdbcType="VARCHAR" />
+  	<result column="violate_action_desc" property="violateActionDesc" jdbcType="VARCHAR" />
+  	<result column="belong_activity" property="belongActivity" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="audit_status_desc" property="auditStatusDesc" jdbcType="VARCHAR" />
+  	<result column="order_source_desc" property="orderSourceDesc" jdbcType="VARCHAR" />
+  	<result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+  	<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+  	<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  	<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+  	<result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  	<result column="create_name" property="createName" jdbcType="VARCHAR" />
+  	<result column="violate_complain_order_status" property="violateComplainOrderStatus" jdbcType="VARCHAR" />
+  	<result column="complain_time" property="complainTime" jdbcType="TIMESTAMP" />
+  	<result column="complain_proces_by" property="complainProcesBy" jdbcType="VARCHAR" />
+  	<result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+  	<result column="express_name" property="expressName" jdbcType="VARCHAR" />
+  	<result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+  	<result column="delivery_date" property="deliveryDate" jdbcType="TIMESTAMP" />
+  	<result column="pay_amt" property="payAmt" jdbcType="DECIMAL" />
+  	<result column="again_audit_status_desc" property="againAuditStatusDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, order_code, mcht_id, sub_order_id, violate_type, violate_action, content, money, 
+    punish_means, platform_remarks, order_source, violate_date, complain_date, complain_end_date, 
+    status, audit_status, audit_remarks, audit_date, platform_processor, complain_info_status, 
+    enclosure, jifen_status, jifen_integral, enable_hours, jifen_integral_desc, again_audit_status, 
+    again_audit_by, again_audit_date, again_audit_remarks, status_date, suspended_status, suspended_reason, create_by, create_date,
+    update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_TYPE", violate_type) violate_type_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_ACTION", violate_action) violate_action_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","STATUS", status) status_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","AUDIT_STATUS", audit_status) audit_status_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","ORDER_SOURCE", order_source) order_source_desc,
+   	(select b.mcht_code from bu_mcht_info b where b.id=t.mcht_id) mcht_code,
+   	(select b.company_name from bu_mcht_info b where b.id=t.mcht_id) company_name,
+   	(select b.shop_name from bu_mcht_info b where b.id=t.mcht_id) shop_name,
+   	(select b.STAFF_NAME from sys_staff_info b where b.STAFF_ID=t.platform_processor and b.status='A') staff_name,
+   	(select b.STAFF_NAME from sys_staff_info b where b.STAFF_ID=t.create_by and b.status='A') create_name,
+   	(select b.sub_order_code from bu_sub_order b where b.id=t.sub_order_id) sub_order_code,
+   	(select b.status from bu_violate_complain_order b where b.violate_order_id=t.id and b.del_flag='0' order by b.id desc limit 1)violate_complain_order_status,
+   	(select b.create_date from bu_violate_complain_order b where b.violate_order_id=t.id and b.del_flag='0' order by b.id asc limit 1)complain_time,
+   	(select si.STAFF_NAME from bu_violate_complain_order b, sys_staff_info si where b.violate_order_id=t.id and b.proces_by = si.STAFF_ID and b.del_flag='0' order by b.id desc limit 1)complain_proces_by,
+   	(select bc.pay_date from bu_sub_order b, bu_combine_order bc where b.id = t.sub_order_id and b.del_flag='0' and b.combine_order_id = bc.id and bc.del_flag='0' ) pay_date,
+   	(select be.name from bu_sub_order b, bu_express be where b.id = t.sub_order_id and b.del_flag='0' and b.express_id = be.id and be.del_flag = '0') express_name,
+   	(select b.express_no from bu_sub_order b where b.id = t.sub_order_id) express_no,
+   	(select b.delivery_date from bu_sub_order b where b.id = t.sub_order_id) delivery_date,
+   	(select pay_amt from bu_mcht_deposit md where md.del_flag = '0' and md.mcht_id = t.mcht_id) pay_amt,
+   	FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","AGAIN_AUDIT_STATUS", again_audit_status) again_audit_status_desc
+   	
+  </sql>
+  <sql id="Export_Column_List">
+  	t.*,
+  	FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_TYPE", violate_type) violate_type_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_ACTION", violate_action) violate_action_desc,
+  	(select b.mcht_code from bu_mcht_info b where b.id=t.mcht_id) mcht_code,
+   	(select b.company_name from bu_mcht_info b where b.id=t.mcht_id) company_name,
+   	(select b.shop_name from bu_mcht_info b where b.id=t.mcht_id) shop_name,
+   	(select b.STAFF_NAME from sys_staff_info b where b.STAFF_ID=t.platform_processor and b.status='A') staff_name,
+   	(select b.sub_order_code from bu_sub_order b where b.id=t.sub_order_id) sub_order_code,
+   	(select bc.pay_date from bu_sub_order b, bu_combine_order bc where b.id = t.sub_order_id and b.del_flag='0' and b.combine_order_id = bc.id and bc.del_flag='0' ) pay_date,
+   	(select be.name from bu_sub_order b, bu_express be where b.id = t.sub_order_id and b.del_flag='0' and b.express_id = be.id and be.del_flag = '0') express_name,
+   	(select b.express_no from bu_sub_order b where b.id = t.sub_order_id) express_no,
+   	(select b.delivery_date from bu_sub_order b where b.id = t.sub_order_id) delivery_date,
+   	FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","STATUS", status) status_desc,
+   	FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","AUDIT_STATUS", audit_status) audit_status_desc
+  </sql>
+  <select id="countByExample" parameterType="com.jf.entity.ViolateOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_violate_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ViolateOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_violate_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <sql id="selectDebitRecordSql">
+		 SELECT
+			tab.activity_id as activityId,tab.name as name,tab.company_name as companyName,tab.mcht_code as mchtCode, SUM(tab.money) as totalDeductions
+		 FROM
+			(
+			SELECT
+				tmp.activity_id,
+				tmp.name,
+				mi.company_name,
+				mi.mcht_code,
+				vo.money
+			FROM
+				(
+					SELECT DISTINCT
+						od.sub_order_id,od.activity_id,a.`name`
+					FROM
+						bu_order_dtl od,
+						bu_activity a
+					WHERE
+						od.activity_id = a.id
+						and od.del_flag='0'
+						and a.del_flag='0'
+					GROUP BY
+						od.activity_id,
+						od.sub_order_id
+				) tmp,	bu_violate_order vo,bu_mcht_info mi
+					WHERE tmp.sub_order_id = vo.sub_order_id and vo.audit_status = "1" AND vo.mcht_id = mi.id and vo.del_flag='0' and mi.del_flag='0'
+			)tab GROUP BY tab.activity_id
+    </sql>
+  
+  	<select id="selectDebitRecordList"  parameterType="java.util.HashMap" resultType="com.jf.vo.DebitRecord">
+       SELECT TAB.* FROM (
+		<include refid="selectDebitRecordSql" />
+		)TAB where 1=1
+		<if test="activityId !=null and activityId != ''">
+			and TAB.activityId =#{activityId}
+		</if>
+		<if test="name !=null and name != ''">
+			and TAB.name like "%#{name}%" 
+		</if>
+		<if test="mchtCode !=null and mchtCode != ''">
+			and TAB.mchtCode =#{mchtCode}
+		</if>
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+    </select>
+    
+    <select id="debitRecordListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectDebitRecordSql" /> 
+		  ) TAB	where 1=1
+		<if test="activityId !=null and activityId != ''">
+			and TAB.activityId =#{activityId}
+		</if>
+		<if test="name !=null and name != ''">
+			and TAB.name like concat('%',#{name},'%')
+		</if>
+		<if test="mchtCode !=null and mchtCode != ''">
+			and TAB.mchtCode =#{mchtCode}
+		</if>
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+	</select>
+  
+  	<select id="getAllCreateBy" resultType="java.util.HashMap">
+  		SELECT DISTINCT(vo.create_by) createBy,si.STAFF_NAME staffName FROM bu_violate_order vo, sys_staff_info si WHERE vo.create_by = si.STAFF_ID and vo.del_flag='0'
+  	</select>
+  	
+  	<select id="getMchtInfoBySubOrderCode" parameterType="java.lang.String" resultType="java.util.HashMap">
+  		SELECT mi.id id,mi.mcht_code mchtCode,mi.company_name companyName,mi.shop_name shopName,so.pay_amount payAmount,so.id subOrderId FROM bu_sub_order so,bu_mcht_info mi WHERE so.mcht_id = mi.id AND so.sub_order_code=#{subOrderCode} AND mi.del_flag='0'
+  	</select>
+  	
+  	<select id="setMinDeductionQuotaNull" parameterType="java.lang.Integer">
+  		update bu_violate_punish_standard set min_deduction_quota = null where id = #{0}
+  	</select>
+  	
+  	<!-- 平台处理人集合 -->
+  	<select id="getplatformProcessorList" resultType="java.util.Map">
+  	SELECT DISTINCT
+		vo.platform_processor,
+		(
+			SELECT
+				s.staff_name
+			FROM
+				sys_staff_info s
+			WHERE
+				s.staff_id = vo.platform_processor
+		) staff_name
+	FROM
+		bu_violate_order vo
+	WHERE
+		vo.del_flag = '0'
+	AND vo.platform_processor IS NOT NULL
+  </select>
+  <select id="selectExportViolateOrderCustomByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ViolateOrderCustomExample">
+  	select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Export_Column_List" />
+    from bu_violate_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+</mapper>

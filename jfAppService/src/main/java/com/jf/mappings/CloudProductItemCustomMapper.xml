@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CloudProductItemCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CloudProductItemCustom" extends="com.jf.dao.CloudProductItemMapper.BaseResultMap">
+   
+  </resultMap>
+  <select id="getCloudProducrItems" parameterType="int" resultType="com.jf.entity.CloudProductItemCustom">
+  		select
+		item.stock,
+		cp.selling_price as sellingPrice,
+		cp.sp_office_id as spOfficeId
+		from jybao.bu_cloud_product_item item,jybao.bu_cloud_product cp,jybao.sp_office sp
+		where item.cloud_product_id = cp.id and cp.sp_office_id = sp.id
+		and item.id = #{cloudProductItemId}
+		and item.del_flag = '0'
+		and cp.`status` = '1'
+		and cp.del_flag = '0'
+		and sp.del_flag = '0'
+		and sp.`status` = '1'
+		and sp.del_flag = '0'
+  	</select>
+  	
+  	
+</mapper>

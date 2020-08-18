@@ -1,0 +1,121 @@
+/*common*/
+.btn-action { background: #3aa323; }
+
+a:hover { color: #3aa323; }
+
+/*top*/
+/*header*/
+#header { background: #ffffff; }
+
+#headerSearch { width: 390px; }
+
+.search-panel-fields { width: auto; padding: 0; overflow: hidden; }
+.search-panel-fields label { position: absolute; left: 10px; top: 0; z-index: 2; line-height: 37px; color: #949494; cursor: text; }
+.search-panel-fields input { float: left; width: 300px; height: 35px; *line-height: 35px; margin: 0; padding: 0 10px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; }
+.search-panel-fields button { float: left; position: static; width: 67px; height: 37px; border: 0; color: #fff; text-indent: 0; cursor: pointer; background: url("../images/ico-search.png") center no-repeat #3aa323; text-indent: -9999px; }
+
+.hotsearch { position: relative; height: 30px; overflow: hidden; line-height: 30px; }
+.hotsearch a { margin-left: 5px; color: #000; }
+
+#headerCart { position: relative; float: right; margin-right: 6px; display: inline; border: 1px solid #d4d4d4; }
+
+.cartbtn { float: left; padding: 0 10px 0 38px; display: block; height: 35px; line-height: 35px; color: #fff; background: #3aa323; }
+.cartbtn a { color: #fff; }
+.cartbtn i { position: absolute; left: 5px; top: 0; width: 28px; height: 35px; background: url("../images/ico-shopcart.png") no-repeat center; }
+.cartbtn span { display: inline-block; }
+.cartbtn .cartcount { display: inline-block; }
+
+.cart-hover .cartbtn { background: #3aa323; }
+
+.mini-cart-menu { border: 1px solid #d4d4d4; right: -1px; top: 36px; }
+
+.mini-cart-view .mini-cart-btn { background: #3aa323; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; }
+
+/*nav*/
+.nav, .nav .layout { background: #4baf35; }
+.nav .textNav, .nav .site-nav { color: #fff; }
+.nav .textNav a, .nav .site-nav a { color: #fff; }
+.nav .textNav a .current, .nav .textNav a:hover, .nav .site-nav a .current, .nav .site-nav a:hover { background: #3aa323; text-decoration: none; }
+
+.gbc-title { background: #3aa323; }
+
+.gbc-title span { background: url("../images/gbc-titlearrow.png") no-repeat 100% 0; padding-right: 30px; color: #fff; }
+
+.global-catalog-open .gbc-title span { background-position: 100% 100%; }
+
+.gbc-treetitle, .gbc-subtree li a:hover, .sublayer-item li a:hover, .sublayer-item dt a:hover { color: #3aa323; }
+
+/*footer*/
+.footwarranty { background: #4fbb43; }
+
+.footer { background: #3aa323; color: #fff; }
+.footer a:hover { color: #fff; }
+
+/*login*/
+.loginbox { border-top: 3px solid #3aa323; }
+
+/*main*/
+.filter-sort .sort-on { border-color: #3aa323; background-color: #3aa323; color: #fff; }
+
+.pagination .page-cur, .page-go button { background: #3aa323; border: 1px solid #2b791a; color: #fff; }
+
+/*page*/
+.block .blocktitle { background: #ffffff; }
+.block .blocktitle span { margin-bottom: -2px; border-bottom: 2px solid #3aa323; }
+
+.commentblock h3 { border-color: #3aa323; }
+
+.sideblock .blocktitle { border-top: 3px solid #3aa323; margin: 0 -1px; }
+
+/*goodslist*/
+.m-itemslist .type-grid .item-hover { border-color: #3aa323; }
+.m-itemslist .type-grid .goodsname a:hover { color: #3aa323; }
+.m-itemslist .type-grid .thumbslist li.selected { border-color: #3aa323; }
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected { border-color: #3aa323; }
+
+.detail-tabbar .selected { border-top: 3px solid #3aa323; margin-top: -3px; }
+
+.review-rate span { color: #3aa323; }
+
+.sumratebar span { background: #3aa323; }
+
+/*goods-set*/
+.combobuy-hd h3, .combobuy-ft h3 { color: #3aa323; }
+
+/*step*/
+/*payment*/
+.tabbar .selected { margin-top: -3px; border-top: 3px solid #3aa323; }
+
+.payment .tabbar .selected a { border-top: 3px solid #3aa323; padding-top: 0; }
+
+/*refund*/
+.tabnav { border-bottom: 2px solid #3aa323; }
+
+.tabnav li a { border-top-left-radius: 3px; border-top-right-radius: 3px; }
+
+.tabnav li a.current { color: #fff; background: #3aa323; }
+
+/*news*/
+.newslist h3 { border-bottom: 2px solid #3aa323; }
+
+.newslist .title a:hover { color: #3aa323; }
+
+.newstop { border-bottom: 2px solid #3aa323; }
+
+/*mycenter*/
+.mcmenu-home { margin-bottom: 10px; background-color: #3aa323; }
+
+.mcmenu { border-top: 4px solid #3aa323; }
+
+.mctitle span { margin-bottom: -2px; border-bottom: 2px solid #3aa323; }
+
+.link-back { background: #3aa323; }
+
+.link { color: #3aa323; }
+
+/*brand*/
+.brandextra a { background: #4fbb43; }
+
+/*# sourceMappingURL=theme.css.map */

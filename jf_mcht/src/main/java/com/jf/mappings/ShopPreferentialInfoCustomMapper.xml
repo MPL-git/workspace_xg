@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ShopPreferentialInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ShopPreferentialInfoCustom" extends="com.jf.dao.ShopPreferentialInfoMapper.BaseResultMap">
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="rules" property="rules" jdbcType="VARCHAR" />
+  	<result column="sum_flag" property="sumFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, name, type, preferential_id, coupon_id_group, begin_date, end_date, 
+    status, create_by, create_date, update_by, update_date, remarks, del_flag,
+    (select fc.rule from bu_full_cut fc where t.preferential_id = fc.id and fc.del_flag='0')rules,
+    FUN_GET_STATUS_DESC("BU_SHOP_PREFERENTIAL_INFO","STATUS",status) status_desc,
+    (select fc.sum_flag from bu_full_cut fc where t.preferential_id = fc.id and fc.del_flag='0')sum_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ShopPreferentialInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_shop_preferential_info t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countUpProductCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT
+		COUNT(p.id)
+	FROM
+		bu_product p,
+		bu_mcht_info mi
+	WHERE
+		p.mcht_id = mi.id
+	AND mi.shop_status = "1"
+	AND mi.id = #{mchtId}
+	AND p.`status` = '1'
+	AND p.del_flag = '0'
+	AND mi.del_flag = '0'
+  </select>
+</mapper>

@@ -1,0 +1,49 @@
+<div class="page about flex dc bgf4" data-title="关于醒购" data-id="about">
+	<link rel="stylesheet" href="about/index.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('my')"></i></div>
+		<p class="ellipsis">关于醒购</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg flex dc">
+		<div class="header">
+			<img src="../static/images/logo.png">
+			<p>醒购商城</p>
+		</div>
+
+		<div class="row"></div>
+
+		<div class="footer flex fg">
+			<div>
+				<p>Copyright © 2017-2018</p>
+				<p>厦门聚买网络科技有限公司</p>
+			</div>
+		</div>
+	</div>
+
+	<script id="about_row" type="text/html">
+		<a class="flex ac jb">
+			<div>公司名称</div>
+			<div>厦门聚买网络科技有限公司</div>
+		</a>
+		<a class="flex ac jb bt">
+			<div>所在地</div>
+			<div>福建厦门</div>
+		</a>
+		{{each list item}}
+		<a class="flex ac jb bt" onclick="aboutApi.getRule('{{item.id}}', '{{item.type}}')">
+			<div>{{item.name}}</div>
+			<i class="arrow-r ico"></i>
+		</a>
+		{{/each}}
+
+		<a class="flex ac jb mt20" onclick="aboutApi.call()">
+			<div>平台热线</div>
+			<i class="arrow-r ico"></i>
+		</a>
+	</script>
+
+	<script src="about/index.js?var=1.0" async></script>
+</div>

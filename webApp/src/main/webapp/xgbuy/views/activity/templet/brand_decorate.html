@@ -1,0 +1,408 @@
+<div class="page flex dc activity-single-day decorate bgfa" data-id="activity_templet_brand_decorate">
+	<link rel="stylesheet" href="activity/templet/css/single-day.css?var=1.1">
+	<link rel="stylesheet" href="activity/templet/css/brand-decorate.css?var=2.0">
+	<link rel="stylesheet" href="../static/css/common-brand.css?var=1.0">
+
+	<!-- 修改会场顶部 -->
+	<script id="activity_decorate_header" type="text/html">
+		<header class="flex ac jb fn">
+			<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+			<p class="ellipsis"></p>
+			<div class="fn"></div>
+		</header>
+	</script>
+	<script id="activity_decorate_download" type="text/html">
+		<div class="download-bg activity-download"></div>
+		<div class="activity-decorate-download activity-download">
+			<div class="download-info">
+				<i onclick="closeDownload()"></i>
+				<div class="download-logo"></div>
+				<div class="download-text">
+					<p>新人领500元大红包</p>
+					<p>唤醒潮流   开心购物</p>
+				</div>
+			</div>
+			<div class="download-btn" onclick="downloadAppp()">下载领取</div>
+		</div>
+	</script>
+	
+	<script id="activity_decorate_618_popup_tpl" type="text/html">
+		<div class="popup popup-ance">
+			<div class="popup-ance-con" onclick="stopSelf()">
+					<div class="section4 flex ac jc">
+						<img class="img1" src="activity/templet/images/618_1.png"/>
+					</div>
+					<div class="section1 flex ac jc">
+						<img class="img3" src="activity/templet/images/618_3.png" />
+						<div class="content">
+							<div class="flex ac jb head">
+								<p>已获得购物津贴: <span style="color:#FFDF4F" class="allowanceBalance">{{allowanceBalance}}元</span></p>
+								<p class="flex ac jc" onclick="getUrl('allowance/index.html?activityAreaId=' + {{activityAreaId}} , 'self');">详情 <img src="activity/templet/images/detail.png"/></p>
+							</div>
+							
+							<h3 class="flex ac jc">
+							{{if lastExchangeAllowance}}
+							抢到<span style="color:#FFDF4F" class="lastExchangeAllowance">{{lastExchangeAllowance}}元</span>购物津贴
+							{{else}}
+							{{exchangeDesc}}
+							{{/if}}
+							</h3>
+						</div>
+					</div>
+					<div class="section3 flex ac jc">
+						<div class="card">
+							<div class="content">
+								<h3>￥<span class="lastExchangeAllowance">{{lastExchangeAllowance}}</span><br/> 购物津贴</h3>
+								<p>{{areaAllowanceDesc}}</p>
+							</div>
+							<img class="img2" src="activity/templet/images/618_2.png" />
+						</div>
+						<div class="card out" style="position:absolute;z-index:-1;left:0.36rem;">
+							<div class="content">
+								<h3><br/> 购物津贴</h3>
+								<p>{{areaAllowanceDesc}}</p>
+							</div>
+							<img class="img2" src="activity/templet/images/618_2.png" />
+						</div>
+					</div>
+					<div class="section2  flex ac jc">
+						<div class="content flex dc ac jc">
+							<p class="flex ac jc">当前醒购积分: <span class="integral">{{integral}}</span> </p>
+							<div class="btns flex ac jb">
+								{{each exchangeList value i}}
+								<button class="btn" data-id="{{value.id}}" onclick="exchange({{allowanceInfoId}},{{value.id}})">{{value.desc}}</button>
+								{{/each}}
+							</div>
+						</div>
+						<img class="img4" src="activity/templet/images/618_4.png" />
+					</div>
+					<div class="section5 flex ac jc">
+						<img src="activity/templet/images/close.png" onclick="ancePopupHide()"/>
+					</div>
+			</div>
+		</div>
+	</script>
+	<script id="activity_decorate_618_tpl" type="text/html">
+		<div>
+			<div class="ance" onclick="ancePopupShow({{activityAreaId}})">
+				<img src="{{pic}}" />
+			</div>
+			
+		</div>
+	</script>
+
+
+	<div class="scroll-y scroll-fix scroll-more scroll-decorate content-decorate"></div>
+	<!--商品类目-->
+	<script id="activity_decorate_product_tab" type="text/html"></script>
+
+	<!-- 商品 -->
+	<script id="activity_decorate_product_tpl" type="text/html">
+
+		{{if productBlockList.length}}
+		{{if showModel == 3}}
+		<div class="product clearfix w75">
+			{{each productBlockList value i}}
+			<!--			<a class="mb20 {{value.deposit == 0 || value.deductAmount == 0?'':'arrival-a'}}{{showModel==3?'a':''}}"-->
+			<a class="mb20 {{value.deposit == 0 || value.deductAmount == 0?'':'arrival-a'}} a"
+			   onclick="getUrlGoods('{{value.productId}}', {pos: '{{page + i}}', data: brandDecorate.data})">
+				<div class="con-1 h345 {{showModel==3?'noneH':''}}">
+					<img src="{{value.pic}}">
+					{{if value.stockSum == 0}}
+					<div class="flex jc ac">已售罄</div>
+					<i class="no-goods-mask"></i>
+					{{/if}}
+				</div>
+				<div class="con-2">
+					{{if areaid && (value.deposit != 0 || value.deductAmount != 0) }}
+					<p class="arrival-p" title="{{value.productName}}">{{value.productName}}</p>
+					<div class="">
+						<span class="arrival-span">到手价:<strong
+								class="f50">{{value.arrivalPrice}}</strong>{{value.hasDifferentPrice}}</span>
+						<s style="display: block;" class="c9">{{value.salePrice}}</s>
+					</div>
+					<button class="arrival-btn">定金{{value.deposit}}抵{{value.deductAmount}}</button>
+					{{else}}
+
+					<p title="{{value.productName}}">{{value.productName}}</p>
+<!--					<div class="flex ac jb scroll-x">-->
+					<div class="scroll-x">
+						<span>
+							<strong class="f50">{{value.salePrice}}</strong>
+							<s class="c9">{{value.tagPrice}}</s>
+						</span>
+						{{if value.discount}}
+						<mark class="btn-f50">{{value.discount}}折</mark>
+						{{/if}}
+						{{if value.manageSelf == '1'}}
+						<i class="manageSelf ml10">自营</i>
+						{{/if}}
+					</div>
+					{{if value.svipSalePrice > 0}}
+					<div class="flex ac decorate-svip" onclick="getSvip(event)">
+						<img src="activity/templet/images/svip.png">
+						<span>¥{{value.svipSalePrice}}</span>
+					</div>
+					{{/if}}
+					{{/if}}
+				</div>
+			</a>
+			{{/each}}
+		</div>
+		{{/if}}
+		{{if showModel == 2}}
+		<div class="product clearfix w75">
+			{{each productBlockList value i}}
+			<!--			<a class="mb20 {{value.deposit == 0 || value.deductAmount == 0?'':'arrival-a'}}{{showModel==3?'a':''}}"-->
+			<a class="mb20 {{value.deposit == 0 || value.deductAmount == 0?'':'arrival-a'}}"
+			   onclick="getUrlGoods('{{value.productId}}', {pos: '{{page + i}}', data: brandDecorate.data})">
+				<div class="con-1 h345 {{showModel==3?'noneH':''}}">
+					<img src="{{value.pic}}">
+					{{if value.stockSum == 0}}
+					<div class="flex jc ac">已售罄</div>
+					<i class="no-goods-mask"></i>
+					{{/if}}
+				</div>
+				<div class="con-2">
+					{{if areaid && (value.deposit != 0 || value.deductAmount != 0) }}
+					<p class="arrival-p" title="{{value.productName}}">{{value.productName}}</p>
+					<div class="flex ac jb">
+						<span class="arrival-span">到手价:<strong
+								class="f50">{{value.arrivalPrice}}</strong>{{value.hasDifferentPrice}}</span>
+						<s class="c9">{{value.salePrice}}</s>
+					</div>
+					<button class="arrival-btn">定金{{value.deposit}}抵{{value.deductAmount}}</button>
+					{{else}}
+
+					<p title="{{value.productName}}">{{value.productName}}</p>
+<!--					<div class="flex ac jb scroll-x">-->
+					<div class="scroll-x">
+						<span>
+							<strong class="f50">{{value.salePrice}}</strong>
+							<s class="c9">{{value.tagPrice}}</s>
+						</span>
+						{{if value.discount}}
+						<mark class="btn-f50">{{value.discount}}折</mark>
+						{{/if}}
+						{{if value.manageSelf == '1'}}
+							<i class="manageSelf ml10">自营</i>
+						{{/if}}
+					</div>
+					{{if value.svipSalePrice > 0}}
+					<div class="flex ac decorate-svip" onclick="getSvip(event)">
+						<img src="activity/templet/images/svip.png">
+						<span>¥{{value.svipSalePrice}}</span>
+					</div>
+					{{/if}}
+					{{/if}}
+				</div>
+			</a>
+			{{/each}}
+		</div>
+		{{/if}}
+		{{/if}}
+	</script>
+
+	<!-- 特卖 -->
+	<script id="activity_decorate_brand_tpl" type="text/html">
+		{{if conmonBrand.length}}
+		<div class="con-brand con-brand2">
+			{{each conmonBrand value i}}
+			<a class="mb20 w75" onclick="getUrlActive(this, {pos: '{{page + i}}', data: brandDecorate.data})"
+				data-url="{{value.areaUrl}}" data-activityid="{{value.activityId}}"
+				data-activityareaid="{{value.activityAreaId}}" data-source="{{value.source}}">
+				<dl>
+					<dt>
+						<img src="{{value.areaEntryPic}}">
+					</dt>
+
+					<dd>
+						<div class="row-1 flex ac jb">
+							<div class="flex ac">
+								<p class="ellipsis" title="{{value.activityAreaName}}">{{value.activityAreaName}}</p>
+							</div>
+							<time class="flex ac">
+								<p class="ellipsis f50">{{value.activityRemainingTime}}</p>
+							</time>
+						</div>
+						<div class="row-2">{{value.benefitPoint}}</div>
+					</dd>
+				</dl>
+			</a>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 会场秒杀 -->
+	<script id="activity_decorate_seckill_tpl" type="text/html">
+		{{if seckillList.length}}
+		<div class="con-seckill con-seckill-6 con-box w75" style="background:{{color.totalBgColor}}">
+			<div class="tab-nav flex" style="background:{{color.timeColBgColor}};color:{{color.defaultFontColor}}">
+				{{each seckillList value i}}
+				<a onclick="seckillListNav6(this)" data-beg="{{value.beginTime}}" data-cur="{{value.currentTime}}"
+					data-end="{{value.endTime}}" data-ac="{{color.selectedBgColor}}" data-af="{{color.selectedFontColor}}" class="fn flex dc ac jc">
+					{{value.beginTimeStr}}
+					<b class="flex ac jc" data-ac="{{color.btnSelectedBgColor}}" data-dc="{{color.btnDefaultBgColor}}">{{value.context}}</b>
+				</a>
+				{{/each}}
+			</div>
+			<div class="tab-time flex ac jc"></div>
+			<div class="tab-con scroll-x">
+				<div class="product-scroll flex">
+					{{include 'decorate_product_scroll'}}
+				</div>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+	
+	<!-- 优惠券秒杀 -->
+	<script id="activity_decorate_coupon_seckill_tpl" type="text/html">
+		{{if timeCouponList.length}}
+		<div class="con-seckill con-seckill-15 con-box w75" style="background:{{totalBgColor}};color:{{defaultFontColor}}">
+			<div class="tab-nav flex" style="background:{{timeColBgColor}}">
+				{{include 'decorate_coupon_nav'}}
+			</div>
+			<div class="tab-con">
+				<div class="coupon-list flex">
+					
+				</div>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 限时秒杀 -->
+	<script id="activity_decorate_rushbuy_seckill_tpl" type="text/html">
+		{{if seckillList.length}}
+		<div class="con-seckill-11">
+			<div class="con-seckill con-box w75">
+				<div class="tab-nav flex">
+					{{each seckillList value i}}
+					<a onclick="seckillListNav11(this)" data-beg="{{value.beginTime}}" data-cur="{{value.currentTime}}"
+						data-end="{{value.endTime}}" class="fn flex dc ac jc">
+						{{value.beginTimeStr}}
+						<b class="flex ac jc">{{value.context}}</b>
+					</a>
+					{{/each}}
+					<a onclick="getRushbuy()" class="fn flex dc ac jc see-more">
+						查看更多
+						<b class="flex ac jc">更多惊喜</b>
+					</a>
+				</div>
+				<div class="flex ac jc con-time">
+					<div class="tab-time flex ac jc"></div>
+				</div>
+				<div class="tab-con scroll-x">
+					<div class="product-scroll flex">
+						{{include 'decorate_product_scroll'}}
+					</div>
+				</div>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 必购 -->
+	<script id="activity_decorate_bgmap_tpl" type="text/html">
+		{{if bgModuleList.length}}
+		<div class="con-bgmap con-box w75">
+			<div class="tab-nav flex scroll-x">
+				{{each bgModuleList value i}}
+				<a onclick="bgModuleListNav(this)" data-id="{{value.bgModuleId}}"
+					class="bg-module {{i ? '' : ' active'}}">{{value.bgModuleName}}</a>
+				{{/each}}
+			</div>
+			<div class="tab-con scroll-x">
+				<div class="product-scroll flex">
+					{{include 'decorate_product_scroll'}}
+				</div>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="decorate_product_scroll" type="text/html">
+		{{if productInfoList.length}}
+		{{each productInfoList value}}
+		<a onclick="getUrlGoods('{{value.productId}}')" class="fn{{value.stock ? '' : ' no-stock'}}">
+			<div class="img-cover">
+				<img src="{{value.productPic}}">
+			</div>
+			<div class="pad">
+				<h3>{{value.productName}}</h3>
+				<p class="ellipsis flex ac">
+					<span>¥<strong>{{value.salePrice}}</strong></span>
+					<s>{{value.tagPrice}}</s>
+				</p>
+			</div>
+
+			<div class="seckill-out"></div>
+
+			{{if value.svipSalePrice > 0}}
+			<div class="flex ac decorate-svip" onclick="getSvip(event)">
+				<img src="activity/templet/images/svip.png">
+				<span>¥{{value.svipSalePrice}}</span>
+			</div>
+			{{/if}}
+		</a>
+		{{/each}}
+		{{/if}}
+	</script>
+	
+	<script id="decorate_coupon_list" type="text/html">
+		{{if couponMapList.length}}
+		{{each couponMapList value}}
+		<div class="module15-card ac jc {{couponMapList.length % 2 !=0 ? 'odd':'even'}}"  style="background: {{couponBgColor}}">
+			<div class="tip" style="background: {{totalBgColor}}"></div>
+            <div class="tip" style="background: {{totalBgColor}}"></div>
+            <div class="money">{{value.money}}{{value.discount}} 
+				<div class="lab-svip {{value.needSvip != '1'?'hide':''}}"><span>限SVIP可领</span></div>
+            </div>
+			
+
+            <div class="module15name elps">{{value.preferentialInfo}}{{value.useDescription?'('+value.useDescription + ')':'(全品类可用)'}}</div>
+            
+            <button class="btn-type" onclick="module15ActiveCoupon(this,{{value.msgType}},{{value.couponId}})" style="background:{{value.msgType == 0 ? '#FF5050' : '#DDDDDD'}}">
+				{{if value.msgType == -1}}即将开始
+				{{/if}}
+				{{if value.msgType == 0}}可领取
+				{{/if}}
+				{{if value.msgType == 1}}已领取
+				{{/if}}
+				{{if value.msgType == 2}}已领光
+				{{/if}}
+            </button>
+		</div>
+		{{/each}}
+		{{/if}}
+	</script>
+	
+	<script id="decorate_coupon_nav" type="text/html">
+		{{each timeCouponList value i}}
+				<a onclick="seckillListNav15(this)" data-decorateModuleId="{{decorateModuleId}}" data-tbc="{{totalBgColor}}" data-cbc="{{couponBgColor}}" data-beg="{{value.recBeginDate}}" data-ac="{{selectedBgColor}}" data-af="{{selectedFontColor}}" class="fn flex dc ac jc">
+					<span>{{value.dayStr}}</span>
+					<span>{{value.hourMinute}}</span>
+					<b class="flex ac jc"  data-dc="{{btnDefaultBgColor}}" data-ac="{{btnSelectedBgColor}}" style="background:{{btnDefaultBgColor}}"><span>{{value.timeDesc}}</span></b>
+				</a>
+				{{/each}}
+	</script>
+
+	<script id="activity_decorate_end_tpl" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前活动已结束</p>
+		</div>
+	</script>
+
+	<script id="activity_decorate_empty_tpl" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前商品为空</p>
+		</div>
+	</script>
+
+	<script src="activity/templet/js/brand-decorate.js?var==3.1" async></script>
+
+</div>

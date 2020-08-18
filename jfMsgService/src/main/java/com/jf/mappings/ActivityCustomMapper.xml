@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ActivityCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ActivityCustom" extends="com.jf.dao.ActivityMapper.BaseResultMap" >
+    
+  </resultMap>
+  
+  
+  <select id="getActivityDepositOrderBeginList" resultType="java.util.Map" parameterType="java.util.Map" >
+    SELECT DISTINCT
+		a.id activity_id,
+		mi.id member_id,
+		mi.mobile mobile,
+		mi.nick nick
+	FROM
+		bu_activity a,
+		bu_activity_area b,
+		bu_activity_product_deposit apd,
+		bu_sub_deposit_order sdo,
+		bu_member_info mi
+	WHERE
+		a.del_flag = '0'
+	AND a. STATUS = '6'
+	AND a.pre_sell_audit_status = '2'
+	<![CDATA[ 
+		AND b.activity_begin_time <= #{activityBeginTime }
+	]]>
+	AND b.del_flag = '0'
+	AND b.id = a.activity_area_id
+	AND apd.del_flag = '0'
+	AND apd.activity_id = a.id
+	AND sdo.del_flag = '0'
+	AND sdo. STATUS = '2'
+	AND sdo.activity_pre_sell_product_id = apd.id
+	AND mi.del_flag = '0'
+	AND mi.id = sdo.member_id
+	AND NOT EXISTS (
+		SELECT
+			msg.id
+		FROM
+			bu_order_cancel_msg_send msg
+		WHERE
+			msg.del_flag = '0'
+		AND msg.member_id = mi.id
+		AND msg.combine_order_id = a.id
+		AND msg.msg_send_type = '1'
+	)
+   </select>
+  
+   <select id="getActivityDepositOrderCloseList" resultType="java.util.Map" parameterType="java.util.Map" >
+    SELECT
+		sdo.*
+	FROM
+		bu_activity a,
+		bu_activity_area b,
+		bu_activity_product_deposit apd,
+		bu_sub_deposit_order sdo
+	WHERE
+		a.del_flag = '0'
+	AND a. STATUS = '6'
+	AND a.pre_sell_audit_status = '2'
+	<![CDATA[ 
+		AND b.activity_end_time <= #{activityEndTime }
+	]]>
+	AND b.del_flag = '0'
+	AND b.id = a.activity_area_id
+	AND apd.del_flag = '0'
+	AND apd.activity_id = a.id
+	AND sdo.del_flag = '0'
+	AND sdo. STATUS IN('2', '8')
+	AND sdo.activity_pre_sell_product_id = apd.id
+   </select>
+   
+  
+  
+</mapper>

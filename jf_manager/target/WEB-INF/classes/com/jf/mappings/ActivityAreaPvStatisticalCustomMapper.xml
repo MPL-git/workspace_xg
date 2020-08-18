@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ActivityAreaPvStatisticalCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ActivityAreaPvStatisticalCustom" extends="com.jf.dao.ActivityAreaPvStatisticalMapper.BaseResultMap">
+  	 <result column="name" property="name" jdbcType="VARCHAR" />
+  	 <result column="type" property="type" jdbcType="VARCHAR" />
+  	 <result column="total_exposure" property="totalExposure" jdbcType="INTEGER" />
+  	 <result column="inversion_rate" property="inversionRate" jdbcType="VARCHAR" />
+  	 
+  	 <result column="pay_sub_order_count" property="paySubOrderCount" jdbcType="INTEGER" />
+
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, statistical_date, activity_area_id, home_page_position, classify_page_position, 
+    home_page_exposure_count, classify_page_exposure_count, total_visitor_count, total_visitor_count_tourist,
+    total_pv_count, total_pv_count_tourist, pay_amount, pay_combine_order_count, pay_sub_order_count,
+    create_by, create_date, update_by, update_date, remarks, del_flag,
+    (SELECT b.name FROM bu_activity_area b WHERE b.id = a.activity_area_id AND b.del_flag = '0') name,
+	(SELECT b.type FROM bu_activity_area b where b.id = a.activity_area_id AND b.del_flag = '0') type,
+	IFNULL(home_page_exposure_count,0)+IFNULL(classify_page_exposure_count,0) AS total_exposure,
+	CASE when total_pv_count IS NULL THEN 0.00 ELSE convert(pay_combine_order_count/IFNULL((total_pv_count+total_pv_count_tourist),0)*100,decimal(15,2)) END AS inversion_rate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ActivityAreaPvStatisticalExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_activity_area_pv_statistical
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_activity_area_pv_statistical
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_activity_area_pv_statistical
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.ActivityAreaPvStatisticalExample" >
+    delete from bu_activity_area_pv_statistical
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.ActivityAreaPvStatistical" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_activity_area_pv_statistical (statistical_date, activity_area_id, home_page_position, 
+      classify_page_position, home_page_exposure_count, 
+      classify_page_exposure_count, total_visitor_count, 
+      total_pv_count, pay_amount, pay_sub_order_count, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{statisticalDate,jdbcType=CHAR}, #{activityAreaId,jdbcType=INTEGER}, #{homePagePosition,jdbcType=VARCHAR}, 
+      #{classifyPagePosition,jdbcType=VARCHAR}, #{homePageExposureCount,jdbcType=INTEGER}, 
+      #{classifyPageExposureCount,jdbcType=INTEGER}, #{totalVisitorCount,jdbcType=INTEGER}, 
+      #{totalPvCount,jdbcType=INTEGER}, #{payAmount,jdbcType=DECIMAL}, #{paySubOrderCount,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.ActivityAreaPvStatistical" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_activity_area_pv_statistical
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="statisticalDate != null" >
+        statistical_date,
+      </if>
+      <if test="activityAreaId != null" >
+        activity_area_id,
+      </if>
+      <if test="homePagePosition != null" >
+        home_page_position,
+      </if>
+      <if test="classifyPagePosition != null" >
+        classify_page_position,
+      </if>
+      <if test="homePageExposureCount != null" >
+        home_page_exposure_count,
+      </if>
+      <if test="classifyPageExposureCount != null" >
+        classify_page_exposure_count,
+      </if>
+      <if test="totalVisitorCount != null" >
+        total_visitor_count,
+      </if>
+      <if test="totalPvCount != null" >
+        total_pv_count,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="paySubOrderCount != null" >
+        pay_sub_order_count,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="statisticalDate != null" >
+        #{statisticalDate,jdbcType=CHAR},
+      </if>
+      <if test="activityAreaId != null" >
+        #{activityAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="homePagePosition != null" >
+        #{homePagePosition,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyPagePosition != null" >
+        #{classifyPagePosition,jdbcType=VARCHAR},
+      </if>
+      <if test="homePageExposureCount != null" >
+        #{homePageExposureCount,jdbcType=INTEGER},
+      </if>
+      <if test="classifyPageExposureCount != null" >
+        #{classifyPageExposureCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalVisitorCount != null" >
+        #{totalVisitorCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalPvCount != null" >
+        #{totalPvCount,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="paySubOrderCount != null" >
+        #{paySubOrderCount,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.ActivityAreaPvStatisticalExample" resultType="java.lang.Integer" >
+    select count(*) from bu_activity_area_pv_statistical
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_activity_area_pv_statistical
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.statisticalDate != null" >
+        statistical_date = #{record.statisticalDate,jdbcType=CHAR},
+      </if>
+      <if test="record.activityAreaId != null" >
+        activity_area_id = #{record.activityAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.homePagePosition != null" >
+        home_page_position = #{record.homePagePosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classifyPagePosition != null" >
+        classify_page_position = #{record.classifyPagePosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.homePageExposureCount != null" >
+        home_page_exposure_count = #{record.homePageExposureCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.classifyPageExposureCount != null" >
+        classify_page_exposure_count = #{record.classifyPageExposureCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalVisitorCount != null" >
+        total_visitor_count = #{record.totalVisitorCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalPvCount != null" >
+        total_pv_count = #{record.totalPvCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.paySubOrderCount != null" >
+        pay_sub_order_count = #{record.paySubOrderCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_activity_area_pv_statistical
+    set id = #{record.id,jdbcType=INTEGER},
+      statistical_date = #{record.statisticalDate,jdbcType=CHAR},
+      activity_area_id = #{record.activityAreaId,jdbcType=INTEGER},
+      home_page_position = #{record.homePagePosition,jdbcType=VARCHAR},
+      classify_page_position = #{record.classifyPagePosition,jdbcType=VARCHAR},
+      home_page_exposure_count = #{record.homePageExposureCount,jdbcType=INTEGER},
+      classify_page_exposure_count = #{record.classifyPageExposureCount,jdbcType=INTEGER},
+      total_visitor_count = #{record.totalVisitorCount,jdbcType=INTEGER},
+      total_pv_count = #{record.totalPvCount,jdbcType=INTEGER},
+      pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      pay_sub_order_count = #{record.paySubOrderCount,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.ActivityAreaPvStatistical" >
+    update bu_activity_area_pv_statistical
+    <set >
+      <if test="statisticalDate != null" >
+        statistical_date = #{statisticalDate,jdbcType=CHAR},
+      </if>
+      <if test="activityAreaId != null" >
+        activity_area_id = #{activityAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="homePagePosition != null" >
+        home_page_position = #{homePagePosition,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyPagePosition != null" >
+        classify_page_position = #{classifyPagePosition,jdbcType=VARCHAR},
+      </if>
+      <if test="homePageExposureCount != null" >
+        home_page_exposure_count = #{homePageExposureCount,jdbcType=INTEGER},
+      </if>
+      <if test="classifyPageExposureCount != null" >
+        classify_page_exposure_count = #{classifyPageExposureCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalVisitorCount != null" >
+        total_visitor_count = #{totalVisitorCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalPvCount != null" >
+        total_pv_count = #{totalPvCount,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="paySubOrderCount != null" >
+        pay_sub_order_count = #{paySubOrderCount,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.ActivityAreaPvStatistical" >
+    update bu_activity_area_pv_statistical
+    set statistical_date = #{statisticalDate,jdbcType=CHAR},
+      activity_area_id = #{activityAreaId,jdbcType=INTEGER},
+      home_page_position = #{homePagePosition,jdbcType=VARCHAR},
+      classify_page_position = #{classifyPagePosition,jdbcType=VARCHAR},
+      home_page_exposure_count = #{homePageExposureCount,jdbcType=INTEGER},
+      classify_page_exposure_count = #{classifyPageExposureCount,jdbcType=INTEGER},
+      total_visitor_count = #{totalVisitorCount,jdbcType=INTEGER},
+      total_pv_count = #{totalPvCount,jdbcType=INTEGER},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      pay_sub_order_count = #{paySubOrderCount,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <select id="countCustomByExample" parameterType="com.jf.entity.ActivityAreaPvStatisticalCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_activity_area_pv_statistical a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectActivityAreaPvStatisticalCustomByExample" parameterType="com.jf.entity.ActivityAreaPvStatisticalCustomExample" resultMap="BaseResultMap">
+  	 select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_activity_area_pv_statistical a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countCustomDouble" parameterType="java.util.Map" resultType="java.lang.Integer" >
+    SELECT
+      count(1)
+    FROM
+      bu_member_pv pv,
+      (
+        SELECT
+          a.id activity_id,
+          a.`name` activity_name
+        FROM
+            bu_activity a
+        WHERE
+            a.del_flag = '0'
+        <if test="activityAreaId != null" >
+          AND a.activity_area_id = #{activityAreaId}
+        </if>
+        <if test="productActivityId != null" >
+          AND a.id = #{productActivityId}
+        </if>
+        <if test="productActivityName != null" >
+          AND a.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+        </if>
+        UNION
+          SELECT
+            a.id activity_id,
+            a.`name` activity_name
+          FROM
+            bu_activity_area_decorate aad,
+            bu_decorate_area da,
+            bu_decorate_module dm,
+            bu_module_item mi,
+            bu_activity a
+          WHERE
+            aad.decorate_info_id = da.decorate_info_id
+          AND da.id = dm.decorate_area_id
+          AND dm.id = mi.decorate_module_id
+          AND mi.item_id = a.id
+          AND aad.del_flag = '0'
+          AND da.del_flag = '0'
+          AND dm.del_flag = '0'
+          AND mi.del_flag = '0'
+          AND mi.item_type = '2'
+          AND a.del_flag = '0'
+          <if test="activityAreaId != null" >
+            AND aad.activity_area_id = #{activityAreaId}
+          </if>
+          <if test="productActivityId != null" >
+            AND a.id = #{productActivityId}
+          </if>
+          <if test="productActivityName != null" >
+            AND a.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+          </if>
+          UNION
+            SELECT
+              a.id activity_id,
+              a.`name` activity_name
+            FROM
+              bu_activity_area_decorate aad,
+              bu_decorate_area da,
+              bu_decorate_module dm,
+              bu_module_map mm,
+              bu_activity a
+            WHERE
+                aad.decorate_info_id = da.decorate_info_id
+            AND da.id = dm.decorate_area_id
+            AND dm.id = mm.decorate_module_id
+            AND mm.link_value = a.id
+            AND aad.del_flag = '0'
+            AND da.del_flag = '0'
+            AND dm.del_flag = '0'
+            AND mm.del_flag = '0'
+            AND mm.link_type = '2'
+            AND a.del_flag = '0'
+            <if test="activityAreaId != null" >
+              AND aad.activity_area_id = #{activityAreaId}
+            </if>
+            <if test="productActivityId != null" >
+              AND a.id = #{productActivityId}
+            </if>
+            <if test="productActivityName != null" >
+              AND a.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+            </if>
+      ) A
+    WHERE
+        pv.value_id = A.activity_id
+    AND pv.page_classify = '9'
+    AND pv.page_type = '27'
+    AND pv.from_page_type = '30'
+    AND pv.create_date BETWEEN #{beginDate}
+    AND #{endDate}
+    GROUP BY
+        activity_id
+  </select>
+  
+  <select id="selectActivityAreaPvStatisticalDouble" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+      C.statistical_date statistical_date,
+      C.activity_id product_activity_id,
+      C.activity_name product_activity_name,
+      C.exposure_count,
+      C.total_visitor_count,
+      C.total_visitor_count_tourist,
+      C.total_pv_count,
+      C.total_pv_count_tourist,
+      C.pay_amount,
+      C.pay_combine_order_count,
+      IFNULL(TRUNCATE (C.pay_combine_order_count / (C.total_pv_count + C.total_pv_count_tourist) * 100, 2), '0.00') total_visitor_count_rate
+    FROM
+        (
+          SELECT
+            B.*,
+            (
+              SELECT
+                count(1)
+              FROM
+                bu_member_pv_dtl t
+              WHERE
+                t.del_flag = '0'
+              AND t.dtl_item_type = '2'
+              AND t.dtl_item_id = B.activity_id
+              AND t.create_date BETWEEN #{beginDate}
+              AND #{endDate}
+          ) exposure_count,
+          (
+            SELECT
+              IFNULL(SUM(od.pay_amount), 0)
+            FROM
+              bu_combine_order co,
+              bu_sub_order so,
+              bu_order_dtl od
+            WHERE
+                co.id = so.combine_order_id
+            AND so.id = od.sub_order_id
+            AND co.del_flag = '0'
+            AND co.pay_status = '1'
+            AND co.pay_date BETWEEN #{beginDate}
+            AND #{endDate}
+            AND od.activity_id = B.activity_id
+          ) pay_amount,
+          (
+            SELECT
+              COUNT(DISTINCT co.id)
+            FROM
+              bu_combine_order co,
+              bu_sub_order so,
+              bu_order_dtl od
+            WHERE
+                co.id = so.combine_order_id
+            AND so.id = od.sub_order_id
+            AND co.del_flag = '0'
+            AND co.pay_status = '1'
+            AND co.pay_date BETWEEN #{beginDate}
+            AND #{endDate}
+            AND od.activity_id = B.activity_id
+          ) pay_combine_order_count
+          FROM
+            (
+              SELECT
+                DATE_FORMAT(#{beginDate}, '%Y-%m-%d') statistical_date,
+                A.activity_id,
+                A.activity_name,
+                COUNT(DISTINCT pv.member_id) total_visitor_count,
+                COUNT(pv.member_id) total_pv_count,
+                COUNT(DISTINCT IF (pv.member_id IS NOT NULL, NULL, pv.device_number)) total_visitor_count_tourist,
+                COUNT(1) - COUNT(pv.member_id) total_pv_count_tourist
+              FROM
+                bu_member_pv pv,
+                (
+                  SELECT
+                    a.id activity_id,
+                    a.`name` activity_name
+                  FROM
+                    bu_activity a
+                  WHERE
+                    a.del_flag = '0'
+                  <if test="activityAreaId != null" >
+                    AND a.activity_area_id = #{activityAreaId}
+                  </if>
+                  <if test="productActivityId != null" >
+                    AND a.id = #{productActivityId}
+                  </if>
+                  <if test="productActivityName != null" >
+                    AND a.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                  </if>
+                  UNION
+                    SELECT
+                      a.id activity_id,
+                      a.`name` activity_name
+                    FROM
+                      bu_activity_area_decorate aad,
+                      bu_decorate_area da,
+                      bu_decorate_module dm,
+                      bu_module_item mi,
+                      bu_activity a
+                    WHERE
+                        aad.decorate_info_id = da.decorate_info_id
+                    AND da.id = dm.decorate_area_id
+                    AND dm.id = mi.decorate_module_id
+                    AND mi.item_id = a.id
+                    AND aad.del_flag = '0'
+                    AND da.del_flag = '0'
+                    AND dm.del_flag = '0'
+                    AND mi.del_flag = '0'
+                    AND mi.item_type = '2'
+                    AND a.del_flag = '0'
+                    <if test="activityAreaId != null" >
+                      AND aad.activity_area_id = #{activityAreaId}
+                    </if>
+                    <if test="productActivityId != null" >
+                      AND a.id = #{productActivityId}
+                    </if>
+                    <if test="productActivityName != null" >
+                      AND a.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                    </if>
+                    UNION
+                      SELECT
+                        a.id activity_id,
+                        a.`name` activity_name
+                      FROM
+                        bu_activity_area_decorate aad,
+                        bu_decorate_area da,
+                        bu_decorate_module dm,
+                        bu_module_map mm,
+                        bu_activity a
+                      WHERE
+                        aad.decorate_info_id = da.decorate_info_id
+                      AND da.id = dm.decorate_area_id
+                      AND dm.id = mm.decorate_module_id
+                      AND mm.link_value = a.id
+                      AND aad.del_flag = '0'
+                      AND da.del_flag = '0'
+                      AND dm.del_flag = '0'
+                      AND mm.del_flag = '0'
+                      AND mm.link_type = '2'
+                      AND a.del_flag = '0'
+                      <if test="activityAreaId != null" >
+                        AND aad.activity_area_id = #{activityAreaId}
+                      </if>
+                      <if test="productActivityId != null" >
+                        AND a.id = #{productActivityId}
+                      </if>
+                      <if test="productActivityName != null" >
+                        AND a.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                      </if>
+                ) A
+              WHERE
+              pv.value_id = A.activity_id
+              AND pv.page_classify = '9'
+              AND pv.page_type = '27'
+              AND pv.from_page_type = '30'
+              AND pv.create_date BETWEEN #{beginDate}
+              AND #{endDate}
+              GROUP BY
+                activity_id
+              LIMIT #{limitStart}, #{limitSize}
+            ) B
+        ) C
+  </select>
+  
+  <select id="countCustomSingle" parameterType="java.util.Map" resultType="java.lang.Integer" >
+	SELECT
+		COUNT(1)
+	FROM
+	    (
+          SELECT
+          A.product_id product_id
+          FROM
+            bu_member_pv pv,
+            (
+              SELECT
+                p.id product_id,
+                p. CODE product_code,
+                p. NAME product_name
+              FROM
+                bu_activity a,
+                bu_activity_product ap,
+                bu_product p
+              WHERE
+                a.id = ap.activity_id
+              AND ap.product_id = p.id
+              AND a.del_flag = '0'
+              <if test="activityAreaId != null" >
+                AND a.activity_area_id = #{activityAreaId}
+              </if>
+              <if test="productActivityId != null" >
+                AND p.id = #{productActivityId}
+              </if>
+              <if test="productActivityName != null" >
+                AND p.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+              </if>
+              UNION
+                SELECT
+                  p.id product_id,
+                  p. CODE product_code,
+                  p. NAME product_name
+                FROM
+                  bu_activity_area_decorate aad,
+                  bu_decorate_area da,
+                  bu_decorate_module dm,
+                  bu_module_item mi,
+                  bu_product p
+                WHERE
+                    aad.decorate_info_id = da.decorate_info_id
+                AND da.id = dm.decorate_area_id
+                AND dm.id = mi.decorate_module_id
+                AND mi.item_id = p.id
+                AND aad.del_flag = '0'
+                AND da.del_flag = '0'
+                AND dm.del_flag = '0'
+                AND mi.del_flag = '0'
+                AND mi.item_type = '1'
+                AND p.del_flag = '0'
+                <if test="activityAreaId != null" >
+                  AND aad.activity_area_id = #{activityAreaId}
+                </if>
+                <if test="productActivityId != null" >
+                  AND p.id = #{productActivityId}
+                </if>
+                <if test="productActivityName != null" >
+                  AND p.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                </if>
+                UNION
+                  SELECT
+                    p.id product_id,
+                    p. CODE product_code,
+                    p. NAME product_name
+                  FROM
+                    bu_activity_area_decorate aad,
+                    bu_decorate_area da,
+                    bu_decorate_module dm,
+                    bu_module_map mm,
+                    bu_product p
+                  WHERE
+                    aad.decorate_info_id = da.decorate_info_id
+                  AND da.id = dm.decorate_area_id
+                  AND dm.id = mm.decorate_module_id
+                  AND mm.link_value = p.id
+                  AND aad.del_flag = '0'
+                  AND da.del_flag = '0'
+                  AND dm.del_flag = '0'
+                  AND mm.del_flag = '0'
+                  AND mm.link_type = '3'
+                  AND p.del_flag = '0'
+                  <if test="activityAreaId != null" >
+                    AND aad.activity_area_id = #{activityAreaId}
+                  </if>
+                  <if test="productActivityId != null" >
+                    AND p.id = #{productActivityId}
+                  </if>
+                  <if test="productActivityName != null" >
+                    AND p.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                  </if>
+            ) A
+          WHERE
+            A.product_id = pv.value_id
+          AND pv.del_flag = '0'
+          AND pv.create_date BETWEEN #{beginDate}
+          AND #{endDate}
+          AND pv.page_classify = '10'
+          AND pv.page_type = '29'
+          GROUP BY
+            product_id
+	    ) B
+  </select>
+  
+  <select id="selectActivityAreaPvStatisticalSingle" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT
+        C.statistical_date statistical_date,
+        C.product_id product_activity_id,
+        C.product_name product_activity_name,
+        C.exposure_count,
+        C.total_visitor_count,
+        C.total_visitor_count_tourist,
+        C.total_pv_count,
+        C.total_pv_count_tourist,
+        C.pay_amount,
+        C.pay_combine_order_count,
+        IFNULL(TRUNCATE (C.pay_combine_order_count / (C.total_pv_count + C.total_pv_count_tourist) * 100, 2), '0.00') total_visitor_count_rate
+    FROM
+        (
+          SELECT
+            B.*,
+            (
+              SELECT count(1)
+              FROM bu_member_pv_dtl t
+              WHERE
+                t.del_flag = '0'
+              AND t.dtl_item_type = '3'
+              AND t.dtl_item_id = B.product_id
+              AND t.create_date BETWEEN #{beginDate}
+              AND #{endDate}
+            ) exposure_count,
+            (
+              SELECT
+                IFNULL(SUM(od.pay_amount), 0)
+              FROM  bu_combine_order co,
+                bu_sub_order so,
+                bu_order_dtl od
+              WHERE
+                co.id = so.combine_order_id
+              AND so.id = od.sub_order_id
+              AND co.del_flag = '0'
+              AND co.pay_status = '1'
+              AND co.pay_date BETWEEN #{beginDate}
+              AND #{endDate}
+              AND od.product_id = B.product_id
+            ) pay_amount,
+            (
+              SELECT
+                COUNT(DISTINCT co.id)
+              FROM
+                bu_combine_order co,
+                bu_sub_order so,
+                bu_order_dtl od
+              WHERE
+                co.id = so.combine_order_id
+              AND so.id = od.sub_order_id
+              AND co.del_flag = '0'
+              AND co.pay_status = '1'
+              AND co.pay_date BETWEEN #{beginDate}
+              AND #{endDate}
+              AND od.product_id = B.product_id
+            ) pay_combine_order_count
+          FROM
+            (
+              SELECT
+                DATE_FORMAT(#{beginDate}, '%Y-%m-%d') statistical_date,
+                A.product_id product_id,
+                A.product_code product_code,
+                A.product_name product_name,
+                COUNT(DISTINCT pv.member_id) total_visitor_count,
+                COUNT(pv.member_id) total_pv_count,
+                COUNT(DISTINCT IF (pv.member_id IS NOT NULL, NULL, pv.device_number)) total_visitor_count_tourist,
+                COUNT(1) - COUNT(pv.member_id) total_pv_count_tourist
+              FROM
+                bu_member_pv pv,
+                (
+                  SELECT
+                    p.id product_id,
+                    p. CODE product_code,
+                    p. NAME product_name
+                  FROM
+                    bu_activity a,
+                    bu_activity_product ap,
+                    bu_product p
+                  WHERE
+                    a.id = ap.activity_id
+                  AND ap.product_id = p.id
+                  AND a.del_flag = '0'
+                  <if test="activityAreaId != null" >
+                    AND a.activity_area_id = #{activityAreaId}
+                  </if>
+                  <if test="productActivityId != null" >
+                    AND p.id = #{productActivityId}
+                  </if>
+                  <if test="productActivityName != null" >
+                    AND p.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                  </if>
+                  UNION
+                    SELECT
+                      p.id product_id,
+                      p. CODE product_code,
+                      p. NAME product_name
+                    FROM
+                      bu_activity_area_decorate aad,
+                      bu_decorate_area da,
+                      bu_decorate_module dm,
+                      bu_module_item mi,
+                      bu_product p
+                    WHERE
+                        aad.decorate_info_id = da.decorate_info_id
+                    AND da.id = dm.decorate_area_id
+                    AND dm.id = mi.decorate_module_id
+                    AND mi.item_id = p.id
+                    AND aad.del_flag = '0'
+                    AND da.del_flag = '0'
+                    AND dm.del_flag = '0'
+                    AND mi.del_flag = '0'
+                    AND mi.item_type = '1'
+                    AND p.del_flag = '0'
+                    <if test="activityAreaId != null" >
+                      AND aad.activity_area_id = #{activityAreaId}
+                    </if>
+                    <if test="productActivityId != null" >
+                      AND p.id = #{productActivityId}
+                    </if>
+                    <if test="productActivityName != null" >
+                      AND p.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                    </if>
+                    UNION
+                      SELECT
+                        p.id product_id,
+                        p. CODE product_code,
+                        p. NAME product_name
+                      FROM
+                        bu_activity_area_decorate aad,
+                        bu_decorate_area da,
+                        bu_decorate_module dm,
+                        bu_module_map mm,
+                        bu_product p
+                      WHERE
+                        aad.decorate_info_id = da.decorate_info_id
+                      AND da.id = dm.decorate_area_id
+                      AND dm.id = mm.decorate_module_id
+                      AND mm.link_value = p.id
+                      AND aad.del_flag = '0'
+                      AND da.del_flag = '0'
+                      AND dm.del_flag = '0'
+                      AND mm.del_flag = '0'
+                      AND mm.link_type = '3'
+                      AND p.del_flag = '0'
+                      <if test="activityAreaId != null" >
+                        AND aad.activity_area_id = #{activityAreaId}
+                      </if>
+                      <if test="productActivityId != null" >
+                        AND p.id = #{productActivityId}
+                      </if>
+                      <if test="productActivityName != null" >
+                        AND p.`name` LIKE CONCAT('%', #{productActivityName }, '%')
+                      </if>
+                  ) A
+              WHERE
+                A.product_id = pv.value_id
+              AND pv.del_flag = '0'
+              AND pv.create_date BETWEEN #{beginDate}
+              AND #{endDate}
+              AND pv.page_classify = '10'
+              AND pv.page_type = '29'
+              GROUP BY
+                product_id
+              LIMIT #{limitStart}, #{limitSize}
+            ) B
+        ) C
+  </select>
+  
+</mapper>

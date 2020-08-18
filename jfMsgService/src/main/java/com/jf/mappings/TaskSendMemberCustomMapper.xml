@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.TaskSendMemberCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.TaskSendMemberCustom" extends="com.jf.dao.TaskSendMemberMapper.BaseResultMap" >
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, task_id, member_id, mobile, status, send_date, send_count, commit_result, result_status, 
+    result_date, seq_num, create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.TaskSendMemberCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_task_send_member t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_task_send_member t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.TaskSendMemberCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_task_send_member t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_task_send_member t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.sendDate != null" >
+        send_date = #{record.sendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sendCount != null" >
+        send_count = #{record.sendCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.commitResult != null" >
+        commit_result = #{record.commitResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resultStatus != null" >
+        result_status = #{record.resultStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resultDate != null" >
+        result_date = #{record.resultDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.seqNum != null" >
+        seq_num = #{record.seqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="sendSmsXwSendList" resultType="java.util.Map" parameterType="java.util.Map" >
+  	<![CDATA[
+		SELECT
+			A.*
+		FROM
+			(
+				SELECT
+					tsm.id taskSendId,
+					t. name,
+					t.content,
+					mi.mobile,
+					mi.id member_id
+				FROM
+					bu_task_send_member tsm,
+					bu_task t,
+					bu_member_info mi
+				WHERE
+					tsm.task_id = t.id
+				AND tsm.member_id = mi.id
+				AND tsm.del_flag = '0'
+				AND tsm.mobile IS NULL
+				AND tsm. STATUS = '0'
+				AND t.del_flag = '0'
+				AND t.type = '0'
+				AND t.send_type in('0','2')
+				AND t.send_channel = '0'
+				AND t. STATUS = '4'
+				AND t.send_date <= now()
+				AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+				AND t.id = #{taskId}
+				AND mi.del_flag = '0'
+				AND mi.mobile IS NOT NULL
+
+				UNION ALL
+					SELECT
+						tsm.id taskSendId,
+						t. name,
+						t.content,
+						mi.mobile,
+					    mi.id member_id
+					FROM
+						bu_task_send_member tsm,
+						bu_task t,
+						bu_member_info mi
+					WHERE
+						tsm.task_id = t.id
+					AND tsm.mobile = mi.mobile
+					AND tsm.del_flag = '0'
+					AND tsm.member_id IS NULL
+					AND tsm. STATUS = '0'
+					AND t.del_flag = '0'
+					AND t.type = '0'
+					AND t.send_type = '1'
+					AND t.send_channel = '0'
+					AND t. STATUS = '4'
+					AND t.send_date <= now()
+					AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+					AND t.id = #{taskId}
+					AND mi.del_flag = '0'
+					AND mi.mobile IS NOT NULL
+			) A
+			WHERE
+			    A.member_id NOT IN (
+					SELECT
+						bl.member_id
+					FROM
+						bu_black_list bl
+					WHERE
+						bl.del_flag = '0'
+					AND bl.black_type = '4'
+				)
+            AND A.mobile NOT IN (
+                SELECT
+                    pm.mobile
+                FROM
+                    tmp_paichu_mobile pm
+            )
+            LIMIT #{limitSize}
+  	]]>
+  </select>
+
+  <select id="sendSmsXYSendList" resultType="java.util.Map"  parameterType="java.util.Map" >
+  	<![CDATA[
+    SELECT
+        A.*
+    FROM
+        (
+            SELECT
+                tsm.id taskSendId,
+                t. name,
+                t.content,
+                mi.mobile,
+                mi.id member_id
+            FROM
+                bu_task_send_member tsm,
+                bu_task t,
+                bu_member_info mi
+            WHERE
+                tsm.task_id = t.id
+            AND tsm.member_id = mi.id
+            AND tsm.del_flag = '0'
+            AND tsm.mobile IS NULL
+            AND tsm. STATUS = '0'
+            AND t.del_flag = '0'
+            AND t.type = '0'
+            AND t.send_type in('0','2')
+            AND t.send_channel = '2'
+            AND t. STATUS = '4'
+            AND t.send_date <= now()
+            AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+            AND t.id = #{taskId}
+            AND mi.del_flag = '0'
+            AND mi.mobile IS NOT NULL
+
+            UNION ALL
+                SELECT
+                    tsm.id taskSendId,
+                    t. name,
+                    t.content,
+                    mi.mobile,
+                    mi.id member_id
+                FROM
+                    bu_task_send_member tsm,
+                    bu_task t,
+                    bu_member_info mi
+                WHERE
+                    tsm.task_id = t.id
+                AND tsm.mobile = mi.mobile
+                AND tsm.del_flag = '0'
+                AND tsm.member_id IS NULL
+                AND tsm. STATUS = '0'
+                AND t.del_flag = '0'
+                AND t.type = '0'
+                AND t.send_type = '1'
+                AND t.send_channel = '2'
+                AND t. STATUS = '4'
+                AND t.send_date <= now()
+                AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+                AND t.id = #{taskId}
+                AND mi.del_flag = '0'
+                AND mi.mobile IS NOT NULL
+        ) A
+        WHERE
+            A.member_id NOT IN (
+                SELECT
+                    bl.member_id
+                FROM
+                    bu_black_list bl
+                WHERE
+                    bl.del_flag = '0'
+                AND bl.black_type = '4'
+            )
+        AND A.mobile NOT IN (
+            SELECT
+                pm.mobile
+            FROM
+                tmp_paichu_mobile pm
+        )
+        LIMIT #{limitSize}
+  	]]>
+  </select>
+
+  <select id="sendSmsSendListByChannel" resultType="java.util.Map"  parameterType="java.util.Map" >
+  	<![CDATA[
+    SELECT
+        A.*
+    FROM
+        (
+            SELECT
+                tsm.id taskSendId,
+                t. name,
+                t.content,
+                mi.mobile,
+                mi.id member_id
+            FROM
+                bu_task_send_member tsm,
+                bu_task t,
+                bu_member_info mi
+            WHERE
+                tsm.task_id = t.id
+            AND tsm.member_id = mi.id
+            AND tsm.del_flag = '0'
+            AND tsm.mobile IS NULL
+            AND tsm. STATUS = '0'
+            AND t.del_flag = '0'
+            AND t.type = '0'
+            AND t.send_type in('0','2')
+            AND t.send_channel = #{sendChannel}
+            AND t. STATUS = '4'
+            AND t.send_date <= now()
+            AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+            AND t.id = #{taskId}
+            AND mi.del_flag = '0'
+            AND mi.mobile IS NOT NULL
+
+            UNION ALL
+                SELECT
+                    tsm.id taskSendId,
+                    t. name,
+                    t.content,
+                    mi.mobile,
+                    mi.id member_id
+                FROM
+                    bu_task_send_member tsm,
+                    bu_task t,
+                    bu_member_info mi
+                WHERE
+                    tsm.task_id = t.id
+                AND tsm.mobile = mi.mobile
+                AND tsm.del_flag = '0'
+                AND tsm.member_id IS NULL
+                AND tsm. STATUS = '0'
+                AND t.del_flag = '0'
+                AND t.type = '0'
+                AND t.send_type = '1'
+                AND t.send_channel = #{sendChannel}
+                AND t. STATUS = '4'
+                AND t.send_date <= now()
+                AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+                AND t.id = #{taskId}
+                AND mi.del_flag = '0'
+                AND mi.mobile IS NOT NULL
+        ) A
+        WHERE
+            A.member_id NOT IN (
+                SELECT
+                    bl.member_id
+                FROM
+                    bu_black_list bl
+                WHERE
+                    bl.del_flag = '0'
+                AND bl.black_type = '4'
+            )
+        AND A.mobile NOT IN (
+            SELECT
+                pm.mobile
+            FROM
+                tmp_paichu_mobile pm
+        )
+        LIMIT #{limitSize}
+  	]]>
+  </select>
+
+
+    <select id="sendSmsXwTaskList" resultType="java.util.Map" >
+        SELECT
+            t.*
+        FROM
+            bu_task t,
+            bu_task_sms a
+        WHERE
+            t.id = a.task_id
+        AND a.del_flag = '0'
+        AND a.send_status = '0'
+        AND	t.del_flag = '0'
+        AND t.type = '0'
+        AND t.send_channel = '0'
+        AND t. STATUS = '4'
+        <![CDATA[
+            AND t.send_date <= now()
+            AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+        ]]>
+    </select>
+
+    <select id="sendSmsXYTaskList" resultType="java.util.Map" >
+        SELECT
+            t.*
+        FROM
+            bu_task t,
+            bu_task_sms a
+        WHERE
+            t.id = a.task_id
+        AND a.del_flag = '0'
+        AND a.send_status = '0'
+        AND	t.del_flag = '0'
+        AND t.type = '0'
+        AND t.send_channel = '2'
+        AND t. STATUS = '4'
+        <![CDATA[
+            AND t.send_date <= now()
+            AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+        ]]>
+    </select>
+
+    <select id="sendSmsTaskListByChannel" resultType="java.util.Map" parameterType="java.lang.String" >
+        SELECT
+            t.*,
+            a.is_give_coupon,
+            a.coupon_id
+        FROM
+            bu_task t,
+            bu_task_sms a
+        WHERE
+            t.id = a.task_id
+        AND a.del_flag = '0'
+        AND a.send_status = '0'
+        AND	t.del_flag = '0'
+        AND t.type = '0'
+        AND t.send_channel = #{smsChannel}
+        AND t. STATUS = '4'
+        <![CDATA[
+            AND t.send_date <= now()
+            AND t.last_send_date <= date_add(now(), interval -t.time_interval minute)
+        ]]>
+    </select>
+
+
+  <update id="updateTaskSendMemberList" parameterType="java.util.Map" >
+  	update bu_task_send_member t
+  	<set >
+	  	<if test="status != null">
+	  		status = #{status},
+	  	</if>
+	  	<if test="customMsgIDHead != null">
+	  		seq_num = concat(#{customMsgIDHead}, '-', id, '-', #{customMsgIDTail}),
+	  	</if>
+	  	<if test="seqNum != null">
+	  		seq_num = #{seqNum},
+	  	</if>
+	  	<if test="commitResult != null">
+	  		commit_result = #{commitResult},
+	  	</if>
+	  	<if test="resultStatus != null">
+	  		result_status = #{resultStatus},
+	  	</if>
+	  	<if test="resultDate != null">
+	  		result_date = now(),
+	  	</if>
+		send_date = now(),
+		send_count = send_count+1
+  	</set>
+  	<where >
+  		del_flag = '0'
+  		<if test="taskSendIdList != null">
+	  		and id in(
+	    	<foreach collection="taskSendIdList" item="id" separator="," >
+	        	#{id}
+	      	</foreach>
+	      	)
+  		</if>
+        and status = '0'
+  		<if test="taskId != null">
+  			and task_id = #{taskId}
+  		</if>
+    </where>
+  </update>
+  
+  <update id="updateTaskSendMember" parameterType="java.util.Map" >
+  	update bu_task_send_member t 
+  	<set >
+	  	<if test="status != null">
+	  		status = #{status},
+	  	</if>
+        result_date = now()
+  	</set>
+  	<where >
+  		    del_flag = '0'
+        <if test="idList != null" >
+            and id in
+            <foreach collection="idList" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="seqNumList != null" >
+            and seq_num in
+            <foreach collection="seqNumList" item="itemSeqNum" open="(" close=")" separator=",">
+                #{itemSeqNum}
+            </foreach>
+        </if>
+        <if test="seqNum != null" >
+            and seq_num = #{seqNum}
+        </if>
+        <if test="taskId != null" >
+            and task_id = #{taskId}
+        </if>
+        <if test="mobileList != null" >
+            and mobile in
+            <foreach collection="mobileList" item="itemMobile" open="(" close=")" separator=",">
+                #{itemMobile}
+            </foreach>
+        </if>
+        <if test="mobile != null and memberId != null">
+            and (mobile = #{mobile} or member_id = #{memberId})
+        </if>
+    </where>
+  </update>
+
+  <update id="xyNotifyTaskSendMember" parameterType="java.util.Map" >
+      UPDATE bu_task_send_member t
+        JOIN (
+          SELECT m.id
+          FROM bu_member_info m
+          WHERE m.del_flag = '0'
+          <if test="mobile != null" >
+              and m.mobile = #{mobile}
+          </if>
+          <if test="mobileList != null" >
+              and m.mobile in
+              <foreach collection="mobileList" item="itemMobile" open="(" close=")" separator=",">
+                  #{itemMobile}
+              </foreach>
+          </if>
+          ) a
+        ON t.del_flag = '0'
+         <if test="seqNum != null">
+             AND t.seq_num = #{seqNum}
+         </if>
+         <if test="taskId != null">
+             AND t.task_id = #{taskId}
+         </if>
+         <if test="mobile != null" >
+             AND (t.member_id = a.id OR t.mobile = #{mobile})
+         </if>
+         <if test="mobileList != null" >
+             AND t.member_id = a.id
+         </if>
+      SET
+        <if test="status != null">
+            status = #{status},
+        </if>
+        t.result_date = NOW()
+  </update>
+  
+
+  <resultMap id="TaskResultMap" type="com.jf.entity.Task" extends="com.jf.dao.TaskMapper.BaseResultMap" >
+
+  </resultMap>
+
+  <select id="sendTaskList" resultMap="TaskResultMap" parameterType="java.util.Map" >
+  	<![CDATA[
+  		SELECT
+			t.id, t.type, t.send_channel, t.name, t.task_explain, t.content, t.send_mode, t.send_date, t.time_interval, 
+		    t.send_count, t.send_type, t.file_path, t.label_group_ids, t.status, t.create_by, t.create_date, 
+		    t.update_by, t.update_date, t.remarks, t.del_flag
+		FROM
+			bu_task_send_member tsm,
+			bu_task t
+		WHERE
+			tsm.task_id = t.id
+		AND tsm.del_flag = '0'
+		AND tsm. STATUS = '0'
+		AND tsm.member_id IS NOT NULL
+		AND t.del_flag = '0'
+		AND t.type = #{type }
+		AND t.send_channel = '1'
+		AND t. STATUS = #{status }
+		AND (
+			t.send_date IS NULL
+			OR t.send_date <= now()
+		)
+		GROUP BY
+			t.id
+	]]>
+  </select>
+  
+  <update id="updateTaskStatus">
+  		update bu_task set status = #{status } where id = #{taskId }
+  </update>
+  
+  
+  
+</mapper>

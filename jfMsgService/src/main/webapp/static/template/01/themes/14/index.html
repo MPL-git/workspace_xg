@@ -1,0 +1,1180 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/module.css">
+    <link rel="stylesheet" href="../../../01/css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var globalNav = $("#nav .navwrap");
+            var navheight = globalNav.height(),navtop = globalNav.offset().top;
+            $(window).on("scroll",function(){
+                var scrolltop = $(this).scrollTop();
+                globalNav.removeAttr("style");
+                if(scrolltop > navtop){
+                    globalNav.addClass("global-nav-fix");
+                }else{
+                    globalNav.removeClass("global-nav-fix");
+                }
+            });
+
+            $(".global-catalog").hover(function(){
+                showGlobalCat();
+            }, function(){
+                hideGlobalCat();
+            });
+            var globalCatalog = $('.global-catalog'),
+                    globalCatCon = $('.gbc-blockcon'),
+                    gbcDuration = 200;
+            function showGlobalCat(){
+                globalCatCon.stop().slideDown(gbcDuration);
+                globalCatalog.addClass('global-catalog-open');
+            }
+            function hideGlobalCat(){
+                globalCatCon.stop().slideUp(gbcDuration);
+                globalCatalog.removeClass('global-catalog-open');
+            }
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'none',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {}
+            });
+            $('#intabs .switchable-tab-item').each(function(){
+                var item = $(this);
+                item.switchable({
+                    triggers: false,
+                    panels: 'li',
+                    easing: 'ease-in-out',
+                    effect: 'scrollLeft',
+                    steps: 3,
+                    visible: 3,
+                    end2end: false,
+                    autoplay: true,
+                    prev: item.find('.prev'),
+                    next: item.find('.next')
+                });
+            });
+        });
+    </script>
+<style>
+#headerCart{ display: none;}
+.yj-floor{ width: 1200px; margin: auto; overflow: hidden; *zoom:1; background: #fff;}
+.yj-floor-l{ float: left; width: 190px;}
+.yj-floor-r{ float: right; width: 1010px;}
+.yj-floor-tit{ height: 90px; position: relative;}
+.yj-floor-tit h3{ position: absolute; left: 0; top: 29px; font-weight: normal; width: 100%; text-align: center; color: #fff; font-size: 24px;}
+.yj-floor-brand{ position: relative; height: 180px; background: #fff;}
+.yj-switchable-slides{ position: relative; width: 100px; margin: auto; height: 180px; overflow: hidden;}
+.yj-switchable-slides li{ float: left; width: 100px;}
+.yj-switchable-slides li p{ margin: 7px 0 0;}
+.yj-switchable-nav a{ position: absolute; width: 40px; top: 0; height: 180px; background-image: url(images/pic/slide-nav.png); background-repeat: no-repeat; text-indent: -9999px;}
+.yj-prev{ left: 0; background-position: 0 50%;}
+.yj-next{ right: 0; background-position: 100% 50%;}
+.yj-floor-tags{ height: 100px; background: #fafaf8;}
+.yj-floor-tags ul{ padding: 9px 0 0 44px;}
+.yj-floor-tags li{ float: left; line-height: 28px; width: 60px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; padding-right: 10px;}
+.yj-floor-r table{ border-collapse: collapse; width: 100%;}
+.yj-floor-r td{border: 1px solid #dcdcdc; text-align: center; vertical-align: middle;}
+.yj-hotsail{ width: 1200px; margin: auto;}
+.yj-hotsail td{border:1px solid #dadada; height: 198px; text-align: center;}
+.yj-floor-rbrand{ vertical-align: top;}
+.yj-floor-rbrand table{ width: 100%;}
+.yj-floor-rbrand td{ border: 0; padding: 0;}
+.yj-frb-l{ text-align: center; height: 48px; width: 82px;}
+</style>
+
+<script>
+$(function(){
+    $('.yj-floor-brand').each(function(){
+        $(this).switchable({
+            triggers: false,
+            panels: 'li',
+            easing: 'ease-in-out',
+            prev: $(this).find('.yj-prev'),
+            next: $(this).find('.yj-next'),
+            effect: 'scrollLeft',
+            steps: 1,
+            visible: 1,
+            end2end: true,
+            autoplay: false
+        });
+    });
+});
+</script>
+</head>
+<body class="page-index">
+<div id="topbar">
+	<div class="topbar">
+        <div class="layout">
+	        <div class="toptools">
+	        </div>
+			<div class="toplinks">
+                <p><a href="#">我的帐号</a></p>
+                <p><a href="#">购物车</a></p>
+                <p><a href="#">官方微博</a></p>
+                <p><a href="#">网站公告</a></p>
+                <p><a href="#">帮助</a></p>
+                <p><a href="#">在线客服</a></p>
+			</div>
+	        <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+	        </div>
+		</div>
+    </div>
+</div>
+<div id="header">
+	<div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/pic/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+		</div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <table class="hdsearch-right" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <a href="#"><img src="images/pic/search-r.png" alt=""></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+<div id="nav">
+    <div class="navwrap">
+
+        <div class="global-catalog">
+            <div class="gbc-wrap">
+                <h2 class="gbc-title"><span>全部商品分类</span></h2>
+                <div class="gbc-blockcon">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli tree-hover">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="sublayer">
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="layout">
+                <div class="textNav">
+                    <p><a class="current" href="http://www.genanx.com/">首页</a></p>
+                    <p><a href="http://www.genanx.com/products/0.html">新品上架</a></p>
+                    <p><a href="http://www.genanx.com/products/3-10.html">T恤</a></p>
+                    <p><a href="http://www.genanx.com/products/3-12.html">POLO衫</a></p>
+                    <p><a href="http://www.genanx.com/products/3-22.html">衬衫</a></p>
+                    <p><a href="http://www.genanx.com/products/0-26.html">夹克</a></p>
+                    <p><a href="http://www.genanx.com/products/3-28.html">皮衣</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">上一张</a>
+            <a id="inslide_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+
+    <br/>
+    <table align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/top_01.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/top_02.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/top_03.jpg" alt=""></td>
+        </tr>
+    </table>
+    <br/>
+    <div class="yj-floor">
+        <table align="center" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td colspan="8"><img src="images/pic/brand_01.png" width="1200" height="43" alt=""></td>
+            </tr>
+        </table>
+        <div class="yj-floor-l">
+            <img src="images/pic/brand_02.jpg" width="192" height="332" alt="">
+        </div>
+        <div class="yj-floor-r">
+            <table>
+                <tr>
+                    <td><img src="images/pic/brand_03.png" width="134" height="82" alt=""></td>
+                    <td><img src="images/pic/brand_04.png" width="135" height="82" alt=""></td>
+                    <td><img src="images/pic/brand_05.png" width="134" height="82" alt=""></td>
+                    <td><img src="images/pic/brand_06.png" width="134" height="82" alt=""></td>
+                    <td><img src="images/pic/brand_07.png" width="135" height="82" alt=""></td>
+                    <td><img src="images/pic/brand_08.png" width="134" height="82" alt=""></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/pic/brand_10.png" width="134" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_11.png" width="135" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_12.png" width="134" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_13.png" width="134" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_14.png" width="135" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_15.png" width="134" height="82" alt=""></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/pic/brand_16.png" width="134" height="81" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_17.png" width="135" height="81" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_18.png" width="134" height="81" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_19.png" width="134" height="81" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_20.png" width="135" height="81" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_21.png" width="134" height="81" alt=""></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="images/pic/brand_22.png" width="134" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_23.png" width="135" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_24.png" width="134" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_25.png" width="134" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_26.png" width="135" height="82" alt=""></td>
+                    <td>
+                        <img src="images/pic/brand_27.png" width="134" height="82" alt=""></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br/>
+    <table align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td><img src="images/pic/inbanner.jpg" alt=""></td>
+        </tr>
+    </table>
+
+    <br/>
+    <table align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/top1_01.jpg" alt=""></td>
+            <td width="10" height="320"><td>
+            <img src="images/pic/top1_03.jpg" alt=""></td>
+            <td width="10" height="320"><td>
+            <img src="images/pic/top1_05.jpg" alt=""></td>
+            <td width="10" height="320"><td>
+            <img src="images/pic/top1_07.jpg" alt=""></td>
+            <td width="10" height="320"><td>
+            <img src="images/pic/top1_09.jpg" alt=""></td>
+        </tr>
+    </table>
+    <br/>
+
+    <div class="yj-floor">
+        <div class="yj-floor-l">
+            <div class="yj-floor-tit"><img src="images/pic/floor1.png" alt=""/>
+                <h3>海外原产</h3>
+            </div>
+            <div class="yj-floor-brand">
+                <div class="yj-switchable-slides">
+                    <ul>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="yj-switchable-nav">
+                    <a class="yj-prev" href="javascript:void(0)">上一张</a>
+                    <a class="yj-next" href="javascript:void(0)">下一张</a>
+                </div>
+            </div>
+            <div class="yj-floor-tags">
+                <ul>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="yj-floor-r">
+            <table>
+                <tr>
+                    <td rowspan="2"><a href="#"><img src="images/pic/f1_big.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_01.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_02.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_03.jpg" alt=""/></a></td>
+                    <td rowspan="2"  class="yj-floor-rbrand">
+                        <table cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td colspan="2"><a href="#"><img src="images/pic/f1_r_top.png" alt=""/></a></td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/f1_04.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_05.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_06.jpg" alt=""/></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="yj-floor">
+        <div class="yj-floor-l">
+            <div class="yj-floor-tit"><img src="images/pic/floor2.png" alt=""/>
+                <h3>闽台特色</h3>
+            </div>
+            <div class="yj-floor-brand">
+                <div class="yj-switchable-slides">
+                    <ul>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="yj-switchable-nav">
+                    <a class="yj-prev" href="javascript:void(0)">上一张</a>
+                    <a class="yj-next" href="javascript:void(0)">下一张</a>
+                </div>
+            </div>
+            <div class="yj-floor-tags">
+                <ul>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="yj-floor-r">
+            <table>
+                <tr>
+                    <td rowspan="2"><a href="#"><img src="images/pic/f1_big.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_01.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_02.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_03.jpg" alt=""/></a></td>
+                    <td rowspan="2"  class="yj-floor-rbrand">
+                        <table>
+                            <tr>
+                                <td colspan="2"><a href="#"><img src="images/pic/f1_r_top.png" alt=""/></a></td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/f1_04.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_05.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_06.jpg" alt=""/></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <br/>
+    <table align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td><img src="images/pic/inbanner.jpg" alt=""></td>
+        </tr>
+    </table>
+
+    <br/>
+
+    <div class="yj-floor">
+        <div class="yj-floor-l">
+            <div class="yj-floor-tit"><img src="images/pic/floor3.png" alt=""/>
+                <h3>地方农产</h3>
+            </div>
+            <div class="yj-floor-brand">
+                <div class="yj-switchable-slides">
+                    <ul>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="yj-switchable-nav">
+                    <a class="yj-prev" href="javascript:void(0)">上一张</a>
+                    <a class="yj-next" href="javascript:void(0)">下一张</a>
+                </div>
+            </div>
+            <div class="yj-floor-tags">
+                <ul>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="yj-floor-r">
+            <table>
+                <tr>
+                    <td rowspan="2"><a href="#"><img src="images/pic/f1_big.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_01.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_02.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_03.jpg" alt=""/></a></td>
+                    <td rowspan="2"  class="yj-floor-rbrand">
+                        <table>
+                            <tr>
+                                <td colspan="2"><a href="#"><img src="images/pic/f1_r_top.png" alt=""/></a></td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/f1_04.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_05.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_06.jpg" alt=""/></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="yj-floor">
+        <div class="yj-floor-l">
+            <div class="yj-floor-tit"><img src="images/pic/floor4.png" alt=""/>
+                <h3>时尚鞋服</h3>
+            </div>
+            <div class="yj-floor-brand">
+                <div class="yj-switchable-slides">
+                    <ul>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="yj-switchable-nav">
+                    <a class="yj-prev" href="javascript:void(0)">上一张</a>
+                    <a class="yj-next" href="javascript:void(0)">下一张</a>
+                </div>
+            </div>
+            <div class="yj-floor-tags">
+                <ul>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="yj-floor-r">
+            <table>
+                <tr>
+                    <td rowspan="2"><a href="#"><img src="images/pic/f1_big.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_01.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_02.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_03.jpg" alt=""/></a></td>
+                    <td rowspan="2"  class="yj-floor-rbrand">
+                        <table>
+                            <tr>
+                                <td colspan="2"><a href="#"><img src="images/pic/f1_r_top.png" alt=""/></a></td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/f1_04.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_05.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_06.jpg" alt=""/></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br/>
+
+    <div class="yj-floor">
+        <div class="yj-floor-l">
+            <div class="yj-floor-tit"><img src="images/pic/floor5.png" alt=""/>
+                <h3>母婴乐园</h3>
+            </div>
+            <div class="yj-floor-brand">
+                <div class="yj-switchable-slides">
+                    <ul>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                        <li>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                            <p><a href="#"><img src="images/pic/brand.png" alt=""/></a></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="yj-switchable-nav">
+                    <a class="yj-prev" href="javascript:void(0)">上一张</a>
+                    <a class="yj-next" href="javascript:void(0)">下一张</a>
+                </div>
+            </div>
+            <div class="yj-floor-tags">
+                <ul>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                    <li><a href="#">标签1</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="yj-floor-r">
+            <table>
+                <tr>
+                    <td rowspan="2"><a href="#"><img src="images/pic/f1_big.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_01.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_02.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_03.jpg" alt=""/></a></td>
+                    <td rowspan="2"  class="yj-floor-rbrand">
+                        <table>
+                            <tr>
+                                <td colspan="2"><a href="#"><img src="images/pic/f1_r_top.png" alt=""/></a></td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                            <tr>
+                                <td class="yj-frb-l"><a href="#"><img src="images/pic/f1_r_brand.png" alt=""/></a></td>
+                                <td class="yj-frb-r">全场3折起</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/f1_04.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_05.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/f1_06.jpg" alt=""/></a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br/>
+    <table align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td><img src="images/pic/inbanner.jpg" alt=""></td>
+        </tr>
+    </table>
+
+    <table align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td colspan="4">
+                <img src="images/pic/hotsale_01.png" alt=""></td>
+        </tr>
+    </table>
+    <table class="yj-hotsail" align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/hotsale_02.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_03.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_04.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_05.jpg" alt=""></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="images/pic/hotsale_05.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_04.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_03.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_02.jpg" alt=""></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="images/pic/hotsale_02.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_03.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_04.jpg" alt=""></td>
+            <td>
+                <img src="images/pic/hotsale_05.jpg" alt=""></td>
+        </tr>
+    </table>
+    <br/>
+</div>
+
+
+<div id="footer">
+    <div class="footer">
+        <div class="footwarranty">
+            <div class="layout">
+                <table width="100%" height="55" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td><img src="/static/images/ftw_01.png"/></td>
+                        <td class="ftw-line"></td>
+                        <td><img src="/static/images/ftw_02.png"/></td>
+                        <td class="ftw-line"></td>
+                        <td><img src="/static/images/ftw_03.png"/></td>
+                        <td class="ftw-line"></td>
+                        <td><img src="/static/images/ftw_04.png"/></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="footothers">
+            <div class="layout">
+                <div class="ftconlist">
+                    <dl>
+                        <dt><img src="/static/images/footico_1.png"/>订购与支付</dt>
+                        <dd>
+                            <p><a href="#">新手注册与登录</a></p>
+                            <p><a href="#">如何购物</a></p>
+                            <p><a href="#">优惠券使用细则</a></p>
+                            <p><a href="#">在线支付宝</a></p>
+                            <p><a href="#">验收签收</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_2.png"/>快递与配送</dt>
+                        <dd>
+                            <p><a href="#">配送方式/时间</a></p>
+                            <p><a href="#">货到付款</a></p>
+                            <p><a href="#">运费说明</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_3.png"/>售后服务</dt>
+                        <dd>
+                            <p><a href="#">联系客服</a></p>
+                            <p><a href="#">订单查询</a></p>
+                            <p><a href="#">退换保修服务</a></p>
+                            <p><a href="#">退款方式</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_4.png"/>关于应有尽有</dt>
+                        <dd>
+                            <p><a href="#">了解应有尽有</a></p>
+                            <p><a href="#">关注应有尽有</a></p>
+                            <p><a href="#">品牌文化</a></p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ftqrcode">
+                    <h3><span>手机无线端</span></h3>
+                    <ul>
+                        <li>
+                            <div><img src="images/pic/qrcode_weixin.png"/></div>
+                            <p>应有尽有无线端</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ftfriends">
+                    <h3>友情链接：</h3>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                </div>
+                <div class="ftlinks">
+                    <p><a href="#">关于我们</a></p>
+                    <p><a href="#">网站地址</a></p>
+                    <p><a href="#">隐私条款</a></p>
+                    <p><a href="#">企业订购</a></p>
+                    <p><a href="#">加入我们</a></p>
+                    <p><a href="#">帮助中心</a></p>
+                    <p><a href="#">网站联盟</a></p>
+                    <p><a href="#">总裁邮箱</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="gotop">
+
+<style>
+.yj-sidebar{ position: fixed; top: 0; bottom: 0; right: 0; height: 100%; width: 36px; background: #000;}
+.yj-kefu{ position: relative;}
+.yj-kefu-div{ display: none; position: absolute; right: 36px; top: 10px; background: #fff; padding: 5px; border:1px solid #eee;}
+.yj-kefu-div p{ padding: 2px 0;}
+</style>
+<script>
+$(function(){
+    $('.yj-kefu').hover(function(){
+        $('.yj-kefu-div').fadeIn(200);
+    },function(){
+        $('.yj-kefu-div').fadeOut(200);
+    });
+});
+</script>
+<div class="yj-sidebar">
+    <table height="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td valign="middle">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td><div class="yj-kefu">
+                            <img src="images/pic/side_kefu.png" alt=""/>
+                            <div class="yj-kefu-div">
+                                <p>客服1：<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2355325017&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:2355325017:51" /></a></p>
+                                <p>客服2：<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2355325019&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:2355325019:51" /></a></p>
+                                <p>客服3：<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2355325030&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:2355325030:51" /></a></p>
+                            </div>
+                        </div></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/account/balance/list.html" title="我的资产"><img src="images/pic/side_icon1.png" alt=""/></a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/account/favorite/list.html" title="收藏夹"><img src="images/pic/side_icon4.png" alt=""/></a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/history.html" title="浏览历史"><img src="images/pic/side_icon3.png" alt=""/></a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/cart" title="购物车"><img src="images/pic/side_cart.png" alt=""/></a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td valign="bottom">
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td><a href="#"><img src="images/pic/gotop.png" alt=""/></a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+
+
+</body>
+</html>

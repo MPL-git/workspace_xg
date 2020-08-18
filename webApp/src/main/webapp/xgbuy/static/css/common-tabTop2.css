@@ -1,0 +1,76 @@
+.tab-box2 .tag {
+	height: .81rem;
+	background: #fff;
+}
+.tab-box2 .tag {
+	border-bottom: 1px solid #ddd;
+	font-size: .3rem;
+	z-index: 2;
+}
+.tab-box2 .tag a:active {
+	background: rgba(0, 0, 0, .1);
+}
+.tab-box2 .tag a.active {
+	color: #ff5050;
+}
+.tab-box2 .tag a:after {
+	content: '';
+	width: 1.3rem;
+	height: .04rem;
+	background: transparent;
+}
+.tab-box2 .tag a.active:after {
+	background: #ff5050;
+}
+
+.tab-box2 .tag2 div {
+	padding: .15rem 0;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+	box-sizing: border-box;
+}
+.tab-box2 .tag2 div:empty,
+.tab-box2 .tag3:empty {
+	display: none !important;
+}
+.tab-box2 .tag2 a {
+	min-width: 1.2rem;
+	height: .5rem;
+	padding: 0 .07rem;
+	font-size: .26rem;
+	border-radius: .06rem;
+	border: 1px solid #999;
+	margin-left: .3rem;
+}
+.tab-box2 .tag2 a.active {
+	color: #ff5050;
+	border: 1px solid #ff5050;
+}
+
+.tab-box2 .tag3 {
+	overflow: hidden;
+	padding: .2rem .2rem 0;
+	font-size: .26rem;
+}
+.tab-box2 .tag3>div {
+	width: calc(100% + .2rem);
+	margin-bottom: -.2rem;
+}
+.tab-box2 .tag3 a,
+.tab-box2 .tag3 span {
+	min-width: .8rem;
+	height: .5rem;
+	padding: 0 .07rem;
+	margin: 0 .2rem .2rem 0;
+}
+.tab-box2 .tag3 a {
+	border-radius: .05rem;
+	background: #eee;
+}
+.tab-box2 .tag3 a:last-of-type {
+	margin-right: 0;
+}
+.tab-box2 .tag3 a.active {
+	color: #fff;
+	background: #ff5050;
+}

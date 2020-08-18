@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberDynamicCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberDynamicCustom" extends="com.jf.dao.MemberDynamicMapper.BaseResultMap">
+   
+  </resultMap>
+  <select id="getMemberReleaseDynamicsCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  select count(1) from(
+  		SELECT
+			t.id
+		FROM
+			bu_member_dynamic t
+		WHERE
+			t.create_date >= #{beginDate}
+		AND t.create_date &lt;= #{endDate}
+		AND t.member_id = #{memberId}
+		AND t.del_flag = '0'
+		GROUP BY
+			DATE_FORMAT(t.create_date, '%Y-%m-%d')) t
+  	</select>
+  	
+  <update id="updateReadCount" parameterType="java.lang.Integer" >
+  	update bu_member_dynamic t set t.read_count = t.read_count + 1 where t.del_flag = '0' and t.id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getMemberDynamic" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		md.id,
+		md.member_id,
+		md.mcht_shop_dynamic_id,
+		md.read_count,
+		mi.pic,
+		mi.nick,
+		m.shop_name,
+		msd.content,
+		msd.mcht_id,
+		msd.top_cover,
+		msd.product_ids
+	FROM
+		bu_member_dynamic md,
+		bu_member_info mi,
+		bu_mcht_shop_dynamic msd,
+		bu_mcht_info m
+	WHERE
+		mi.del_flag = '0'
+	AND mi.del_flag = '0'
+	AND msd.del_flag = '0'
+	AND m.del_flag = '0'
+	<if test="auditStatus != null" >
+		AND msd.audit_status = #{auditStatus}
+	</if>
+	AND md.member_id = mi.id
+	AND md.mcht_shop_dynamic_id = msd.id
+	AND msd.mcht_id = m.id
+	AND md.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getMchtShopDynamic" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		md.id member_dynamic_id,
+		msd.id mcht_shop_dynamic_id,
+		msd.mcht_id,
+		msd.content,
+		md.read_count,
+		msd.product_ids
+	FROM
+		bu_member_dynamic md,
+		bu_mcht_shop_dynamic msd
+	WHERE
+		md.del_flag = '0'
+	AND msd.del_flag = '0'
+	AND md.mcht_shop_dynamic_id = msd.id
+	AND msd.audit_status = '1'
+	<if test="memberDynamicId != null" >
+		AND md.id != #{memberDynamicId}
+	</if>
+	<if test="memberId != null" >
+		AND md.member_id = #{memberId}
+	</if>
+	<if test="orderByClause != null" >
+      ORDER BY ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  	
+</mapper>

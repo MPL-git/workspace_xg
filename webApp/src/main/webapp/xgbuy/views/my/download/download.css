@@ -1,0 +1,68 @@
+.my-download {
+	background: -webkit-linear-gradient(top, #ffca61, #ff8357);
+	background: -moz-linear-gradient(top, #ffca61, #ff8357);
+	background: -ms-linear-gradient(top, #ffca61, #ff8357);
+}
+.my-download .content {
+	background: url(resources/bg.png) no-repeat;
+	background-size: cover;
+}
+.my-download .content .con-1 {
+	width: 6.3rem;
+	height: 4.29rem;
+	margin: 1.15rem auto 0;
+	background: url(resources/1.png) no-repeat;
+	background-size: contain;
+}
+.my-download .content .con-2 {
+	width: 6.18rem;
+	height: 4.17rem;
+	margin: .77rem auto 0;
+	background: url(resources/2.png) no-repeat;
+	background-size: contain;
+}
+.my-download .content a {
+	width: 2.6rem;
+	height: .6rem;
+	margin-bottom: .84rem;
+	border-radius: .3rem;
+	background: #e84743;
+	font-size: .3rem;
+	color: #fff;
+}
+.my-download .content .con-1 a {
+	margin-bottom: .76rem;
+}
+
+.popup-download-wx .popup-center {
+	width: 6.6rem;
+	padding: .2rem 0 .6rem;
+}
+.popup-download-wx h3 {
+	height: 1.46rem;
+	font-size: .5rem;
+	font-weight: bold;
+}
+.popup-download-wx dt,
+.popup-download-wx dd {
+	width: 2.6rem;
+	height: 2.2rem;
+}
+.popup-download-wx dt img {
+	width: auto;
+	height: 100%;
+	pointer-events: auto;
+}
+.popup-download-wx dd {
+	font-size: .26rem;
+	color: #999;
+}
+.popup-download-wx dd:before {
+	display: block;
+	width: 1.4rem;
+	height: 1.38rem;
+	margin-bottom: .15rem;
+	content: '';
+	background: url(resources/finger.png) no-repeat;
+	background-size: contain;
+}

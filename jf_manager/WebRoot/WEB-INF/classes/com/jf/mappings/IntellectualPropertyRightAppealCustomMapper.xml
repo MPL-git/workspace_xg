@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.IntellectualPropertyRightAppealCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.IntellectualPropertyRightAppealCustom"  extends="com.jf.dao.IntellectualPropertyRightAppealMapper.BaseResultMap">
+  	<result column="identity_type" property="identityType" jdbcType="VARCHAR" />
+  	<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="property_right_belong" property="propertyRightBelong" jdbcType="VARCHAR" />
+    <result column="appeal_type_desc" property="appealTypeDesc" jdbcType="VARCHAR" />
+    <result column="accept_status_desc" property="acceptStatusDesc" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="property_right_type" property="propertyRightType" jdbcType="VARCHAR" />
+    <result column="complain_id" property="complainId" jdbcType="INTEGER" />
+    <result column="complain_status" property="complainStatus" jdbcType="VARCHAR" />
+    <result column="complain_date" property="complainDate" jdbcType="TIMESTAMP" />
+    <result column="prosecution_end_date" property="prosecutionEndDate" jdbcType="TIMESTAMP" />
+    <result column="prosecution_id" property="prosecutionId" jdbcType="INTEGER" />
+    <result column="prosecution_status" property="prosecutionStatus" jdbcType="VARCHAR" />
+    <result column="property_right_type_desc" property="propertyRightTypeDesc" jdbcType="VARCHAR" />
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+    <result column="complain_status_desc" property="complainStatusDesc" jdbcType="VARCHAR" />
+    <result column="remark_to_inner" property="remarkToInner" jdbcType="VARCHAR" />
+    <result column="prosecution_inner_remarks" property="prosecutionInnerRemarks" jdbcType="VARCHAR" />
+    <result column="appeal_reason_desc" property="appealReasonDesc" jdbcType="VARCHAR" />
+    <result column="prosecution_status_desc" property="prosecutionStatusDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and a.${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and a.${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and a.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and a.${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    a.id, a.obligee_id, a.intellectual_property_right_id, a.mcht_id, a.appeal_reason, a.appeal_type, a.relevant_value, 
+    a.reason_desc, a.accept_status, a.remarks_to_obligee, a.remarks_to_mcht, a.inner_remarks, a.commit_date, 
+    a.status, a.status_date, a.complain_end_date, a.staff_id, a.create_by, a.create_date, a.update_by, 
+    a.update_date, a.remarks, a.del_flag,
+    FUN_GET_STATUS_DESC("PROPERTY_RIGHT_APPEAL", "APPEAL_TYPE", a.appeal_type) appeal_type_desc,
+    FUN_GET_STATUS_DESC("PROPERTY_RIGHT_APPEAL", "ACCEPT_STATUS", a.accept_status) accept_status_desc
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.IntellectualPropertyRightAppealCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+    t1.property_right_belong,
+    t2.mobile,
+    t2.identity_type,
+    t3.STAFF_NAME,
+    t4.mcht_code
+    from bu_intellectual_property_right_appeal a
+    left join bu_intellectual_property_right t1 on t1.id = a.intellectual_property_right_id
+    left join bu_obligee t2 on t2.id = a.obligee_id
+    left join sys_staff_info t3 on t3.STAFF_ID = a.staff_id
+    left join bu_mcht_info t4 on t4.id = a.mcht_id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="mobile != null and mobile != ''" >
+      and t2.mobile like CONCAT('%',#{mobile},'%')
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />,
+    t4.mcht_code,
+    FUN_GET_STATUS_DESC("PROPERTY_RIGHT_APPEAL", "APPEAL_REASON", a.appeal_reason) appeal_reason_desc
+    from bu_intellectual_property_right_appeal a
+    left join bu_mcht_info t4 on t4.id = a.mcht_id
+    where a.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.IntellectualPropertyRightAppealCustomExample" resultType="java.lang.Integer" >
+    select count(*) 
+    from bu_intellectual_property_right_appeal a
+    left join bu_obligee t2 on t2.id = a.obligee_id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="mobile != null and mobile != ''" >
+      and t2.mobile like CONCAT('%',#{mobile},'%')
+    </if>
+  </select>
+  
+  <select id="selectAllByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.IntellectualPropertyRightAppealCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+	    t1.mobile,
+		t1.identity_type,
+		t2.property_right_type,
+		t3.STAFF_NAME,
+		t4.complain_id,
+		t4.complain_status,
+		t4.complain_date,
+		t4.prosecution_end_date,
+		t5.prosecution_id,
+		t5.prosecution_status,
+		t5.remark_to_inner,
+		t5.prosecution_inner_remarks,
+		FUN_GET_STATUS_DESC ( "BU_INTELLECTUAL_PROPERTY_RIGHT", "PROPERTY_RIGHT_TYPE", t2.property_right_type) property_right_type_desc,
+		FUN_GET_STATUS_DESC ( "PROPERTY_RIGHT_APPEAL", "STATUS", a.STATUS ) status_desc,
+		FUN_GET_STATUS_DESC ( "PROPERTY_RIGHT_COMPLAIN", "STATUS", t4.complain_status ) complain_status_desc,
+		FUN_GET_STATUS_DESC ( "PROPERTY_RIGHT_PROSECUTION", "STATUS", t5.prosecution_status ) prosecution_status_desc
+	FROM
+		bu_intellectual_property_right_appeal a
+		LEFT JOIN bu_obligee t1 ON t1.id = a.obligee_id
+		LEFT JOIN bu_intellectual_property_right t2 ON t2.id = a.intellectual_property_right_id
+		LEFT JOIN sys_staff_info t3 ON t3.STAFF_ID = a.staff_id
+		LEFT JOIN ( 
+			SELECT 
+			p.id AS complain_id,
+			p.intellectual_property_right_appeal_id, 
+			p.STATUS AS complain_status, 
+			p.complain_date,
+			p.prosecution_end_date
+			FROM bu_property_right_complain p 
+		)t4 ON t4.intellectual_property_right_appeal_id = a.id
+		LEFT JOIN ( 
+			SELECT 
+			p.id AS prosecution_id,
+			p.intellectual_property_right_appeal_id, 
+			p.STATUS AS prosecution_status,
+			p.remark_to_inner,
+			p.inner_remarks as prosecution_inner_remarks
+			FROM bu_property_right_prosecution p 
+		)t5 ON t5.intellectual_property_right_appeal_id = a.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="mobile != null and mobile != ''" >
+      and t1.mobile like CONCAT('%',#{mobile},'%')
+    </if>
+    <if test="propertyRightType != null and propertyRightType != ''" >
+      and t2.property_right_type = #{propertyRightType}
+    </if>
+    <if test="complainStatus != null and complainStatus != ''" >
+        and a.accept_status = '1'
+        <choose>
+            <when test="complainStatus == -1">
+                and t4.complain_id is null and a.complain_end_date &gt; #{presentTime}
+            </when>
+            <when test="complainStatus == 99">
+                and ((t4.complain_id is null or t4.complain_status = '2') and a.complain_end_date &lt; #{presentTime})
+            </when>
+            <otherwise>
+                and t4.complain_status = #{complainStatus}
+                <if test="complainStatus == 2 " >
+                    and a.complain_end_date &gt; #{presentTime}
+                </if>
+            </otherwise>
+        </choose>
+    </if>
+    <if test="prosecutionStatus != null and prosecutionStatus != ''" >
+    	and a.accept_status = '1'
+    	<choose>
+            <when test="prosecutionStatus == -1">
+                and t5.prosecution_id is null and t4.prosecution_end_date &gt; #{presentTime}
+            </when>
+            <when test="prosecutionStatus == 99">
+                and a.accept_status = '1' and t5.prosecution_id is null and t4.prosecution_end_date &lt; #{presentTime}
+            </when>
+            <otherwise>
+                and t5.prosecution_status = #{prosecutionStatus}
+                <if test="prosecutionStatus == 1 " >
+                    and t4.prosecution_end_date &gt; #{presentTime}
+                </if>
+            </otherwise>
+        </choose>
+    </if>
+    <if test="transmitStatus != null and transmitStatus != ''">
+    	and a.accept_status = '1'
+    	<choose>
+            <when test="transmitStatus == 1">
+                and (t4.complain_id is null and a.complain_end_date &gt; #{presentTime}
+      			or t4.complain_status = '1' or t4.complain_status = '2')
+            </when>
+            <when test="transmitStatus == 2">
+                and a.accept_status = '1' and t4.complain_status = '4'
+            </when>
+            <otherwise>
+                and (t4.complain_id is null and a.complain_end_date &lt; #{presentTime}
+      			or t4.complain_status = '3')
+            </otherwise>
+        </choose>
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countAllByExample" parameterType="com.jf.entity.IntellectualPropertyRightAppealCustomExample" resultType="java.lang.Integer" >
+    select count(*) 
+	FROM
+		bu_intellectual_property_right_appeal a
+		LEFT JOIN bu_obligee t1 ON t1.id = a.obligee_id
+		LEFT JOIN bu_intellectual_property_right t2 ON t2.id = a.intellectual_property_right_id
+		LEFT JOIN sys_staff_info t3 ON t3.STAFF_ID = a.staff_id
+		LEFT JOIN ( 
+			SELECT 
+			p.id AS complain_id,
+			p.intellectual_property_right_appeal_id, 
+			p.STATUS AS complain_status, 
+			p.complain_date,
+			p.prosecution_end_date
+			FROM bu_property_right_complain p 
+		)t4 ON t4.intellectual_property_right_appeal_id = a.id
+		LEFT JOIN ( 
+			SELECT 
+			p.id AS prosecution_id,
+			p.intellectual_property_right_appeal_id, 
+			p.STATUS AS prosecution_status
+			FROM bu_property_right_prosecution p 
+		)t5 ON t5.intellectual_property_right_appeal_id = a.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="mobile != null and mobile != ''">
+        and t1.mobile like CONCAT('%',#{mobile},'%')
+    </if>
+    <if test="propertyRightType != null and propertyRightType != ''">
+        and t2.property_right_type = #{propertyRightType}
+    </if>
+    <if test="complainStatus != null and complainStatus != ''" >
+        and a.accept_status = '1'
+        <choose>
+            <when test="complainStatus == -1">
+                and t4.complain_id is null and a.complain_end_date &gt; #{presentTime}
+            </when>
+            <when test="complainStatus == 99">
+                and ((t4.complain_id is null or t4.complain_status = '2') and a.complain_end_date &lt; #{presentTime})
+            </when>
+            <otherwise>
+                and t4.complain_status = #{complainStatus}
+                <if test="complainStatus == 2 " >
+                    and a.complain_end_date &gt; #{presentTime}
+                </if>
+            </otherwise>
+        </choose>
+    </if>
+    <if test="prosecutionStatus != null and prosecutionStatus != ''" >
+    	and a.accept_status = '1'
+    	<choose>
+            <when test="prosecutionStatus == -1">
+                and t5.prosecution_id is null and t4.prosecution_end_date &gt; #{presentTime}
+            </when>
+            <when test="prosecutionStatus == 99">
+                and a.accept_status = '1' and t5.prosecution_id is null and t4.prosecution_end_date &lt; #{presentTime}
+            </when>
+            <otherwise>
+                and t5.prosecution_status = #{prosecutionStatus}
+                <if test="prosecutionStatus == 1 " >
+                    and t4.prosecution_end_date &gt; #{presentTime}
+                </if>
+            </otherwise>
+        </choose>
+    </if>
+    <if test="transmitStatus != null and transmitStatus != ''">
+    	and a.accept_status = '1'
+    	<choose>
+            <when test="transmitStatus == 1">
+                and (t4.complain_id is null and a.complain_end_date &gt; #{presentTime}
+      			or t4.complain_status = '1' or t4.complain_status = '2')
+            </when>
+            <when test="transmitStatus == 2">
+                and a.accept_status = '1' and t4.complain_status = '4'
+            </when>
+            <otherwise>
+                and (t4.complain_id is null and a.complain_end_date &lt; #{presentTime}
+      			or t4.complain_status = '3')
+            </otherwise>
+        </choose>
+    </if>
+  </select>
+  
+</mapper>

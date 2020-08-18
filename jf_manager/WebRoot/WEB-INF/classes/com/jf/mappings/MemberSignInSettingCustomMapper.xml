@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberSignInSettingCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberSignInSettingCustom"  extends="com.jf.dao.MemberSignInSettingMapper.BaseResultMap">
+    <result column="reward_type_desc" property="rewardTypeDesc" jdbcType="VARCHAR" />
+    <result column="reward_name" property="rewardName" jdbcType="VARCHAR" />
+    <result column="sign_in_count" property="signInCount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    t.*,
+    FUN_GET_STATUS_DESC("BU_SIGN_IN_SETTING","REWARD_TYPE", (select sis.reward_type from bu_sign_in_setting sis where sis.id = t.sign_in_setting_id and sis.del_flag='0')) reward_type_desc,
+    (select sis.reward_name from bu_sign_in_setting sis where sis.id = t.sign_in_setting_id and sis.del_flag='0')reward_name,
+    (select mmsi.sign_in_count from bu_member_month_sign_in mmsi,bu_sign_in_setting sis where mmsi.member_id = t.member_id and mmsi.sign_in_manage_id = sis.sign_in_manage_id and sis.id = t.sign_in_setting_id)sign_in_count
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberSignInSettingCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_sign_in_setting t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.MemberSignInSettingCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_sign_in_setting t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="countSignInMemberManageList" parameterType="java.util.HashMap" resultType="java.lang.Integer" >
+    SELECT 
+    	count(DISTINCT mi.id) 
+    from 
+	    bu_member_sign_in_setting msis,
+	    bu_member_info mi 
+    where 
+    	msis.member_id = mi.id 
+		AND	msis.del_flag = '0'
+		<if test="memberId!=null">
+		AND mi.id=#{memberId} 
+		</if>
+		<if test="sign_in_time_begin!=null">
+		AND msis.sign_in_time<![CDATA[ >= ]]>#{sign_in_time_begin} 
+		</if>
+		<if test="sign_in_time_end!=null">
+		AND msis.sign_in_time<![CDATA[ <= ]]>#{sign_in_time_end} 
+		</if>
+		<if test="endYear!=null and endMonth!=null">
+		   <if test="signinCount!=null">
+		    AND EXISTS (select mms.member_id from bu_member_month_sign_in mms,bu_sign_in_manage sm where mms.member_id=mi.id and mms.sign_in_manage_id=sm.id and mms.del_flag='0' and sm.del_flag='0' and sm.year=${endYear} and sm.month=${endMonth} and mms.sign_in_count<![CDATA[ >= ]]>${signinCount})    
+		   </if>
+		   <if test="cumulativesigninCount !=null">
+		    AND EXISTS (select mcs.member_id from bu_member_cumulative_sign_in mcs,bu_cumulative_sign_in_setting csis,bu_sign_in_manage sim where mcs.member_id=mi.id and mcs.cumulative_sign_in_setting_id=csis.id and csis.del_flag='0' and mcs.del_flag='0' and sim.del_flag='0' and csis.cumulative_sign_in_count<![CDATA[ >= ]]>${cumulativesigninCount} and csis.sign_in_manage_id=sim.id and sim.year=${endYear} and sim.month=${endMonth})    
+		   </if>
+		</if>
+  </select>
+  
+  <select id="selectSignInMemberManageList" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+	SELECT
+		msis.member_id,
+		mi.nick,
+		MAX(msis.sign_in_time) last_sign_in_time,
+		(SELECT SUM(mad.amount) FROM bu_member_account_dtl mad,bu_member_account ma WHERE mad.acc_id = ma.id AND ma.member_id = msis.member_id AND mad.tally_mode='1' AND mad.biz_type='1' AND mad.del_flag='0')amount,
+		(select COUNT(1) from bu_withdraw_order wo WHERE wo.member_id = msis.member_id AND wo.del_flag='0' AND wo.`status` = '4' AND wo.withdraw_type='2')withdraw_count,
+		(select IFNULL(SUM(a.integral),0) FROM bu_integral_dtl a,bu_member_account ma WHERE a.acc_id = ma.id AND ma.member_id = msis.member_id AND a.tally_mode='1' AND a.type IN ('13','14') AND a.del_flag='0' AND ma.del_flag='0')integral,
+		(SELECT COUNT(mc.id) FROM bu_member_coupon mc WHERE mc.member_id = msis.member_id AND mc.del_flag='0' AND mc.receive_type IN ('2','3'))coupon_count,
+		(SELECT COUNT(co.id) FROM bu_combine_order co WHERE co.member_id = msis.member_id AND co.order_type = '5' AND co.del_flag='0')product_count,
+		(SELECT COUNT(co.id) FROM bu_combine_order co WHERE co.member_id = msis.member_id AND co.pay_status = '1' AND co.total_pay_amount >0 AND co.del_flag='0')total_pay_amount,
+		(select bl.id from bu_black_list bl where bl.member_id = mi.id and bl.del_flag='0' and bl.black_type = '4' and bl.black_to_date>NOW())black_id
+	FROM
+		bu_member_sign_in_setting msis,
+		bu_member_info mi
+	WHERE
+		msis.member_id = mi.id 
+		AND	msis.del_flag = '0'
+		<if test="memberId!=null">
+		AND mi.id=#{memberId} 
+		</if>
+		<if test="sign_in_time_begin!=null">
+		AND msis.sign_in_time<![CDATA[ >= ]]>#{sign_in_time_begin} 
+		</if>
+		<if test="sign_in_time_end!=null">
+		AND msis.sign_in_time<![CDATA[ <= ]]>#{sign_in_time_end} 
+		</if>
+		<if test="endYear!=null and endMonth!=null">
+		   <if test="signinCount!=null">
+		    AND EXISTS (select mms.member_id from bu_member_month_sign_in mms,bu_sign_in_manage sm where mms.member_id=mi.id and mms.sign_in_manage_id=sm.id and mms.del_flag='0' and sm.del_flag='0' and sm.year=${endYear} and sm.month=${endMonth} and mms.sign_in_count<![CDATA[ >= ]]>${signinCount})    
+		   </if>
+		   <if test="cumulativesigninCount !=null">
+		    AND EXISTS (select mcs.member_id from bu_member_cumulative_sign_in mcs,bu_cumulative_sign_in_setting csis,bu_sign_in_manage sim where mcs.member_id=mi.id and mcs.cumulative_sign_in_setting_id=csis.id and csis.del_flag='0' and mcs.del_flag='0' and sim.del_flag='0' and csis.cumulative_sign_in_count<![CDATA[ >= ]]>${cumulativesigninCount} and csis.sign_in_manage_id=sim.id and sim.year=${endYear} and sim.month=${endMonth})    
+		   </if>
+		</if>
+		GROUP BY msis.member_id
+		limit #{limitStart},#{limitSize}	
+  </select>
+</mapper>

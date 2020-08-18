@@ -1,0 +1,188 @@
+.allowance .head {
+	font-size: .26rem;
+	color: #222;
+	padding: .28rem;
+	width: 100%;
+}
+
+.allowance .allowanceBalance {
+	font-size: .8rem;
+	color: #222;
+	margin-top: .6rem;
+	text-align: center;
+}
+
+.allowance .desc {
+	font-size: .24rem;
+	margin-top: .55rem;
+	line-height: .44rem;
+	padding: 0 .96rem;
+}
+
+.allowance .btns {
+	padding: 0 .56rem;
+	margin-top: .4rem;
+	margin-bottom: .35rem;
+}
+
+.allowance .btns button {
+	width: 3rem;
+	height: .7rem;
+	border-radius: .35rem;
+	border: 1px solid #E33030;
+	border-radius: .35rem;
+	color: #E33030;
+	font-size: .26rem;
+}
+
+.allowance .btns button.finish {
+	width: 5.60rem;
+	height: .70rem;
+	background: rgba(204, 204, 204, 1);
+	border-radius: .35rem;
+	color: #fff;
+	font-size: .26rem;
+	border:none;
+}
+
+.allowance .fs30 {
+	height: .84rem;
+	background: #f4f4f4;
+	color: #222;
+	font-size: .24rem;
+}
+
+.allowance .fs30 .fw {
+	margin: 0 .2rem;
+}
+
+.tab-nav {
+	background: #fff;
+	z-index: 1;
+}
+.tab-nav a{
+	height: .76rem;
+	-webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    position: relative;
+	padding: 0 .25rem;
+}
+.tab-nav a b{
+    position: absolute;
+    bottom: 0;
+    left: .2rem;
+    width: calc(100% - .4rem);
+    height: .04rem;
+    opacity: 0;
+    background: #FF0000;
+}
+.tab-nav a.active b{
+	opacity: 1;
+}
+
+/*商品列表*/
+.product {
+	/* padding-top: .2rem; */
+}
+
+.product a {
+	float: left;
+	overflow: hidden;
+	width: calc(50% - .3rem);
+	height: 5.25rem;
+	margin: 0 0 .2rem .2rem;
+	border: 1px solid #e6e6e6;
+	background: #fff;
+	box-sizing: border-box;
+}
+
+.product .con-1 {
+	position: relative;
+	height: 3.43rem;
+	background: #f1f1f1;
+}
+
+.product .con-1 div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	width: 1.2rem;
+	height: 1.2rem;
+	margin: -.6rem 0 0 -.6rem;
+	background: rgba(0, 0, 0, .5);
+	font-size: .26rem;
+	color: #fff;
+	border-radius: 100%;
+}
+
+.product .con-2 {
+	padding: .12rem .2rem 0;
+	font-size: .28rem;
+	line-height: .34rem;
+}
+
+.product .con-2 div {
+	position: relative;
+	left: -.05rem;
+	height: .54rem;
+	width: calc(100% + .05rem);
+	margin-top: .2rem;
+	white-space: nowrap;
+}
+
+.product .con-2 p {
+	overflow: hidden;
+	height: .66rem;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.product .con-2 strong {
+	font-size: .36rem;
+	font-weight: bold;
+	margin-right: .02rem;
+}
+
+.product .con-2 strong:before {
+	content: '¥';
+	margin-right: .03rem;
+}
+
+.product .con-2 mark.btn-f50 {
+	display: none;
+}
+.product .decorate-svip {
+	position: relative;
+	top: -.4rem;
+	height: 0.4rem;
+}
+.product .decorate-svip img {
+	width: .72rem;
+	height: .22rem;
+	margin-top: 0;
+}
+
+.product .decorate-svip span {
+	margin-left: .15rem;
+	font-size: .26rem;
+}
+.product .arrival-span {
+	font-size: .22rem;
+}
+
+.product .arrival-span strong {
+	color: #333;
+}
+
+.product .arrival-btn {
+	display: block;
+	height: .56rem;
+	background: linear-gradient(90deg, rgba(109, 21, 255, 0.96), rgba(192, 42, 255, 0.96));
+	border-radius: 28rem;
+	font-size: .28rem;
+	width: 100%;
+	color: #fff;
+	margin-top: .2rem;
+}

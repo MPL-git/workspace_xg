@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SpreadNameCustomMapper" >
+   <insert id="insertFromTrackData">
+		   INSERT INTO bu_spread_name (
+			`spread_name`,
+			`device_type`,
+			`channel`,
+			`is_effect`,
+			`create_date`,
+			`del_flag`
+			) SELECT
+				td_tmp.spreadname,
+			  td_tmp.device_type,
+				td_tmp.channel,
+			  '1',
+			  SYSDATE(),
+			  '0'	
+			FROM
+				(
+					SELECT DISTINCT
+						td.spreadname,
+						td.channel,
+			
+					IF (td.idfa IS NULL, '2', '1') device_type
+					FROM
+						bu_track_data td
+					WHERE
+						td.type = '1'
+					AND	td.id > (
+							SELECT
+								CAST(pc.param_value AS SIGNED)
+							FROM
+								sys_param_cfg pc
+							WHERE
+								pc.param_code = 'CURRENT_SPREAD_NAME_EXTRACT_ID'
+						) and td.spreadname is not null and td.spreadname <![CDATA[ <> ]]> ''
+				) td_tmp
+			WHERE
+				NOT EXISTS (
+					SELECT
+						sn.id
+					FROM
+						bu_spread_name sn
+					WHERE
+						sn.spread_name = td_tmp.spreadname
+					AND sn.channel = td_tmp.channel
+					AND sn.device_type = td_tmp.device_type
+					AND sn.del_flag = '0'
+				)
+  </insert>
+   <update id="batchUpdateSeqNo">
+		update bu_spread_name sn set sn.seq_no=sn.id*100 where sn.seq_no is null
+  </update>
+</mapper>

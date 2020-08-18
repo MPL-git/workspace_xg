@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductModuleTypeCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductModuleTypeCustom"  extends="com.jf.dao.ProductModuleTypeMapper.BaseResultMap" >
+    <result column="product_count" property="productCount" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="getProductModuleTypeCustomList" parameterType="java.util.Map" resultType="com.jf.entity.ProductModuleTypeCustom">
+  		select
+  			t.*,
+			(select count(1) from bu_module_item mi where mi.decorate_module_id = #{decorateModuleId} and mi.product_module_type_id = t.id and mi.del_flag = '0')product_count
+  		from
+  			bu_product_module_type t
+  		where
+  			t.decorate_module_id = #{decorateModuleId} and t.del_flag='0'
+  		order by ifnull(seq_no,99999) asc,id desc
+  </select>
+  	
+</mapper>

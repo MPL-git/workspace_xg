@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CouponCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CouponCustom"  extends="com.jf.dao.CouponMapper.BaseResultMap">
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+ 	<result column="use_quantity" property="useQuantity" jdbcType="INTEGER" />
+    <result column="expiry_type_desc" property="expiryTypeDesc" jdbcType="VARCHAR" />
+    <result column="min_member_group_name" property="minMemberGroupName" jdbcType="VARCHAR" />
+    <result column="rec_type_desc" property="recTypeDesc" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="second_num" property="secondNum" jdbcType="INTEGER" />
+    <result column="sum_coupon_exchange" property="sumCouponExchange" jdbcType="INTEGER" />
+    <result column="sum_coupon_is_exchange" property="sumCouponIsExchange" jdbcType="INTEGER" />
+    <result column="activity_area_name" property="activityAreaName" jdbcType="VARCHAR" />
+    <result column="activity_area_benefit_point" property="activityAreaBenefitPoint" jdbcType="VARCHAR" />
+    <result column="activity_area_begin_time" property="activityAreaABeginTime" jdbcType="VARCHAR" />
+    <result column="activity_area_end_time" property="activityAreaEndTime" jdbcType="VARCHAR" />
+    <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+
+	<result column="mcht_name" property="mchtName" jdbcType="VARCHAR" />
+	<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+	<result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+     <result column="product_art_no" property="productArtNo" jdbcType="VARCHAR" />
+        <result column="product_brand_name" property="productBrandName" jdbcType="VARCHAR" />
+     
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    a.*,
+	FUN_GET_STATUS_DESC("BU_COUPON", "STATUS", a.status) status_desc,
+	(select count(1) from bu_member_coupon b where b.coupon_id = a.id and b.status = '1' and b.is_give = '0' ) use_quantity,
+	FUN_GET_STATUS_DESC("BU_COUPON", "EXPIRY_TYPE", a.expiry_type) expiry_type_desc,
+	(select b.name from bu_member_group b where b.id=a.min_member_group) min_member_group_name,
+	FUN_GET_STATUS_DESC("BU_COUPON", "REC_TYPE", a.rec_type) rec_type_desc,
+	(select b.staff_name from sys_staff_info b where b.staff_id=a.create_by) staff_name,
+	unix_timestamp(now())-unix_timestamp(rec_end_date) as second_num,
+	(select count(1) from bu_coupon_exchange_code ec where ec.coupon_id = a.id and ec.del_flag = '0') sum_coupon_exchange,
+	(select count(1) from bu_coupon_exchange_code ec where ec.coupon_id = a.id and ec.is_exchange = '1' and ec.del_flag = '0') sum_coupon_is_exchange,
+	(select ba.name from bu_activity_area ba where ba.del_flag = '0' and ba.id = a.activity_area_id) activity_area_name,
+	(select ba.benefit_point from bu_activity_area ba where ba.del_flag = '0' and ba.id = a.activity_area_id) activity_area_benefit_point,
+	(select ba.activity_begin_time from bu_activity_area ba where ba.del_flag = '0' and ba.id = a.activity_area_id) activity_area_begin_time,
+	(select ba.activity_end_time from bu_activity_area ba where ba.del_flag = '0' and ba.id = a.activity_area_id) activity_area_end_time,
+	(SELECT GROUP_CONCAT(pt.name) FROM bu_product_type pt WHERE pt.status='1' and pt.del_flag='0' and pt.t_level=1 and FIND_IN_SET(pt.id,a.type_ids))product_type_name,
+	(select mi.mcht_code from bu_mcht_info mi where a.mcht_id = mi.id and mi.del_flag='0')mcht_code,
+	(select mi.shop_name from bu_mcht_info mi where a.mcht_id = mi.id and mi.del_flag='0')mcht_name,
+	(select pc.pic from bu_product_pic pc where a.type_ids=pc.product_id and pc.del_flag='0' and pc.is_default=1) pic,
+    (select p.code from bu_product p where a.type_ids=p.id and p.del_flag='0')product_code,
+    (select p.name from bu_product p where a.type_ids=p.id and p.del_flag='0')product_name,
+    (select p.art_no from bu_product p,bu_product_brand pb where a.type_ids=p.id and p.brand_id=pb.id and pb.del_flag='0') product_art_no,
+    (select pb.name from bu_product_brand pb,bu_product p  where p.id =a.type_ids  and p.brand_id = pb.id and pb.del_flag='0') product_brand_name
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CouponExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_coupon a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_coupon a
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.CouponExample" resultType="java.lang.Integer" >
+    select count(*) from bu_coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectByActivityAreaIdList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select 
+    <include refid="Base_Column_List" />
+    from bu_coupon a
+    where a.activity_area_id = #{activityAreaId,jdbcType=INTEGER} and a.del_flag=0
+  </select>
+  
+    
+    <select id="effectiveCouponCount" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+      select COUNT(1) from bu_coupon c where c.del_flag='0' and c.status='1' and !(c.rec_end_date <![CDATA[ < ]]> #{recbeginDate} OR c.rec_begin_date <![CDATA[ > ]]>#{recendDate}) and ((c.is_support_coupon_rain='1' and c.rang='1' and #{includePlatformCoupon}=1) or (#{includeProductCoupon}=1 and c.coupon_type = '4')) and c.grant_quantity<![CDATA[ > ]]>c.rec_quantity
+    </select>
+
+    <select id="platformSum" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+      select IFNULL(SUM(c.grant_quantity - c.rec_quantity),0) from bu_coupon c where c.del_flag='0' and c.rang='1' and c.is_support_coupon_rain='1' and c.status='1' and !(c.rec_end_date <![CDATA[ < ]]> #{recbeginDate} OR c.rec_begin_date <![CDATA[ > ]]>#{recendDate})
+    </select>
+    
+    <select id="commoditySum" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+      select IFNULL(SUM(c.grant_quantity - c.rec_quantity),0) from bu_coupon c where c.del_flag='0' and c.coupon_type='4' and c.status='1' and !(c.rec_end_date <![CDATA[ < ]]> #{recbeginDate} OR c.rec_begin_date <![CDATA[ > ]]>#{recendDate}) 
+    </select>
+</mapper>

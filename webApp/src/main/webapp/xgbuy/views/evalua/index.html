@@ -1,0 +1,193 @@
+<div class="page evalua flex dc bgf4" data-title="评价" data-id="evalua">
+	<link rel="stylesheet" href="evalua/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">评价</p>
+		<div class="fn">
+			<a class="click-show" onclick="getUrl('link/information.html?type=6','self');">评价规则</a>
+		</div>
+	</header>
+
+	<!-- 规则 -->
+	<div class="popup popup-rule popup-evalua-rule" onclick="closeSelf(this)">
+		<div class="popup-evalua-con" onclick="stopSelf()">
+			<div class="tab-body"></div>
+		</div>
+	</div>
+
+	<!-- 评价成功 -->
+	<div class="popup popup-integral popup-evalua-integral" onclick="back(false,true)">
+		<div class="popup-evalua-con" onclick="stopSelf()">
+			<div class="tab-integral">
+				<div class="close-x" onclick="back(false,true)"></div>
+				<div class="flex ac jc tab-title">评价成功</div>
+				<div class="flex ac jc tab-content">
+					恭喜你获得 <p class="f50 evalua_integral">0</p>积分
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<form class="fg flex dc">
+		<div class="content fg scroll-y"></div>
+		<input class="fn btn-red" type="submit" value="提交评价" disabled="disabled">
+	</form>
+
+	<script id="evalua_tpl_rules" type="text/html">
+		<div class="tab-header flex ac">
+			<img src="../static/images/evalua/draw-rl.png" alt="">活动规则
+			<div class="close-x" onclick="closeSelf(this)"></div>
+		</div>
+		<div class="tab-main">
+			{{each returnData value i}}
+			<div class="flex jc main-msg">
+				<div class="black flex ac jc">{{i+1}}</div>
+				<div class="main-text">
+					<p>{{value.title}}</p>
+					<p>{{value.content}}</p>
+				</div>
+			</div>
+			{{/each}}
+		</div>
+	</script>
+
+	<script id="evalua_tpl" type="text/html">
+		<div class="touchfix w75">
+			{{each dataList value i}}
+			<div class="main mb20" data-id="{{value.orderDtlId}}">
+				<!-- 商品描述与评分 -->
+				<div class="evalua-goods bb1">
+					<dl class="flex">
+						<dt class="fn img-cover">
+							<img src="{{value.skuPic}}">
+						</dt>
+						<dd class="fg flex ac">
+							{{if value.append}}
+							<h3>{{value.productName}}</h3>
+							{{else}}
+							<h3 class="fn">商品描述</h3>
+							<div class="evalua-star productScore star-{{value.productScore}} flex" data-val="{{value.productScore}}">
+								<i></i>
+								<i></i>
+								<i></i>
+								<i></i>
+								<i></i>
+							</div>
+								{{if value.productScore == 5}}
+									<span class="evalua-text ac">非常好</span>
+								{{else if value.productScore == 4}}
+									<span class="evalua-text ac">好</span>
+								{{else if value.productScore == 3}}
+									<span class="evalua-text ac">一般</span>
+								{{else if value.productScore == 2}}
+									<span class="evalua-text ac">差</span>
+								{{else if value.productScore == 1}}
+									<span class="evalua-text ac">非常差</span>
+								{{else if value.productScore == 0}}
+									<span class="evalua-text ac">&nbsp;</span>
+								{{/if}}
+							{{/if}}
+						</dd>
+					</dl>
+				</div>
+
+				{{if value.append}}
+				<!-- 首次评价与规格 -->
+				<div class="spec pd20 bb1">
+					<div>{{value.content}}</div>
+
+					{{if value.commentPics.length}}
+					<div class="list-pic">
+						{{each value.commentPics val}}
+						<div class="img-pre img-cover" onclick="previewPic(this)">
+							<img src="{{val}}">
+						</div>
+						{{/each}}
+					</div>
+					{{/if}}
+
+					<p class="flex ac c9">{{value.productPropDesc}}</p>
+				</div>
+				{{/if}}
+
+				<!-- 评价与追评 -->
+				<div class="text pd20">
+					{{if value.append}}
+					<em class="f50">发表追评</em>
+					{{/if}}
+					<textarea placeholder="说说您对商品的体验吧！您最多可输入200个字哦~" maxlength="200"></textarea>
+				</div>
+
+				<!-- 上传图片 -->
+				<div class="image" data-pic="">
+					<div class="img-box"></div>
+
+					<div class="img-add">
+						<p>{{value.picNum}}/{{value.picMax}}</p>
+						<input type="file" accept="image/gif,image/jpg,image/jpeg,image/bmp,image/png">
+					</div>
+				</div>
+				{{if !value.append}}
+				<div class="c9 img-integral">添加图片有机会得积分!</div>
+				{{/if}}
+			</div>
+			{{/each}}
+
+			{{if type == 1}}
+			<!-- 店铺评分 -->
+			<div class="evalua-shop pd20">
+				<h3 class="flex ac">店铺评分</h3>
+				<div class="flex ac">
+					<span>卖家服务</span>
+					<div class="evalua-star mchtScore star-{{mchtScore}} flex">
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+					</div>
+						{{if mchtScore == 5}}
+							<span class="evalua-text ac">非常好</span>
+						{{else if mchtScore == 4}}
+							<span class="evalua-text ac">好</span>
+						{{else if mchtScore == 3}}
+							<span class="evalua-text ac">一般</span>
+						{{else if mchtScore == 2}}
+							<span class="evalua-text ac">差</span>
+						{{else if mchtScore == 1}}
+							<span class="evalua-text ac">非常差</span>
+						{{else if mchtScore == 0}}
+							<span class="evalua-text ac">&nbsp;</span>
+						{{/if}}
+				</div>
+				<div class="flex ac">
+					<span class="fn">物流服务</span>
+					<div class="evalua-star wuliuScore star-{{wuliuScore}} flex">
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+					</div>
+					{{if wuliuScore == 5}}
+						<span class="evalua-text ac">非常好</span>
+					{{else if wuliuScore == 4}}
+						<span class="evalua-text ac">好</span>
+					{{else if wuliuScore == 3}}
+						<span class="evalua-text ac">一般</span>
+					{{else if wuliuScore == 2}}
+						<span class="evalua-text ac">差</span>
+					{{else if wuliuScore == 1}}
+						<span class="evalua-text ac">非常差</span>
+					{{else if wuliuScore == 0}}
+						<span class="evalua-text ac">&nbsp;</span>
+					{{/if}}
+				</div>
+			</div>
+			{{/if}}
+		</div>
+	</script>
+
+	<script src="evalua/index.js?var=1.0" async></script>
+</div>

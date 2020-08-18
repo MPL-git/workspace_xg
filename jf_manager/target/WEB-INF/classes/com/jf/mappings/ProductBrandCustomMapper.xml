@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductBrandCustomMapper">
+	<resultMap id="BaseResultMap" type="com.jf.entity.ProductBrandCustom" extends="com.jf.dao.ProductBrandMapper.BaseResultMap">
+		<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+		<result column="product_brand_trademark_s" property="productBrandTrademarks" jdbcType="VARCHAR" />
+		<result column="product_count" property="productCount" jdbcType="INTEGER" />
+
+		<result column="member_visitors_num" property="memberVisitorsNum" jdbcType="INTEGER" />
+		<result column="unmember_visitors_num" property="unmemberVisitorsNum" jdbcType="INTEGER" />
+		<result column="member_page_view" property="memberPageView" jdbcType="INTEGER" />
+		<result column="unmember_page_view" property="unmemberPageView" jdbcType="INTEGER" />
+		<result column="add_product_amount" property="addProductAmount" jdbcType="INTEGER" />
+		<result column="submit_order_amount" property="submitOrderAmount" jdbcType="INTEGER" />
+		<result column="payment_amount" property="paymentAmount" jdbcType="INTEGER" />
+		<result column="add_product_rate" property="addProductRate" jdbcType="VARCHAR" />
+		<result column="submit_order_rate" property="submitOrderRate" jdbcType="VARCHAR" />
+		<result column="payment_rate" property="paymentRate" jdbcType="VARCHAR" />
+		<result column="pay_money" property="payMoney" jdbcType="DECIMAL" />
+	</resultMap>
+	<sql id="Example_Where_Clause" >
+	    <where >
+	      <foreach collection="oredCriteria" item="criteria" separator="or" >
+	        <if test="criteria.valid" >
+	          <trim prefix="(" suffix=")" prefixOverrides="and" >
+	            <foreach collection="criteria.criteria" item="criterion" >
+	              <choose >
+	                <when test="criterion.noValue" >
+	                  and ${criterion.condition}
+	                </when>
+	                <when test="criterion.singleValue" >
+	                  and ${criterion.condition} #{criterion.value}
+	                </when>
+	                <when test="criterion.betweenValue" >
+	                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+	                </when>
+	                <when test="criterion.listValue" >
+	                  and ${criterion.condition}
+	                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                    #{listItem}
+	                  </foreach>
+	                </when>
+	              </choose>
+	            </foreach>
+	          </trim>
+	        </if>
+	      </foreach>
+	    </where>
+	 </sql>
+	 <sql id="Update_By_Example_Where_Clause" >
+	    <where >
+	      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+	        <if test="criteria.valid" >
+	          <trim prefix="(" suffix=")" prefixOverrides="and" >
+	            <foreach collection="criteria.criteria" item="criterion" >
+	              <choose >
+	                <when test="criterion.noValue" >
+	                  and ${criterion.condition}
+	                </when>
+	                <when test="criterion.singleValue" >
+	                  and ${criterion.condition} #{criterion.value}
+	                </when>
+	                <when test="criterion.betweenValue" >
+	                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+	                </when>
+	                <when test="criterion.listValue" >
+	                  and ${criterion.condition}
+	                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                    #{listItem}
+	                  </foreach>
+	                </when>
+	              </choose>
+	            </foreach>
+	          </trim>
+	        </if>
+	      </foreach>
+	    </where>
+	 </sql>
+	 <sql id="Base_Column_List" >
+	 	id, name, name_zh, name_en, logo, product_type_group, tmk_type_group, tmk_type, catalog, 
+	    status, grade, letter_index, create_by, create_date, update_by, update_date, remarks, 
+	    del_flag,
+	    FUN_GET_STATUS_DESC("BU_PRODUCT_BRAND", "STATUS", t.status)status_desc,
+	    (select group_concat(CONCAT(pbti.tmk_code, '（', pbti.tmk_type, '）')) from bu_product_brand_trademark_info pbti where pbti.del_flag = '0' and pbti.product_brand_id = t.id ) product_brand_trademark_s,
+	    (select count(1) from bu_product p where p.del_flag = '0' and p.status = '1' and p.brand_id = t.id ) product_count
+	 </sql>
+	 <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ProductBrandCustomExample" >
+	    select
+	    <if test="distinct" >
+	      distinct
+	    </if>
+	    <include refid="Base_Column_List" />
+	    from bu_product_brand t
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="orderByClause != null" >
+	      order by ${orderByClause}
+	    </if>
+	    <if test="limitStart != null and limitStart>=0" >
+	      limit #{limitStart} , #{limitSize}
+	    </if>
+	 </select>
+	 <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	    select 
+	    <include refid="Base_Column_List" />
+	    from bu_product_brand t
+	    where id = #{id,jdbcType=INTEGER}
+	 </select>
+	 <select id="countByCustomExample" parameterType="com.jf.entity.ProductBrandCustomExample" resultType="java.lang.Integer" >
+	    select count(*) from bu_product_brand t
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	 </select>
+	 <update id="updateByCustomExampleSelective" parameterType="map" >
+	    update bu_product_brand t
+	    <set >
+	      <if test="record.id != null" >
+	        id = #{record.id,jdbcType=INTEGER},
+	      </if>
+	      <if test="record.name != null" >
+	        name = #{record.name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.nameZh != null" >
+	        name_zh = #{record.nameZh,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.nameEn != null" >
+	        name_en = #{record.nameEn,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.logo != null" >
+	        logo = #{record.logo,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.productTypeGroup != null" >
+	        product_type_group = #{record.productTypeGroup,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.tmkTypeGroup != null" >
+	        tmk_type_group = #{record.tmkTypeGroup,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.tmkType != null" >
+	        tmk_type = #{record.tmkType,jdbcType=CHAR},
+	      </if>
+	      <if test="record.catalog != null" >
+	        catalog = #{record.catalog,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.status != null" >
+	        status = #{record.status,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.createBy != null" >
+	        create_by = #{record.createBy,jdbcType=INTEGER},
+	      </if>
+	      <if test="record.createDate != null" >
+	        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="record.updateBy != null" >
+	        update_by = #{record.updateBy,jdbcType=INTEGER},
+	      </if>
+	      <if test="record.updateDate != null" >
+	        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+	      </if>
+	      <if test="record.remarks != null" >
+	        remarks = #{record.remarks,jdbcType=VARCHAR},
+	      </if>
+	      <if test="record.delFlag != null" >
+	        del_flag = #{record.delFlag,jdbcType=CHAR},
+	      </if>
+	    </set>
+	    <if test="_parameter != null" >
+	      <include refid="Update_By_Example_Where_Clause" />
+	    </if>
+	</update>
+	
+	
+    <select id="getNamesByIds" parameterType="java.lang.String" resultType="java.lang.String">
+    	SELECT GROUP_CONCAT(pb.`name`) FROM bu_product_brand pb WHERE pb.del_flag='0' AND FIND_IN_SET(pb.id,#{ids})
+    </select>
+    <select id="searchBrand" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT DISTINCT
+			pb.`name`,
+			pb.id
+		FROM
+			bu_product_brand pb,
+			bu_product p
+			<if test="productType1Ids!=null || productType2Ids!=null">
+			,bu_product_type pt,bu_product_type fpt
+			</if>
+		WHERE
+			p.brand_id = pb.id
+			<if test="productType1Ids!=null || productType2Ids!=null">
+			AND p.product_type_id = pt.id AND pt.parent_id = fpt.id
+			</if>
+			<if test="productType2Ids!=null">
+			AND fpt.id in 
+			<foreach collection="productType2Ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}       
+        	</foreach>
+			</if>
+			<if test="productType3Ids!=null">
+			AND pt.id in 
+			<foreach collection="productType3Ids" index="index" item="item" open="(" separator="," close=")">
+                #{item}       
+        	</foreach>
+			</if>
+			<if test="productType1Ids!=null">
+			AND fpt.parent_id = #{productType1Ids} AND pt.del_flag='0' AND fpt.del_flag='0'
+			</if>
+			<if test="productBrandIds!=null">
+			AND pb.id not in 
+			<foreach collection="productBrandIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}       
+        	</foreach>
+			</if>
+			<if test="searchBrandName!=null">
+			AND pb.name like concat('%',#{searchBrandName},'%')
+			</if>
+			AND pb.del_flag='0' AND p.del_flag='0'
+    </select>
+    
+    
+<select id="selectMchtInfoBrandCustomList" parameterType="java.util.Map" resultType="java.util.Map" >
+SELECT
+  tmp.id product_brandId,
+  tmp.name product_brandname,
+  tmp.pay_amount payAmount,
+  <![CDATA[(SELECT IFNULL(SUM(bso.pay_amount), 0) FROM bu_sub_order bso,bu_combine_order bco,bu_product mpb,bu_order_dtl od WHERE od.product_id=mpb.id AND od.sub_order_id=bso.id AND bso.combine_order_id=bco.id AND mpb.brand_id=tmp.id AND bso.mcht_id=mpb.mcht_id  AND bso.del_flag = '0' AND  bco.del_flag = '0' AND mpb.del_flag = '0' AND od.del_flag='0' AND bco.pay_date >= #{paydateDate1} AND bco.pay_date <=#{paydateDate1o})pay_amount_sum1,]]>
+  <![CDATA[(SELECT IFNULL(SUM(bso.pay_amount), 0) FROM bu_sub_order bso,bu_combine_order bco,bu_product mpb,bu_order_dtl od WHERE od.product_id=mpb.id AND od.sub_order_id=bso.id AND bso.combine_order_id=bco.id AND mpb.brand_id=tmp.id AND bso.mcht_id=mpb.mcht_id AND bso.del_flag = '0' AND  bco.del_flag = '0' AND mpb.del_flag = '0' AND od.del_flag='0' AND bco.pay_date >= #{paydateDate2} AND bco.pay_date <=#{paydateDate2t})pay_amount_sum2,]]>
+  <![CDATA[(SELECT IFNULL(SUM(bso.pay_amount), 0) FROM bu_sub_order bso,bu_combine_order bco,bu_product mpb,bu_order_dtl od WHERE od.product_id=mpb.id AND od.sub_order_id=bso.id AND bso.combine_order_id=bco.id AND mpb.brand_id=tmp.id AND bso.mcht_id=mpb.mcht_id AND bso.del_flag = '0' AND  bco.del_flag = '0' AND mpb.del_flag = '0' AND od.del_flag='0' AND bco.pay_date >= #{paydateDate3} AND bco.pay_date <=#{paydateDate3s})pay_amount_sum3,]]>
+  <![CDATA[(SELECT IFNULL(SUM(bso.pay_amount), 0) FROM bu_sub_order bso,bu_combine_order bco,bu_product mpb,bu_order_dtl od WHERE od.product_id=mpb.id AND od.sub_order_id=bso.id AND bso.combine_order_id=bco.id AND mpb.brand_id=tmp.id AND bso.mcht_id=mpb.mcht_id AND bso.del_flag = '0' AND  bco.del_flag = '0' AND mpb.del_flag = '0' AND od.del_flag='0' AND bco.pay_date >= #{paydateDate4} AND bco.pay_date <=#{paydateDate4f})pay_amount_sum4,]]>
+  <![CDATA[ (SELECT IFNULL(SUM(bso.pay_amount), 0) FROM bu_sub_order bso,bu_combine_order bco,bu_product mpb,bu_order_dtl od WHERE od.product_id=mpb.id AND od.sub_order_id=bso.id AND bso.combine_order_id=bco.id AND mpb.brand_id=tmp.id AND bso.mcht_id=mpb.mcht_id AND bso.del_flag = '0' AND  bco.del_flag = '0' AND mpb.del_flag = '0' AND od.del_flag='0' AND bco.pay_date >= #{paydateDate5} AND bco.pay_date <=#{paydateDate5fi})pay_amount_sum5,]]>
+  <![CDATA[(SELECT IFNULL(SUM(bso.pay_amount), 0) FROM bu_sub_order bso,bu_combine_order bco,bu_product mpb,bu_order_dtl od WHERE od.product_id=mpb.id AND od.sub_order_id=bso.id AND bso.combine_order_id=bco.id AND mpb.brand_id=tmp.id AND bso.mcht_id=mpb.mcht_id  AND bso.del_flag = '0' AND  bco.del_flag = '0' AND mpb.del_flag = '0' AND od.del_flag='0'  AND bco.pay_date >= #{paydateDate6}  AND bco.pay_date <=#{paydateDate6sx})pay_amount_sum6,]]>
+  <![CDATA[ (SELECT IFNULL(SUM(bso.pay_amount), 0) FROM bu_sub_order bso,bu_combine_order bco,bu_product mpb,bu_order_dtl od WHERE od.product_id=mpb.id AND od.sub_order_id=bso.id AND bso.combine_order_id=bco.id AND mpb.brand_id=tmp.id AND bso.mcht_id=mpb.mcht_id AND bso.del_flag = '0' AND  bco.del_flag = '0' AND mpb.del_flag = '0' AND od.del_flag='0' AND bco.pay_date >= #{paydateDate7} AND bco.pay_date <=#{paydateDate7se})pay_amount_sum7]]>
+FROM
+(
+SELECT
+      bso.mcht_id,
+	  pb.id id,
+      pb.name,
+	  SUM(bso.pay_amount) pay_amount
+   FROM
+	  bu_sub_order bso,
+	  bu_combine_order bco,
+      bu_product mpb,
+      bu_product_brand pb,
+      bu_order_dtl od,
+      bu_mcht_info mi
+   WHERE
+	    od.product_id=mpb.id
+    AND od.sub_order_id=bso.id
+    AND bso.combine_order_id=bco.id
+    AND mpb.brand_id=pb.id
+    AND bso.mcht_id=mpb.mcht_id
+	AND bso.del_flag = '0'
+    AND bco.del_flag = '0'
+    AND mpb.del_flag = '0'
+    AND od.del_flag='0'
+	AND bco.pay_date <![CDATA[ >= ]]> #{startPaydatedate}
+	AND bco.pay_date <![CDATA[ <= ]]> #{endPaydatedate}
+	AND bso.mcht_id=mi.id
+    AND mi.del_flag='0'
+    <if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			 AND mi.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator="," close=")">
+				#{listSpecMchtCode}
+			</foreach>
+	</if>
+	<!-- AND mi.mcht_code NOT in ('P193103', 'P193093', 'P193076') -->
+	GROUP BY
+     pb.id
+)tmp
+WHERE
+	EXISTS (
+					SELECT
+						mi.id
+					FROM
+						bu_mcht_info mi
+					WHERE
+						mi.id = tmp.mcht_id
+					AND mi.del_flag = '0'					
+				<if test="mchtCode != null and mchtCode !=''" >
+					AND mi.mcht_code = #{mchtCode}
+				</if>
+				<if test="mchtName != null and mchtName !=''" >
+					AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+				</if>
+			<if test="productTypeId !=null and productTypeId != ''">
+		      AND tmp.mcht_id in (select pr.mcht_id from bu_product pr where pr.del_flag = '0' and pr.mcht_id=tmp.mcht_id and pr.product_type_id=#{productTypeId})
+		    </if>
+		    <if test="productBrandName !=null and productBrandName != ''">
+		      AND tmp.id in (select pb.id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = tmp.mcht_id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		    </if>
+		    <if test="platContactStaffId != null and platContactStaffId != ''">
+		     AND tmp.mcht_id IN (select mpc.mcht_id from bu_platform_contact pc, bu_mcht_platform_contact mpc where pc.del_flag = '0' and pc.status = '0' and (pc.staff_id = #{platContactStaffId} or pc.assistant_id in(select bpc.id from bu_platform_contact bpc where bpc.del_flag = '0' and bpc.status = '0' and bpc.staff_id = #{platContactStaffId})) 
+								and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id = pc.id)
+			</if>
+			<if test="productTypeContactIsNull != null and productTypeContactIsNull != ''">
+				AND (
+					tmp.mcht_id IN (select mpt.mcht_id from sys_staff_product_type spt, bu_mcht_product_type mpt where spt.del_flag = '0' and spt.staff_id = #{productTypeContactIsNull}
+								and mpt.del_flag = '0' and mpt.is_main = '1' and mpt.product_type_id = spt.product_type_id) 
+					OR 
+					tmp.mcht_id IN (select mpc.mcht_id from bu_platform_contact pc, bu_mcht_platform_contact mpc where pc.del_flag = '0' and pc.status = '0' and (pc.staff_id = #{productTypeContactIsNull} or pc.assistant_id in(select bpc.id from bu_platform_contact bpc where bpc.del_flag = '0' and bpc.status = '0' and bpc.staff_id = #{productTypeContactIsNull})) 
+								and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id = pc.id)
+					)
+			</if>
+			)
+ORDER BY
+	tmp.pay_amount DESC
+ <if test="MAX_NUM != null and MAX_NUM != ''">
+     limit #{MIN_NUM},#{MAX_NUM}
+ </if>
+</select>
+
+	<!--查询品牌流量报表数据-->
+	<select id="getBrandFlowReportData"  parameterType="java.util.HashMap"  resultMap="BaseResultMap">
+				 select
+		t.id ,
+		t.name,
+				IFNULL(a.member_visitors_num,0) as member_visitors_num,
+				IFNULL(a.unmember_visitors_num,0) as unmember_visitors_num,
+				IFNULL(a.member_page_view,0) as member_page_view,
+				IFNULL(a.unmember_page_view,0) as unmember_page_view,
+				IFNULL(a.add_product_amount,0) as add_product_amount,
+				IFNULL(a.submit_order_amount,0) as submit_order_amount,
+				IFNULL(a.payment_amount,0) as payment_amount,
+				IFNULL(a.pay_money,0) as pay_money,
+				a.add_product_rate as add_product_rate,
+				a.submit_order_rate as submit_order_rate,
+				a.payment_rate as payment_rate
+		from bu_product_brand t
+
+		LEFT JOIN
+
+		(select
+						m.brand_id as brand_id,
+						sum(member_visitors_amount) as member_visitors_num,
+						sum(unmember_visitors_amount) as unmember_visitors_num,
+						sum(member_page_view) as member_page_view,
+						sum(unmember_page_view) as unmember_page_view,
+						sum(add_product_amount) as add_product_amount,
+						sum(submit_order_amount) as submit_order_amount,
+						sum(payment_amount) as payment_amount,
+						sum(pay_money) as  pay_money ,
+						CONCAT(ROUND(SUM(add_product_amount)/(SUM(member_visitors_amount)+SUM(unmember_visitors_amount))*100,2),'%') AS add_product_rate,
+						CONCAT(ROUND(SUM(submit_order_amount)/(SUM(member_visitors_amount)+SUM(unmember_visitors_amount))*100,2),'%') AS submit_order_rate,
+						CONCAT(ROUND(SUM(payment_amount)/(SUM(member_visitors_amount)+SUM(unmember_visitors_amount))*100,2),'%') AS payment_rate
+
+		from
+		(
+		SELECT
+			bp.brand_id AS brand_id,
+			COUNT(DISTINCT(bmp.member_id)) AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			COUNT(bmp.member_id) AS member_page_view,
+			0 AS unmember_page_view,
+			0 AS add_product_amount,
+			0 AS submit_order_amount,
+			0 AS payment_amount,
+			0 as pay_money
+			FROM
+			bu_member_pv bmp,bu_product bp
+			WHERE
+		   bmp.value_id = bp.id
+			AND
+			bmp.del_flag = '0'
+			AND
+			bp.del_flag = '0'
+			AND
+			bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+			AND
+			bmp.create_date <![CDATA[ <= ]]> #{endDate}
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		<if test="productTypeId!=null">
+			and bp.product_type1_id = #{productTypeId}
+		</if>
+
+			GROUP BY
+			bp.brand_id
+
+			UNION
+
+			SELECT
+			bp.brand_id AS brand_id,
+			0 AS member_visitors_amount,
+			COUNT(DISTINCT(bmp.device_number)) AS unmember_visitors_amount,
+			0 AS member_page_view,
+			COUNT(bmp.device_number) AS uunmember_page_view,
+			0 AS add_product_amount,
+			0 AS submit_order_amount,
+			0 AS payment_amount,
+			0 as pay_money
+			FROM
+			bu_member_pv bmp,bu_product bp
+			WHERE
+			bmp.value_id = bp.id
+			AND
+			bmp.member_id IS NULL
+			AND
+			bmp.del_flag = '0'
+			AND
+			bp.del_flag = '0'
+			AND
+			bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+			AND
+			bmp.create_date <![CDATA[ <= ]]> #{endDate}
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		<if test="productTypeId!=null">
+			and bp.product_type1_id = #{productTypeId}
+		</if>
+			GROUP BY
+			bp.brand_id
+
+			UNION
+
+			SELECT
+			bp.brand_id AS brand_id,
+			0 AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			0 AS member_page_view,
+			0 AS uunmember_page_view,
+			SUM(bsc.quantity) AS add_product_amount,
+			0 AS submit_order_amount,
+			0 AS payment_amount,
+			  0 as pay_money
+			FROM
+			bu_member_pv bmp,bu_product bp,bu_member_action bma,bu_shopping_cart bsc
+			WHERE
+			 bmp.value_id = bp.id
+			AND bmp.pv_id = bma.member_pv_id
+			AND bma.action_item_id = bsc.id
+			AND bma.action_type = '14'
+			AND bmp.del_flag = '0'
+			AND bp.del_flag = '0'
+			AND bma.del_flag = '0'
+			AND
+			bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+			AND
+			bmp.create_date <![CDATA[ <= ]]> #{endDate}
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		<if test="productTypeId!=null">
+			and bp.product_type1_id = #{productTypeId}
+		</if>
+			GROUP BY
+			bp.brand_id
+
+			UNION
+
+			SELECT
+			bp.brand_id AS brand_id,
+			0 AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			0 AS member_page_view,
+			0 AS uunmember_page_view,
+			0 AS add_product_amount,
+			SUM(bod.quantity) AS submit_order_amount,
+			0 AS payment_amount,
+				0 as pay_money
+			FROM
+			bu_member_pv bmp,
+			bu_member_action bma,
+			bu_order_dtl bod,
+			bu_product bp,
+			bu_shopping_cart bsc
+			WHERE
+			 bmp.pv_id = bma.member_pv_id
+			AND bma.action_type IN('14','15')
+			AND bmp.value_id = bp.id
+			AND bma.action_item_id = bsc.id
+			AND bsc.order_dtl_id = bod.id
+			AND bmp.del_flag = '0'
+			AND bod.del_flag = '0'
+			AND bp.del_flag = '0'
+			AND bma.del_flag = '0'
+			AND
+			bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+			AND
+			bmp.create_date <![CDATA[ <= ]]> #{endDate}
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		<if test="productTypeId!=null">
+			and bp.product_type1_id = #{productTypeId}
+		</if>
+			GROUP BY
+			bp.brand_id
+
+			UNION
+
+			SELECT
+			bp.brand_id AS brand_id,
+			0 AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			0 AS member_page_view,
+			0 AS uunmember_page_view,
+			0 AS add_product_amount,
+			0 AS submit_order_amount,
+			SUM(bod.quantity) AS payment_amount,
+			sum(bod.pay_amount) as pay_money
+			FROM
+			bu_member_pv bmp,bu_member_action bma,bu_shopping_cart bsc,bu_combine_order bco,bu_sub_order bso,bu_order_dtl bod,bu_product bp
+			WHERE
+			 bmp.pv_id = bma.member_pv_id
+			AND bmp.value_id = bp.id
+			AND bod.product_id = bp.id
+			AND bma.action_type IN ('14','15')
+			AND bma.action_item_id = bsc.id
+			AND bsc.order_dtl_id = bod.id
+			AND bod.sub_order_id = bso.id
+			AND bso.combine_order_id = bco.id
+			AND bco.id = bso.combine_order_id
+			AND bso.id = bod.sub_order_id
+			AND bco.status = '1'
+			AND bco.pay_status = '1'
+			AND bmp.del_flag = '0'
+			AND bco.del_flag = '0'
+			AND bso.del_flag = '0'
+			AND bod.del_flag = '0'
+			AND bma.del_flag = '0'
+			AND bsc.del_flag = '0'
+			AND bp.del_flag = '0'
+			AND
+			bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+			AND
+			bmp.create_date <![CDATA[ <= ]]> #{endDate}
+		<if test="reportColumnId!=null">
+			 and bmp.column_type = #{reportColumnId}
+		</if>
+		<if test="productTypeId!=null">
+			and bp.product_type1_id = #{productTypeId}
+		</if>
+			GROUP BY
+			bp.brand_id
+		)	m
+			GROUP BY m.brand_id
+		) a
+
+		on t.id = a.brand_id
+		where 	t.del_flag = '0'
+		AND t.status='1'
+
+		<if test="brandName!=null">
+			and t.name like #{brandName}
+		</if>
+
+
+		ORDER BY t.id
+
+		<if test="limitSize!=null and limitSize!=null">
+			LIMIT #{limitStart},#{limitSize}
+		</if>
+
+
+	</select>
+
+
+</mapper>

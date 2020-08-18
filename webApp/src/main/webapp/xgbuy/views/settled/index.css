@@ -1,0 +1,10 @@
+.settled .main {
+	box-sizing: border-box;
+	padding-top: 1.95rem;
+}
+.settled .main a {
+	display: block;
+	width: 6.28rem;
+	height: 2.46rem;
+	margin: 0 auto .83rem;
+}

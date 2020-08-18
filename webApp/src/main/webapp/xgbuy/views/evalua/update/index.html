@@ -1,0 +1,130 @@
+<div class="page evalua flex dc bgf4" data-title="修改评价" data-id="evalua_update">
+	<link rel="stylesheet" href="evalua/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">修改评价</p>
+		<div class="fn"></div>
+	</header>
+
+	<form class="fg flex dc">
+		<div class="content fg scroll-y"></div>
+		<input class="fn btn-red" type="submit" value="保存" disabled="disabled">
+	</form>
+
+	<script id="evalua_tpl" type="text/html">
+		<div class="touchfix w75">
+			{{each dataList value i}}
+			<div class="main mb20" data-id="{{value.orderDtlId}}">
+				<!-- 商品描述与评分 -->
+				<div class="evalua-goods bb1">
+					<dl class="flex">
+						<dt class="fn img-cover">
+							<img src="{{value.skuPic}}">
+						</dt>
+						<dd class="fg flex ac">
+							{{if value.append}}
+							<h3>{{value.productName}}</h3>
+							{{else}}
+							<h3 class="fn">商品描述</h3>
+							<div class="evalua-star productScore star-{{value.productScore}} flex" data-val="{{value.productScore}}">
+								<i></i>
+								<i></i>
+								<i></i>
+								<i></i>
+								<i></i>
+							</div>
+								{{if value.productScore == 5}}
+									<span class="evalua-text ac">非常好</span>
+								{{else if value.productScore == 4}}
+									<span class="evalua-text ac">好</span>
+								{{else if value.productScore == 3}}
+									<span class="evalua-text ac">一般</span>
+								{{else if value.productScore == 2}}
+									<span class="evalua-text ac">差</span>
+								{{else if value.productScore == 1}}
+									<span class="evalua-text ac">非常差</span>
+								{{else if value.productScore == 0}}
+									<span class="evalua-text ac">&nbsp;</span>
+								{{/if}}
+							{{/if}}
+						</dd>
+					</dl>
+				</div>
+
+				<!-- 评价 -->
+				<div class="text pd20">
+					<textarea placeholder="说说您对商品的体验吧！您最多可输入200个字哦~" maxlength="200">{{value.content}}</textarea>
+				</div>
+
+				<!-- 上传图片 -->
+				<div class="image" data-pic="{{value.pics}}">
+					<div class="img-box">
+						{{each value.commentPics val}}
+						<div><span class="flex ac jc"><img src="{{val}}"></span><a class="fn" onclick="evaluaApi.deletes(this)"></a></div>
+						{{/each}}
+					</div>
+
+					<div class="img-add">
+						<p>{{value.picNum}}/{{value.picMax}}</p>
+						<input type="file" capture="camera" accept="image/gif,image/jpg,image/jpeg,image/bmp,image/png">
+					</div>
+				</div>
+			</div>
+			{{/each}}
+
+			<!-- 店铺评分 -->
+			<div class="evalua-shop pd20">
+				<h3 class="flex ac">店铺评分</h3>
+				<div class="flex ac">
+					<span>卖家服务</span>
+					<div class="evalua-star mchtScore star-{{mchtScore}} flex">
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+					</div>
+					{{if mchtScore == 5}}
+						<span class="evalua-text ac">非常好</span>
+					{{else if mchtScore == 4}}
+						<span class="evalua-text ac">好</span>
+					{{else if mchtScore == 3}}
+						<span class="evalua-text ac">一般</span>
+					{{else if mchtScore == 2}}
+						<span class="evalua-text ac">差</span>
+					{{else if mchtScore == 1}}
+						<span class="evalua-text ac">非常差</span>
+					{{else if mchtScore == 0}}
+						<span class="evalua-text ac">&nbsp;</span>
+					{{/if}}
+				</div>
+				<div class="flex ac">
+					<span class="fn">物流服务</span>
+					<div class="evalua-star wuliuScore star-{{wuliuScore}} flex">
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+					</div>
+					{{if wuliuScore == 5}}
+						<span class="evalua-text ac">非常好</span>
+					{{else if wuliuScore == 4}}
+						<span class="evalua-text ac">好</span>
+					{{else if wuliuScore == 3}}
+						<span class="evalua-text ac">一般</span>
+					{{else if wuliuScore == 2}}
+						<span class="evalua-text ac">差</span>
+					{{else if wuliuScore == 1}}
+						<span class="evalua-text ac">非常差</span>
+					{{else if wuliuScore == 0}}
+						<span class="evalua-text ac">&nbsp;</span>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script src="evalua/update/index.js?var=1.0" async></script>
+</div>

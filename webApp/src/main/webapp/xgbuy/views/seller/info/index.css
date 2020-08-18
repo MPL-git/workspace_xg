@@ -1,0 +1,75 @@
+.seller-info .row {
+	padding: 0 .3rem;
+	margin-bottom: .2rem;
+	background: #fff;
+}
+
+.seller-info .row-1 {
+	height: 2rem;
+}
+.seller-info .row-1 h3 {
+	line-height: .36rem;
+	font-size: .32rem;
+	font-weight: bold;
+}
+
+.seller-info .row-2 {
+	font-size: .26rem;
+}
+.seller-info .row-2 h3 {
+	height: .86rem;
+}
+.seller-info .row-2 .col {
+	height: .6rem;
+}
+.seller-info .row-2 .col div {
+	width: 2.6rem;
+	height: .2rem;
+	margin: 0 .2rem;
+	background: #ddd;
+	border-radius: .1rem;
+}
+.seller-info .row-2 .col span {
+	float: left;
+	width: 100%;
+	height: 100%;
+	border-radius: .1rem;
+	background: -webkit-linear-gradient(left, #ffd942, #ff5050);
+}
+
+.seller-info .row-3 {
+	font-size: .3rem;
+}
+.seller-info .row-3 b {
+	min-width: 1.5rem;
+	word-break: keep-all;
+}
+.seller-info .row-3 h3 {
+	height: .9rem;
+	color: #999;
+}
+.seller-info .row-3 .col {
+	min-height: .8rem;
+}
+.seller-info .row-3 span {
+	font-size: .28rem;
+}
+
+.seller-info .row-3 .ico-service {
+	width: .3rem;
+	height: .28rem;
+	margin-right: .1rem;
+	background: url(image/ico-service.png) no-repeat;
+	background-size: contain;
+}
+.seller-info .row-3 .ico-zizao {
+	width: .43rem;
+	height: .43rem;
+	margin-right: .28rem;
+	background: url(image/ico-zizao.png) no-repeat;
+	background-size: contain;
+}
+
+.seller-info .shop-head {
+	width:calc(100% - 1.2rem);
+}

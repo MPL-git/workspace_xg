@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SourceNicheCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SourceNicheCustom" extends="com.jf.dao.SourceNicheMapper.BaseResultMap">
+   
+  </resultMap>
+  
+  <update id="updateSourceNicheSupportQuantity" parameterType="int">
+  		update bu_source_niche set support_quantity = (support_quantity + 1) where id = #{sourceNicheId} and del_flag = '0'
+  </update>
+  
+  <select id="getCollegeStudentShopList" parameterType="map" resultType="com.jf.entity.MchtInfoCustom">
+  	SELECT
+		mi.id,
+		mi.shop_logo,
+		mi.shop_name,
+		sn.id as source_niche_id,
+		(select ss.story_introduction from bu_shop_story ss where ss.mcht_id = mi.id and ss.del_flag='0')story_introduction,
+		mi.shop_type,
+		(select
+			GROUP_CONCAT(p.id)	 
+		from bu_source_niche_product snp, bu_product p,bu_mcht_product_brand mpb 
+		where snp.source_niche_id = sn.id AND snp.product_id = p.id
+			AND sn.type = #{type}
+			AND p.mcht_id = mpb.mcht_id
+			AND p.brand_id = mpb.product_brand_id
+			AND snp.del_flag='0'
+			AND mpb.`status` = '1'
+			AND mpb.audit_status = '3'
+			AND mpb.del_flag = '0'
+			AND p.STATUS = '1'
+			AND p.audit_status = '2'
+			AND p.del_flag = '0'
+			AND p.sale_type = '1'
+			AND EXISTS(select pi.id from bu_product_item pi where pi.del_flag = '0' and pi.product_id = p.id and pi.stock - pi.locked_amount > 0)
+		ORDER BY
+			p.weights DESC,p.id DESC
+		)AS product_ids,
+		(
+		SELECT
+			GROUP_CONCAT(c.id)
+		FROM
+			bu_coupon c
+		WHERE
+			c.mcht_id = mi.id
+		AND c.del_flag = '0'
+		AND c.belong = '2'
+	    AND c.is_integral_turntable = '0'
+		<![CDATA[
+		AND c.rec_begin_date <= NOW()
+		AND c.rec_end_date >= NOW()
+		]]>
+		) AS coupon_ids,
+		(
+		SELECT
+			IFNULL(COUNT(c.id),0)
+		FROM
+			bu_comment c
+		WHERE
+			c.del_flag = '0'
+		AND c.is_append_comment = '0'
+		AND c.is_show = '1'
+		<![CDATA[
+		AND c.product_score >= 4
+		]]>
+		AND c.mcht_id = mi.id
+		) as good_comment_count
+	FROM
+		bu_source_niche sn,
+		bu_mcht_info mi
+	WHERE
+		sn.link_id = mi.id
+	AND sn.type = #{type}
+	AND sn.del_flag = '0'
+	AND sn.status = #{status}
+	AND sn.audit_status = '1'
+	<![CDATA[
+	AND sn.up_date<=now()
+	]]>
+	AND mi.`status` = #{mchtStatus}
+	AND mi.shop_status = #{mchtShopStatus}
+	AND mi.del_flag = '0'
+	ORDER BY
+		IFNULL(sn.seq_no, 99999) asc,
+		sn.weight desc,
+		id DESC
+		<if test="limitStart != null and limitSize != null">
+			limit #{limitStart} , #{limitSize} 
+		</if>
+  	</select>	
+  	
+  	<select id="getProductCouponList" parameterType="java.util.Map" resultType="java.util.Map">
+  		select 
+  			c.id as couponId,
+  			p.id as productId,
+  			p.name,
+  			(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+  			c.money,
+  			c.grant_quantity as grantQuantity,
+  			c.rec_quantity as recQuantity,
+  			c.rec_limit_type as recLimitType,
+  			c.rec_each as recEach,
+  			c.rec_type as recType,
+  			c.rec_begin_date as recBeginDate,
+  			(SELECT IFNULL(GROUP_CONCAT(mc.id),'') FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND mc.coupon_id = c.id AND mc.del_flag='0')memberCouponIds
+  		from 
+  			bu_source_niche sn,bu_mcht_info mi,bu_coupon c,bu_product p
+  		where 
+  			sn.link_id = mi.id
+  			AND mi.id = c.mcht_id
+  			AND c.type_ids = p.id
+  			AND sn.type = '11' 
+  			AND sn.del_flag = '0' 
+  			AND sn.status = '0'
+			AND mi.`status` = '1'
+			AND mi.shop_status = '1'
+			AND mi.del_flag = '0'
+			AND c.coupon_type = '4'
+			AND c.is_integral_turntable = '0'
+			<![CDATA[
+			AND c.rec_begin_date <= now()
+			AND c.rec_end_date >= now()
+			]]>
+			AND c.del_flag='0'
+		ORDER BY
+		c.rec_begin_date DESC,
+		c.money DESC
+		<if test="limitStart != null and limitSize != null">
+			limit #{limitStart} , #{limitSize} 
+		</if>	
+  	</select>
+  	
+  	<select id="getProductTypeList" parameterType="java.util.Map" resultType="com.jf.entity.ProductType">
+  		select 
+  			DISTINCT
+  			pt.*
+  		from 
+  			bu_source_niche sn,bu_mcht_info mi,bu_coupon c,bu_product p,bu_product_type pt
+  		where 
+  			sn.link_id = mi.id
+  			AND mi.id = c.mcht_id
+  			AND c.type_ids = p.id
+  			AND p.product_type1_id = pt.id
+  			AND sn.type = '11' 
+  			AND sn.del_flag = '0' 
+  			AND sn.status = '0'
+			AND mi.`status` = '1'
+			AND mi.shop_status = '1'
+			AND mi.del_flag = '0'
+			AND c.coupon_type = '4'
+			AND c.is_integral_turntable = '0'
+			<![CDATA[
+			AND c.rec_begin_date <= now()
+			AND c.rec_end_date >= now()
+			]]>
+			AND c.del_flag='0'
+			AND pt.del_flag='0'
+			AND pt.status='1'	
+  	</select>
+  	
+  	<select id="getProductCouponListByProductTypeId" parameterType="map" resultType="map">
+  		select 
+  			c.id as couponId,
+  			p.id as productId,
+  			p.name,
+  			(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+  			c.money,
+  			c.grant_quantity as grantQuantity,
+  			c.rec_quantity as recQuantity,
+  			c.rec_limit_type as recLimitType,
+  			c.rec_each as recEach,
+  			c.rec_type as recType,
+  			c.coupon_type as couponType,
+  			c.rec_begin_date as recBeginDate,
+  			(<![CDATA[select 
+				bpi.sale_price 
+			from 
+				bu_activity_product ap,bu_activity a,bu_activity_area aa,bu_product_item bpi 
+			where 
+				ap.product_id = p.id and ap.activity_id = a.id and a.activity_area_id = aa.id and ap.product_id = bpi.product_id
+				and bpi.id = p.min_sale_price_item_id and ap.del_flag='0' and a.del_flag='0' and aa.del_flag='0' and bpi.del_flag='0'
+				and aa.status = '1' and aa.activity_begin_time<=now() and aa.activity_end_time>=now() and a.status = '6' 
+				and ap.coo_audit_status = '2' and ap.refuse_flag = 0
+			]]>)salePrice,
+			p.min_mall_price as minMallPrice
+  		from 
+  			bu_source_niche sn,bu_mcht_info mi,bu_coupon c,bu_product p
+  		where 
+  			sn.link_id = mi.id
+  			AND mi.id = c.mcht_id
+  			AND c.type_ids = p.id
+  			AND sn.type = '11' 
+  			AND sn.del_flag = '0' 
+  			AND sn.status = '0'
+			AND mi.`status` = '1'
+			AND mi.shop_status = '1'
+			AND mi.del_flag = '0'
+			AND c.coupon_type = '4'
+			AND c.is_integral_turntable = '0'
+			<![CDATA[
+			AND c.rec_begin_date <= now()
+			AND c.rec_end_date >= now()
+			]]>
+			<if test="productTypeId != null and productTypeId != null">
+			AND p.product_type1_id=#{productTypeId}
+			</if>
+			AND c.del_flag='0'
+		ORDER BY
+		c.rec_begin_date DESC,
+		c.money DESC,
+		c.id DESC
+		<if test="limitStart != null and limitSize != null">
+			limit #{limitStart},#{limitSize} 
+		</if>	
+  	</select>
+  	<select id="getActivityAreaCouponList" parameterType="java.util.Map" resultType="com.jf.entity.CouponCustom">
+  	SELECT t.* FROM	
+	(
+  		select
+  			mi.id as mchtId,
+  			aa.preferential_id_group as couponIds, 
+  			a.name as activityName,
+  			a.id as activityId,
+  			aa.activity_begin_time as recBeginDate,
+			(select
+  				max(c.money)
+  			from 
+  				bu_coupon c 
+  			where 
+  				c.activity_area_id = aa.id 
+  				and c.del_flag='0' 
+  				and c.rang='3' 
+  				and c.belong='2'
+  				AND c.mcht_id = mi.id 
+  				and c.status='1'
+				AND c.is_integral_turntable = '0'
+  				<![CDATA[
+  				and c.rec_begin_date<=now()
+  				and c.rec_end_date>=now()
+  				]]>	
+  			)money,
+			(select
+  				max(c.minimum)
+  			from 
+  				bu_coupon c 
+  			where 
+  				c.activity_area_id = aa.id 
+  				and c.del_flag='0' 
+  				and c.rang='3' 
+  				and c.belong='2'
+  				AND c.mcht_id = mi.id 
+  				and c.status='1'
+				AND c.is_integral_turntable = '0'
+  				<![CDATA[
+  				and c.rec_begin_date<=now()
+  				and c.rec_end_date>=now()
+  				]]>	
+  			)minimum,
+  			(select 
+  				pp.pic 
+  			from 
+  				bu_activity_product ap,bu_product p,bu_product_pic pp 
+  			where 
+  				ap.activity_id = a.id 
+  				and ap.product_id = p.id 
+  				and p.id = pp.product_id 
+  				and ap.refuse_flag='0' 
+  				and ap.del_flag='0' 
+  				and p.del_flag='0' 
+  				and p.status = '1' 
+  				and p.audit_status = '2' 
+  				and p.sale_type = '1' 
+  				and pp.del_flag = '0' 
+  				and pp.is_default = '1' 
+  			order by IFNULL(ap.seq_no,99999) asc 
+  			limit 1
+  			)productPic,
+  			(select
+				GROUP_CONCAT(CONCAT(IFNULL(c.grant_quantity,0),";",IFNULL(c.rec_quantity,0)))
+  			from 
+  				bu_coupon c 
+  			where 
+  				FIND_IN_SET(c.id,aa.preferential_id_group)
+  				and c.del_flag='0' 
+  				and c.rang='3' 
+  				and c.belong='2'
+  				AND c.mcht_id = mi.id 
+  				and c.status='1'
+				AND c.is_integral_turntable = '0'
+  				<![CDATA[
+  				and c.rec_begin_date<=now()
+  				and c.rec_end_date>=now()
+  				]]>
+			)quantityInfo,
+			(SELECT mc.rec_date FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND FIND_IN_SET(mc.coupon_id,aa.preferential_id_group) AND mc.del_flag='0' ORDER BY mc.rec_date DESC LIMIT 1)recDate
+  		from 
+  			bu_source_niche sn,bu_mcht_info mi,bu_activity_area aa,bu_activity a
+  		where
+  			sn.link_id = mi.id
+  			AND mi.id = aa.mcht_id
+  			AND aa.id = a.activity_area_id
+  			AND sn.type = '11' 
+  			AND sn.del_flag = '0' 
+  			AND sn.status = '0'
+			AND mi.`status` = '1'
+			AND mi.shop_status = '1'
+			AND mi.del_flag = '0'
+			AND aa.source = '2'
+			AND aa.type = '0'
+			<![CDATA[
+			AND aa.activity_begin_time <= now()
+			AND aa.activity_end_time >= now()
+			]]>
+			AND aa.preferential_type = '1'
+			AND aa.status = '1'
+			AND aa.del_flag = '0'
+			AND a.status = '6'
+			AND a.coo_audit_status = '2'
+			AND a.del_flag = '0'
+			AND EXISTS(
+					SELECT
+						c.id
+					FROM
+						bu_coupon c
+					WHERE
+						c.activity_area_id = aa.id
+					AND c.del_flag = '0'
+					AND c.rang = '3'
+					AND c.belong = '2'
+					AND c.mcht_id = mi.id
+					AND c. STATUS = '1'
+					AND c.is_integral_turntable = '0'
+					<![CDATA[
+					AND c.rec_begin_date <= now()
+					AND c.rec_end_date >= now()
+					]]>
+				)
+			<if test="productTypeId!=null and productTypeId!=''">
+			AND a.product_type_id = #{productTypeId}
+			</if>
+		ORDER BY aa.id DESC
+		<if test="limitStart != null and limitSize != null">
+			limit #{limitStart},#{limitSize} 
+		</if>
+	)t
+	ORDER BY t.recBeginDate desc,t.money desc
+  	</select>
+  	
+  	<select id="getSourceProductTypeListByActivityAreaCoupon" resultType="com.jf.entity.SourceProductType">
+  		SELECT DISTINCT
+			spt.source_product_type_name,
+			spt.id,
+			spt.product_type1_id
+		FROM
+			bu_source_product_type spt
+		WHERE
+			spt.type = '11'
+		AND spt.`status` = '1'
+		AND spt.del_flag = '0'
+		AND
+		IF (
+			spt.product_type1_id IS NOT NULL,
+			EXISTS (
+				SELECT
+					pt.id
+				FROM
+					bu_product_type pt
+				WHERE
+					pt.id = spt.product_type1_id
+				AND pt. STATUS = '1'
+				AND pt.del_flag = '0'
+				AND pt.parent_id = 1
+			),
+			1 = 1
+		)
+		AND EXISTS (
+			SELECT
+				c.id
+			FROM
+				bu_source_niche sn,
+				bu_mcht_info mi,
+				bu_activity_area aa,
+				bu_activity a,
+				bu_coupon c
+			WHERE
+				sn.link_id = mi.id
+			AND mi.id = aa.mcht_id
+			AND aa.id = a.activity_area_id
+			AND c.activity_area_id = aa.id
+			AND c.mcht_id = mi.id
+			AND sn.type = '11'
+			AND sn.del_flag = '0'
+			AND sn. STATUS = '0'
+			AND mi.`status` = '1'
+			AND mi.shop_status = '1'
+			AND mi.del_flag = '0'
+			AND aa.source = '2'
+			AND aa.type = '0'
+			<![CDATA[
+			AND aa.activity_begin_time <= now()
+			AND aa.activity_end_time >= now()
+			]]>
+			AND aa.preferential_type = '1'
+			AND aa. STATUS = '1'
+			AND aa.del_flag = '0'
+			AND a. STATUS = '6'
+			AND a.coo_audit_status = '2'
+			AND a.del_flag = '0'
+			AND c.del_flag = '0'
+			AND c.rang = '3'
+			AND c.belong = '2'
+			AND c.STATUS = '1'
+			AND c.is_integral_turntable = '0'
+			<![CDATA[
+			AND c.rec_begin_date <= now()
+			AND c.rec_end_date >= now()
+			]]>
+			AND
+			IF (
+				spt.product_type1_id IS NOT NULL,
+				a.product_type_id = spt.product_type1_id,
+				1 = 1
+			)
+		)
+		ORDER BY IFNULL(spt.seq_no,99999) ASC
+  	</select>
+  	
+  	<select id="getCouponListByRecBeginDate" parameterType="java.util.Map" resultType="com.jf.entity.CouponCustom">
+  	SELECT
+		c.*,
+		(SELECT mc.rec_date FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND mc.coupon_id = c.id AND mc.del_flag='0' ORDER BY mc.rec_date DESC LIMIT 1)recDate,
+		(SELECT IFNULL(GROUP_CONCAT(mc.id),'') FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND mc.coupon_id = c.id AND mc.del_flag='0')memberCouponIds
+	FROM
+		bu_coupon c
+	WHERE
+		c.del_flag = '0'
+	AND c.rang = '1'
+	AND c.belong = '1'
+	AND c.coupon_type IN ('1', '2')
+	AND c.`status` = '1'
+	AND c.is_integral_turntable = '0'
+	AND c.rec_begin_date IN 
+	<foreach collection="eachTimeList" item="eachTime" open="(" close=")" separator="," >
+		#{eachTime}
+	</foreach>
+	AND c.rec_type = '1'
+	<![CDATA[
+	AND c.rec_end_date >= NOW()
+	]]>
+  	</select>
+</mapper>

@@ -1,0 +1,128 @@
+<div class="page my-collect flex dc" data-title="我的收藏" data-id="my_collect">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+	<link rel="stylesheet" href="../static/css/common-goods.css">
+	<link rel="stylesheet" href="my/collect/index.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">我的收藏</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="tab-top flex fn">
+		<a class="brand flex fg dc ac" onclick="myCollect.getPagingList(1)"><span class="fg flex ac">品牌</span></a>
+		<a class="goods flex fg dc ac" onclick="myCollect.getPagingList(2)"><span class="fg flex ac">商品</span></a>
+		<a class="goods flex fg dc ac" onclick="myCollect.getPagingList(3)"><span class="fg flex ac">店铺</span></a>
+	</div>
+
+	<div class="tab-body fg">
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc con-brand con-brand2"></div>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc con-goods"></div>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc con-shop"></div>
+		</div>
+	</div>
+
+	<!-- 品牌 -->
+	<script id="my_collect_tpl_brand" type="text/html">
+		{{if arrayData.length}}
+		{{each arrayData value}}
+		<a class="mb20 flex" onclick="myCollect.brand(this)" data-id="{{value.activityAreaId}}"
+			data-name="{{value.activityName}}" data-url="{{value.areaUrl}}" data-activityid="{{value.activityId}}"
+			data-activityareaid="{{value.activityAreaId}}">
+			<dl class="fg">
+				<dt>
+					<img src="{{value.entryPic}}">
+				</dt>
+
+				<dd>
+					<div class="row-1 flex ac jb">
+						<div class="flex ac">
+							<p class="ellipsis" title="{{value.activityName}}">{{value.activityName}}</p>
+						</div>
+						<time class="flex ac">
+							<p class="ellipsis f50 famate-time" data-time="{{value.activityBeginTime}}">
+								{{value.activityBeginTime}}开售</p>
+						</time>
+					</div>
+					<div class="row-2 elps">{{value.benefitPoint}}</div>
+				</dd>
+			</dl>
+			<span class="flex ac jc" data-id="{{value.activityAreaId}}" onclick="myCollect.remove(event, this)">取消收藏</span>
+		</a>
+		{{/each}}
+		{{else}}
+		{{include 'my_collect_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<!-- 商品 -->
+	<script id="my_collect_tpl_goods" type="text/html">
+		{{if arrayData.length}}
+		{{each arrayData value}}
+		<a class="mb20 flex" onclick="myCollect.goods(this)" data-id="{{value.productId}}"
+			data-activityareaid="{{value.activityAreaId}}" data-productid="{{value.productId}}">
+			<dl class="flex fg">
+				<dt class="fn">
+					<img src="{{value.pic}}">
+				</dt>
+				<dd class="fg">
+					<div class="flex ac">
+						<strong>{{value.salePrice}}</strong>
+						{{if value.discount}}
+						<mark class="btn-f50">{{value.discount}}折</mark>
+						{{/if}}
+					</div>
+					<p class="clampself">{{value.productName}}</p>
+				</dd>
+			</dl>
+			<span class="flex ac jc" data-id="{{value.productId}}" onclick="myCollect.remove(event, this)">取消收藏</span>
+		</a>
+		{{/each}}
+		{{else}}
+		{{include 'my_collect_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<!-- 店铺 -->
+	<script id="my_collect_tpl_shop" type="text/html">
+		{{if arrayData.length}}
+		{{each arrayData value}}
+		<a onclick="myCollect.shop(this)" data-id="{{value.mchtId}}" data-name="{{value.shopName}}">
+			<dl class="flex fg ac">
+				<dt class="fn flex ac jc">
+					<img src="{{value.shopLogo ? value.shopLogo : '../static/images/seller.png'}}">
+				</dt>
+				<dd class="fg flex ac jb">
+					<h3 class="elps">{{value.shopName}}</h3>
+					<i class="ico-btn arrow-r"></i>
+				</dd>
+			</dl>
+			<div class="slip-btn flex ac jc slip-btn-friend">
+				<div class="btn-sd flex ac jc" onclick="myCollect.updateDynamics(event)" data-id="{{value.mchtId}}">
+					接收动态</div>
+				<div class="btn-sd flex ac jc hide" onclick="myCollect.updateDynamics(event)" data-id="{{value.mchtId}}">
+					屏蔽动态</div>
+				<div class="btn-rc flex ac jc" onclick="myCollect.remove(event, this)" data-id="{{value.mchtId}}">取消收藏</div>
+			</div>
+		</a>
+		{{/each}}
+		{{else}}
+		{{include 'my_collect_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="my_collect_tpl_empty" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前我的收藏为空</p>
+		</div>
+	</script>
+
+	<script src="my/collect/index.js?var=1.1" async></script>
+</div>

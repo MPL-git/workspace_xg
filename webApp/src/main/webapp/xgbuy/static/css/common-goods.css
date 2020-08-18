@@ -1,0 +1,54 @@
+.con-goods dl {
+	padding: .2rem;
+	border-top: 1px solid #ddd;
+	background: #fff;
+}
+.con-goods dl:first-of-type {
+	border: none;
+}
+.con-goods dt {
+	width: 1.6rem;
+	height: 1.6rem;
+}
+.con-goods dt img {
+	width: 100%;
+}
+.con-goods dd {
+	padding-top: .06rem;
+	padding: .06rem 0 0 .2rem;
+	font-size: .28rem;
+}
+.con-goods dd p {
+	line-height: .34rem;
+	margin-bottom: .05rem;
+}
+.con-goods dd p:first-child {
+	overflow: hidden;
+	height: .68rem;
+}
+.con-goods em,
+.con-goods s,
+.con-goods span,
+.con-goods b {
+	font-size: .24rem;
+	color: #999;
+}
+.con-goods s {
+	margin: 0 .25rem 0 .1rem;
+}
+.con-goods strong,
+.con-goods em {
+	color: #ff5050;
+}
+.con-goods strong {
+	font-weight: bold;
+}
+.con-goods strong:before {
+	content: '¥';
+	font-size: .75em;
+	line-height: 2em;
+	margin-right: .03rem;
+}
+.con-goods mark {
+	display: none;
+}

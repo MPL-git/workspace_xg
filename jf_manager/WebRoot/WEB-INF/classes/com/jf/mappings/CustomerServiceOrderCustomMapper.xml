@@ -1,0 +1,1443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CustomerServiceOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CustomerServiceOrderCustom"  extends="com.jf.dao.CustomerServiceOrderMapper.BaseResultMap">
+    <result column="service_type_desc" property="serviceTypeDesc" jdbcType="VARCHAR" />
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+    <result column="pro_status_desc" property="proStatusDesc" jdbcType="VARCHAR" />
+    <result column="reason_desc" property="reasonDesc" jdbcType="VARCHAR" />
+    <result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+    <result column="delivery_date" property="deliveryDate" jdbcType="TIMESTAMP" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="sku_pic" property="skuPic" jdbcType="VARCHAR" />
+    <result column="art_no" property="artNo" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_prop_desc" property="productPropDesc" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="product_quantity" property="productQuantity" jdbcType="INTEGER" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="platform_preferential" property="platformPreferential" jdbcType="DECIMAL" />
+    <result column="mcht_preferential" property="mchtPreferential" jdbcType="DECIMAL" />
+    <result column="integral_preferential" property="integralPreferential" jdbcType="DECIMAL" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="mcht_type" property="mchtType" jdbcType="VARCHAR" />
+    <result column="refund_date" property="refundDate" jdbcType="TIMESTAMP" />
+    <result column="deliveryAmountCount" property="payOrderCount" jdbcType="INTEGER" />
+    <result column="deliveryCount" property="deliveryCount" jdbcType="INTEGER" />
+    <result column="refundOrderCount" property="refundOrderCount" jdbcType="INTEGER" />
+    <result column="returnBillCount" property="returnBillCount" jdbcType="INTEGER" />
+    <result column="swapOrderCount" property="swapOrderCount" jdbcType="INTEGER" />
+    <result column="payDate" property="payDate" jdbcType="VARCHAR" />
+    <result column="operator_type_desc" property="operatorTypeDesc" jdbcType="VARCHAR" />
+    <result column="log_create_date" property="logCreateDate" jdbcType="TIMESTAMP" />
+    <result column="log_content" property="logContent" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="member_info_status" property="memberInfoStatus" jdbcType="VARCHAR" />
+     <result column="brand_product_name" property="brandProductName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sub_order_id, order_dtl_id, order_code, service_type, status, pro_status, contact_phone, 
+    reason, quantity, amount, mcht_express_company, mcht_express_no, member_express_company, 
+    member_express_no, create_by, create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "SERVICE_TYPE", a.service_type) service_type_desc,
+    FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "STATUS", a.status) status_desc,
+    FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "PRO_STATUS", a.pro_status) pro_status_desc,
+    FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "REASON", a.reason) reason_desc,
+    (select b.sub_order_code from bu_sub_order b where b.id=a.sub_order_id) sub_order_code,
+    (select b.delivery_date from bu_sub_order b where b.id=a.sub_order_id) delivery_date,
+    (select c.short_name from bu_sub_order b, bu_mcht_info c where b.id=a.sub_order_id and c.id=b.mcht_id) short_name,
+    (select c.company_name from bu_sub_order b, bu_mcht_info c where b.id=a.sub_order_id and c.id=b.mcht_id) company_name,
+    (select c.mcht_code from bu_sub_order b, bu_mcht_info c where b.id=a.sub_order_id and c.id=b.mcht_id) mcht_code,
+    (select b.activity_id from bu_order_dtl b where b.id=a.order_dtl_id) activity_id,
+    (select c.sku from bu_order_dtl b, bu_product_item c where b.id=a.order_dtl_id and c.id=b.product_item_id) sku,
+    (select b.sku_pic from bu_order_dtl b where b.id=a.order_dtl_id) sku_pic,
+    (select b.art_no from bu_order_dtl b where b.id=a.order_dtl_id) art_no,
+    (select b.product_name from bu_order_dtl b where b.id=a.order_dtl_id) product_name,
+    (select b.product_prop_desc from bu_order_dtl b where b.id=a.order_dtl_id) product_prop_desc,
+    (select b.product_id from bu_order_dtl b where b.id=a.order_dtl_id) product_id,
+    (select b.quantity from bu_order_dtl b where b.id=a.order_dtl_id) product_quantity,
+    (select b.sale_price from bu_order_dtl b where b.id=a.order_dtl_id) sale_price,
+    (select b.pay_amount from bu_order_dtl b where b.id=a.order_dtl_id) pay_amount,
+    (select b.platform_preferential from bu_order_dtl b where b.id=a.order_dtl_id) platform_preferential,
+    (select b.mcht_preferential from bu_order_dtl b where b.id=a.order_dtl_id) mcht_preferential,
+    (select b.freight from bu_order_dtl b where b.id=a.order_dtl_id) freight,
+    (select b.integral_preferential from bu_order_dtl b where b.id=a.order_dtl_id) integral_preferential,
+    (select c.receiver_name from bu_sub_order b, bu_combine_order c where b.id=a.sub_order_id and c.id=b.combine_order_id) receiver_name,
+    (select c.receiver_phone from bu_sub_order b, bu_combine_order c where b.id=a.sub_order_id and c.id=b.combine_order_id) receiver_phone,
+    (select c.receiver_address from bu_sub_order b, bu_combine_order c where b.id=a.sub_order_id and c.id=b.combine_order_id) receiver_address,
+    (select c.member_id from bu_sub_order b, bu_combine_order c where b.id=a.sub_order_id and c.id=b.combine_order_id) member_id,
+    (select c.mcht_type from bu_sub_order b, bu_mcht_info c where b.id=a.sub_order_id and c.id=b.mcht_id) mcht_type,
+    (select b.success_date from bu_refund_order b where b.service_order_id=a.id and b.del_flag='0' and b.status='1' AND b.service_type=a.service_type limit 1) refund_date,
+    FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_LOG", "OPERATOR_TYPE", (select csl.operator_type from bu_customer_service_log csl where csl.service_order_id = a.id and csl.del_flag='0' order by csl.id desc limit 1))operator_type_desc,
+    (select csl.create_date from bu_customer_service_log csl where csl.service_order_id = a.id and csl.del_flag='0' order by csl.id desc limit 1)log_create_date,
+    (select csl.content from bu_customer_service_log csl where csl.service_order_id = a.id and csl.del_flag='0' order by csl.id desc limit 1)log_content,
+  	(select p.code from bu_order_dtl b, bu_product p where p.del_flag = '0' and b.product_id = p.id and b.id = a.order_dtl_id) product_code,
+  	(select mi.status from bu_sub_order so, bu_combine_order co, bu_member_info mi where so.del_flag = '0' and co.del_flag = '0' and mi.del_flag = '0' and co.id = so.combine_order_id and co.member_id = mi.id and so.id = a.sub_order_id ) member_info_status,
+  	(select group_concat(CONCAT('【',b.brand_name,'】 ',b.product_name)) from bu_order_dtl b where b.id=a.order_dtl_id) brand_product_name 
+  	
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CustomerServiceOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_customer_service_order a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_customer_service_order a
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.CustomerServiceOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_customer_service_order a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+
+  <select id="selectCustomServiceOrderCountList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT t.payDate,sum(payOrder) AS payOrderCount,sum(delivery) AS deliveryCount,sum(A) AS refundOrderCount,sum(B) AS returnBillCount,sum(C) AS swapOrderCount FROM (
+	select 
+	date_format(combine.pay_date,'%Y-%m-%d') AS payDate,
+	sum(dtl.quantity) AS payOrder,
+	0 AS delivery,0 AS A,0 AS B,0 AS C
+	from bu_combine_order combine
+	left join bu_sub_order sub on sub.combine_order_id = combine.id
+	left join bu_order_dtl dtl on dtl.sub_order_id = sub.id
+	left join bu_mcht_info mcht on mcht.id = sub.mcht_id
+	<!-- left join bu_mcht_platform_contact mpc on sub.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product pro on pro.id = dtl.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mcht.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mpt on mpt.mcht_id = sub.mcht_id</if>
+	where combine.del_flag = '0' and sub.del_flag = '0' and dtl.del_flag = '0' and combine.status = '1' and dtl.is_give = '0'
+	<if test="payDateBegin != null and payDateBegin != ''">and combine.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combine.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mcht.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mcht.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and pro.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mpt.del_flag = '0' and mpt.status = '1' and mpt.is_main = '1' and mpt.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combine1.pay_date,'%Y-%m-%d') AS payDate,
+	0 AS payOrder,
+	sum(dtl1.quantity) AS delivery,
+	0 AS A,0 AS B,0 AS C
+	from bu_combine_order combine1
+	left join bu_sub_order sub1 on sub1.combine_order_id = combine1.id
+	left join bu_order_dtl dtl1 on dtl1.sub_order_id = sub1.id
+	left join bu_mcht_info mcht1 on mcht1.id = sub1.mcht_id
+	<!-- left join bu_mcht_platform_contact mpc on sub1.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product pro1 on pro1.id = dtl1.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mcht1.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mpt1 on mpt1.mcht_id = sub1.mcht_id</if>
+	where combine1.del_flag = '0' and sub1.del_flag = '0' and dtl1.del_flag = '0' and combine1.status = '1' and dtl1.is_give = '0'
+	and sub1.status='1' and dtl1.product_status is null
+	<if test="payDateBegin != null and payDateBegin != ''">and combine1.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combine1.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mcht1.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mcht1.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and pro1.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mpt1.del_flag = '0' and mpt1.status = '1' and mpt1.is_main = '1' and mpt1.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combineA.pay_date,'%Y-%m-%d') AS payDate,0 AS payOrder,0 AS delivery,sum(yA.quantity) as A,0 AS B,0 AS C 
+	from bu_customer_service_order yA
+	left join bu_sub_order subA ON subA.id = yA.sub_order_id
+	left join bu_combine_order combineA ON combineA.id = subA.combine_order_id
+	left join bu_mcht_info mchtA ON mchtA.id = subA.mcht_id
+	left join bu_order_dtl dtlA ON dtlA.id = yA.order_dtl_id
+	<!-- left join bu_mcht_platform_contact mpc ON subA.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product proA ON proA.id = dtlA.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mchtA.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mptA on mptA.mcht_id = subA.mcht_id</if>
+	where yA.service_type = 'A' and yA.del_flag = '0' and subA.del_flag = '0' and dtlA.del_flag = '0' and combineA.del_flag = '0'
+	and yA.status in ('0','1') and dtlA.is_give = '0'
+	<if test="payDateBegin != null and payDateBegin != ''">and combineA.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combineA.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mchtA.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mchtA.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and proA.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mptA.del_flag = '0' and mptA.status = '1' and mptA.is_main = '1' and mptA.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combineB.pay_date,'%Y-%m-%d') AS payDate,0 AS payOrder,0 AS delivery,0 as A,sum(yB.quantity) AS B,0 AS C 
+	from bu_customer_service_order yB 
+	left join bu_sub_order subB ON subB.id = yB.sub_order_id
+	left join bu_combine_order combineB ON combineB.id = subB.combine_order_id
+	left join bu_mcht_info mchtB ON mchtB.id = subB.mcht_id
+	left join bu_order_dtl dtlB ON dtlB.id = yB.order_dtl_id
+	<!-- left join bu_mcht_platform_contact mpc ON subB.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product proB ON proB.id = dtlB.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mchtB.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mptB on mptB.mcht_id = subB.mcht_id</if>
+	where yB.service_type = 'B' and yB.del_flag = '0' and subB.del_flag = '0' and dtlB.del_flag = '0' and combineB.del_flag = '0'
+	and yB.status in ('0','1') and dtlB.is_give = '0'
+	<if test="payDateBegin != null and payDateBegin != ''">and combineB.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combineB.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mchtB.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mchtB.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and proB.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mptB.del_flag = '0' and mptB.status = '1' and mptB.is_main = '1' and mptB.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combineC.pay_date,'%Y-%m-%d') AS payDate,0 AS payOrder,0 AS delivery,0 as A,0 AS B,sum(yC.quantity) AS C 
+	from bu_customer_service_order yC 
+	left join bu_sub_order subC ON subC.id = yC.sub_order_id
+	left join bu_combine_order combineC ON combineC.id = subC.combine_order_id
+	left join bu_mcht_info mchtC ON mchtC.id = subC.mcht_id
+	left join bu_order_dtl dtlC ON dtlC.id = yC.order_dtl_id
+	<!-- left join bu_mcht_platform_contact mpc ON subC.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product proC ON proC.id = dtlC.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mchtC.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mptC on mptC.mcht_id = subC.mcht_id</if>
+	where yC.service_type = 'C' and yC.del_flag = '0' and subC.del_flag = '0' and dtlC.del_flag = '0' and combineC.del_flag = '0'
+	and yC.status in ('0','1') and dtlC.is_give = '0'
+	<if test="payDateBegin != null and payDateBegin != ''">and combineC.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combineC.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mchtC.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mchtC.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and proC.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mptC.del_flag = '0' and mptC.status = '1' and mptC.is_main = '1' and mptC.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	) t
+	GROUP BY t.payDate
+  </select>
+  
+  <!-- 每日售后金额统计 -->
+   <select id="selectCustomServiceOrderAmountCountList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    SELECT t.payDate,sum(payOrder) AS payOrderAmount,sum(delivery) AS deliveryAmount,sum(A) AS refundOrderAmount,sum(B) AS returnBillAmount,sum(C) AS swapOrderAmount FROM (
+	select 
+	date_format(combine.pay_date,'%Y-%m-%d') AS payDate,
+	sum(dtl.pay_amount) AS payOrder,
+	0 AS delivery,0 AS A,0 AS B,0 AS C
+	from bu_combine_order combine
+	left join bu_sub_order sub on sub.combine_order_id = combine.id
+	left join bu_order_dtl dtl on dtl.sub_order_id = sub.id
+	left join bu_mcht_info mcht on mcht.id = sub.mcht_id
+	<!-- left join bu_mcht_platform_contact mpc on sub.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product pro on pro.id = dtl.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mcht.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mpt on mpt.mcht_id = sub.mcht_id</if>
+	where combine.del_flag = '0' and sub.del_flag = '0' and dtl.del_flag = '0' and combine.status = '1' and dtl.is_give = '0'
+	<if test="payDateBegin != null and payDateBegin != ''">and combine.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combine.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mcht.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mcht.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and pro.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mpt.del_flag = '0' and mpt.status = '1' and mpt.is_main = '1' and mpt.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combine1.pay_date,'%Y-%m-%d') AS payDate,
+	0 AS payOrder,
+	sum(dtl1.pay_amount) AS deliveryAmount,
+	0 AS A,0 AS B,0 AS C
+	from bu_combine_order combine1
+	left join bu_sub_order sub1 on sub1.combine_order_id = combine1.id
+	left join bu_order_dtl dtl1 on dtl1.sub_order_id = sub1.id
+	left join bu_mcht_info mcht1 on mcht1.id = sub1.mcht_id
+	<!-- left join bu_mcht_platform_contact mpc on sub1.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product pro1 on pro1.id = dtl1.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mcht1.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mpt1 on mpt1.mcht_id = sub1.mcht_id</if>
+	where combine1.del_flag = '0' and sub1.del_flag = '0' and dtl1.del_flag = '0' and combine1.status = '1' and dtl1.is_give = '0'
+	and sub1.status='1' and dtl1.product_status is null
+	<if test="payDateBegin != null and payDateBegin != ''">and combine1.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combine1.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mcht1.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mcht1.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and pro1.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mpt1.del_flag = '0' and mpt1.status = '1' and mpt1.is_main = '1' and mpt1.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combineA.pay_date,'%Y-%m-%d') AS payDate,0 AS payOrder,0 AS deliveryAmount,sum(dtlA.pay_amount) as A,0 AS B ,0 AS C
+	from bu_customer_service_order yA
+	left join bu_sub_order subA ON subA.id = yA.sub_order_id
+	left join bu_combine_order combineA ON combineA.id = subA.combine_order_id
+	left join bu_mcht_info mchtA ON mchtA.id = subA.mcht_id
+	left join bu_order_dtl dtlA ON dtlA.id = yA.order_dtl_id
+	<!-- left join bu_mcht_platform_contact mpc ON subA.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product proA ON proA.id = dtlA.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mchtA.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mptA on mptA.mcht_id = subA.mcht_id</if>
+	where yA.service_type = 'A' and yA.del_flag = '0' and subA.del_flag = '0' and dtlA.del_flag = '0' and combineA.del_flag = '0'
+	and yA.status in ('0','1') and dtlA.is_give = '0' and combineA.status = '1'
+	<if test="payDateBegin != null and payDateBegin != ''">and combineA.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combineA.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mchtA.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mchtA.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and proA.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mptA.del_flag = '0' and mptA.status = '1' and mptA.is_main = '1' and mptA.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combineB.pay_date,'%Y-%m-%d') AS payDate,0 AS payOrder,0 AS deliveryAmount,0 as A,sum(dtlB.pay_amount) AS B ,0 AS C
+	from bu_customer_service_order yB 
+	left join bu_sub_order subB ON subB.id = yB.sub_order_id
+	left join bu_combine_order combineB ON combineB.id = subB.combine_order_id
+	left join bu_mcht_info mchtB ON mchtB.id = subB.mcht_id
+	left join bu_order_dtl dtlB ON dtlB.id = yB.order_dtl_id
+	<!-- left join bu_mcht_platform_contact mpc ON subB.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product proB ON proB.id = dtlB.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mchtB.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mptB on mptB.mcht_id = subB.mcht_id</if>
+	where yB.service_type = 'B' and yB.del_flag = '0' and subB.del_flag = '0' and dtlB.del_flag = '0' and combineB.del_flag = '0'
+	and yB.status in ('0','1') and dtlB.is_give = '0' and combineB.status = '1'
+	<if test="payDateBegin != null and payDateBegin != ''">and combineB.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combineB.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mchtB.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mchtB.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and proB.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mptB.del_flag = '0' and mptB.status = '1' and mptB.is_main = '1' and mptB.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	UNION ALL
+	select date_format(combineC.pay_date,'%Y-%m-%d') AS payDate,0 AS payOrder,0 AS delivery,0 as A,0 AS B,sum(dtlC.pay_amount) AS C 
+	from bu_customer_service_order yC 
+	left join bu_sub_order subC ON subC.id = yC.sub_order_id
+	left join bu_combine_order combineC ON combineC.id = subC.combine_order_id
+	left join bu_mcht_info mchtC ON mchtC.id = subC.mcht_id
+	left join bu_order_dtl dtlC ON dtlC.id = yC.order_dtl_id
+	<!-- left join bu_mcht_platform_contact mpc ON subC.mcht_id=mpc.mcht_id -->
+	<if test="brandId != null and brandId != ''">left join bu_product proC ON proC.id = dtlC.product_id</if>
+	<if test="platformContactId != null and platformContactId != ''">left join bu_mcht_platform_contact mpc on mchtC.id=mpc.mcht_id</if>
+	<if test="productTypeId != null and productTypeId != ''">left join bu_mcht_product_type mptC on mptC.mcht_id = subC.mcht_id</if>
+	where yC.service_type = 'C' and yC.del_flag = '0' and subC.del_flag = '0' and dtlC.del_flag = '0' and combineC.del_flag = '0'
+	and yC.status in ('0','1') and dtlC.is_give = '0' and combineC.status = '1'
+	<if test="payDateBegin != null and payDateBegin != ''">and combineC.pay_date &gt;= #{payDateBegin}</if>
+	<if test="payDateEnd != null and payDateEnd != ''">and combineC.pay_date &lt;= #{payDateEnd}</if>
+	<if test="mchtCode != null and mchtCode != ''">and mchtC.mcht_code = #{mchtCode}</if>
+	<if test="shopName != null and shopName != ''">and mchtC.shop_name = #{shopName}</if>
+	<if test="brandId != null and brandId != ''">and proC.brand_id = #{brandId}</if>
+	<if test="platformContactId != null and platformContactId != ''">and mpc.del_flag = '0' and mpc.status = '1' and mpc.platform_contact_id= #{platformContactId}</if>
+	<if test="productTypeId != null and productTypeId != ''">and mptC.del_flag = '0' and mptC.status = '1' and mptC.is_main = '1' and mptC.product_type_id = #{productTypeId }</if>
+	GROUP BY payDate
+	) t
+	GROUP BY t.payDate
+  </select>
+  <select id="mchtCustomServiceQuantityList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+SELECT
+	t2.*,
+	CONCAT(ROUND(t2.refund_quantity*100/t2.pay_product_quantity,2),'%')refund_rate,
+	CONCAT(ROUND(t2.return_goods_quantity*100/t2.pay_product_quantity,2),'%')refund_goods_rate,
+	CONCAT(ROUND(t2.exchange_goods_quantity*100/t2.pay_product_quantity,2),'%')exchange_goods_rate
+FROM
+	(
+		SELECT
+			t.mcht_code,
+			t.company_name,
+			t.shop_name,
+			t.brands,
+			SUM(t.pay_product_quantity) AS pay_product_quantity,
+			SUM(
+				t.delivery_product_quantity
+			) AS delivery_product_quantity,
+			SUM(t.refund_quantity) AS refund_quantity,
+			SUM(t.return_goods_quantity) AS return_goods_quantity,
+			SUM(t.exchange_goods_quantity) AS exchange_goods_quantity
+		FROM
+			(
+				SELECT
+					mi.mcht_code,
+					mi.company_name,
+					mi.shop_name,
+					(
+						SELECT
+							GROUP_CONCAT(pb.`name`)
+						FROM
+							bu_mcht_product_brand mpb,
+							bu_product_brand pb
+						WHERE
+							mpb.mcht_id = mi.id
+						AND mpb.`status` = '1'
+						AND mpb.del_flag = '0'
+						AND mpb.product_brand_id = pb.id
+						AND pb.del_flag = '0'
+					) brands,
+					SUM(od.quantity) pay_product_quantity,
+					0 AS delivery_product_quantity,
+					0 AS refund_quantity,
+					0 AS return_goods_quantity,
+					0 AS exchange_goods_quantity
+				FROM
+					bu_order_dtl od,
+					bu_sub_order so,
+					bu_combine_order co,
+					bu_mcht_info mi
+					<if test="productBrandId != null">
+					,bu_product p
+					</if>
+					<if test="productTypeId != null and productTypeId != ''">
+						,bu_mcht_product_type mpt
+					</if>
+					<if test="platformContactId!=null">
+			        ,bu_mcht_platform_contact mpc
+			        </if>
+				WHERE
+				 	od.is_give = '0'
+				AND	od.del_flag = '0'
+				AND od.sub_order_id = so.id
+				AND so.combine_order_id = co.id
+				AND co.`status` = '1'
+				AND co.del_flag = '0'
+				<if test="productTypeId != null and productTypeId != ''">
+					AND mpt.del_flag = '0'
+					AND mpt.is_main = '1'
+					AND mpt.status = '1'
+					AND mpt.mcht_id = mi.id
+					AND mpt.product_type_id = #{productTypeId}
+				</if>
+				<if test="platformContactId!=null">
+		            AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		         </if>
+				AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+				AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+				AND so.mcht_id = mi.id
+				AND mi.del_flag = '0'
+				<if test="productBrandId != null">
+				AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+				</if>
+				<if test="mchtCode != null">
+				AND mi.mcht_code = #{mchtCode}
+				</if>
+				<if test="shopName != null">
+				AND mi.shop_name = #{shopName}
+				</if>
+				GROUP BY
+					mi.mcht_code
+				UNION
+					SELECT
+						mi.mcht_code,
+						mi.company_name,
+						mi.shop_name,
+						(
+							SELECT
+								GROUP_CONCAT(pb.`name`)
+							FROM
+								bu_mcht_product_brand mpb,
+								bu_product_brand pb
+							WHERE
+								mpb.mcht_id = mi.id
+							AND mpb.`status` = '1'
+							AND mpb.del_flag = '0'
+							AND mpb.product_brand_id = pb.id
+							AND pb.del_flag = '0'
+						) brands,
+						0 AS pay_product_quantity,
+						SUM(od.quantity) AS delivery_product_quantity,
+						0 AS refund_quantity,
+						0 AS return_goods_quantity,
+						0 AS exchange_goods_quantity
+					FROM
+						bu_order_dtl od,
+						bu_sub_order so,
+						bu_combine_order co,
+						bu_mcht_info mi
+						<if test="productBrandId != null">
+						,bu_product p
+						</if>
+						<if test="productTypeId != null and productTypeId != ''">
+							,bu_mcht_product_type mpt
+						</if>
+						<if test="platformContactId!=null">
+			              ,bu_mcht_platform_contact mpc
+			            </if>
+					WHERE
+							od.is_give = '0'
+						AND	od.del_flag = '0'
+						AND od.product_status is null
+						AND od.sub_order_id = so.id
+						AND so.status='1'
+						AND so.combine_order_id = co.id
+						AND co.status = '1'
+						AND co.del_flag = '0'
+						<if test="productTypeId != null and productTypeId != ''">
+							AND mpt.del_flag = '0'
+							AND mpt.is_main = '1'
+							AND mpt.status = '1'
+							AND mpt.mcht_id = mi.id
+							AND mpt.product_type_id = #{productTypeId}
+						</if>
+						<if test="platformContactId!=null">
+		                   AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                </if>
+						AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+						AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+						AND so.mcht_id = mi.id
+						AND mi.del_flag = '0'
+						<if test="productBrandId != null">
+						AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+						</if>
+						<if test="mchtCode != null">
+						AND mi.mcht_code = #{mchtCode}
+						</if>
+						<if test="shopName != null">
+						AND mi.shop_name = #{shopName}
+						</if>
+					GROUP BY
+						mi.mcht_code
+					UNION
+						SELECT
+							mi.mcht_code,
+							mi.company_name,
+							mi.shop_name,
+							(
+								SELECT
+									GROUP_CONCAT(pb.`name`)
+								FROM
+									bu_mcht_product_brand mpb,
+									bu_product_brand pb
+								WHERE
+									mpb.mcht_id = mi.id
+								AND mpb.`status` = '1'
+								AND mpb.del_flag = '0'
+								AND mpb.product_brand_id = pb.id
+								AND pb.del_flag = '0'
+							) brands,
+							0 AS pay_product_quantity,
+							0 AS delivery_product_quantity,
+							SUM(od.quantity) AS refund_quantity,
+							0 AS return_goods_quantity,
+							0 AS exchange_goods_quantity
+						FROM
+							bu_order_dtl od,
+							bu_sub_order so,
+							bu_combine_order co,
+							bu_customer_service_order cso,
+							bu_mcht_info mi
+							<if test="productBrandId != null">
+							,bu_product p
+							</if>
+							<if test="productTypeId != null and productTypeId != ''">
+								,bu_mcht_product_type mpt
+							</if>
+							<if test="platformContactId!=null">
+			                 ,bu_mcht_platform_contact mpc
+			                </if>
+						WHERE
+								od.is_give = '0'
+							AND	od.del_flag = '0'
+							AND od.id = cso.order_dtl_id
+							AND (
+								cso.`status` = '0'
+								OR cso.`status` = '1'
+							)
+							AND cso.service_type = 'A'
+							AND od.sub_order_id = so.id
+							AND so.combine_order_id = co.id
+							AND co.`status` = '1'
+							AND co.del_flag = '0'
+							<if test="productTypeId != null and productTypeId != ''">
+								AND mpt.del_flag = '0'
+								AND mpt.is_main = '1'
+								AND mpt.status = '1'
+								AND mpt.mcht_id = mi.id
+								AND mpt.product_type_id = #{productTypeId}
+							</if>
+							<if test="platformContactId!=null">
+		                       AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                    </if>
+							AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+							AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+							AND so.mcht_id = mi.id
+							AND mi.del_flag = '0'
+							<if test="productBrandId != null">
+							AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+							</if>
+							<if test="mchtCode != null">
+							AND mi.mcht_code = #{mchtCode}
+							</if>
+							<if test="shopName != null">
+							AND mi.shop_name = #{shopName}
+							</if>
+						GROUP BY
+							mi.mcht_code
+						UNION
+							SELECT
+								mi.mcht_code,
+								mi.company_name,
+								mi.shop_name,
+								(
+									SELECT
+										GROUP_CONCAT(pb.`name`)
+									FROM
+										bu_mcht_product_brand mpb,
+										bu_product_brand pb
+									WHERE
+										mpb.mcht_id = mi.id
+									AND mpb.`status` = '1'
+									AND mpb.del_flag = '0'
+									AND mpb.product_brand_id = pb.id
+									AND pb.del_flag = '0'
+								) brands,
+								0 AS pay_product_quantity,
+								0 AS delivery_product_quantity,
+								0 AS refund_quantity,
+								SUM(od.quantity) AS return_goods_quantity,
+								0 AS exchange_goods_quantity
+							FROM
+								bu_order_dtl od,
+								bu_sub_order so,
+								bu_combine_order co,
+								bu_customer_service_order cso,
+								bu_mcht_info mi
+								<if test="productBrandId != null">
+								,bu_product p
+								</if>
+								<if test="productTypeId != null and productTypeId != ''">
+									,bu_mcht_product_type mpt
+								</if>
+								<if test="platformContactId!=null">
+			                       ,bu_mcht_platform_contact mpc
+			                    </if>
+							WHERE
+									od.is_give = '0'
+								AND	od.del_flag = '0'
+								AND od.id = cso.order_dtl_id
+								AND (
+									cso.`status` = '0'
+									OR cso.`status` = '1'
+								)
+								AND cso.service_type = 'B'
+								AND od.sub_order_id = so.id
+								AND so.combine_order_id = co.id
+								AND co.`status` = '1'
+								AND co.del_flag = '0'
+								<if test="productTypeId != null and productTypeId != ''">
+									AND mpt.del_flag = '0'
+									AND mpt.is_main = '1'
+									AND mpt.status = '1'
+									AND mpt.mcht_id = mi.id
+									AND mpt.product_type_id = #{productTypeId}
+								</if>
+								<if test="platformContactId!=null">
+		                            AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                        </if>
+								AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+								AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+								AND so.mcht_id = mi.id
+								AND mi.del_flag = '0'
+								<if test="productBrandId != null">
+								AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+								</if>
+								<if test="mchtCode != null">
+								AND mi.mcht_code = #{mchtCode}
+								</if>
+								<if test="shopName != null">
+								AND mi.shop_name = #{shopName}
+								</if>
+							GROUP BY
+								mi.mcht_code
+							UNION
+								SELECT
+									mi.mcht_code,
+									mi.company_name,
+									mi.shop_name,
+									(
+										SELECT
+											GROUP_CONCAT(pb.`name`)
+										FROM
+											bu_mcht_product_brand mpb,
+											bu_product_brand pb
+										WHERE
+											mpb.mcht_id = mi.id
+										AND mpb.`status` = '1'
+										AND mpb.del_flag = '0'
+										AND mpb.product_brand_id = pb.id
+										AND pb.del_flag = '0'
+									) brands,
+									0 AS pay_product_quantity,
+									0 AS delivery_product_quantity,
+									0 AS refund_quantity,
+									0 AS return_goods_quantity,
+									SUM(od.quantity) AS exchange_goods_quantity
+								FROM
+									bu_order_dtl od,
+									bu_sub_order so,
+									bu_combine_order co,
+									bu_customer_service_order cso,
+									bu_mcht_info mi
+									<if test="productBrandId != null">
+									,bu_product p
+									</if>
+									<if test="productTypeId != null and productTypeId != ''">
+										,bu_mcht_product_type mpt
+									</if>
+									<if test="platformContactId!=null">
+			                           ,bu_mcht_platform_contact mpc
+			                        </if>
+								WHERE
+										od.is_give = '0'
+									AND	od.del_flag = '0'
+									AND od.id = cso.order_dtl_id
+									AND (
+										cso.`status` = '0'
+										OR cso.`status` = '1'
+									)
+									AND cso.service_type = 'C'
+									AND od.sub_order_id = so.id
+									AND so.combine_order_id = co.id
+									AND co.`status` = '1'
+									AND co.del_flag = '0'
+									<if test="productTypeId != null and productTypeId != ''">
+										AND mpt.del_flag = '0'
+										AND mpt.is_main = '1'
+										AND mpt.status = '1'
+										AND mpt.mcht_id = mi.id
+										AND mpt.product_type_id = #{productTypeId}
+									</if>
+									<if test="platformContactId!=null">
+		                                AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                            </if>
+									AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+									AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+									AND so.mcht_id = mi.id
+									AND mi.del_flag = '0'
+									<if test="productBrandId != null">
+									AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+									</if>
+									<if test="mchtCode != null">
+									AND mi.mcht_code = #{mchtCode}
+									</if>
+									<if test="shopName != null">
+									AND mi.shop_name = #{shopName}
+									</if>
+								GROUP BY
+									mi.mcht_code
+			) t
+		GROUP BY
+			t.mcht_code
+	) t2
+  </select>
+  <select id="mchtCustomServiceAmountList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+SELECT
+	t2.*,
+	CONCAT(ROUND(t2.refund_amount*100/t2.pay_product_amount,2),'%')refund_rate,
+	CONCAT(ROUND(t2.return_goods_amount*100/t2.pay_product_amount,2),'%')refund_goods_rate,
+	CONCAT(ROUND(t2.exchange_goods_amount*100/t2.pay_product_amount,2),'%')exchange_goods_rate
+FROM
+	(
+		SELECT
+			t.mcht_code,
+			t.company_name,
+			t.shop_name,
+			t.brands,
+			SUM(t.pay_product_amount) AS pay_product_amount,
+			SUM(
+				t.delivery_product_amount
+			) AS delivery_product_amount,
+			SUM(t.refund_amount) AS refund_amount,
+			SUM(t.return_goods_amount) AS return_goods_amount,
+			SUM(t.exchange_goods_amount) AS exchange_goods_amount
+		FROM
+			(
+				SELECT
+					mi.mcht_code,
+					mi.company_name,
+					mi.shop_name,
+					(
+						SELECT
+							GROUP_CONCAT(pb.`name`)
+						FROM
+							bu_mcht_product_brand mpb,
+							bu_product_brand pb
+						WHERE
+							mpb.mcht_id = mi.id
+						AND mpb.`status` = '1'
+						AND mpb.del_flag = '0'
+						AND mpb.product_brand_id = pb.id
+						AND pb.del_flag = '0'
+					) brands,
+					SUM(od.pay_amount) pay_product_amount,
+					0 AS delivery_product_amount,
+					0 AS refund_amount,
+					0 AS return_goods_amount,
+					0 AS exchange_goods_amount
+				FROM
+					bu_order_dtl od,
+					bu_sub_order so,
+					bu_combine_order co,
+					bu_mcht_info mi
+					<if test="productBrandId != null">
+					,bu_product p
+					</if>
+					<if test="productTypeId != null and productTypeId != ''">
+						,bu_mcht_product_type mpt
+					</if>
+					<if test="platformContactId!=null">
+			            ,bu_mcht_platform_contact mpc
+			        </if>
+				WHERE
+				 	od.is_give = '0'
+				AND	od.del_flag = '0'
+				AND od.sub_order_id = so.id
+				AND so.combine_order_id = co.id
+				AND co.`status` = '1'
+				AND co.del_flag = '0'
+				<if test="productTypeId != null and productTypeId != ''">
+					AND mpt.del_flag = '0'
+					AND mpt.is_main = '1'
+					AND mpt.status = '1'
+					AND mpt.mcht_id = mi.id
+					AND mpt.product_type_id = #{productTypeId}
+				</if>
+				<if test="platformContactId!=null">
+		            AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		        </if>
+				AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+				AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+				AND so.mcht_id = mi.id
+				AND mi.del_flag = '0'
+				<if test="productBrandId != null">
+				AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+				</if>
+				<if test="mchtCode != null">
+				AND mi.mcht_code = #{mchtCode}
+				</if>
+				<if test="shopName != null">
+				AND mi.shop_name = #{shopName}
+				</if>
+				GROUP BY
+					mi.mcht_code
+				UNION
+					SELECT
+						mi.mcht_code,
+						mi.company_name,
+						mi.shop_name,
+						(
+							SELECT
+								GROUP_CONCAT(pb.`name`)
+							FROM
+								bu_mcht_product_brand mpb,
+								bu_product_brand pb
+							WHERE
+								mpb.mcht_id = mi.id
+							AND mpb.`status` = '1'
+							AND mpb.del_flag = '0'
+							AND mpb.product_brand_id = pb.id
+							AND pb.del_flag = '0'
+						) brands,
+						0 AS pay_product_amount,
+						SUM(od.pay_amount) AS delivery_product_amount,
+						0 AS refund_amount,
+						0 AS return_goods_amount,
+						0 AS exchange_goods_amount
+					FROM
+						bu_order_dtl od,
+						bu_sub_order so,
+						bu_combine_order co,
+						bu_mcht_info mi
+						<if test="productBrandId != null">
+						,bu_product p
+						</if>
+						<if test="productTypeId != null and productTypeId != ''">
+							,bu_mcht_product_type mpt
+						</if>
+						<if test="platformContactId!=null">
+			                ,bu_mcht_platform_contact mpc
+			            </if>
+					WHERE
+							od.is_give = '0'
+						AND	od.del_flag = '0'
+						AND od.product_status is null
+						AND od.sub_order_id = so.id
+						AND so.status = '1'
+						AND so.combine_order_id = co.id
+						AND co.status = '1'
+						AND co.del_flag = '0'
+						<if test="productTypeId != null and productTypeId != ''">
+							AND mpt.del_flag = '0'
+							AND mpt.is_main = '1'
+							AND mpt.status = '1'
+							AND mpt.mcht_id = mi.id
+							AND mpt.product_type_id = #{productTypeId}
+						</if>
+						<if test="platformContactId!=null">
+		                    AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                </if>
+						AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+						AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+						AND so.mcht_id = mi.id
+						AND mi.del_flag = '0'
+						<if test="productBrandId != null">
+						AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+						</if>
+						<if test="mchtCode != null">
+						AND mi.mcht_code = #{mchtCode}
+						</if>
+						<if test="shopName != null">
+						AND mi.shop_name = #{shopName}
+						</if>
+					GROUP BY
+						mi.mcht_code
+					UNION
+						SELECT
+							mi.mcht_code,
+							mi.company_name,
+							mi.shop_name,
+							(
+								SELECT
+									GROUP_CONCAT(pb.`name`)
+								FROM
+									bu_mcht_product_brand mpb,
+									bu_product_brand pb
+								WHERE
+									mpb.mcht_id = mi.id
+								AND mpb.`status` = '1'
+								AND mpb.del_flag = '0'
+								AND mpb.product_brand_id = pb.id
+								AND pb.del_flag = '0'
+							) brands,
+							0 AS pay_product_amount,
+							0 AS delivery_product_amount,
+							SUM(od.pay_amount) AS refund_amount,
+							0 AS return_goods_amount,
+							0 AS exchange_goods_amount
+						FROM
+							bu_order_dtl od,
+							bu_sub_order so,
+							bu_combine_order co,
+							bu_customer_service_order cso,
+							bu_mcht_info mi
+							<if test="productBrandId != null">
+							,bu_product p
+							</if>
+							<if test="productTypeId != null and productTypeId != ''">
+								,bu_mcht_product_type mpt
+							</if>
+							<if test="platformContactId!=null">
+			                    ,bu_mcht_platform_contact mpc
+			                </if>
+						WHERE
+								od.is_give = '0'
+							AND	od.del_flag = '0'
+							AND od.id = cso.order_dtl_id
+							AND (
+								cso.`status` = '0'
+								OR cso.`status` = '1'
+							)
+							AND cso.service_type = 'A'
+							AND od.sub_order_id = so.id
+							AND so.combine_order_id = co.id
+							AND co.`status` = '1'
+							AND co.del_flag = '0'
+							<if test="productTypeId != null and productTypeId != ''">
+								AND mpt.del_flag = '0'
+								AND mpt.is_main = '1'
+								AND mpt.status = '1'
+								AND mpt.mcht_id = mi.id
+								AND mpt.product_type_id = #{productTypeId}
+							</if>
+							<if test="platformContactId!=null">
+		                        AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                    </if>
+							AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+							AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+							AND so.mcht_id = mi.id
+							AND mi.del_flag = '0'
+							<if test="productBrandId != null">
+							AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+							</if>
+							<if test="mchtCode != null">
+							AND mi.mcht_code = #{mchtCode}
+							</if>
+							<if test="shopName != null">
+							AND mi.shop_name = #{shopName}
+							</if>
+						GROUP BY
+							mi.mcht_code
+						UNION
+							SELECT
+								mi.mcht_code,
+								mi.company_name,
+								mi.shop_name,
+								(
+									SELECT
+										GROUP_CONCAT(pb.`name`)
+									FROM
+										bu_mcht_product_brand mpb,
+										bu_product_brand pb
+									WHERE
+										mpb.mcht_id = mi.id
+									AND mpb.`status` = '1'
+									AND mpb.del_flag = '0'
+									AND mpb.product_brand_id = pb.id
+									AND pb.del_flag = '0'
+								) brands,
+								0 AS pay_product_amount,
+								0 AS delivery_product_amount,
+								0 AS refund_amount,
+								SUM(od.pay_amount) AS return_goods_amount,
+								0 AS exchange_goods_amount
+							FROM
+								bu_order_dtl od,
+								bu_sub_order so,
+								bu_combine_order co,
+								bu_customer_service_order cso,
+								bu_mcht_info mi
+								<if test="productBrandId != null">
+								,bu_product p
+								</if>
+								<if test="productTypeId != null and productTypeId != ''">
+									,bu_mcht_product_type mpt
+								</if>
+								<if test="platformContactId!=null">
+			                       ,bu_mcht_platform_contact mpc
+			                    </if>
+							WHERE
+									od.is_give = '0'
+								AND	od.del_flag = '0'
+								AND od.id = cso.order_dtl_id
+								AND (
+									cso.`status` = '0'
+									OR cso.`status` = '1'
+								)
+								AND cso.service_type = 'B'
+								AND od.sub_order_id = so.id
+								AND so.combine_order_id = co.id
+								AND co.`status` = '1'
+								AND co.del_flag = '0'
+								<if test="productTypeId != null and productTypeId != ''">
+									AND mpt.del_flag = '0'
+									AND mpt.is_main = '1'
+									AND mpt.status = '1'
+									AND mpt.mcht_id = mi.id
+									AND mpt.product_type_id = #{productTypeId}
+								</if>
+								 <if test="platformContactId!=null">
+		                           AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                         </if>
+								AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+								AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+								AND so.mcht_id = mi.id
+								AND mi.del_flag = '0'
+								<if test="productBrandId != null">
+								AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+								</if>
+								<if test="mchtCode != null">
+								AND mi.mcht_code = #{mchtCode}
+								</if>
+								<if test="shopName != null">
+								AND mi.shop_name = #{shopName}
+								</if>
+							GROUP BY
+								mi.mcht_code
+							UNION
+								SELECT
+									mi.mcht_code,
+									mi.company_name,
+									mi.shop_name,
+									(
+										SELECT
+											GROUP_CONCAT(pb.`name`)
+										FROM
+											bu_mcht_product_brand mpb,
+											bu_product_brand pb
+										WHERE
+											mpb.mcht_id = mi.id
+										AND mpb.`status` = '1'
+										AND mpb.del_flag = '0'
+										AND mpb.product_brand_id = pb.id
+										AND pb.del_flag = '0'
+									) brands,
+									0 AS pay_product_amount,
+									0 AS delivery_product_amount,
+									0 AS refund_amount,
+									0 AS return_goods_amount,
+									SUM(od.pay_amount) AS exchange_goods_amount
+								FROM
+									bu_order_dtl od,
+									bu_sub_order so,
+									bu_combine_order co,
+									bu_customer_service_order cso,
+									bu_mcht_info mi
+									<if test="productBrandId != null">
+									,bu_product p
+									</if>
+									<if test="productTypeId != null and productTypeId != ''">
+										,bu_mcht_product_type mpt
+									</if>
+									<if test="platformContactId!=null">
+			                            ,bu_mcht_platform_contact mpc
+			                        </if>
+								WHERE
+										od.is_give = '0'
+									AND	od.del_flag = '0'
+									AND od.id = cso.order_dtl_id
+									AND (
+										cso.`status` = '0'
+										OR cso.`status` = '1'
+									)
+									AND cso.service_type = 'C'
+									AND od.sub_order_id = so.id
+									AND so.combine_order_id = co.id
+									AND co.`status` = '1'
+									AND co.del_flag = '0'
+									<if test="productTypeId != null and productTypeId != ''">
+										AND mpt.del_flag = '0'
+										AND mpt.is_main = '1'
+										AND mpt.status = '1'
+										AND mpt.mcht_id = mi.id
+										AND mpt.product_type_id = #{productTypeId}
+									</if>
+									<if test="platformContactId!=null">
+		                                AND so.mcht_id = mpc.mcht_id AND mpc.del_flag = '0' AND mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		                            </if>
+									AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+									AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+									AND so.mcht_id = mi.id
+									AND mi.del_flag = '0'
+									<if test="productBrandId != null">
+									AND od.product_id = p.id AND p.brand_id = #{productBrandId}
+									</if>
+									<if test="mchtCode != null">
+									AND mi.mcht_code = #{mchtCode}
+									</if>
+									<if test="shopName != null">
+									AND mi.shop_name = #{shopName}
+									</if>
+								GROUP BY
+									mi.mcht_code
+			) t
+		GROUP BY
+			t.mcht_code
+	) t2
+  </select>
+
+	<select id="countCustomerOrderList" resultType="java.lang.Integer" parameterType="map">
+		SELECT
+		count(*)
+		FROM
+		bu_customer_service_order a,
+		bu_sub_order b
+		WHERE
+		a.del_flag = '0'
+		AND b.del_flag = '0'
+		AND a.sub_order_id = b.id
+		<if test="createDateGe != null and createDateGe != ''">
+			AND a.create_date <![CDATA[ >= ]]> #{createDateGe}
+		</if>
+		<if test="createDateLe != null and createDateLe != ''">
+			AND a.create_date <![CDATA[ <= ]]> #{createDateLe}
+		</if>
+		<if test="platContactStaffId != null and platContactStaffId != ''">
+			AND b.mcht_id IN ( SELECT mpc.mcht_id FROM bu_mcht_platform_contact mpc, bu_platform_contact bc WHERE mpc.del_flag = '0' AND mpc.STATUS = '1' AND mpc.platform_contact_id = bc.id AND bc.staff_id = #{platContactStaffId})
+		</if>
+		<if test="mchtId != null and mchtId != ''">
+			AND b.mcht_id = #{mchtId}
+		</if>
+		<if test="mchtNameLike != null and mchtNameLike != ''">
+			AND EXISTS ( SELECT mi.id FROM bu_mcht_info mi WHERE b.mcht_id = mi.id AND mi.del_flag = '0' AND ( instr(mi.shop_name,#{mchtNameLike})&gt;0 OR instr(mi.short_name,#{mchtNameLike})&gt;0 OR instr(mi.company_name,#{mchtNameLike})&gt;0 ) )
+		</if>
+		<if test="activityId != null and activityId != ''">
+			AND a.order_dtl_id in (select mi.id from bu_order_dtl mi where mi.del_flag='0' and mi.activity_id=#{activityId})
+		</if>
+		<if test="productBrandName != null and productBrandName != ''">
+			AND a.order_dtl_id in (select mi.id from bu_order_dtl mi where mi.del_flag='0' and instr(mi.brand_name, #{productBrandName})&gt;0)
+		</if>
+		<if test="productId != null and productId != ''">
+			AND a.order_dtl_id in (select mi.id from bu_order_dtl mi where mi.del_flag='0' and mi.product_id=#{productId})
+		</if>
+		<if test="subOrderCode != null and subOrderCode != ''">
+			AND b.sub_order_code = #{subOrderCode}
+		</if>
+		<if test="receiverName != null and receiverName != ''">
+			AND EXISTS ( SELECT mi.id FROM bu_combine_order mi WHERE mi.id = b.combine_order_id AND mi.del_flag = '0' AND mi.receiver_name = #{receiverName})
+		</if>
+		<if test="memberExpressNo != null and memberExpressNo != ''">
+			AND a.member_express_no = #{memberExpressNo}
+		</if>
+		<if test="contactPhone != null and contactPhone != ''">
+			AND a.contact_phone = #{contactPhone}
+		</if>
+		<if test="serviceType != null and serviceType != ''">
+			AND a.service_type = #{serviceType}
+		</if>
+		<if test="orderCode != null and orderCode != ''">
+			AND a.order_code = #{orderCode}
+		</if>
+		<if test="refundDateBeginGe != null and refundDateBeginGe != ''">
+			AND EXISTS(select so.id from bu_refund_order so where so.service_order_id=a.id and so.del_flag='0' and so.status='1' and so.success_date <![CDATA[ >= ]]> #{refundDateBeginGe})
+		</if>
+		<if test="refundDateBeginLe != null and refundDateBeginLe != ''">
+			AND EXISTS(select so.id from bu_refund_order so where so.service_order_id=a.id and so.del_flag='0' and so.status='1' and so.success_date <![CDATA[ <= ]]> #{refundDateBeginGe})
+		</if>
+		<if test="logDateBeginGe != null and logDateBeginGe != ''">
+			AND EXISTS(select csl.id from bu_customer_service_log csl where csl.service_order_id=a.id and csl.del_flag='0' and csl.create_date <![CDATA[ >= ]]> #{logDateBeginGe} order by csl.id desc limit 1)
+		</if>
+		<if test="logDateEndLe != null and logDateEndLe != ''">
+			AND EXISTS(select csl.id from bu_customer_service_log csl where csl.service_order_id=a.id and csl.del_flag='0' and csl.create_date <![CDATA[ <= ]]> #{logDateEndLe} order by csl.id desc limit 1)
+		</if>
+		<if test="status != null and status != ''">
+			AND a.status = #{status}
+		</if>
+		<if test="proStatus != null and proStatus != ''">
+			AND a.pro_status = #{proStatus}
+		</if>
+		<if test="proStatusList!=null and proStatusList.size() > 0">
+			AND pro_status in
+			<foreach item="item" index="index" collection="proStatusList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="isCwOrgProductTypeId != null and isCwOrgProductTypeId != ''">
+			AND EXISTS(select od.id from bu_order_dtl od,bu_product p,bu_product_type pt,bu_product_type fpt where od.id=a.order_dtl_id and od.del_flag='0' and od.product_id = p.id and p.product_type_id = pt.id and pt.parent_id = fpt.id and fpt.parent_id = #{isCwOrgProductTypeId})
+		</if>
+		<if test="productTypeIds!=null and productTypeIds.length > 0">
+			AND EXISTS(select od.id from bu_order_dtl od,bu_product p,bu_product_type pt,bu_product_type fpt where od.id=a.order_dtl_id and od.del_flag='0' and od.product_id = p.id and p.product_type_id = pt.id and pt.parent_id = fpt.id and fpt.parent_id in
+			<foreach item="item" index="index" collection="productTypeIds" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			)
+		</if>
+		<if test="memberStatus != null and memberStatus != ''">
+			<choose>
+				<when test='memberStatus == "P"'>
+					AND EXISTS(select co.id from bu_sub_order so, bu_combine_order co, bu_member_info mi where so.del_flag = '0' and co.del_flag = '0' and mi.del_flag = '0' and co.id = so.combine_order_id and co.member_id = mi.id and so.id = a.sub_order_id and mi.status = 'P')
+				</when>
+				<otherwise>
+					AND EXISTS(select co.id from bu_sub_order so, bu_combine_order co, bu_member_info mi where so.del_flag = '0' and co.del_flag = '0' and mi.del_flag = '0' and co.id = so.combine_order_id and co.member_id = mi.id and so.id = a.sub_order_id and mi.status != 'P')
+				</otherwise>
+			</choose>
+		</if>
+		<if test="mchtCode != null and mchtCode != ''">
+			AND EXISTS ( SELECT mi.id FROM bu_mcht_info mi WHERE mi.id = b.mcht_id AND mi.del_flag = '0' AND mi.mcht_code = #{mchtCode} )
+		</if>
+		<if test="isSvip != null and isSvip != ''">
+			AND EXISTS ( select a.id from bu_combine_order co,bu_sub_order so,bu_member_info mi where a.sub_order_id = so.id and so.combine_order_id = co.id and co.member_id = mi.id and mi.is_svip = '1' and co.del_flag='0' and so.del_flag='0' and mi.del_flag='0')
+		</if>
+		<if test="platformContactId != null and platformContactId != ''">
+			AND EXISTS (select bs.id from bu_mcht_product_type mpc,sys_staff_product_type s,bu_sub_order bs where s.product_type_id=mpc.product_type_id and bs.mcht_id=mpc.mcht_id and bs.id = a.sub_order_id and bs.del_flag='0' and mpc.is_main='1' and s.del_flag='0' and mpc.del_flag = '0' and mpc.status = '1' and s.staff_id = #{platformContactId})
+		</if>
+	</select>
+	<select id="selectCustomerOrderList" resultMap="BaseResultMap" parameterType="map" >
+		SELECT
+		t.id,
+		t.order_code,
+		t.create_date,
+		t.quantity,
+		t.amount,
+		t.sub_order_id,
+		t.sub_order_code,
+		FUN_GET_STATUS_DESC ( "BU_CUSTOMER_SERVICE_ORDER", "SERVICE_TYPE", t.service_type ) service_type_desc,
+		FUN_GET_STATUS_DESC ( "BU_CUSTOMER_SERVICE_ORDER", "STATUS", t.STATUS ) status_desc,
+		FUN_GET_STATUS_DESC ( "BU_CUSTOMER_SERVICE_ORDER", "PRO_STATUS", t.pro_status ) pro_status_desc,
+		( SELECT od.sku_pic FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) sku_pic,
+		( SELECT b.product_id FROM bu_order_dtl b WHERE b.id = t.order_dtl_id ) product_id,
+		( SELECT od.product_name FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) product_name,
+		( SELECT od.product_prop_desc FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) product_prop_desc,
+		( SELECT p.CODE FROM bu_order_dtl od,bu_product p WHERE p.del_flag = '0' AND od.product_id = p.id AND od.id = t.order_dtl_id ) product_code,
+		( SELECT c.short_name FROM bu_mcht_info c WHERE c.id = t.mcht_id ) short_name,
+		( SELECT c.mcht_code FROM bu_mcht_info c WHERE c.id = t.mcht_id ) mcht_code,
+		( SELECT c.company_name FROM bu_mcht_info c WHERE c.id = t.mcht_id ) company_name,
+		( SELECT od.quantity FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) product_quantity,
+		( SELECT od.pay_amount FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) pay_amount,
+		( SELECT od.mcht_preferential FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) mcht_preferential,
+		( SELECT od.platform_preferential FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) platform_preferential,
+		( SELECT od.integral_preferential FROM bu_order_dtl od WHERE od.id = t.order_dtl_id ) integral_preferential,
+		( SELECT b.success_date FROM bu_refund_order b WHERE b.service_order_id = t.id AND b.del_flag = '0' AND b.STATUS = '1' AND b.service_type = t.service_type LIMIT 1) refund_date,
+		FUN_GET_STATUS_DESC ("BU_CUSTOMER_SERVICE_LOG","OPERATOR_TYPE",( SELECT csl.operator_type FROM bu_customer_service_log csl WHERE csl.service_order_id = t.id AND csl.del_flag = '0' ORDER BY csl.id DESC LIMIT 1 )) operator_type_desc,
+		( SELECT csl.create_date FROM bu_customer_service_log csl WHERE csl.service_order_id = t.id AND csl.del_flag = '0' ORDER BY csl.id DESC LIMIT 1 ) log_create_date,
+		( SELECT csl.content FROM bu_customer_service_log csl WHERE csl.service_order_id = t.id AND csl.del_flag = '0' ORDER BY csl.id DESC LIMIT 1) log_content
+		FROM
+		(
+		SELECT
+		a.*,
+		b.mcht_id,
+		b.sub_order_code
+		FROM
+		bu_customer_service_order a,
+		bu_sub_order b
+		WHERE
+		a.del_flag = '0'
+		AND b.del_flag = '0'
+		AND a.sub_order_id = b.id
+		<if test="createDateGe != null and createDateGe != ''">
+			AND a.create_date <![CDATA[ >= ]]> #{createDateGe}
+		</if>
+		<if test="createDateLe != null and createDateLe != ''">
+			AND a.create_date <![CDATA[ <= ]]> #{createDateLe}
+		</if>
+		<if test="platContactStaffId != null and platContactStaffId != ''">
+			AND b.mcht_id IN ( SELECT mpc.mcht_id FROM bu_mcht_platform_contact mpc, bu_platform_contact bc WHERE mpc.del_flag = '0' AND mpc.STATUS = '1' AND mpc.platform_contact_id = bc.id AND bc.staff_id = #{platContactStaffId})
+		</if>
+		<if test="mchtId != null and mchtId != ''">
+			AND b.mcht_id = #{mchtId}
+		</if>
+		<if test="mchtNameLike != null and mchtNameLike != ''">
+			AND EXISTS ( SELECT mi.id FROM bu_mcht_info mi WHERE b.mcht_id = mi.id AND mi.del_flag = '0' AND ( instr(mi.shop_name,#{mchtNameLike})&gt;0 OR instr(mi.short_name,#{mchtNameLike})&gt;0 OR instr(mi.company_name,#{mchtNameLike})&gt;0 ) )
+		</if>
+		<if test="activityId != null and activityId != ''">
+			AND a.order_dtl_id in (select mi.id from bu_order_dtl mi where mi.del_flag='0' and mi.activity_id=#{activityId})
+		</if>
+		<if test="productBrandName != null and productBrandName != ''">
+			AND a.order_dtl_id in (select mi.id from bu_order_dtl mi where mi.del_flag='0' and instr(mi.brand_name, #{productBrandName})&gt;0)
+		</if>
+		<if test="productId != null and productId != ''">
+			AND a.order_dtl_id in (select mi.id from bu_order_dtl mi where mi.del_flag='0' and mi.product_id=#{productId})
+		</if>
+		<if test="subOrderCode != null and subOrderCode != ''">
+			AND b.sub_order_code = #{subOrderCode}
+		</if>
+		<if test="receiverName != null and receiverName != ''">
+			AND EXISTS ( SELECT mi.id FROM bu_combine_order mi WHERE mi.id = b.combine_order_id AND mi.del_flag = '0' AND mi.receiver_name = #{receiverName})
+		</if>
+		<if test="memberExpressNo != null and memberExpressNo != ''">
+			AND a.member_express_no = #{memberExpressNo}
+		</if>
+		<if test="contactPhone != null and contactPhone != ''">
+			AND a.contact_phone = #{contactPhone}
+		</if>
+		<if test="serviceType != null and serviceType != ''">
+			AND a.service_type = #{serviceType}
+		</if>
+		<if test="orderCode != null and orderCode != ''">
+			AND a.order_code = #{orderCode}
+		</if>
+		<if test="refundDateBeginGe != null and refundDateBeginGe != ''">
+			AND EXISTS(select so.id from bu_refund_order so where so.service_order_id=a.id and so.del_flag='0' and so.status='1' and so.success_date <![CDATA[ >= ]]> #{refundDateBeginGe})
+		</if>
+		<if test="refundDateBeginLe != null and refundDateBeginLe != ''">
+			AND EXISTS(select so.id from bu_refund_order so where so.service_order_id=a.id and so.del_flag='0' and so.status='1' and so.success_date <![CDATA[ <= ]]> #{refundDateBeginLe})
+		</if>
+		<if test="logDateBeginGe != null and logDateBeginGe != ''">
+			AND EXISTS(select csl.id from bu_customer_service_log csl where csl.service_order_id=a.id and csl.del_flag='0' and csl.create_date <![CDATA[ >= ]]> #{logDateBeginGe} order by csl.id desc limit 1)
+		</if>
+		<if test="logDateEndLe != null and logDateEndLe != ''">
+			AND EXISTS(select csl.id from bu_customer_service_log csl where csl.service_order_id=a.id and csl.del_flag='0' and csl.create_date <![CDATA[ <= ]]> #{logDateEndLe} order by csl.id desc limit 1)
+		</if>
+		<if test="status != null and status != ''">
+			AND a.status = #{status}
+		</if>
+		<if test="proStatus != null and proStatus != ''">
+			AND a.pro_status = #{proStatus}
+		</if>
+		<if test="proStatusList!=null and proStatusList.size() > 0">
+			AND pro_status in
+			<foreach item="item" index="index" collection="proStatusList" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="isCwOrgProductTypeId != null and isCwOrgProductTypeId != ''">
+			AND EXISTS(select od.id from bu_order_dtl od,bu_product p,bu_product_type pt,bu_product_type fpt where od.id=a.order_dtl_id and od.del_flag='0' and od.product_id = p.id and p.product_type_id = pt.id and pt.parent_id = fpt.id and fpt.parent_id = #{isCwOrgProductTypeId})
+		</if>
+		<if test="productTypeIds!=null and productTypeIds.length > 0">
+			AND EXISTS(select od.id from bu_order_dtl od,bu_product p,bu_product_type pt,bu_product_type fpt where od.id=a.order_dtl_id and od.del_flag='0' and od.product_id = p.id and p.product_type_id = pt.id and pt.parent_id = fpt.id and fpt.parent_id in
+			<foreach item="item" index="index" collection="productTypeIds" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			 )
+		</if>
+		<if test="memberStatus != null and memberStatus != ''">
+			<choose>
+				<when test='memberStatus == "P"'>
+					AND EXISTS(select co.id from bu_sub_order so, bu_combine_order co, bu_member_info mi where so.del_flag = '0' and co.del_flag = '0' and mi.del_flag = '0' and co.id = so.combine_order_id and co.member_id = mi.id and so.id = a.sub_order_id and mi.status = 'P')
+				</when>
+				<otherwise>
+					AND EXISTS(select co.id from bu_sub_order so, bu_combine_order co, bu_member_info mi where so.del_flag = '0' and co.del_flag = '0' and mi.del_flag = '0' and co.id = so.combine_order_id and co.member_id = mi.id and so.id = a.sub_order_id and mi.status != 'P')
+				</otherwise>
+			</choose>
+		</if>
+		<if test="mchtCode != null and mchtCode != ''">
+			AND EXISTS ( SELECT mi.id FROM bu_mcht_info mi WHERE mi.id = b.mcht_id AND mi.del_flag = '0' AND mi.mcht_code = #{mchtCode} )
+		</if>
+		<if test="isSvip != null and isSvip != ''">
+			AND EXISTS ( select a.id from bu_combine_order co,bu_sub_order so,bu_member_info mi where a.sub_order_id = so.id and so.combine_order_id = co.id and co.member_id = mi.id and mi.is_svip = '1' and co.del_flag='0' and so.del_flag='0' and mi.del_flag='0')
+		</if>
+		<if test="platformContactId != null and platformContactId != ''">
+			AND EXISTS (select bs.id from bu_mcht_product_type mpc,sys_staff_product_type s,bu_sub_order bs where s.product_type_id=mpc.product_type_id and bs.mcht_id=mpc.mcht_id and bs.id = a.sub_order_id and bs.del_flag='0' and mpc.is_main='1' and s.del_flag='0' and mpc.del_flag = '0' and mpc.status = '1' and s.staff_id = #{platformContactId})
+		</if>
+		<if test="orderBy != null and orderBy != ''">
+			ORDER BY
+				${orderBy}
+		</if>
+		<if test="limitStart != null and limitSize != null">
+			LIMIT ${limitStart},${limitSize}
+		</if>
+		) t
+	</select>
+</mapper>

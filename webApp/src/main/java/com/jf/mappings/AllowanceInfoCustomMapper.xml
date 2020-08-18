@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.AllowanceInfoCustomMapper" >
+
+	<select id="getMaxPreAllowanceInfo" resultType="java.util.Map">
+		select ifnull(sum(allowance_amount),0)
+		from bu_member_allowance
+		where member_id = #{memberId} and del_flag = '0'
+	</select>
+
+	<select id="findActiveAllowance" resultType="com.jf.entity.AllowanceInfo">
+		select ai.*
+		from bu_activity_area aa
+		left join bu_allowance_info ai on ai.activity_area_id = aa.id
+		where aa.activity_begin_time &lt; NOW() and aa.activity_end_time &gt; NOW() and aa.preferential_type = '5' and aa.status = '1' and aa.del_flag = '0'
+		and ai.del_flag = '0'
+	</select>
+
+</mapper>

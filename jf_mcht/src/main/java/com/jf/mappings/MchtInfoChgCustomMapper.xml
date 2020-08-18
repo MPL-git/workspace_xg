@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtInfoChgCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtInfoChgCustom"  extends="com.jf.dao.MchtInfoChgMapper.BaseResultMap">
+     <result column="mcht_type_desc" property="mchtTypeDesc" jdbcType="VARCHAR" />
+     <result column="is_manage_self_desc" property="isManageSelfDesc" jdbcType="VARCHAR" />
+     <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+     <result column="reg_fee_type_desc" property="regFeeTypeDesc" jdbcType="VARCHAR" />
+     <result column="mcht_bl_pic_chg_count" property="mchtBlPicChgCount" jdbcType="INTEGER" />
+     <result column="contact_province_name" property="contactProvinceName" jdbcType="VARCHAR" />
+     <result column="contact_city_name" property="contactCityName" jdbcType="VARCHAR" />
+     <result column="contact_county_name" property="contactCountyName" jdbcType="VARCHAR" />
+     <result column="company_info_archive_status_desc" property="companyInfoArchiveStatusDesc" jdbcType="VARCHAR" />
+     <result column="archive_deal_status_desc" property="archiveDealStatusDesc" jdbcType="VARCHAR" />
+     <result column="settled_type" property="settledType" jdbcType="VARCHAR" />    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, mcht_code, status, company_name, company_type, company_reg_name, uscc, 
+    company_address, founded_date, reg_capital, reg_fee_type, corporation_name, corporation_idcard_no, corporation_idcard_date,
+    corporation_mobile, corporation_idcard_img_1, corporation_idcard_img_2, bl_pic, occ_pic, 
+    trc_pic, atq_pic, boaal_pic, yearly_inspection_date, company_tel, contact_province, company_info_archive_status,archive_deal_status,express_id,express_no,
+    contact_city, contact_county, contact_address, audit_remarks, commit_date, scope_of_business,brand_type,brand_type_desc, 
+    create_by, create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_MCHT_INFO","MCHT_TYPE", (select b.mcht_type from bu_mcht_info b where b.id=a.mcht_id)) mcht_type_desc,
+	FUN_GET_STATUS_DESC("BU_MCHT_INFO","IS_MANAGE_SELF", (select b.is_manage_self from bu_mcht_info b where b.id=a.mcht_id)) is_manage_self_desc,
+	FUN_GET_STATUS_DESC("BU_MCHT_INFO","REG_FEE_TYPE", a.reg_fee_type) reg_fee_type_desc,
+	FUN_GET_STATUS_DESC("BU_MCHT_INFO_CHG","STATUS", a.status) status_desc,
+	FUN_GET_STATUS_DESC("BU_MCHT_INFO_CHG","COMPANY_INFO_ARCHIVE_STATUS", a.company_info_archive_status) company_info_archive_status_desc,
+	FUN_GET_STATUS_DESC("BU_MCHT_INFO_CHG","ARCHIVE_DEAL_STATUS", a.archive_deal_status) archive_deal_status_desc,
+	FUN_GET_STATUS_DESC("BU_MCHT_INFO","COMPANY_TYPE", a.company_type) company_Type_desc,
+	(select count(1) from bu_mcht_bl_pic_chg mblpc where mblpc.del_flag='0' and mblpc.mcht_info_chg_id=a.id) mcht_bl_pic_chg_count,
+	(select a.AREA_NAME from bu_p_area a where a.AREA_ID=contact_province) contact_province_name,
+	(select b.AREA_NAME from bu_p_area b where b.AREA_ID=contact_city) contact_city_name,
+	(select c.AREA_NAME from bu_p_area c where c.AREA_ID=contact_county) contact_county_name,
+	(select b.settled_type from bu_mcht_info b where b.id = a.mcht_id and b.del_flag = '0') settled_type
+	
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtInfoChgExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_info_chg a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_info_chg a
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.MchtInfoChgExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_info_chg a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+</mapper>

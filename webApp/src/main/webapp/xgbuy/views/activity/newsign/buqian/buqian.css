@@ -1,0 +1,180 @@
+.newsign-buqian .checkin-1,
+.newsign-buqian .checkin-2 {
+	position: relative;
+	z-index: 1;
+	height: calc(100vh - 1.88rem);
+}
+.sys-app .tab-header .checkin-2,
+.sys-app .tab-header .checkin-1 {
+	height: calc(100vh - 1rem);
+}
+
+.sys-ios .tab-header .checkin-2 {
+	height: calc(100vh - 1rem - 64px);
+}
+.sys-ios .tab-header .checkin-1 {
+		height: calc(100vh - 1rem - 64px);
+}
+.sys-iosx .tab-header .checkin-2,
+.sys-iosx .tab-header .checkin-1 {
+	height: calc(100vh - 1rem - 88px);
+}
+
+.newsign-buqian .tab-header {
+	overflow: hidden;
+	background-color: #f4f4f4;
+}
+
+.newsign-buqian .con-top img {
+	position: static;
+}
+
+.newsign-buqian .con-top {
+	background-color: #ef3c3c;
+}
+
+.newsign-buqian .con-top span {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.newsign-buqian .con-top p {
+	position: relative;
+	height: .84rem;
+	margin: 0 .3rem;
+	font-size: .26rem;
+}
+
+.newsign-buqian .roler-text {
+	font-size: 0.22rem;
+	background-color: #ef3c3c;
+	color: #fff;
+	padding-left: 0.2rem;
+	height: 0.3rem;
+	line-height: 0.3rem;
+}
+.newsign-buqian .tab-list .tab-td {
+	position: relative;
+	padding: 0.3rem;
+	border-bottom: 0.01rem solid #eeeeee;
+	background: #ffffff;
+}
+.newsign-buqian .tab-left {
+	width: 1.2rem;
+	height: 1.4rem;
+	background-color: #46e5c5;
+	border-radius: 0.04rem;
+}
+.newsign-buqian .tab-left .tab-img {
+	background: url(../resources/sign-bu.png) no-repeat;
+	width: 0.58rem;
+	height: 0.58rem;
+	margin: 0.2rem auto 0.15rem;
+	background-size: 100% auto;
+}
+.newsign-buqian .tab-left .tab-span {
+	font-size: 0.24rem;
+	text-align: center;
+	color: #fff;
+}
+.newsign-buqian .tab-left .tab-spans {
+	font-size: 0.24rem;
+	text-align: center;
+	color: #fff;
+}
+.newsign-buqian .tab-right {
+	margin-left: 0.2rem;
+}
+.newsign-buqian .fts30 {
+	font-size: 0.3rem;
+}
+.newsign-buqian .flex-title {
+	margin-top: 0.65rem;
+}
+
+.newsign-buqian .flex-button {
+	position: absolute;
+	cursor: pointer;
+	right: 0.2rem;
+	bottom: 0.3rem;
+	width: 1.3rem;
+	height: 0.6rem;
+	background-color: #ff8557;
+	color: #fefefe;
+	font-size: 0.26rem;
+	border-radius: 0.04rem;
+}
+.newsign-buqian .p-rule {
+	right: 0.3rem !important;
+}
+
+.newsign-buqian .tab-btn div {
+	width: 3.75rem;
+	height: 1rem;
+	font-size: 0.32rem;
+}
+
+.newsign-buqian .tab-btn div:nth-child(1) a {
+	width: 3.75rem;
+	border-right: #eeeeee 0.01rem solid;
+}
+
+.newsign-buqian .tab-btn a.ico-tab1:before {
+	color: #ff5050;
+}
+
+.newsign-buqian .popup-rule-free p {
+	font-size: 0.28rem;
+}
+
+.newsign-buqian .flex-btns {
+	border-top: 0.01rem solid #eeeeee;
+}
+
+.newsign-buqian .total-btns {
+	position: absolute;
+	right: 0.2rem;
+	bottom: 0.3rem;
+}
+
+.newsign-buqian .total-btns div {
+	width: 1.3rem;
+	height: 0.6rem;
+	font-size: 0.26rem;
+	border-radius: 0.04rem;
+}
+
+.newsign-buqian .total-btns .msg-btn {
+	background-color: #ff8557;
+	color: #fefefe;
+}
+
+.newsign-buqian .msg-yaoqing {
+	margin-right: 0.2rem;
+	border-radius: 0.04rem;
+	border: solid 0.011rem #bbbbbb;
+}
+
+.newsign-buqian .scrollNews,
+.newsign-buqian .scrollNew {
+	height: 0.3rem;
+	overflow: hidden;
+}
+.newsign-buqian .liebiao {
+	height: calc(100vh - 1.88rem - 3.4rem);
+}
+.newsign-buqian .tab-tdf{
+	position: relative;
+	background-color: #fff;
+}
+.newsign-buqian .tab-tdf .liebiao-img {
+	background: url(resources/liebiao.png) no-repeat center;
+	background-size: auto 4.4rem;
+	height: 88%;
+}
+.newsign-buqian .fts26 {
+    font-size: 0.26rem;
+    position: relative;
+    top: 1.5rem;
+}

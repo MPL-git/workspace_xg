@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductCustom" extends="com.jf.dao.ProductMapper.BaseResultMap">
+    <result column="prop_val_id" property="propValId" jdbcType="VARCHAR" />
+    <result column="locked_amount" property="lockedAmount" jdbcType="INTEGER" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="tag_price" property="tagPrice" jdbcType="DECIMAL" />
+    <result column="propName" property="propName" jdbcType="VARCHAR" />
+    <result column="propId" property="propId" jdbcType="INTEGER" />
+    <result column="prop_value" property="propValue" jdbcType="VARCHAR" />
+    <result column="propValueId" property="propValueId" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="brandName" property="brandName" jdbcType="VARCHAR" />
+    <result column="productBuyNum" property="productBuyNum" jdbcType="INTEGER" />
+  </resultMap>
+  	<select id="getProductactivityStatus" parameterType="java.lang.Integer" resultType="java.lang.String">
+  		 select FUN_GET_PRODUCT_ACTIVITY_STATUS(#{id,jdbcType=INTEGER}) from dual 
+  	</select>
+  	
+  	<select id="getActivityAreaEndProduct" parameterType="java.lang.Integer" resultType="com.jf.entity.Product">
+  		select
+  		DISTINCT acProduct.product_id as id
+		from bu_activity_area area,bu_activity ac,bu_activity_product acProduct
+		where ac.activity_area_id = area.id 
+		and acProduct.activity_id = ac.id
+		and area.del_flag = '0'
+		and ac.del_flag = '0'
+		and acProduct.del_flag = '0' 
+		and area.id &gt;= #{activityAreaId}
+		and area.activity_end_time &lt; now()
+		and area.source = '1'
+  	</select>
+  	
+  	<select id="getActivityEndProduct" parameterType="java.lang.Integer" resultType="com.jf.entity.Product">
+  		select
+  		DISTINCT acProduct.product_id as id
+		from bu_activity_area area,bu_activity ac,bu_activity_product acProduct
+		where ac.activity_area_id = area.id 
+		and acProduct.activity_id = ac.id
+		and area.del_flag = '0'
+		and ac.del_flag = '0'
+		and acProduct.del_flag = '0' 
+		and area.id &gt;= #{activityAreaId}
+		and area.activity_end_time &lt; now()
+		and area.source = '2'
+  	</select>
+  	
+  	<select id="getSingleActivityEndProduct" parameterType="java.lang.Integer" resultType="com.jf.entity.Product">
+  		select 
+  		DISTINCT t.product_id as id 
+  		from bu_single_product_activity t 
+  		where t.del_flag = '0' 
+  		and t.id &gt;= #{singleActivityId}
+  		and t.end_time &lt; now()
+  	</select>
+  	
+  	<update id="updateProductActivityStatus" parameterType="java.util.List">
+		update bu_product p 
+		set p.is_activity = '0'
+		where p.id in 
+		<foreach collection="list" item="productId" open="(" close=")" separator="," >
+         	#{productId}
+        </foreach> 
+         and FUN_CHECK_SHOP_PRODUCT_STATUS(p.id) = '0'
+  	</update>
+	
+	<select id="getNoWatermarkProductPic" parameterType="map" resultType="map">
+	 SELECT ap.id activity_product_id,ap.activity_id,pp.pic from bu_activity_product ap,bu_product_pic pp where ap.product_id=pp.product_id and pp.del_flag='0' and ap.del_flag='0' and (ap.is_watermark is null or ap.is_watermark='0')
+		<if test="activityIds != null" >
+			  and ap.activity_id in 
+	     	<foreach collection="activityIds" item="activityId" open="(" close=")" separator="," >
+                    #{activityId}
+    		</foreach>
+	   </if>
+		<if test="activityAreaIds != null" >
+			  and ap.activity_id in (SELECT a.id from bu_activity a where a.activity_area_id in 
+			  	   <foreach collection="activityAreaIds" item="activityAreaId" open="(" close=")" separator="," >
+                    #{activityAreaId}
+    		       </foreach>
+              )
+	   </if>
+	</select>
+	
+	<select id="getNoWatermarkSingleActivityProductPic" parameterType="map" resultType="map">
+		SELECT
+			spa.id,
+			pp.pic
+		FROM
+			bu_single_product_activity spa,
+			bu_product_pic pp
+		WHERE
+			spa.product_id = pp.product_id
+		AND spa.del_flag = '0'
+		AND pp.del_flag = '0'
+		AND spa.type = #{activityType}
+		AND spa.audit_status = '3'
+		AND spa.`status` = '1'
+		AND spa.is_close = '0'
+		AND spa.end_time > NOW()
+		AND (spa.is_watermark is null or spa.is_watermark='0')
+	</select>
+	
+	
+	<update id="batchUpdateSingleActivityWatermark" parameterType="map">
+        update
+			bu_single_product_activity t
+			set t.is_watermark='1'
+		WHERE
+			t.id IN
+		<foreach collection="singleAtivityIds" item="singleAtivityId" open="(" close=")" separator="," >
+                    #{singleAtivityId}
+    	</foreach>
+	</update>
+	
+	<update id="offProductWhileNoStock">
+		update bu_product t
+		SET t.`status` = '0'
+		AND t.off_reason = '3'
+		WHERE
+			t.is_activity = '0'
+		AND t.del_flag = '0'
+		and t.`status`='1'
+		AND t.id NOT IN (
+			SELECT DISTINCT
+				item.product_id
+			FROM
+				bu_product_item item
+			WHERE
+				item.del_flag = '0'
+			AND item.stock > 0
+		)
+  	</update>
+  	
+  	<update id="updateSkuLockedAmount" parameterType="java.util.Map">
+  		update bu_product_item item set item.locked_amount = (item.locked_amount + #{quantity}) where item.id = #{productItemId}
+  	</update>
+	
+</mapper>

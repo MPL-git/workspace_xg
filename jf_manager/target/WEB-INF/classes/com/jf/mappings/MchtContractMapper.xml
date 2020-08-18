@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtContractMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtContract" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="contract_code" property="contractCode" jdbcType="VARCHAR" />
+    <result column="is_need_upload" property="isNeedUpload" jdbcType="CHAR" />
+    <result column="upload_date" property="uploadDate" jdbcType="TIMESTAMP" />
+    <result column="audit_date" property="auditDate" jdbcType="TIMESTAMP" />
+    <result column="audit_status" property="auditStatus" jdbcType="CHAR" />
+    <result column="audit_remarks" property="auditRemarks" jdbcType="VARCHAR" />
+    <result column="is_mcht_send" property="isMchtSend" jdbcType="CHAR" />
+    <result column="mcht_send_date" property="mchtSendDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_express_id" property="mchtExpressId" jdbcType="INTEGER" />
+    <result column="mcht_express_no" property="mchtExpressNo" jdbcType="VARCHAR" />
+    <result column="archive_status" property="archiveStatus" jdbcType="CHAR" />
+    <result column="archive_date" property="archiveDate" jdbcType="TIMESTAMP" />
+    <result column="archive_no" property="archiveNo" jdbcType="VARCHAR" />
+    <result column="archive_by" property="archiveBy" jdbcType="INTEGER" />
+    <result column="is_platform_send" property="isPlatformSend" jdbcType="CHAR" />
+    <result column="platform_send_date" property="platformSendDate" jdbcType="TIMESTAMP" />
+    <result column="platform_express_id" property="platformExpressId" jdbcType="INTEGER" />
+    <result column="platform_express_no" property="platformExpressNo" jdbcType="VARCHAR" />
+    <result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="last_contract_id" property="lastContractId" jdbcType="INTEGER" />
+    <result column="contract_type" property="contractType" jdbcType="CHAR" />
+    <result column="renew_pro_status" property="renewProStatus" jdbcType="CHAR" />
+    <result column="mcht_not_renew_remarks" property="mchtNotRenewRemarks" jdbcType="VARCHAR" />
+    <result column="zs_not_renew_remarks" property="zsNotRenewRemarks" jdbcType="VARCHAR" />
+    <result column="zs_renew_inner_remarks" property="zsRenewInnerRemarks" jdbcType="VARCHAR" />
+    <result column="shop_close_reason" property="shopCloseReason" jdbcType="CHAR" />
+    <result column="renew_status" property="renewStatus" jdbcType="CHAR" />
+    <result column="renew_remarks" property="renewRemarks" jdbcType="VARCHAR" />
+    <result column="fw_inner_remarks" property="fwInnerRemarks" jdbcType="VARCHAR" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, contract_code, is_need_upload, upload_date, audit_date, audit_status, 
+    audit_remarks, is_mcht_send, mcht_send_date, mcht_express_id, mcht_express_no, archive_status, 
+    archive_date, archive_no, archive_by, is_platform_send, platform_send_date, platform_express_id, 
+    platform_express_no, begin_date, end_date, last_contract_id, contract_type, renew_pro_status, 
+    mcht_not_renew_remarks, zs_not_renew_remarks, zs_renew_inner_remarks, shop_close_reason, 
+    renew_status, renew_remarks, fw_inner_remarks, file_path, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtContractExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_contract
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_contract
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_contract
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtContractExample" >
+    delete from bu_mcht_contract
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtContract" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_contract (mcht_id, contract_code, is_need_upload, 
+      upload_date, audit_date, audit_status, 
+      audit_remarks, is_mcht_send, mcht_send_date, 
+      mcht_express_id, mcht_express_no, archive_status, 
+      archive_date, archive_no, archive_by, 
+      is_platform_send, platform_send_date, platform_express_id, 
+      platform_express_no, begin_date, end_date, 
+      last_contract_id, contract_type, renew_pro_status, 
+      mcht_not_renew_remarks, zs_not_renew_remarks, 
+      zs_renew_inner_remarks, shop_close_reason, renew_status, 
+      renew_remarks, fw_inner_remarks, file_path, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{mchtId,jdbcType=INTEGER}, #{contractCode,jdbcType=VARCHAR}, #{isNeedUpload,jdbcType=CHAR}, 
+      #{uploadDate,jdbcType=TIMESTAMP}, #{auditDate,jdbcType=TIMESTAMP}, #{auditStatus,jdbcType=CHAR}, 
+      #{auditRemarks,jdbcType=VARCHAR}, #{isMchtSend,jdbcType=CHAR}, #{mchtSendDate,jdbcType=TIMESTAMP}, 
+      #{mchtExpressId,jdbcType=INTEGER}, #{mchtExpressNo,jdbcType=VARCHAR}, #{archiveStatus,jdbcType=CHAR}, 
+      #{archiveDate,jdbcType=TIMESTAMP}, #{archiveNo,jdbcType=VARCHAR}, #{archiveBy,jdbcType=INTEGER}, 
+      #{isPlatformSend,jdbcType=CHAR}, #{platformSendDate,jdbcType=TIMESTAMP}, #{platformExpressId,jdbcType=INTEGER}, 
+      #{platformExpressNo,jdbcType=VARCHAR}, #{beginDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+      #{lastContractId,jdbcType=INTEGER}, #{contractType,jdbcType=CHAR}, #{renewProStatus,jdbcType=CHAR}, 
+      #{mchtNotRenewRemarks,jdbcType=VARCHAR}, #{zsNotRenewRemarks,jdbcType=VARCHAR}, 
+      #{zsRenewInnerRemarks,jdbcType=VARCHAR}, #{shopCloseReason,jdbcType=CHAR}, #{renewStatus,jdbcType=CHAR}, 
+      #{renewRemarks,jdbcType=VARCHAR}, #{fwInnerRemarks,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtContract" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="contractCode != null" >
+        contract_code,
+      </if>
+      <if test="isNeedUpload != null" >
+        is_need_upload,
+      </if>
+      <if test="uploadDate != null" >
+        upload_date,
+      </if>
+      <if test="auditDate != null" >
+        audit_date,
+      </if>
+      <if test="auditStatus != null" >
+        audit_status,
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks,
+      </if>
+      <if test="isMchtSend != null" >
+        is_mcht_send,
+      </if>
+      <if test="mchtSendDate != null" >
+        mcht_send_date,
+      </if>
+      <if test="mchtExpressId != null" >
+        mcht_express_id,
+      </if>
+      <if test="mchtExpressNo != null" >
+        mcht_express_no,
+      </if>
+      <if test="archiveStatus != null" >
+        archive_status,
+      </if>
+      <if test="archiveDate != null" >
+        archive_date,
+      </if>
+      <if test="archiveNo != null" >
+        archive_no,
+      </if>
+      <if test="archiveBy != null" >
+        archive_by,
+      </if>
+      <if test="isPlatformSend != null" >
+        is_platform_send,
+      </if>
+      <if test="platformSendDate != null" >
+        platform_send_date,
+      </if>
+      <if test="platformExpressId != null" >
+        platform_express_id,
+      </if>
+      <if test="platformExpressNo != null" >
+        platform_express_no,
+      </if>
+      <if test="beginDate != null" >
+        begin_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="lastContractId != null" >
+        last_contract_id,
+      </if>
+      <if test="contractType != null" >
+        contract_type,
+      </if>
+      <if test="renewProStatus != null" >
+        renew_pro_status,
+      </if>
+      <if test="mchtNotRenewRemarks != null" >
+        mcht_not_renew_remarks,
+      </if>
+      <if test="zsNotRenewRemarks != null" >
+        zs_not_renew_remarks,
+      </if>
+      <if test="zsRenewInnerRemarks != null" >
+        zs_renew_inner_remarks,
+      </if>
+      <if test="shopCloseReason != null" >
+        shop_close_reason,
+      </if>
+      <if test="renewStatus != null" >
+        renew_status,
+      </if>
+      <if test="renewRemarks != null" >
+        renew_remarks,
+      </if>
+      <if test="fwInnerRemarks != null" >
+        fw_inner_remarks,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="contractCode != null" >
+        #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isNeedUpload != null" >
+        #{isNeedUpload,jdbcType=CHAR},
+      </if>
+      <if test="uploadDate != null" >
+        #{uploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditDate != null" >
+        #{auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isMchtSend != null" >
+        #{isMchtSend,jdbcType=CHAR},
+      </if>
+      <if test="mchtSendDate != null" >
+        #{mchtSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtExpressId != null" >
+        #{mchtExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtExpressNo != null" >
+        #{mchtExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        #{archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveDate != null" >
+        #{archiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archiveNo != null" >
+        #{archiveNo,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveBy != null" >
+        #{archiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="isPlatformSend != null" >
+        #{isPlatformSend,jdbcType=CHAR},
+      </if>
+      <if test="platformSendDate != null" >
+        #{platformSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformExpressId != null" >
+        #{platformExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="platformExpressNo != null" >
+        #{platformExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="beginDate != null" >
+        #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastContractId != null" >
+        #{lastContractId,jdbcType=INTEGER},
+      </if>
+      <if test="contractType != null" >
+        #{contractType,jdbcType=CHAR},
+      </if>
+      <if test="renewProStatus != null" >
+        #{renewProStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtNotRenewRemarks != null" >
+        #{mchtNotRenewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsNotRenewRemarks != null" >
+        #{zsNotRenewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsRenewInnerRemarks != null" >
+        #{zsRenewInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="shopCloseReason != null" >
+        #{shopCloseReason,jdbcType=CHAR},
+      </if>
+      <if test="renewStatus != null" >
+        #{renewStatus,jdbcType=CHAR},
+      </if>
+      <if test="renewRemarks != null" >
+        #{renewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwInnerRemarks != null" >
+        #{fwInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtContractExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_contract
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_contract
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractCode != null" >
+        contract_code = #{record.contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isNeedUpload != null" >
+        is_need_upload = #{record.isNeedUpload,jdbcType=CHAR},
+      </if>
+      <if test="record.uploadDate != null" >
+        upload_date = #{record.uploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.auditDate != null" >
+        audit_date = #{record.auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.auditStatus != null" >
+        audit_status = #{record.auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.auditRemarks != null" >
+        audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isMchtSend != null" >
+        is_mcht_send = #{record.isMchtSend,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtSendDate != null" >
+        mcht_send_date = #{record.mchtSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtExpressId != null" >
+        mcht_express_id = #{record.mchtExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtExpressNo != null" >
+        mcht_express_no = #{record.mchtExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.archiveStatus != null" >
+        archive_status = #{record.archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.archiveDate != null" >
+        archive_date = #{record.archiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.archiveNo != null" >
+        archive_no = #{record.archiveNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.archiveBy != null" >
+        archive_by = #{record.archiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.isPlatformSend != null" >
+        is_platform_send = #{record.isPlatformSend,jdbcType=CHAR},
+      </if>
+      <if test="record.platformSendDate != null" >
+        platform_send_date = #{record.platformSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.platformExpressId != null" >
+        platform_express_id = #{record.platformExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.platformExpressNo != null" >
+        platform_express_no = #{record.platformExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginDate != null" >
+        begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastContractId != null" >
+        last_contract_id = #{record.lastContractId,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractType != null" >
+        contract_type = #{record.contractType,jdbcType=CHAR},
+      </if>
+      <if test="record.renewProStatus != null" >
+        renew_pro_status = #{record.renewProStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtNotRenewRemarks != null" >
+        mcht_not_renew_remarks = #{record.mchtNotRenewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zsNotRenewRemarks != null" >
+        zs_not_renew_remarks = #{record.zsNotRenewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zsRenewInnerRemarks != null" >
+        zs_renew_inner_remarks = #{record.zsRenewInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopCloseReason != null" >
+        shop_close_reason = #{record.shopCloseReason,jdbcType=CHAR},
+      </if>
+      <if test="record.renewStatus != null" >
+        renew_status = #{record.renewStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.renewRemarks != null" >
+        renew_remarks = #{record.renewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fwInnerRemarks != null" >
+        fw_inner_remarks = #{record.fwInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_contract
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      contract_code = #{record.contractCode,jdbcType=VARCHAR},
+      is_need_upload = #{record.isNeedUpload,jdbcType=CHAR},
+      upload_date = #{record.uploadDate,jdbcType=TIMESTAMP},
+      audit_date = #{record.auditDate,jdbcType=TIMESTAMP},
+      audit_status = #{record.auditStatus,jdbcType=CHAR},
+      audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      is_mcht_send = #{record.isMchtSend,jdbcType=CHAR},
+      mcht_send_date = #{record.mchtSendDate,jdbcType=TIMESTAMP},
+      mcht_express_id = #{record.mchtExpressId,jdbcType=INTEGER},
+      mcht_express_no = #{record.mchtExpressNo,jdbcType=VARCHAR},
+      archive_status = #{record.archiveStatus,jdbcType=CHAR},
+      archive_date = #{record.archiveDate,jdbcType=TIMESTAMP},
+      archive_no = #{record.archiveNo,jdbcType=VARCHAR},
+      archive_by = #{record.archiveBy,jdbcType=INTEGER},
+      is_platform_send = #{record.isPlatformSend,jdbcType=CHAR},
+      platform_send_date = #{record.platformSendDate,jdbcType=TIMESTAMP},
+      platform_express_id = #{record.platformExpressId,jdbcType=INTEGER},
+      platform_express_no = #{record.platformExpressNo,jdbcType=VARCHAR},
+      begin_date = #{record.beginDate,jdbcType=TIMESTAMP},
+      end_date = #{record.endDate,jdbcType=TIMESTAMP},
+      last_contract_id = #{record.lastContractId,jdbcType=INTEGER},
+      contract_type = #{record.contractType,jdbcType=CHAR},
+      renew_pro_status = #{record.renewProStatus,jdbcType=CHAR},
+      mcht_not_renew_remarks = #{record.mchtNotRenewRemarks,jdbcType=VARCHAR},
+      zs_not_renew_remarks = #{record.zsNotRenewRemarks,jdbcType=VARCHAR},
+      zs_renew_inner_remarks = #{record.zsRenewInnerRemarks,jdbcType=VARCHAR},
+      shop_close_reason = #{record.shopCloseReason,jdbcType=CHAR},
+      renew_status = #{record.renewStatus,jdbcType=CHAR},
+      renew_remarks = #{record.renewRemarks,jdbcType=VARCHAR},
+      fw_inner_remarks = #{record.fwInnerRemarks,jdbcType=VARCHAR},
+      file_path = #{record.filePath,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtContract" >
+    update bu_mcht_contract
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="contractCode != null" >
+        contract_code = #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isNeedUpload != null" >
+        is_need_upload = #{isNeedUpload,jdbcType=CHAR},
+      </if>
+      <if test="uploadDate != null" >
+        upload_date = #{uploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditDate != null" >
+        audit_date = #{auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditStatus != null" >
+        audit_status = #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isMchtSend != null" >
+        is_mcht_send = #{isMchtSend,jdbcType=CHAR},
+      </if>
+      <if test="mchtSendDate != null" >
+        mcht_send_date = #{mchtSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtExpressId != null" >
+        mcht_express_id = #{mchtExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtExpressNo != null" >
+        mcht_express_no = #{mchtExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        archive_status = #{archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveDate != null" >
+        archive_date = #{archiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archiveNo != null" >
+        archive_no = #{archiveNo,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveBy != null" >
+        archive_by = #{archiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="isPlatformSend != null" >
+        is_platform_send = #{isPlatformSend,jdbcType=CHAR},
+      </if>
+      <if test="platformSendDate != null" >
+        platform_send_date = #{platformSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformExpressId != null" >
+        platform_express_id = #{platformExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="platformExpressNo != null" >
+        platform_express_no = #{platformExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="beginDate != null" >
+        begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastContractId != null" >
+        last_contract_id = #{lastContractId,jdbcType=INTEGER},
+      </if>
+      <if test="contractType != null" >
+        contract_type = #{contractType,jdbcType=CHAR},
+      </if>
+      <if test="renewProStatus != null" >
+        renew_pro_status = #{renewProStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtNotRenewRemarks != null" >
+        mcht_not_renew_remarks = #{mchtNotRenewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsNotRenewRemarks != null" >
+        zs_not_renew_remarks = #{zsNotRenewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsRenewInnerRemarks != null" >
+        zs_renew_inner_remarks = #{zsRenewInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="shopCloseReason != null" >
+        shop_close_reason = #{shopCloseReason,jdbcType=CHAR},
+      </if>
+      <if test="renewStatus != null" >
+        renew_status = #{renewStatus,jdbcType=CHAR},
+      </if>
+      <if test="renewRemarks != null" >
+        renew_remarks = #{renewRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwInnerRemarks != null" >
+        fw_inner_remarks = #{fwInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtContract" >
+    update bu_mcht_contract
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      contract_code = #{contractCode,jdbcType=VARCHAR},
+      is_need_upload = #{isNeedUpload,jdbcType=CHAR},
+      upload_date = #{uploadDate,jdbcType=TIMESTAMP},
+      audit_date = #{auditDate,jdbcType=TIMESTAMP},
+      audit_status = #{auditStatus,jdbcType=CHAR},
+      audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      is_mcht_send = #{isMchtSend,jdbcType=CHAR},
+      mcht_send_date = #{mchtSendDate,jdbcType=TIMESTAMP},
+      mcht_express_id = #{mchtExpressId,jdbcType=INTEGER},
+      mcht_express_no = #{mchtExpressNo,jdbcType=VARCHAR},
+      archive_status = #{archiveStatus,jdbcType=CHAR},
+      archive_date = #{archiveDate,jdbcType=TIMESTAMP},
+      archive_no = #{archiveNo,jdbcType=VARCHAR},
+      archive_by = #{archiveBy,jdbcType=INTEGER},
+      is_platform_send = #{isPlatformSend,jdbcType=CHAR},
+      platform_send_date = #{platformSendDate,jdbcType=TIMESTAMP},
+      platform_express_id = #{platformExpressId,jdbcType=INTEGER},
+      platform_express_no = #{platformExpressNo,jdbcType=VARCHAR},
+      begin_date = #{beginDate,jdbcType=TIMESTAMP},
+      end_date = #{endDate,jdbcType=TIMESTAMP},
+      last_contract_id = #{lastContractId,jdbcType=INTEGER},
+      contract_type = #{contractType,jdbcType=CHAR},
+      renew_pro_status = #{renewProStatus,jdbcType=CHAR},
+      mcht_not_renew_remarks = #{mchtNotRenewRemarks,jdbcType=VARCHAR},
+      zs_not_renew_remarks = #{zsNotRenewRemarks,jdbcType=VARCHAR},
+      zs_renew_inner_remarks = #{zsRenewInnerRemarks,jdbcType=VARCHAR},
+      shop_close_reason = #{shopCloseReason,jdbcType=CHAR},
+      renew_status = #{renewStatus,jdbcType=CHAR},
+      renew_remarks = #{renewRemarks,jdbcType=VARCHAR},
+      fw_inner_remarks = #{fwInnerRemarks,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

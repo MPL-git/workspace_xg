@@ -1,0 +1,373 @@
+<div class="page carts flex dc bgf4" data-title="购物车" data-id="cart">
+	<link rel="stylesheet" href="cart/index.css?var=1.2">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn ac"><i class="back ico-btn hide" onclick="back()"></i></div>
+		<p class="ellipsis bold">购物车</p>
+		<div class="fn cursor flex ac jc" onclick="cart.showClean()">清空</div>
+	</header>
+
+	<div class="scroll-more">
+	</div>
+
+	<div class="popup popup-plat flex end" onclick="closeSelf(this)">
+		<div class="popup-con coupon-plat" onclick="stopSelf()">
+			<div class="h4 pd20 flex ac jb">
+				平台优惠券
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</div>
+			<div class="tpl"></div>
+		</div>
+	</div>
+
+	<div class="popup popup-delete" onclick="closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">提示</div>
+			<div class="tab-body">是否将<i class="tpl"></i>从购物车中移除？</div>
+			<div class="flex clear-btn">
+				<a class="flex ac jc c9 bdrg" onclick="closeSelf(this)">取消</a>
+				<a class="flex ac jc f50" onclick="cart.editShop()">确定</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup popup-clear" onclick="closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">提示</div>
+			<div class="tab-body">是否确认清空购物车所有商品？</div>
+			<div class="flex clear-btn">
+				<a class="flex ac jc c9 bdrg" onclick="closeSelf(this)">取消</a>
+				<a class="flex ac jc f50" onclick="cart.cleanCart()">确定</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup popup-tip" onclick="closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">提示</div>
+			<div class="tab-body">对不起, 单笔结算商品不可超过30款</div>
+			<div class="flex clear-btn">
+				<a class="flex ac jc f50 fg" onclick="closeSelf(this)">确定</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup popup-mcht" onclick="closeSelf(this)">
+		<div class="popup-bottom" onclick="stopSelf()">
+			<div class="popup-header">
+				<p class="flex ac jc">商品优惠</p>
+				<a class="ico-btn close-x" onclick="closeSelf(this)"></a>
+			</div>
+			<div class="tpl scroll-y"></div>
+			<button class="btn-red" onclick="cart.getMchtSubmit()">确认</button>
+		</div>
+	</div>
+
+	<script src="cart/index.js?var=1.2" async></script>
+</div>
+
+<script id="cart_tpl" type="text/html">
+	{{if list.length}}
+	<div class="section scroll-y{{plat.couponLength ? ' has-plat' : ''}}">
+		{{each list item index}}
+		{{if item.productList.length}}
+		<div class="li{{item.advanceLimit ? ' limit-quantity' : ''}}">
+			<div class="header flex ac">
+				<div class="fn ticksp{{item.tick ? ' ticksped' : ''}}" data-act="{{item.activityAreaId}}"
+					data-allow="{{!item.advanceLimit}}" onclick="cart.getTickArea(this)"></div>
+				<div class="h100 flex ac jb fg" data-activityareaid="{{item.activityAreaId}}"
+					data-activityareatype="{{item.activityAreaType}}" data-activitytype="{{item.activityType}}"
+					data-activityid="{{item.activityId}}" data-source="{{item.source}}" onclick="getUrlActive1(this)">
+					<div class="title elps{{item.couponLess ? ' fg-max' : ''}}">{{item.activityAreaName}}</div>
+					<div class="coupon-header flex ac je">
+						{{if item.couponLess}}
+						<div class="flex ac jb fg">
+							<div class="coupon-less elps">{{item.couponLess}}</div>
+							<span>去凑单</span>
+						</div>
+						{{/if}}
+						<div class="arrow-r ico fn"></div>
+					</div>
+				</div>
+			</div>
+
+			{{each item.productList itm idx}}
+			<div class="dl flex">
+				<div class="h200 flex ac">
+					<div class="fn ticksp{{itm.tick ? ' ticksped' : ''}}" data-act="{{item.activityAreaId}}"
+						data-id="{{itm.shoppingCartId}}"
+						data-allow="{{itm.stock > 0 && itm.quantity <= itm.stock && !item.advanceLimit}}"
+						onclick="cart.getTick(this)"></div>
+				</div>
+				<div class="fg">
+					<div class="col-1 flex">
+						<a class="dt fn flex ac jc" onclick="getUrlGoods('{{itm.productId}}')">
+							<img src="{{itm.productPic}}">
+							{{if itm.stock <= 0}}
+							<div class="out flex ac jc"></div>
+							{{/if}}
+							{{if !itm.platformCouponUsable && specialCheck}}
+							<div class="platformCouponUsable flex ac jc"></div>
+							{{/if}}
+						</a>
+						<div class="h200 fg flex dc jb">
+							<div>
+								<div class="h3 clampself m38">{{itm.productName}}</div>
+								<div class="p iflex ac c9">
+									<span class="elps m38">{{itm.productPropDesc}}</span>
+								</div>
+							</div>
+							<div>
+								<div class="col-3 flex ac jb">
+									<div>
+										<span class="sale">{{itm.salePrice}}</span>
+
+										{{if itm.limitBuy}}
+										<span class="c9 f22">限购{{itm.limitBuy}}件</span>
+										{{/if}}
+									</div>
+									{{if itm.stock > 0 && itm.quantity > itm.stock}}
+									<span class="f50 f22">库存不足</span>
+									{{/if}}
+								</div>
+								<div class="flex ac jb">
+									<span class="input-number flex">
+										<b class="flex ac jc ico-btn" data-act="{{item.activityAreaId}}"
+											data-id="{{itm.shoppingCartId}}" data-quantity="{{itm.quantity}}"
+											data-control="{{itm.depositControl}}"
+											data-advance-quantity="{{itm.subDepositOrderQuantity}}"
+											onclick="cart.getQuantity(this)">-</b>
+										<span class="flex ac jc">{{itm.quantity}}</span>
+										<b class="flex ac jc ico-btn" data-type="1" data-act="{{item.activityAreaId}}"
+											data-id="{{itm.shoppingCartId}}" data-quantity="{{itm.quantity}}"
+											data-stock="{{itm.stock}}" data-limit="{{itm.limitBuy}}"
+											onclick="cart.getQuantity(this)">+</b>
+									</span>
+
+									<i class="delete" data-allow="{{itm.depositProductStatus != 1}}"
+										data-act="{{item.activityAreaId}}" data-id="{{itm.shoppingCartId}}"
+										onclick="cart.deleteShop(this)"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+					{{if itm.productCoupons.length}}
+					<a class="col-2 flex jb" onclick="cart.getCouponMcht(this)" data-page="{{index}}" data-index="{{idx}}">
+						<div class="flex">
+							<span class="mr20 f50">商品优惠</span>
+							{{itm.couponMcht ? (itm.couponMcht.id ? ('商品券立减' + itm.couponMcht.money + '元') : '不使用') : '不可用'}}
+						</div>
+						<div class="arrow-r ico"></div>
+					</a>
+					{{/if}}
+				</div>
+			</div>
+
+			{{if itm.depositProductStatus == 1}}
+			<div class="row-coupon bt1 flex ac je">
+				<span class="mr10">已付定金{{itm.deposit * itm.subDepositOrderQuantity}}</span>
+				<span class="mr10">抵用<span class="f50">{{itm.deductAmount * itm.subDepositOrderQuantity}}</span></span>
+				<span>{{item.endPaymentDateStr}}</span>
+			</div>
+			{{/if}}
+			{{/each}}
+
+			{{if item.couponUser}}
+			<div class="row-coupon bt1 flex ac">
+				<div class="mark">{{item.couponTxt}}</div>
+				<span class="c6">{{item.couponUser}}</span>
+				<div class="cf5" style="position:absolute;right:.2rem;color: #ff5050;">{{item.couponUserRight}}</div>
+			</div>
+			{{/if}}
+
+			{{if item.saleOri != undefined}}
+			<div class="count flex ac je">
+				<span class="sale">{{item.saleOriTxt}}</span>
+				{{if item.saleSub}}
+				<span class="sym">-</span>
+				<span class="sale">{{item.saleSubTxt}}</span>
+				<span class="sym">=</span>
+				<span class="sale">{{item.saleResTxt}}</span>
+				{{/if}}
+			</div>
+			{{/if}}
+		</div>
+		{{/if}}
+		{{/each}}
+	</div>
+
+	<a class="row-plat ac jb" onclick="cart.showCouponPlat()">
+		<div class="flex ac jb fg">
+			<div class="flex ac">
+				平台券
+				<span class="em flex ac jc">可用{{plat.availCoupons.length > 99 ? '99+' : plat.availCoupons.length}}张</span>
+			</div>
+			<span>{{(pile.couponPlat || plat.availCoupons.length) ? '优惠' + pile.couponPlat + '元' : '未选择优惠券'}}</span>
+		</div>
+		<div class="arrow-r ico"></div>
+	</a>
+
+	<div class="footer flex ac jb">
+		<div class="flex ac fg h100">
+			<a class="flex ac f-ticksp h100" onclick="cart.getTickAll()">
+				<i class="fn ticksp{{pile.tick == 1 ? ' ticksped' : ''}}"></i>全选
+			</a>
+			<div class="flex ac">
+				合计：<span class="sale">{{pile.countResTxt || 0}}</span>
+				<span class="c9" style="font-size: 24rpx;">(不含运费)</span>
+			</div>
+		</div>
+		<button class="btn-red" onclick="cart.getOrderFirm()">去结算</button>
+	</div>
+	{{else if list}}
+	<div class="page-empty empty-goods flex dc ac jc">
+		<i></i>
+		<p class="m3">当前购物车空空如也</p>
+
+		<a class="flex ac jc btn-red ico-btn fn" onclick="getUrl('home/index.html')">去抢购</a>
+	</div>
+	{{/if}}
+</script>
+
+<script id="cart_tpl_hint" type="text/html">
+	<div class="page-empty empty-goods flex dc ac jc">
+		<i></i>
+		<p class="m3">当前购物车空空如也</p>
+
+		<a class="flex ac jc btn-red ico-btn fn" onclick="getUrl('home/index.html')">去抢购</a>
+	</div>
+</script>
+
+<script id="cart_tpl_mcht" type="text/html">
+	<div class="con">
+		{{each couponMcht.list item index}}
+		<div class="flex ac jb" data-index="{{index}}" onclick="cart.getMchtTick(this)">
+			<span class="{{item.ticked ? 'c9' : ''}} {{item.dis ? 'dis' : ''}}">{{item.money}}元商品券</span>
+			<div class="ticksp{{item.tick ? ' ticksped' : ''}}{{item.ticked ? ' tickspdis' : ''}}"></div>
+		</div>
+		{{/each}}
+		<div class="flex ac jb" onclick="cart.getMchtTick(this)">
+			<span>{{couponMcht.nouse.text}}</span>
+			<div class="ticksp{{couponMcht.nouse.tick ? ' ticksped' : ''}}"></div>
+		</div>
+	</div>
+</script>
+
+<script id="cart_tpl_plat" type="text/html">
+	<div class="tab pd20 flex jb">
+		<a class="h100 flex ac jc{{plat.tab == 0 ? ' bold' : ' c6'}}" onclick="cart.changePlatTab(this)"
+			data-tab="0">可用优惠券({{plat.availCoupons.length > 99 ? '99+' : plat.availCoupons.length}})</a>
+		<a class="h100 flex ac jc{{plat.tab == 1 ? ' bold' : ' c6'}}" onclick="cart.changePlatTab(this)"
+			data-tab="1">不可用优惠券({{plat.unavailCouponTxt}})</a>
+	</div>
+	<div class="scroll-y">
+		{{if plat.tab == 0}}
+		<div class="avail">
+			{{if plat.availCoupons.length}}
+			{{each plat.availCoupons item idx}}
+			<div class="li" data-index="{{idx}}" onclick="cart.changePlatCoupon(this)">
+				<div class="h2 flex ae">
+					<span>{{item.couponTypeName}}</span>
+					<div class="f22 elps">{{item.useDescription}}</div>
+				</div>
+				<div class="dl flex jb">
+					<div class="dt h100 flex dc jc">
+						<div class="h3 flex ac">
+							{{if item.couponPreferentialType === '1'}}
+							<div class="sale flex ae">{{item.money}}</div>
+							{{else}}
+							<div class="sale flex ae discount">{{item.discount}}</div>
+							{{/if}}
+							<span class="fe">{{item.preferentialInfo}}</span>
+						</div>
+						<div class="c6 f22 elps">{{item.describeContent}}</div>
+					</div>
+					<div class="dd h100 flex dc jc pos-r">
+						<div class="ticksp{{item.tick ? ' ticksped' : ''}}"></div>
+					</div>
+				</div>
+				<div class="c9 f22">{{item.time}}</div>
+			</div>
+			{{/each}}
+			<div class="special-check  {{specialCheck?'special-check-active':''}}" onclick="cart.specialCheck()">
+				<div></div>在购物车显示特殊商品(此类不支持平台券)
+			</div>
+			{{else}}
+			<div class="page-empty empty-coupon flex dc ac jc fg">
+				<i></i>
+				<p>您当前还没有优惠券</p>
+			</div>
+			{{/if}}
+		</div>
+		{{else}}
+		<div class="unavail">
+			{{if plat.unavailCoupons.length || plat.unavailDate.length}}
+			{{if plat.unavailCoupons.length}}
+			<div class="verbose flex ac">结算商品中没有符合条件的商品</div>
+			{{each plat.unavailCoupons item}}
+			<div class="li">
+				<div class="h2 flex ae">
+					<span>{{item.couponTypeName}}</span>
+					<div class="f22 elps">{{item.useDescription}}</div>
+				</div>
+				<div class="dl flex jb">
+					<div class="dt h100 flex dc jc">
+						<div class="h3 flex ac">
+							{{if item.couponPreferentialType === '1'}}
+							<div class="sale flex ae">{{item.money}}</div>
+							{{else}}
+							<div class="sale flex ae discount">{{item.discount}}</div>
+							{{/if}}
+							<span class="fe">{{item.preferentialInfo}}</span>
+						</div>
+						<div class="c6 f22 elps">{{item.describeContent}}</div>
+					</div>
+				</div>
+				<div class="c9 f22">{{item.time}}</div>
+			</div>
+			{{/each}}
+			{{/if}}
+
+			{{if plat.unavailDate.length}}
+			<div class="verbose flex ac">优惠券使用日期不符</div>
+			{{each plat.unavailDate item}}
+			<div class="li">
+				<div class="h2 flex ae">
+					<span>{{item.couponTypeName}}</span>
+					<div class="f22 elps">{{item.useDescription}}</div>
+				</div>
+				<div class="dl flex jb">
+					<div class="dt h100 flex dc jc">
+						<div class="h3 flex ac">
+							{{if item.couponPreferentialType === '1'}}
+							<div class="sale flex ae">{{item.money}}</div>
+							{{else}}
+							<div class="sale flex ae discount">{{item.discount}}</div>
+							{{/if}}
+							<span class="fe">{{item.preferentialInfo}}</span>
+						</div>
+						<div class="c6 f22 elps">{{item.describeContent}}</div>
+					</div>
+				</div>
+				<div class="c9 f22">{{item.time}}</div>
+			</div>
+			{{/each}}
+			{{/if}}
+			{{else}}
+			<div class="page-empty empty-coupon flex dc ac jc fg">
+				<i></i>
+				<p>您当前还没有优惠券</p>
+			</div>
+			{{/if}}
+		</div>
+		{{/if}}
+	</div>
+	<div class="plat-footer flex">
+		<div class="h100 fg flex ac">
+			合计:
+			<span class="sale f50">{{plat.countResTxt}}</span>
+			<span class="span">优惠({{plat.couponPlat || 0}}元)</span>
+		</div>
+		<button class="btn-red h100" onclick="cart.confirmCoupon()">确认</button>
+	</div>
+</script>

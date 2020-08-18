@@ -1,0 +1,31 @@
+<div class="page register flex dc" data-title="修改密码" data-id="register_revise">
+	<link rel="stylesheet" href="register/index.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="getUrl('set/self')"></i></div>
+		<p class="ellipsis">修改密码</p>
+		<div class="fn"></div>
+	</header>
+
+	<form class="scroll-y fg content">
+		<div class="con-1">
+			<div class="flex ac jb">
+				<input type="password" class="password0" autocomplete="current-password" placeholder="输入旧密码" required maxlength="12">
+			</div>
+
+			<div class="flex ac jb">
+				<input type="password" class="password1" autocomplete="new-password" placeholder="密码由6-12位的数字或字母组成" required pattern="^[A-Za-z0-9]{6,12}$">
+			</div>
+
+			<div class="flex ac jb">
+				<input type="password" class="password" autocomplete="new-password" placeholder="重新输入新密码" required maxlength="12">
+			</div>
+		</div>
+
+		<div class="con-2">
+			<input class="btn-submit" type="submit" value="确定">
+		</div>
+	</form>
+
+	<script src="register/revise/index.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,140 @@
+<div class="page activity-single newman flex dc" data-title="新人专享" data-id="newman">
+	<link rel="stylesheet" href="activity/templet/css/single.css?var=1.0">
+	<link rel="stylesheet" href="newman/newman.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">新人专享</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-fix fg scroll-more">
+		<div class="touchfix w75"></div>
+	</div>
+
+	<script id="newman_tpl" type="text/html">
+		{{if adList[0]}}
+		<div class="banner" onclick="newmanApi.getCoupon('{{adList[0].id}}')" style="background-image: url({{adList[0].pic}});"></div>
+		{{/if}}
+		
+		<div class="row-seckill"></div>
+
+		{{if data.length}}
+		<div class="row-title"></div>
+		<div class="activity-single-con clearfix">
+			{{include 'newman_tpl_con'}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="newman_tpl_seckill" type="text/html">
+		{{if secKill.secKillProducts.length}}
+		<div class="con-1">
+			<div class="con-2" style="background-image: url({{secKill.backgroundPic}});">
+				<a class="flex jc" onclick="getUrl('newman/seckill/index.html')">
+					{{each secKill.secKillProducts value i}}
+					<dl>
+						<dt>
+							<img src="{{value.productPic}}">
+						</dt>
+						<dd>
+<!--							<p class="ellipsis">{{value.productName}}</p>-->
+							<p class="ellipsis">新用户</p>
+							<div class="flex jb">
+								<p>秒杀价<b>¥{{value.salePrice}}</b></p>
+								<s>{{value.tagPrice}}</s>
+							</div>
+						</dd>
+					</dl>
+					{{/each}}
+				</a>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="newman_tpl_con" type="text/html">
+		{{each data value i}}
+		<a class="mb20 addsty" onclick="getUrlGoods(this)"
+			data-activityareaid="{{activityAreaId}}"
+			data-productid="{{value.productId}}"
+
+		>
+			<div class="con-1 h345 addh">
+				<img src="{{value.productPic}}">
+				{{if value.index<3}}
+				<p class="num_icon">{{value.index+1}}</p>
+				<img class="img_icon" src="https://mtest.xgbuy.cc/webApp/applet/image/newvip/gold.png" alt="">
+				{{else if value.index>=3&&value.index<=10}}
+				<p class="num_icon">{{value.index+1}}</p>
+				<img class="img_icon" src="https://mtest.xgbuy.cc/webApp/applet/image/newvip/silver.png" alt="">
+				{{/if}}
+
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+			</div>
+			<div class="con-2 h456">
+				<p title="{{value.productName}}">{{value.productName}}</p>
+				<div class="scroll-x">
+					<span>
+						<strong class="f50">{{value.salePrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</span>
+
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+					{{if value.manageSelf == '1'}}
+						<i class="manageSelf ml10">自营</i>
+					{{/if}}
+
+				</div>
+				<time class="timers" data-tab="1" data-page="{{page}}" data-timer="{{value.expiredMs}}"></time>
+				<div class="robbuy">马上抢购</div>
+			</div>
+		</a>
+		{{/each}}
+	</script>
+
+	<script id="newman_tpl_title" type="text/html">
+		<h3>{{title}}</h3>
+		<p>{{summary}}</p>
+	</script>
+
+	<script id="newman_tpl_coupon" type="text/html">
+		{{each returnData value i}}
+		<dl class="flex fg ac jb mb20">
+			{{if value}}
+			<dt class="fn">
+			{{else}}
+			<dt class="fn yellow">
+			{{/if}}
+				¥{{value.money}}
+			</dt>
+			<dd class="fg">
+				<div>{{value.name}}</div>
+				<div class="flex"><p class="ellipsis fg">满{{value.minimum}}元可用</p><em>x{{value.recEach}}</em></div>
+				<span>{{value.expiryBeginDate}} - {{value.expiryEndDate}}</span>
+			</dd>
+		</dl>
+		{{/each}}
+	</script>
+
+	<script id="newman_tpl_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前商品为空</p>
+		</div>
+	</script>
+
+	<div class="popup popup-newman scroll-y">
+		<div class="con">
+			<div class="scroll-y popup-con"></div>
+			<a onclick="closeSelf(this)"></a>
+		</div>
+	</div>
+
+	<script src="newman/newman.js?var=1.7" async></script>
+</div>

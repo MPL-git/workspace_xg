@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CashTransferCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CashTransferCustom" extends="com.jf.dao.CashTransferMapper.BaseResultMap" >
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="member_nick" property="memberNick" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="alipay_account" property="alipayAccount" jdbcType="VARCHAR" />
+    <result column="withdraw_type_desc" property="withdrawTypeDesc" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="apply_create_date" property="applyCreateDate" jdbcType="TIMESTAMP" />
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    t.*,
+    (select wo.member_id from bu_withdraw_order wo where wo.id = t.withdraw_order_id and wo.del_flag='0') member_id,
+    (select mi.nick from bu_member_info mi,bu_withdraw_order wo where mi.del_flag = '0' and mi.id = wo.member_id and wo.id = t.withdraw_order_id and wo.del_flag='0') member_nick,
+    (select wo.real_name from bu_withdraw_order wo where wo.id = t.withdraw_order_id and wo.del_flag='0') real_name,
+    (select wo.alipay_account from bu_withdraw_order wo where wo.id = t.withdraw_order_id and wo.del_flag='0') alipay_account,
+    FUN_GET_STATUS_DESC("BU_WITHDRAW_ORDER", "WITHDRAW_TYPE", (select wo.withdraw_type from bu_withdraw_order wo where wo.id = t.withdraw_order_id and wo.del_flag='0')) withdraw_type_desc,
+    (select wo.amount from bu_withdraw_order wo where wo.id = t.withdraw_order_id and wo.del_flag='0') amount,
+    (select wo.create_date from bu_withdraw_order wo where wo.id = t.withdraw_order_id and wo.del_flag='0') apply_create_date,
+    FUN_GET_STATUS_DESC("BU_CASH_TRANSFER", "STATUS", status) status_desc
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CashTransferCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_cash_transfer t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.CashTransferCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_cash_transfer t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+</mapper>

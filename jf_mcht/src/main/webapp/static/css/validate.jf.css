@@ -1,0 +1,15 @@
+.error{
+	border: 0.5px solid #B84342;
+}
+
+label.error{
+	border: none;
+	color: #B84342;
+	font-weight: normal;
+	padding: 0 10px;
+	margin-bottom: 0px;
+}
+
+.has-error{
+	color: #B84342;
+}

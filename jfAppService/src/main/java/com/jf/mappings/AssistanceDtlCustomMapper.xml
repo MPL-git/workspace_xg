@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.AssistanceDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.AssistanceDtlCustom" extends="com.jf.dao.AssistanceDtlMapper.BaseResultMap" >
+
+  </resultMap>
+  
+  <select id="getMemberAssistanceInfo" parameterType="int" resultType="com.jf.entity.AssistanceDtlCustom">
+  		select
+		dtl.id,
+		signIn.id as memberSupplementarySignInId,
+		signIn.invitation_count as invitationCount,
+		signInSetting.invitation_count as invitationCountSetting,
+		signInSetting.supplementary_card_count as supplementaryCardCount
+		from bu_assistance_dtl dtl,
+		bu_member_supplementary_sign_in signIn,
+		bu_supplementary_sign_in_setting signInSetting
+		where dtl.member_supplementary_sign_in_id = signIn.id
+		and signIn.supplementary_sign_in_setting_id = signInSetting.id
+		and dtl.del_flag = '0'
+		and dtl.pro_status = '0'
+		and dtl.member_id = #{memberId}
+		and signIn.del_flag = '0'
+		and signIn.begin_time &lt;= now()
+		and signIn.end_time &gt; now()
+		and signInSetting.del_flag = '0'
+  </select>
+  
+</mapper>

@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.FullGiveMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.FullGive" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rang" property="rang" jdbcType="CHAR" />
+    <result column="belong" property="belong" jdbcType="CHAR" />
+    <result column="activity_area_id" property="activityAreaId" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="minimum" property="minimum" jdbcType="DECIMAL" />
+    <result column="sum_flag" property="sumFlag" jdbcType="CHAR" />
+    <result column="coupon_flag" property="couponFlag" jdbcType="CHAR" />
+    <result column="coupon_id_group" property="couponIdGroup" jdbcType="VARCHAR" />
+    <result column="integral_flag" property="integralFlag" jdbcType="CHAR" />
+    <result column="integral" property="integral" jdbcType="INTEGER" />
+    <result column="product_flag" property="productFlag" jdbcType="CHAR" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="product_num" property="productNum" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, rang, belong, activity_area_id, mcht_id, type, minimum, sum_flag, coupon_flag, 
+    coupon_id_group, integral_flag, integral, product_flag, product_id, product_num, 
+    create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.FullGiveExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_full_give
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_full_give
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_full_give
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.FullGiveExample" >
+    delete from bu_full_give
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.FullGive" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_full_give (rang, belong, activity_area_id, 
+      mcht_id, type, minimum, 
+      sum_flag, coupon_flag, coupon_id_group, 
+      integral_flag, integral, product_flag, 
+      product_id, product_num, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{rang,jdbcType=CHAR}, #{belong,jdbcType=CHAR}, #{activityAreaId,jdbcType=INTEGER}, 
+      #{mchtId,jdbcType=INTEGER}, #{type,jdbcType=CHAR}, #{minimum,jdbcType=DECIMAL}, 
+      #{sumFlag,jdbcType=CHAR}, #{couponFlag,jdbcType=CHAR}, #{couponIdGroup,jdbcType=VARCHAR}, 
+      #{integralFlag,jdbcType=CHAR}, #{integral,jdbcType=INTEGER}, #{productFlag,jdbcType=CHAR}, 
+      #{productId,jdbcType=INTEGER}, #{productNum,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.FullGive" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_full_give
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rang != null" >
+        rang,
+      </if>
+      <if test="belong != null" >
+        belong,
+      </if>
+      <if test="activityAreaId != null" >
+        activity_area_id,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="minimum != null" >
+        minimum,
+      </if>
+      <if test="sumFlag != null" >
+        sum_flag,
+      </if>
+      <if test="couponFlag != null" >
+        coupon_flag,
+      </if>
+      <if test="couponIdGroup != null" >
+        coupon_id_group,
+      </if>
+      <if test="integralFlag != null" >
+        integral_flag,
+      </if>
+      <if test="integral != null" >
+        integral,
+      </if>
+      <if test="productFlag != null" >
+        product_flag,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productNum != null" >
+        product_num,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rang != null" >
+        #{rang,jdbcType=CHAR},
+      </if>
+      <if test="belong != null" >
+        #{belong,jdbcType=CHAR},
+      </if>
+      <if test="activityAreaId != null" >
+        #{activityAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="minimum != null" >
+        #{minimum,jdbcType=DECIMAL},
+      </if>
+      <if test="sumFlag != null" >
+        #{sumFlag,jdbcType=CHAR},
+      </if>
+      <if test="couponFlag != null" >
+        #{couponFlag,jdbcType=CHAR},
+      </if>
+      <if test="couponIdGroup != null" >
+        #{couponIdGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="integralFlag != null" >
+        #{integralFlag,jdbcType=CHAR},
+      </if>
+      <if test="integral != null" >
+        #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="productFlag != null" >
+        #{productFlag,jdbcType=CHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productNum != null" >
+        #{productNum,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.FullGiveExample" resultType="java.lang.Integer" >
+    select count(*) from bu_full_give
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_full_give
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.rang != null" >
+        rang = #{record.rang,jdbcType=CHAR},
+      </if>
+      <if test="record.belong != null" >
+        belong = #{record.belong,jdbcType=CHAR},
+      </if>
+      <if test="record.activityAreaId != null" >
+        activity_area_id = #{record.activityAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=CHAR},
+      </if>
+      <if test="record.minimum != null" >
+        minimum = #{record.minimum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.sumFlag != null" >
+        sum_flag = #{record.sumFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.couponFlag != null" >
+        coupon_flag = #{record.couponFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.couponIdGroup != null" >
+        coupon_id_group = #{record.couponIdGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.integralFlag != null" >
+        integral_flag = #{record.integralFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.integral != null" >
+        integral = #{record.integral,jdbcType=INTEGER},
+      </if>
+      <if test="record.productFlag != null" >
+        product_flag = #{record.productFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productNum != null" >
+        product_num = #{record.productNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_full_give
+    set id = #{record.id,jdbcType=INTEGER},
+      rang = #{record.rang,jdbcType=CHAR},
+      belong = #{record.belong,jdbcType=CHAR},
+      activity_area_id = #{record.activityAreaId,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=CHAR},
+      minimum = #{record.minimum,jdbcType=DECIMAL},
+      sum_flag = #{record.sumFlag,jdbcType=CHAR},
+      coupon_flag = #{record.couponFlag,jdbcType=CHAR},
+      coupon_id_group = #{record.couponIdGroup,jdbcType=VARCHAR},
+      integral_flag = #{record.integralFlag,jdbcType=CHAR},
+      integral = #{record.integral,jdbcType=INTEGER},
+      product_flag = #{record.productFlag,jdbcType=CHAR},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      product_num = #{record.productNum,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.FullGive" >
+    update bu_full_give
+    <set >
+      <if test="rang != null" >
+        rang = #{rang,jdbcType=CHAR},
+      </if>
+      <if test="belong != null" >
+        belong = #{belong,jdbcType=CHAR},
+      </if>
+      <if test="activityAreaId != null" >
+        activity_area_id = #{activityAreaId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="minimum != null" >
+        minimum = #{minimum,jdbcType=DECIMAL},
+      </if>
+      <if test="sumFlag != null" >
+        sum_flag = #{sumFlag,jdbcType=CHAR},
+      </if>
+      <if test="couponFlag != null" >
+        coupon_flag = #{couponFlag,jdbcType=CHAR},
+      </if>
+      <if test="couponIdGroup != null" >
+        coupon_id_group = #{couponIdGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="integralFlag != null" >
+        integral_flag = #{integralFlag,jdbcType=CHAR},
+      </if>
+      <if test="integral != null" >
+        integral = #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="productFlag != null" >
+        product_flag = #{productFlag,jdbcType=CHAR},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productNum != null" >
+        product_num = #{productNum,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.FullGive" >
+    update bu_full_give
+    set rang = #{rang,jdbcType=CHAR},
+      belong = #{belong,jdbcType=CHAR},
+      activity_area_id = #{activityAreaId,jdbcType=INTEGER},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      type = #{type,jdbcType=CHAR},
+      minimum = #{minimum,jdbcType=DECIMAL},
+      sum_flag = #{sumFlag,jdbcType=CHAR},
+      coupon_flag = #{couponFlag,jdbcType=CHAR},
+      coupon_id_group = #{couponIdGroup,jdbcType=VARCHAR},
+      integral_flag = #{integralFlag,jdbcType=CHAR},
+      integral = #{integral,jdbcType=INTEGER},
+      product_flag = #{productFlag,jdbcType=CHAR},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_num = #{productNum,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

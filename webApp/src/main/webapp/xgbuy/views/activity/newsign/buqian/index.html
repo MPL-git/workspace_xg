@@ -1,0 +1,196 @@
+<div class="page checkin newsign-buqian flex dc" data-title="邀请得补签卡" data-id="activity_newsign_buqian">
+	<link rel="stylesheet" href="activity/newsign/buqian/buqian.css?ver=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('activity/newsign/index.html',true)"></i></div>
+		<p class="ellipsis">邀请得补签卡</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg tab-header">
+		<div class="checkin-1 tab-con scroll-y scroll-fix">
+			<div class="touchfix">
+				<div class="con-top top1 w75">
+					<span class="ico-btn ico-rule p-rule" onclick="popupShow('.popup-rule-free')"></span>
+					<img src="activity/newsign/buqian/resources/top1.png">
+				</div>
+
+				<div class="tab-list w75"></div>
+			</div>
+		</div>
+
+		<div class="checkin-2 tab-con scroll-y scroll-fix hide">
+			<div class="touchfix">
+				<div class="con-top top1 w75">
+					<span class="ico-btn ico-rule p-rule" onclick="popupShow('.popup-rule-free')"></span>
+					<img src="activity/newsign/buqian/resources/con-1.png">
+				</div>
+
+				<div class="tab-list w75"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="tab-btn flex ac">
+		<div class="flex ac jc flex-btns" onclick="buQian.clickTab1()">
+			<a class="flex ac jc fg ico-tab1 f50 msg-buqian">补签卡任务</a>
+		</div>
+		<div class="flex ac jc flex-btns" onclick="buQian.clickTab2()">
+			<a class="flex ac jc fg ico-tab2 my-buqian">我的任务</a>
+		</div>
+	</div>
+
+	<div class="popup popup-rule popup-rule-free" onclick="closeSelf(this)">
+		<div class="popup-rule-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">
+				邀请得补签卡规则
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</div>
+
+			<div class="con scroll-y">
+				<div class="touchfix">
+					<p class="mb20">1、每个新用户可助力一次，同一个设备、微信号、视为同一个用户。</p>
+					<p class="mb20">2、若发现用户存在刷单、虚假用户助力等违规行为，平台有权利判定助力失败。</p>
+					<p class="mb20">3、发起后24小时内助力成功后，平台自动发放补签卡。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 是否分享 -->
+	<div class="popup popup-doyoushare popup-style-sign popup-style-friend" onclick="closeSelf(this)">
+		<div class="popup-checkin-con" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+
+			<h3 class="flex ac jc">取消分享将无法获得额外红包哦</h3>
+
+			<div class="flex jc">
+				<a class="btn-checkin flex ac jc no-share" onclick="closeSelf(this)">不分享</a>
+				<a class="btn-checkin flex ac jc is-share" onclick="detailApi.share()">立即分享</a>
+			</div>
+		</div>
+	</div>
+
+
+	<script id="checkin_buqian_tpl_con1" type="text/html">
+		<div class="scrollNews">
+			<ul>
+				<li class="roler-text"><a href="#" class="tooltip">您当前一共有{{memberSupplementaryCardNum}}张签到卡</a></li>
+				<li class="roler-text"><a href="#" class="tooltip">您当前一共有{{memberSupplementaryCardNum}}张签到卡</a></li>
+				<li class="roler-text"><a href="#" class="tooltip">您当前一共有{{memberSupplementaryCardNum}}张签到卡</a></li>
+			</ul>
+		</div>
+		{{if dataList}}
+			{{if dataList.length == 0}}
+			<div class="tab-tdf">
+				<div class="liebiao">
+					<div class="liebiao-img flex ac jc">
+						<h1 class="flex ac jc c9 fts26">当前还没有任务</h1>
+					</div>
+				</div>
+			</div>
+			{{/if}}
+			{{each dataList value i }}
+			<div class="flex tab-td">
+				<div class="tab-left">
+					<div class="flex ac jc tab-img"></div>
+					<div class="felx ac jc tab-span">补签卡</div>
+				</div>
+				<div class="tab-right">
+					<div class="right-span fts30">{{value.supplementaryCardCount}}张补签卡用于补签未签到的天数</div>
+					<div class="flex">
+						<div class="flex ac jc flex-title">需要邀请<span class="f50">{{value.invitationCount}}</span>人</div>
+						<div class="flex ac jc flex-button" >领取任务</div>
+					</div>
+				</div>
+			</div> 
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="checkin_buqian_tpl_con2" type="text/html">
+		<div class="scrollNew">
+			<ul>
+				<li class="roler-text"><a href="#" class="tooltip">您当前一共有{{memberSupplementaryCardNum}}张签到卡</a></li>
+				<li class="roler-text"><a href="#" class="tooltip">您当前一共有{{memberSupplementaryCardNum}}张签到卡</a></li>
+				<li class="roler-text"><a href="#" class="tooltip">您当前一共有{{memberSupplementaryCardNum}}张签到卡</a></li>
+			</ul>
+		</div>
+
+		{{if dataList}}
+			{{if dataList.length == 0}}
+				<div class="tab-tdf">
+					<div class="liebiao">
+						<div class="liebiao-img flex ac jc">
+							<h1 class="flex ac jc c9 fts26">当前还没领取过任务</h1>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+			{{each dataList value i}}
+				{{if value.taskStatus == 0}}
+					<div class="flex tab-td">
+						<div class="tab-left">
+							<div class="flex ac jc tab-img"></div>
+							<div class="felx ac jc tab-span">
+								<time class="timers" data-timer="{{value.timer}}"></time>
+							</div>
+						</div>
+						<div class="tab-right">
+							<div class="right-span fts30">{{value.supplementaryCardCount}}张补签卡用于补签未签到的天数</div>
+							<div class="flex">
+								<div class="flex ac jc flex-title">需邀请<span class="f50">{{value.settingInvitationCount}}</span>人，还剩<span class="f50">{{value.needInvitationCount}}</span>人</div>
+								<div class="flex ac jc total-btns">
+									<div class="flex ac jc msg-yaoqing" onclick="getUrl('activity/newsign/buqian/detail/index.html?memberSupplementarySignInId={{value.memberSupplementarySignInId}}',true)">邀请详情</div>
+										<div class="flex ac jc msg-btn">继续邀请</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				{{/if}}
+				{{if value.taskStatus ==1}}
+				<div class="flex tab-td">
+					<div class="tab-left">
+						<div class="flex ac jc tab-img"></div>
+						<div class="felx ac jc tab-span">
+							已超时
+						</div>
+					</div>
+					<div class="tab-right">
+						<div class="right-span fts30">{{value.supplementaryCardCount}}张补签卡用于补签未签到的天数</div>
+						<div class="flex">
+							<div class="flex ac jc flex-title">需邀请<span class="f50">{{value.settingInvitationCount}}</span>人，还剩<span class="f50">{{value.needInvitationCount}}</span>人</div>
+								<div class="flex ac jc total-btns">
+									<div class="flex ac jc msg-yaoqing" onclick="getUrl('activity/newsign/buqian/detail/index.html?memberSupplementarySignInId={{value.memberSupplementarySignInId}}', 'self')">邀请详情</div>
+									<div class="flex ac jc msg-btn">超时失败</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{{/if}}
+				{{if value.taskStatus ==2}}
+				<div class="flex tab-td">
+					<div class="tab-left">
+						<div class="flex ac jc tab-img"></div>
+						<div class="felx ac jc tab-span">
+							已完成
+						</div>
+					</div>
+					<div class="tab-right">
+						<div class="right-span fts30">{{value.supplementaryCardCount}}张补签卡用于补签未签到的天数</div>
+						<div class="flex">
+							<div class="flex ac jc flex-title">已完成邀请</div>
+								<div class="flex ac jc total-btns">
+									<div class="flex ac jc msg-yaoqing" onclick="getUrl('activity/newsign/buqian/detail/index.html?memberSupplementarySignInId={{value.memberSupplementarySignInId}}', 'self')">邀请详情</div>
+									<div class="flex ac jc msg-btn">任务完成</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{{/if}}
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script src="activity/newsign/buqian/buqian.js?ver=1.2" async></script>
+</div>

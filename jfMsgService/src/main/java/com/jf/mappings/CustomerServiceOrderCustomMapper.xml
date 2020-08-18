@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CustomerServiceOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CustomerServiceOrderCustom" extends="com.jf.dao.CustomerServiceOrderMapper.BaseResultMap" >
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="mcht_type" property="mchtType" jdbcType="VARCHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sub_order_id, order_dtl_id, order_code, service_type, status, pro_status, contact_phone, 
+    reason, quantity, amount, deposit_amount, mcht_express_company, mcht_express_no, 
+    member_express_company, member_express_no, mcht_settle_order_id, initiator, is_allow_mcht_modify, 
+    create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CustomerServiceOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_customer_service_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_customer_service_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.CustomerServiceOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_customer_service_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="getByCombineOrderId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	SELECT cso.* FROM bu_customer_service_order cso,bu_order_dtl od,bu_sub_order so,bu_combine_order co WHERE cso.order_dtl_id = od.id AND od.sub_order_id = so.id AND so.combine_order_id = co.id AND cso.del_flag='0' AND od.del_flag='0' AND so.del_flag='0' AND co.del_flag='0' AND co.id=#{combineOrderId}
+  </select>
+  <select id="selectPhoneWhileB2C2"  resultType="java.util.Map" >
+	<![CDATA[	SELECT bco.receiver_phone,bso.id from bu_combine_order bco,bu_sub_order bso where bso.del_flag='0' and bco.del_flag='0' and bso.combine_order_id=bco.id and bso.id in ( SELECT DISTINCT t.sub_order_id from bu_customer_service_order t,bu_customer_service_status_log log  where t.del_flag='0' and log.del_flag='0' and  log.service_order_id=t.id and t.pro_status in ('B2','C2') and log.pro_status in ('B2','C2') and log.`status`='0' and t.`status`='0' and log.create_date<=DATE_ADD(NOW(),INTERVAL -12 HOUR)) ]]>
+  </select>
+
+  <select id="selectMemberIdAndPhone" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT
+        a.id,
+        t1.member_id,
+        t1.receiver_phone
+    FROM
+        bu_customer_service_order a
+    LEFT JOIN (
+      SELECT
+          p1.id,
+          p2.member_id,
+          p2.receiver_phone
+      FROM
+          bu_sub_order p1
+      LEFT JOIN bu_combine_order p2 ON p2.id = p1.combine_order_id
+    ) t1 ON t1.id = a.sub_order_id
+    WHERE a.id = #{0}
+  </select>
+</mapper>

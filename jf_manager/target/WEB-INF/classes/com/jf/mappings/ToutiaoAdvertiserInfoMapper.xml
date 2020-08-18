@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ToutiaoAdvertiserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ToutiaoAdvertiserInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="advertiser_id" property="advertiserId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="contacter" property="contacter" jdbcType="VARCHAR" />
+    <result column="phonenumber" property="phonenumber" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="license_url" property="licenseUrl" jdbcType="VARCHAR" />
+    <result column="license_no" property="licenseNo" jdbcType="VARCHAR" />
+    <result column="license_province" property="licenseProvince" jdbcType="VARCHAR" />
+    <result column="license_city" property="licenseCity" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="promotion_area" property="promotionArea" jdbcType="CHAR" />
+    <result column="promotion_center_province" property="promotionCenterProvince" jdbcType="VARCHAR" />
+    <result column="promotion_center_city" property="promotionCenterCity" jdbcType="VARCHAR" />
+    <result column="industry" property="industry" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="DECIMAL" />
+    <result column="campaign_page" property="campaignPage" jdbcType="INTEGER" />
+    <result column="campaign_page_size" property="campaignPageSize" jdbcType="INTEGER" />
+    <result column="campaign_total_number" property="campaignTotalNumber" jdbcType="INTEGER" />
+    <result column="campaign_total_page" property="campaignTotalPage" jdbcType="INTEGER" />
+    <result column="ad_page" property="adPage" jdbcType="INTEGER" />
+    <result column="ad_page_size" property="adPageSize" jdbcType="INTEGER" />
+    <result column="ad_total_number" property="adTotalNumber" jdbcType="INTEGER" />
+    <result column="ad_total_page" property="adTotalPage" jdbcType="INTEGER" />
+    <result column="batch_code" property="batchCode" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, advertiser_id, name, description, email, contacter, phonenumber, role, status, 
+    telephone, address, license_url, license_no, license_province, license_city, company, 
+    brand, promotion_area, promotion_center_province, promotion_center_city, industry, 
+    reason, balance, campaign_page, campaign_page_size, campaign_total_number, campaign_total_page, 
+    ad_page, ad_page_size, ad_total_number, ad_total_page, batch_code, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ToutiaoAdvertiserInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from toutiao_advertiser_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from toutiao_advertiser_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from toutiao_advertiser_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.ToutiaoAdvertiserInfoExample" >
+    delete from toutiao_advertiser_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.ToutiaoAdvertiserInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into toutiao_advertiser_info (advertiser_id, name, description, 
+      email, contacter, phonenumber, 
+      role, status, telephone, 
+      address, license_url, license_no, 
+      license_province, license_city, company, 
+      brand, promotion_area, promotion_center_province, 
+      promotion_center_city, industry, reason, 
+      balance, campaign_page, campaign_page_size, 
+      campaign_total_number, campaign_total_page, 
+      ad_page, ad_page_size, ad_total_number, 
+      ad_total_page, batch_code, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{advertiserId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{contacter,jdbcType=VARCHAR}, #{phonenumber,jdbcType=VARCHAR}, 
+      #{role,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{licenseUrl,jdbcType=VARCHAR}, #{licenseNo,jdbcType=VARCHAR}, 
+      #{licenseProvince,jdbcType=VARCHAR}, #{licenseCity,jdbcType=VARCHAR}, #{company,jdbcType=VARCHAR}, 
+      #{brand,jdbcType=VARCHAR}, #{promotionArea,jdbcType=CHAR}, #{promotionCenterProvince,jdbcType=VARCHAR}, 
+      #{promotionCenterCity,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{reason,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=DECIMAL}, #{campaignPage,jdbcType=INTEGER}, #{campaignPageSize,jdbcType=INTEGER}, 
+      #{campaignTotalNumber,jdbcType=INTEGER}, #{campaignTotalPage,jdbcType=INTEGER}, 
+      #{adPage,jdbcType=INTEGER}, #{adPageSize,jdbcType=INTEGER}, #{adTotalNumber,jdbcType=INTEGER}, 
+      #{adTotalPage,jdbcType=INTEGER}, #{batchCode,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.ToutiaoAdvertiserInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into toutiao_advertiser_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="advertiserId != null" >
+        advertiser_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="contacter != null" >
+        contacter,
+      </if>
+      <if test="phonenumber != null" >
+        phonenumber,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="telephone != null" >
+        telephone,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="licenseUrl != null" >
+        license_url,
+      </if>
+      <if test="licenseNo != null" >
+        license_no,
+      </if>
+      <if test="licenseProvince != null" >
+        license_province,
+      </if>
+      <if test="licenseCity != null" >
+        license_city,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="promotionArea != null" >
+        promotion_area,
+      </if>
+      <if test="promotionCenterProvince != null" >
+        promotion_center_province,
+      </if>
+      <if test="promotionCenterCity != null" >
+        promotion_center_city,
+      </if>
+      <if test="industry != null" >
+        industry,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="campaignPage != null" >
+        campaign_page,
+      </if>
+      <if test="campaignPageSize != null" >
+        campaign_page_size,
+      </if>
+      <if test="campaignTotalNumber != null" >
+        campaign_total_number,
+      </if>
+      <if test="campaignTotalPage != null" >
+        campaign_total_page,
+      </if>
+      <if test="adPage != null" >
+        ad_page,
+      </if>
+      <if test="adPageSize != null" >
+        ad_page_size,
+      </if>
+      <if test="adTotalNumber != null" >
+        ad_total_number,
+      </if>
+      <if test="adTotalPage != null" >
+        ad_total_page,
+      </if>
+      <if test="batchCode != null" >
+        batch_code,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="advertiserId != null" >
+        #{advertiserId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="contacter != null" >
+        #{contacter,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseUrl != null" >
+        #{licenseUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseNo != null" >
+        #{licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseProvince != null" >
+        #{licenseProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseCity != null" >
+        #{licenseCity,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionArea != null" >
+        #{promotionArea,jdbcType=CHAR},
+      </if>
+      <if test="promotionCenterProvince != null" >
+        #{promotionCenterProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionCenterCity != null" >
+        #{promotionCenterCity,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="campaignPage != null" >
+        #{campaignPage,jdbcType=INTEGER},
+      </if>
+      <if test="campaignPageSize != null" >
+        #{campaignPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="campaignTotalNumber != null" >
+        #{campaignTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="campaignTotalPage != null" >
+        #{campaignTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="adPage != null" >
+        #{adPage,jdbcType=INTEGER},
+      </if>
+      <if test="adPageSize != null" >
+        #{adPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="adTotalNumber != null" >
+        #{adTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="adTotalPage != null" >
+        #{adTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="batchCode != null" >
+        #{batchCode,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.ToutiaoAdvertiserInfoExample" resultType="java.lang.Integer" >
+    select count(*) from toutiao_advertiser_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update toutiao_advertiser_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.advertiserId != null" >
+        advertiser_id = #{record.advertiserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contacter != null" >
+        contacter = #{record.contacter,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phonenumber != null" >
+        phonenumber = #{record.phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.role != null" >
+        role = #{record.role,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telephone != null" >
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseUrl != null" >
+        license_url = #{record.licenseUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseNo != null" >
+        license_no = #{record.licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseProvince != null" >
+        license_province = #{record.licenseProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenseCity != null" >
+        license_city = #{record.licenseCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.company != null" >
+        company = #{record.company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null" >
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotionArea != null" >
+        promotion_area = #{record.promotionArea,jdbcType=CHAR},
+      </if>
+      <if test="record.promotionCenterProvince != null" >
+        promotion_center_province = #{record.promotionCenterProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="record.promotionCenterCity != null" >
+        promotion_center_city = #{record.promotionCenterCity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.industry != null" >
+        industry = #{record.industry,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reason != null" >
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=DECIMAL},
+      </if>
+      <if test="record.campaignPage != null" >
+        campaign_page = #{record.campaignPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.campaignPageSize != null" >
+        campaign_page_size = #{record.campaignPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="record.campaignTotalNumber != null" >
+        campaign_total_number = #{record.campaignTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.campaignTotalPage != null" >
+        campaign_total_page = #{record.campaignTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.adPage != null" >
+        ad_page = #{record.adPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.adPageSize != null" >
+        ad_page_size = #{record.adPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="record.adTotalNumber != null" >
+        ad_total_number = #{record.adTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.adTotalPage != null" >
+        ad_total_page = #{record.adTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="record.batchCode != null" >
+        batch_code = #{record.batchCode,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update toutiao_advertiser_info
+    set id = #{record.id,jdbcType=INTEGER},
+      advertiser_id = #{record.advertiserId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      contacter = #{record.contacter,jdbcType=VARCHAR},
+      phonenumber = #{record.phonenumber,jdbcType=VARCHAR},
+      role = #{record.role,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      telephone = #{record.telephone,jdbcType=VARCHAR},
+      address = #{record.address,jdbcType=VARCHAR},
+      license_url = #{record.licenseUrl,jdbcType=VARCHAR},
+      license_no = #{record.licenseNo,jdbcType=VARCHAR},
+      license_province = #{record.licenseProvince,jdbcType=VARCHAR},
+      license_city = #{record.licenseCity,jdbcType=VARCHAR},
+      company = #{record.company,jdbcType=VARCHAR},
+      brand = #{record.brand,jdbcType=VARCHAR},
+      promotion_area = #{record.promotionArea,jdbcType=CHAR},
+      promotion_center_province = #{record.promotionCenterProvince,jdbcType=VARCHAR},
+      promotion_center_city = #{record.promotionCenterCity,jdbcType=VARCHAR},
+      industry = #{record.industry,jdbcType=VARCHAR},
+      reason = #{record.reason,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=DECIMAL},
+      campaign_page = #{record.campaignPage,jdbcType=INTEGER},
+      campaign_page_size = #{record.campaignPageSize,jdbcType=INTEGER},
+      campaign_total_number = #{record.campaignTotalNumber,jdbcType=INTEGER},
+      campaign_total_page = #{record.campaignTotalPage,jdbcType=INTEGER},
+      ad_page = #{record.adPage,jdbcType=INTEGER},
+      ad_page_size = #{record.adPageSize,jdbcType=INTEGER},
+      ad_total_number = #{record.adTotalNumber,jdbcType=INTEGER},
+      ad_total_page = #{record.adTotalPage,jdbcType=INTEGER},
+      batch_code = #{record.batchCode,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.ToutiaoAdvertiserInfo" >
+    update toutiao_advertiser_info
+    <set >
+      <if test="advertiserId != null" >
+        advertiser_id = #{advertiserId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="contacter != null" >
+        contacter = #{contacter,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        phonenumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="role != null" >
+        role = #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null" >
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseUrl != null" >
+        license_url = #{licenseUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseNo != null" >
+        license_no = #{licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseProvince != null" >
+        license_province = #{licenseProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="licenseCity != null" >
+        license_city = #{licenseCity,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionArea != null" >
+        promotion_area = #{promotionArea,jdbcType=CHAR},
+      </if>
+      <if test="promotionCenterProvince != null" >
+        promotion_center_province = #{promotionCenterProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="promotionCenterCity != null" >
+        promotion_center_city = #{promotionCenterCity,jdbcType=VARCHAR},
+      </if>
+      <if test="industry != null" >
+        industry = #{industry,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="campaignPage != null" >
+        campaign_page = #{campaignPage,jdbcType=INTEGER},
+      </if>
+      <if test="campaignPageSize != null" >
+        campaign_page_size = #{campaignPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="campaignTotalNumber != null" >
+        campaign_total_number = #{campaignTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="campaignTotalPage != null" >
+        campaign_total_page = #{campaignTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="adPage != null" >
+        ad_page = #{adPage,jdbcType=INTEGER},
+      </if>
+      <if test="adPageSize != null" >
+        ad_page_size = #{adPageSize,jdbcType=INTEGER},
+      </if>
+      <if test="adTotalNumber != null" >
+        ad_total_number = #{adTotalNumber,jdbcType=INTEGER},
+      </if>
+      <if test="adTotalPage != null" >
+        ad_total_page = #{adTotalPage,jdbcType=INTEGER},
+      </if>
+      <if test="batchCode != null" >
+        batch_code = #{batchCode,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.ToutiaoAdvertiserInfo" >
+    update toutiao_advertiser_info
+    set advertiser_id = #{advertiserId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      contacter = #{contacter,jdbcType=VARCHAR},
+      phonenumber = #{phonenumber,jdbcType=VARCHAR},
+      role = #{role,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      license_url = #{licenseUrl,jdbcType=VARCHAR},
+      license_no = #{licenseNo,jdbcType=VARCHAR},
+      license_province = #{licenseProvince,jdbcType=VARCHAR},
+      license_city = #{licenseCity,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      promotion_area = #{promotionArea,jdbcType=CHAR},
+      promotion_center_province = #{promotionCenterProvince,jdbcType=VARCHAR},
+      promotion_center_city = #{promotionCenterCity,jdbcType=VARCHAR},
+      industry = #{industry,jdbcType=VARCHAR},
+      reason = #{reason,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=DECIMAL},
+      campaign_page = #{campaignPage,jdbcType=INTEGER},
+      campaign_page_size = #{campaignPageSize,jdbcType=INTEGER},
+      campaign_total_number = #{campaignTotalNumber,jdbcType=INTEGER},
+      campaign_total_page = #{campaignTotalPage,jdbcType=INTEGER},
+      ad_page = #{adPage,jdbcType=INTEGER},
+      ad_page_size = #{adPageSize,jdbcType=INTEGER},
+      ad_total_number = #{adTotalNumber,jdbcType=INTEGER},
+      ad_total_page = #{adTotalPage,jdbcType=INTEGER},
+      batch_code = #{batchCode,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

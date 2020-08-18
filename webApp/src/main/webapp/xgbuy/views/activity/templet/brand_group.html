@@ -1,0 +1,94 @@
+<div class="page common-activity activity-brand flex dc bgf4" data-id="activity_templet_brand_group">
+    <link rel="stylesheet" href="../static/css/common-activity.css?var=1.0">
+    <link rel="stylesheet" href="activity/templet/css/brand-group.css?var=1.0">
+
+    <header class="flex ac jb fn">
+        <div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+        <p class="ellipsis"></p>
+        <div class="fn sc flex je"></div>
+    </header>
+
+    <div class="scroll-y fg scroll-more">
+        <div class="swiper">
+
+        </div>
+        <div class="decorate"></div>
+
+        <div class="special">
+            
+        </div>
+    </div>
+
+    <!-- 幻灯片 -->
+    <script id="group_swiper_tpl" type="text/html">
+        {{if returnData.adList.length}}
+        <div class="swiper-container">
+            <ul class="swiper-wrapper">
+                {{each returnData.adList value i}}
+                <li onclick="getBrandDef(this, {pos: '{{i}}'})" data-id="{{value.id}}" data-productid="{{value.linkId}}"
+                    data-url="{{value.areaUrl}}" data-type="{{value.linkType}}" data-name="{{value.activityAreaName}}"
+                    data-link="{{value.linkValue}}" class="swiper-slide">
+                    <img src="{{value.pic}}">
+                </li>
+                {{/each}}
+            </ul>
+            <div class="pagination"></div>
+        </div>
+        {{/if}}
+    </script>
+
+    <script id="group_activityList_tpl" type="text/html">
+        {{if dataList.length}}
+        {{each dataList value i}}
+        <a class="mb20" onclick="getUrlActive(this, {pos: '{{page + i}}', data: brandGroup.data})"
+                data-typeof="{{value.length}}" data-name="{{value.name}}" data-url="{{value.areaUrl}}"
+                data-activityid="{{value.activityId}}" data-activityareaid="{{value.activityAreaId}}"
+                data-source="{{value.source}}" data-type="{{value.type}}">
+                <dl>
+                    <dt class="h50vw">
+                        <img src="{{value.areaEntryPic}}" />
+                    </dt>
+
+                    <dd>
+                    {{if value.productDataList.length}}
+                        <div class="row-0 flex ac js bb1">
+                            {{each value.productDataList val index}}
+                            <div class="flex-column">
+                                <img src="{{val.productPic}}" class="productPic" alt="">
+                                <div class="flex ac salePrice">
+                                    ￥{{val.salePrice}} <s>￥{{val.tagPrice}}</s>
+                                </div>
+                                <div class="flex ac svipSalePrice">
+                                    <img src="activity/templet/images/svip.png" alt="">
+                                    <span>￥{{val.svipSalePrice}}</span>
+                                </div>
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                        <div class="row-1 flex ac jb " >
+                            <div class="flex ac">
+                                <p class="ellipsis" title="{{value.benefitPoint}}">{{value.benefitPoint}}</p>
+                            </div>
+                            <time class="flex ac">
+                                <p class="ellipsis f50">{{value.activityRemainingTime}}</p>
+                            </time>
+                        </div>
+                        <div class="row-2 elps">{{value.groups}}</div>
+                    </dd>
+                </dl>
+            </a>
+        {{/each}}
+        {{/if}}
+    </script>
+    
+    
+	<script id="group_activity_msg" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>暂无数据</p>
+		</div>
+	</script>
+
+    <script src="activity/templet/js/brand-group.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,126 @@
+<div class="page flex dc settled-detail bgf4" data-title="" data-id="settled_detail">
+	<link rel="stylesheet" href="settled/detail/index.css?var=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="main scroll-y fg"></div>
+
+	<script id="settled_detail_tpl" type="text/html">
+		<form class="flex dc" onsubmit="settledDetailApi.submit(event, this)">
+			<input type="hidden" name="platformContactId" value="{{platformContactId}}">
+			<div class="con">
+				<table>
+					<thead>
+						<tr>
+							<td colspan="2">入驻信息</td>
+						</tr>
+					</thead>
+					<tbody>
+						{{if type == 2}}
+						<tr>
+							<td>名称<em>*</em>：</td>
+							<td><input type="text" name="companyName" placeholder="填写营业执照上的名称" required maxlength="16"></td>
+						</tr>
+						{{/if}}
+						<tr>
+							<td>姓名<em>*</em>：</td>
+							<td><input type="text" name="contactName" placeholder="填写营业执照上的姓名" required maxlength="16"></td>
+						</tr>
+						{{if type == 1}}
+						<tr>
+							<td>职务<em>*</em>：</td>
+							<td><input type="text" name="contactJob" placeholder="" required maxlength="16" value="{{XXX}}"></td>
+						</tr>
+						{{/if}}
+						<tr>
+							<td>手机<em>*</em>：</td>
+							<td><input type="tel" name="phone" placeholder="入驻申请通过作为登录账号使用" required maxlength="11" pattern="^1\d{10}$"></td>
+						</tr>
+						<tr>
+							<td>QQ<em>*</em>：</td>
+							<td><input type="text" name="qq" required pattern="\d{4,16}"></td>
+						</tr>
+						{{if type == 1}}
+						<tr>
+							<td>邮箱<em>*</em>：</td>
+							<td><input type="email" name="email" required maxlength="64"></td>
+						</tr>
+						<tr>
+							<td>公司名称<em>*</em>：</td>
+							<td><input type="text" name="companyName" required maxlength="128"></td>
+						</tr>
+						{{/if}}
+						{{if type == 2}}
+						<tr>
+							<td>渠道链接<em>*</em>：</td>
+							<td><input type="text" name="otherShop" placeholder="有在其他平台经营出售商品的链接" required maxlength="512"></td>
+						</tr>
+						{{/if}}
+						<tr>
+							<td>品类<em>*</em>：</td>
+							<td>
+								<select name="productTypeId" required onchange="settledDetailApi.select(this)"></select>
+								<input type="hidden" name="productTypeMain">
+							</td>
+						</tr>
+						{{if type == 1}}
+						<tr>
+							<td>品牌名称<em>*</em>：</td>
+							<td><input type="text" name="productBrandMain" required maxlength="128"></td>
+						</tr>
+						{{/if}}
+					</tbody>
+				</table>
+			</div>
+
+			<div class="con">
+				<table>
+					<thead>
+						<tr>
+							<td colspan="2">上传一个主营商品</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>商品名称<em>*</em>：</td>
+							<td><input type="text" name="productName" required maxlength="128"></td>
+						</tr>
+						<tr>
+							<td class="sub">商品主图<em>*</em>：</td>
+							<td>
+								<div class="flex">
+									<div class="up-img flex"></div>
+									<div class="up-btn fn">
+										<input type="file" accept="image/gif,image/jpg,image/jpeg,image/bmp,image/png" required>
+									</div>
+									<p class="up-tip flex ae">最多三张</p>
+								</div>
+								<input type="hidden" name="productPic">
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="2">
+								<input class="btn-f50" type="submit" value="提交申请">
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</form>
+	</script>
+
+	<div class="popup popup-success start">
+		<div class="popup-main">
+			<h4 class="flex ac">提交成功</h4>
+			<p>您的入驻申请已提交成功，审核通过后我们将账号及密码发送您的手机<i></i>，请在获取账号及密码后登陆www.xgbuy.cc完善入驻资料。</p>
+		</div>
+	</div>
+
+	<script src="settled/detail/index.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductItemCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductItemCustom" extends="com.jf.dao.ProductItemMapper.BaseResultMap" >
+	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+	<result column="product_brand_name" property="productBrandName" jdbcType="VARCHAR" />
+	<result column="art_no" property="artNo" jdbcType="VARCHAR" />
+	<result column="prop_desc" property="propDesc" jdbcType="VARCHAR" />
+	<result column="mcht_Type" property="mchtType" jdbcType="VARCHAR" />
+
+  <association column="prop_val_id" property="productPropValues"
+			select="selectProductPropValues" />
+  </resultMap>
+  <resultMap id="BaseResultMap2" type="com.jf.entity.ProductItemCustom" extends="com.jf.dao.ProductItemMapper.BaseResultMap" >
+	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+	<result column="product_brand_name" property="productBrandName" jdbcType="VARCHAR" />
+	<result column="art_no" property="artNo" jdbcType="VARCHAR" />
+	<result column="prop_desc" property="propDesc" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <select id="selectProductPropValues" parameterType="string" resultMap="com.jf.dao.ProductPropValueMapper.BaseResultMap">
+  	select  
+  	id, prop_id, prop_value, create_by, create_date, update_by, update_date, remarks, del_flag
+    from bu_product_prop_value where FIND_IN_SET(id,#{prop_val_id, jdbcType=VARCHAR})
+  </select>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+    id, product_id, cloud_product_item_id, sku, prop_val_id, stock, locked_amount, tag_price, 
+    mall_price, sale_price, cost_price, pic, create_by, create_date, update_by, update_date, 
+    remarks, del_flag,
+    (select a.mcht_type from bu_mcht_info a ,bu_product bp  where a.id=bp.mcht_id and bp.id=product_id) mcht_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ProductItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_product_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_product_item
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="queryStockByExample" parameterType="com.jf.entity.ProductItemExample" resultType="java.lang.Integer" >
+    select ifnull(sum(stock), 0) from bu_product_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <!--此方法慎用慎用慎用慎用！！！！：因为此方法未过滤删除的sku-->
+  <select id="queryProductItemByProductIdAndPropValueIds" parameterType="java.util.Map" resultMap="com.jf.dao.ProductItemMapper.BaseResultMap" >
+   select t.* from bu_product_item t where t.product_id=#{productId,jdbcType=INTEGER} and FUN_GET_SPLIT_STRING_TOTAL(t.prop_val_id,',')=#{propCount,jdbcType=INTEGER}
+        <foreach collection="propValueIds" index="index" item="item">
+            and FIND_IN_SET(#{item},t.prop_val_id)
+        </foreach>
+        order by t.id desc limit 1
+  </select>
+  
+  <select id="selectProductItemOrderByPropValue" parameterType="java.util.Map" resultMap="com.jf.dao.ProductItemMapper.BaseResultMap" >
+     <choose>
+        <when test="propCount !=null and propCount == 3">
+           SELECT pt.* from bu_product_item pt join bu_product_prop_value ppv1 on substring_index(pt.prop_val_id, ',', 1)=ppv1.id JOIN bu_product_prop_value ppv2 on substring_index(SUBSTRING(pt.prop_val_id,  LOCATE(',', pt.prop_val_id) + 1), ',',1) = ppv2.id JOIN bu_product_prop_value ppv3 ON substring_index(SUBSTRING(SUBSTRING(pt.prop_val_id,  LOCATE(',', pt.prop_val_id) + 1),  LOCATE(',', SUBSTRING(pt.prop_val_id,  LOCATE(',', pt.prop_val_id) + 1)) + 1), ',',1) = ppv3.id where pt.product_id=#{productId,jdbcType=INTEGER} and pt.del_flag='0' order by IFNULL(ppv1.seq_no,99999) asc,ppv1.id asc,IFNULL(ppv2.seq_no, 99999) ASC,ppv2.id ASC,IFNULL(ppv3.seq_no, 99999) ASC,ppv3.id ASC,pt.id asc
+        </when>
+        <when test="propCount !=null and propCount == 2">
+           SELECT pt.* from bu_product_item pt join bu_product_prop_value ppv1 on substring_index(pt.prop_val_id, ',', 1)=ppv1.id JOIN bu_product_prop_value ppv2 on substring_index(SUBSTRING(pt.prop_val_id,  LOCATE(',', pt.prop_val_id) + 1), ',',1) = ppv2.id where pt.product_id=#{productId,jdbcType=INTEGER} and pt.del_flag='0' order by IFNULL(ppv1.seq_no,99999) asc,ppv1.id asc,IFNULL(ppv2.seq_no, 99999) ASC,ppv2.id ASC,pt.id asc
+        </when>
+        <otherwise>
+         SELECT pt.* from bu_product_item pt join bu_product_prop_value ppv on substring_index(pt.prop_val_id, ',', 1)=ppv.id where pt.product_id=#{productId,jdbcType=INTEGER} and pt.del_flag='0' order by IFNULL(ppv.seq_no,99999) asc,ppv.id asc,pt.id asc
+        </otherwise>
+    </choose>
+  </select>
+  <select id="getExportProductItemCustom" parameterType="java.lang.Integer" resultMap="BaseResultMap2">
+  	SELECT
+		pi.*,
+		(select p.name from bu_product p where p.id = pi.product_id)product_name,
+		(select pb.name from bu_product p,bu_product_brand pb where p.id = pi.product_id and p.brand_id = pb.id)product_brand_name,
+		(select p.art_no from bu_product p where p.id = pi.product_id)art_no
+	FROM
+		bu_product_item pi
+	WHERE
+		pi.del_flag = '0'
+	AND pi.product_id IN (
+			SELECT
+				ap.product_id
+			FROM
+				bu_activity_product ap,
+				bu_product p
+			WHERE
+				ap.product_id = p.id
+			AND ap.refuse_flag = '0'
+			AND ap.del_flag = '0'
+			AND p.sale_type = '1'
+			AND p.del_flag = '0'
+			AND ap.activity_id = #{activityId}
+		)
+  </select>
+  <select id="getPropDescList" resultType="java.util.HashMap" parameterType="java.util.Map">
+  	SELECT
+		ppv.id,
+		CONCAT(
+				pp.`name`,
+				'_',
+				ppv.prop_value
+			)prop_desc
+	FROM
+		bu_product_prop_value ppv,
+		bu_product_prop pp
+	WHERE
+		ppv.prop_id = pp.id
+	AND ppv.del_flag='0'
+	AND pp.del_flag='0'
+	AND ppv.id IN 
+	<foreach collection="propValIdList" item="listItem" open="(" close=")" separator="," >
+		#{listItem}
+    </foreach>
+  </select>
+  <update id="setCloudProductItemIdNull" parameterType="java.lang.Integer">
+  	update bu_product_item pi set pi.cloud_product_item_id = NULL WHERE pi.del_flag='0' AND pi.id=#{id};
+  </update>
+  
+  <select id="updateByProductId" >
+  	UPDATE `bu_product_item` SET `sale_price` = #{sale_price} WHERE product_id = #{product_id}; 
+  </select>
+
+    <select id="getMinPriceItem" parameterType="java.util.Map" resultMap="BaseResultMap" >
+        select *
+        from bu_product_item
+        where product_id = #{productId} and del_flag = '0'
+        <choose>
+            <when test="searchType == 10">
+                and (stock - locked_amount) > 0
+                order by mall_price asc,id desc
+            </when>
+            <when test="searchType == 11">
+                order by mall_price asc,id desc
+            </when>
+            <when test="searchType == 20">
+                and (stock - locked_amount) > 0
+                order by sale_price asc,id desc
+            </when>
+            <when test="searchType == 21">
+                order by sale_price asc,id desc
+            </when>
+            <otherwise>
+                1 = 2
+            </otherwise>
+        </choose>
+        limit 1
+    </select>
+    <select id="getMaxPriceItem" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select *
+        from bu_product_item
+        where product_id = #{productId} and del_flag = '0'
+        <choose>
+            <when test="searchType == 10">
+                and (stock - locked_amount) > 0
+                order by mall_price desc,id desc
+            </when>
+            <when test="searchType == 11">
+                order by mall_price desc,id desc
+            </when>
+            <when test="searchType == 20">
+                and (stock - locked_amount) > 0
+                order by sale_price desc,id desc
+            </when>
+            <when test="searchType == 21">
+                order by sale_price desc,id desc
+            </when>
+            <otherwise>
+                1 = 2
+            </otherwise>
+        </choose>
+        limit 1
+    </select>
+
+
+</mapper>

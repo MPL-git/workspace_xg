@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.IntegralGiveCustomMapper" >
+  <insert id="batchInsertIntegralDtl" parameterType="map">
+      insert into bu_integral_dtl (acc_id, tally_mode, type, 
+      integral, balance, order_id, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      ) select ma.id,'1',6,#{integral,jdbcType=INTEGER},ma.integral+#{integral,jdbcType=INTEGER},#{orderId,jdbcType=INTEGER},null,SYSDATE(),null,null,'后台赠送','0' from bu_member_account ma,bu_member_info mi where ma.member_id=mi.id and ma.del_flag='0' and  mi.del_flag='0' 
+      
+      <if test="memberIds != null" >
+            and mi.id in 
+		<foreach item="memberId" collection="memberIds" separator="," open="(" close=")" index="">    
+          #{memberId, jdbcType=INTEGER}    
+        </foreach>
+      </if>
+      
+      <if test="memberGroupIds != null" >
+            and mi.group_id in
+		<foreach item="groupId" collection="memberGroupIds" separator="," open="(" close=")" index="">    
+          #{groupId, jdbcType=INTEGER}    
+        </foreach>
+      </if>
+  </insert>
+  <update id="batchUpdateMemberAccoutIntegral" parameterType="map">
+     update bu_member_account t set t.integral=t.integral+#{integral,jdbcType=INTEGER},t.update_date=SYSDATE() where t.del_flag='0' and EXISTS(select mi.id from bu_member_info mi where mi.id=t.member_id and mi.del_flag='0')
+      <if test="memberIds != null" >
+            and t.member_id in 
+		<foreach item="memberId" collection="memberIds" separator="," open="(" close=")" index="">    
+          #{memberId, jdbcType=INTEGER}    
+        </foreach>
+      </if>
+      
+      <if test="memberGroupIds != null" >
+        and EXISTS(select mi.id from bu_member_info mi where mi.id=t.member_id and mi.group_id in 
+		<foreach item="groupId" collection="memberGroupIds" separator="," open="(" close=")" index="">   
+          #{groupId, jdbcType=INTEGER}    
+        </foreach>
+        ) 
+      </if>
+      
+
+      
+  </update>
+</mapper>

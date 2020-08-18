@@ -1,0 +1,12 @@
+package com.jf.dao;
+import com.jf.entity.MemberCollegeStudentCertificationCustom;
+import com.jf.entity.MemberCollegeStudentCertificationCustomExample;
+import java.util.List;
+import org.springframework.stereotype.Repository;
+@Repository
+public interface MemberCollegeStudentCertificationCustomMapper {
+	
+	public List<MemberCollegeStudentCertificationCustom> memberCollegeStudentCertificationCustomSelectByExample(MemberCollegeStudentCertificationCustomExample example);
+
+	public int memberCollegeStudentCertificationCustomCountByExample(MemberCollegeStudentCertificationCustomExample example);
+}

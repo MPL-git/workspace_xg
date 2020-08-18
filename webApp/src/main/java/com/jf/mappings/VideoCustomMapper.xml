@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.VideoCustomMapper">
+
+    <select id="findMyAttentionMchtVideo" resultType="com.jf.entity.VideoCustom">
+  		select v.*,mi.shop_name,mi.shop_logo,ifnull(ve.like_count,0) as likeCount
+  		from bu_video v
+  		left join bu_video_attention va on v.mcht_id = va.mcht_id
+  		left join bu_mcht_info mi on va.mcht_id = mi.id
+  		left join bu_video_extend ve on v.id = ve.video_id
+  		where va.member_id = #{memberId}
+  		and va.del_flag = '0'
+  		and va.status = '1'
+  		and v.status ='1'
+  		and v.del_flag = '0'
+  		and mi.status = '1'
+  		and mi.del_flag = '0'
+		order by v.audit_time desc
+		limit #{page.offset},#{page.pageSize}
+  	</select>
+
+    <select id="findRecommendVideo" resultType="com.jf.entity.VideoCustom">
+  		select v.*,mi.shop_name,mi.shop_logo,ifnull(ve.like_count,0) as likeCount
+  		from bu_video v
+  		left join bu_mcht_info mi on v.mcht_id = mi.id
+  		left join bu_video_extend ve on v.id = ve.video_id
+  		where v.status = '1'
+  		and v.del_flag = '0'
+  		and v.isRecommend = '1'
+  		and mi.status = '1'
+  		and mi.del_flag = '0'
+		order by ifnull(v.seq_no,9999),v.total_weicht desc,v.audit_time desc
+		limit #{pageRequest.offset},#{pageRequest.pageSize}
+  	</select>
+
+    <select id="findByProductType1" resultType="com.jf.entity.VideoCustom">
+        select v.*,mi.shop_name,mi.shop_logo,ifnull(ve.like_count,0) as likeCount
+        from bu_video v
+        left join bu_mcht_info mi on v.mcht_id = mi.id
+        left join bu_video_extend ve on v.id = ve.video_id
+        left join bu_mcht_product_type mpt on v.mcht_id = mpt.mcht_id
+        where v.status ='1'
+        and v.del_flag = '0'
+        and mpt.is_main = '1'
+        <if test="productType1Id!=null and productType1Id!=0">
+            and mpt.product_type_id = #{productType1Id}
+        </if>
+        and mi.status = '1'
+        and mi.del_flag = '0'
+        order by v.total_weicht desc,v.audit_time desc
+        limit #{page.offset},#{page.pageSize}
+    </select>
+
+    <select id="getDetail" resultType="com.jf.entity.VideoCustom">
+		select v.*,mi.shop_name,mi.shop_logo,ifnull(ve.like_count,0) as likeCount,ifnull(ve.comment_count,0) as commentCount
+		from bu_video v
+  		left join bu_mcht_info mi on v.mcht_id = mi.id
+  		left join bu_video_extend ve on v.id = ve.video_id
+  		where v.del_flag = '0'
+  		and v.id = #{videoId}
+	</select>
+
+    <select id="findVideoProduct" resultType="com.jf.entity.dto.VideoProductDTO">
+        select v.id as videoId,vp.product_id,p.name,pp.pic as mainImg,p.min_mall_price as mallPrice,mi.status as
+        mchtStatus,mpb.status as mchtProductBrandStatus
+        from bu_video_product vp
+        left join bu_video v on vp.video_id = v.id
+        left join bu_product p on vp.product_id = p.id
+        left join bu_product_pic pp on p.id=pp.product_id
+        left join (select id,status from bu_mcht_info) mi on v.mcht_id=mi.id
+        left join (select id,mcht_id,product_brand_id,status from bu_mcht_product_brand) mpb on v.mcht_id=mpb.mcht_id
+        and p.brand_id=mpb.product_brand_id
+        where vp.del_flag = '0'
+        and v.status ='1'
+        and v.del_flag = '0'
+        and p.status = '1'
+        and p.del_flag = '0'
+        and pp.is_default = '1'
+        and pp.del_flag = '0'
+        and v.id in
+        <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+            #{listItem}
+        </foreach>
+        order by vp.seq_no
+    </select>
+
+    <select id="getVideoProductLevelType" resultType="com.jf.entity.dto.ProductLevelTypeDTO">
+		SELECT v.product_type_id AS type3,pt3.parent_id AS type2,pt2.parent_id AS type1
+		FROM bu_video v
+		LEFT JOIN bu_product_type pt3 ON v.`product_type_id`=pt3.id AND pt3.del_flag='0'
+		LEFT JOIN bu_product_type pt2 ON pt3.`parent_id`=pt2.id AND pt2.del_flag='0'
+		WHERE v.id = #{videoId}
+	</select>
+
+    <sql id="productTypeRelativeVideoTable">
+        SELECT temp.id FROM (
+        (SELECT v.id
+        FROM bu_video v
+        LEFT JOIN bu_mcht_info mi ON v.mcht_id = mi.id
+        WHERE v.status ='1' AND v.del_flag = '0' AND v.product_type_id = #{type3} AND mi.status = '1' AND mi.del_flag = '0'
+        AND v.id NOT IN
+        <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+            #{listItem}
+        </foreach>
+        ORDER BY RAND() LIMIT #{fetchSize})
+        UNION
+        (SELECT v.id
+        FROM bu_video v
+        LEFT JOIN bu_product_type pt3 ON v.`product_type_id`=pt3.id AND pt3.del_flag='0'
+        LEFT JOIN bu_mcht_info mi ON v.mcht_id = mi.id
+        WHERE v.status ='1' AND v.del_flag = '0' AND pt3.`parent_id` = #{type2} AND v.product_type_id!=#{type3} AND mi.status = '1' AND mi.del_flag = '0'
+        AND v.id NOT IN
+        <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+            #{listItem}
+        </foreach>
+        ORDER BY RAND() LIMIT #{fetchSize})
+        UNION
+        (SELECT v.id
+        FROM bu_video v
+        LEFT JOIN bu_product_type pt3 ON v.`product_type_id`=pt3.id AND pt3.del_flag='0'
+        LEFT JOIN bu_product_type pt2 ON pt3.`parent_id`=pt2.id AND pt2.del_flag='0'
+        LEFT JOIN bu_mcht_info mi ON v.mcht_id = mi.id
+        WHERE v.status ='1' AND v.del_flag = '0'AND pt2.`parent_id` = #{type1} AND pt3.parent_id!=#{type2} AND mi.status = '1' AND mi.del_flag = '0'
+        AND v.id NOT IN
+        <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+            #{listItem}
+        </foreach>
+        ORDER BY RAND() LIMIT #{fetchSize})
+        UNION
+        (SELECT v.id
+        FROM bu_video v
+        LEFT JOIN bu_product_type pt3 ON v.`product_type_id`=pt3.id AND pt3.del_flag='0'
+        LEFT JOIN bu_product_type pt2 ON pt3.`parent_id`=pt2.id AND pt2.del_flag='0'
+        LEFT JOIN bu_mcht_info mi ON v.mcht_id = mi.id
+        WHERE v.status ='1' AND v.del_flag = '0' AND pt2.parent_id != #{type1} AND mi.status = '1' AND mi.del_flag = '0'
+        AND v.id NOT IN
+        <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+            #{listItem}
+        </foreach>
+        ORDER BY RAND() LIMIT #{fetchSize})
+        ) temp LIMIT #{fetchSize}
+	</sql>
+
+    <select id="findByRelativeProductType" parameterType="java.util.Map" resultType="com.jf.entity.VideoCustom">
+        SELECT v.*,mi.shop_name,mi.shop_logo,ifnull(ve.like_count,0) AS likeCount,ifnull(ve.comment_count,0) AS commentCount
+        FROM
+        (<include refid="productTypeRelativeVideoTable"/>)
+        AS vId
+        LEFT JOIN bu_video v ON vId.id=v.id
+        LEFT JOIN bu_mcht_info mi ON v.mcht_id = mi.id
+        LEFT JOIN bu_video_extend ve ON v.id = ve.video_id
+    </select>
+
+    <select id="findVideoCollect" resultType="com.jf.entity.VideoCustom">
+		select v.*,mi.shop_name,mi.shop_logo,mi.status as shopStatus
+		from bu_member_remind mr
+		left join bu_video v on mr.remind_id = v.id
+		left join bu_mcht_info mi on v.mcht_id = mi.id
+		where mr.remind_type='4'
+		and mr.del_flag='0'
+		and v.del_flag = '0'
+		and mr.member_id=#{memberId}
+		order by mr.id desc
+		limit #{page.offset},#{page.pageSize}
+	</select>
+
+    <select id="findUserVideoAttentionSituation" resultType="com.jf.entity.VideoCustom">
+        select v.*
+        from bu_video v
+        left join bu_video_attention va on v.mcht_id=va.mcht_id
+        where va.member_id=#{memberId}
+        and va.status = "1"
+        and va.del_flag = "0"
+        and v.id in
+        <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+            #{listItem}
+        </foreach>
+    </select>
+
+</mapper>

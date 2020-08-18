@@ -1,0 +1,283 @@
+<div class="page mall-seller product-3 flex dc bgf4" data-title="" data-id="mall_seller">
+	<link rel="stylesheet" href="../static/css/product-3.css?ver=1.0">
+	<link rel="stylesheet" href="mall/seller/seller.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn">
+			<a class="fg share ico-btn" onclick="mallSellerApi.share()"></a>
+		</div>
+	</header>
+
+	<div class="scroll-y scroll-more fg">
+		<div class="touchfix">
+			<div class="row-1 w75"></div>
+			<div class="row-2 mt20 w75"></div>
+		</div>
+	</div>
+
+	<script id="mall_seller_tpl_row1" type="text/html">
+		<div class="col-1">
+			<div class="con-1 flex ac jc">
+				<img src="{{shopLogo ? shopLogo : '../static/images/seller.png'}}">
+			</div>
+
+			<h2 class="flex ac jc">{{shopName}}</h2>
+
+			<div class="con-2 flex jc">
+				{{if customerServerButton}}
+				<a class="flex ac jc" onclick="getUrlServer('{{xiaoNengId}}')">客服</a>
+				{{/if}}
+
+				{{if collectionButton}}
+				<a class="flex ac jc on{{isCollectuonShop ? ' reminded' : ''}}"
+					onclick="getRemind(this, true)"
+					data-type="3"
+					data-id="{{mchtid}}">
+					{{if isCollectuonShop}}已{{/if}}收藏
+				</a>
+				{{/if}}
+			</div>
+
+			<div class="con-3 flex jc"></div>
+				
+		{{include 'mall_seller_tpl_swiper'}}
+	</script>
+
+	<script id="mall_seller_tpl_coup1" type="text/html">
+		{{if coupons.length}}
+		<div class="flex jc fw w-{{coupons.length}}">
+			{{each coupons value i}}
+			<dl class="flex">
+				<dt class="fg flex dc ac jc">
+					<p class="ellipsis fn">全店满{{value.minimum}}立减</p>
+					<div class="bold">
+						¥<strong>{{value.money}}</strong>
+					</div>
+				</dt>
+			</dl>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="mall_seller_tpl_coup2" type="text/html">
+		{{if coup2.length}}
+		<div class="flex jc fw w-{{coup2.length}}">
+			{{each coup2 value i}}
+				{{if fullCuts[0].ladderFlag != 1 && fullCuts[0].sumFlag == 1}}
+			<dl class="flex spe ac">
+				{{else}}
+			<dl class="flex">
+				{{/if}}
+				<dt class="fg flex dc ac jc">
+					<p class="ellipsis fn">全店满{{value.minimum}}立减</p>
+					<div class="bold">
+						¥<strong>{{value.money}}</strong>
+					</div>
+				</dt>
+				{{if fullCuts[0].ladderFlag != 1 && fullCuts[0].sumFlag == 1}}
+				<dd class="fn"></dd>
+				{{/if}}
+			</dl>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="mall_seller_tpl_coup3" type="text/html">
+		{{if fullGives.length}}
+		<div class="flex jc fw w-{{fullGives.length}}">
+			{{each fullGives value i}}
+				{{if value.type == 1 && value.sumFlag == 1}}
+			<dl class="flex spe ac">
+				{{else}}
+			<dl class="flex">
+				{{/if}}
+				<dt class="fg flex dc ac jc">
+					<p class="ellipsis fn">
+						全店满{{value.minimum}}元赠送
+					</p>
+					{{if value.couponFlag == 1}}
+					<div class="bold">
+						{{value.couponNameGroup}}
+					</div>
+					{{/if}}
+
+					{{if value.integralFlag == 1}}
+					<div class="bold">
+						{{value.integral}}积分
+					</div>
+					{{/if}}
+
+					{{if value.productFlag == 1}}
+					<div class="bold">
+						{{value.productName}}
+					</div>
+					{{/if}}
+				</dt>
+				{{if value.type == 1 && value.sumFlag == 1}}
+				<dd class="fn"></dd>
+				{{/if}}
+			</dl>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="mall_seller_tpl_coup4" type="text/html">
+		{{if coup4.length}}
+		<div class="flex jc fw w-{{coup4.length}}">
+			{{each coup4 value i}}
+			<dl class="flex">
+				<dt class="fg flex dc ac jc">
+					<p class="ellipsis fn">
+					{{if fullDiscounts[0].type == 1}}
+						全店满{{value.minimum}}件立减
+					</p><div class="bold">
+						{{value.money}}件
+					{{else if fullDiscounts[0].type == 2}}
+						全店满{{value.minimum}}件
+					</p><div class="bold">
+						¥<strong>{{value.money}}</strong>
+					{{else if fullDiscounts[0].type == 3}}
+						全店满{{value.minimum}}件
+					</p><div class="bold">
+						{{value.money}}折
+					{{else if fullDiscounts[0].type == 4}}
+						第{{value.minimum}}件
+					</p><div class="bold">
+						{{value.money}}折
+					{{/if}}
+					</div>
+				</dt>
+			</dl>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="mall_seller_tpl_row2" type="text/html">
+		<div class="tag-box">
+			<div class="tag flex">
+				<a class="fg flex ac jc dif active" onclick="mallSellerApi.tagFilter(this, 'dif')">默认</a>
+				<a class="fg flex ac jc sub new" onclick="mallSellerApi.tagFilter(this, 'new')">新品</a>
+				<a class="fg flex ac jc sub price" onclick="mallSellerApi.tagFilter(this, 'price')">
+					价格
+					<b class="flex dc ac jb"><i class="arrow-t t"></i><i class="arrow-t b"></i></b>
+				</a>
+				<a class="fn flex ac jc filter" onclick="mallSellerApi.tagFilter(this, 'filter')">分类</a>
+
+				<div class="tag-filter flex fw hide"></div>
+				<div class="tag-filter-platform flex fw"></div>
+			</div>
+		</div>
+
+		<div class="product clearfix">
+			{{include 'mall_seller_tpl_product'}}
+		</div>
+	</script>
+
+	<script id="mall_seller_tpl_swiper" type="text/html">
+		{{if brandRecommendMapList && brandRecommendMapList.length}}
+		<div class="col-2 mt20">
+			<h3 class="flex ac jc">{{brandRecommend}}</h3>
+
+			<div class="swiper-container">
+				<ul class="swiper-wrapper">
+					{{each brandRecommendMapList value i}}
+					<li class="swiper-slide" onclick="getSingleHot('{{value.activityId}}', '{{value.activityName}}')">
+						<img src="{{value.entryPic}}">
+					</li>
+					{{/each}}
+				</ul>
+
+				<div class="pagination"></div>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="mall_seller_tpl_product" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+		<a onclick="getUrlGoods('{{value.productId}}')">
+			<div class="con-1 h370">
+				<img src="{{value.productPic}}">
+
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+
+				<em class="flex ac">{{value.brandName}}</em>
+			</div>
+
+			<div class="con-2">
+				<p title="{{value.productName}}">{{value.productName}}</p>
+				<div class="flex ac jb scroll-x">
+					<span>
+						<strong class="f50">{{value.mallPrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</span>
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+
+					{{if value.activityTypeContent}}
+					<em class="btn-f50">{{value.activityTypeContent}}</em>
+					{{/if}}
+				</div>
+			</div>
+		</a>
+			{{/each}}
+		{{else}}
+			{{include 'mall_seller_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="mall_seller_tpl_filter" type="text/html">
+		<a class="fn flex ac jc active" data-id="" onclick="mallSellerApi.tagFilterMore(this)">全部</a>
+		{{if returnData.length}}
+			{{each returnData value i}}
+		<a class="fn flex ac jc" onclick="mallSellerApi.tagFilterMore(this)" data-id="{{value.id}}">{{value.name}}</a>
+			{{/each}}
+		{{/if}}
+	</script>
+	
+	<script id="mall_seller_tpl_filter_fromPlatform" type="text/html">
+		<div class="lv2">
+			<a class="fn flex ac jc {{level2Active?'':'active'}}" data-id="" data-tlevel="2" onclick="mallSellerApi.tagFilterMorePlatform(this)">全部</a>
+			{{if level2.length}}
+			{{each level2 value i}}
+				<a class="fn flex ac jc {{level2Active == value.id?'active':''}}" onclick="mallSellerApi.tagFilterMorePlatform(this)" data-id="{{value.id}}" data-parentId="{{value.parentId}}" data-tLevel="{{value.tLevel}}">{{value.name}}</a>
+			{{/each}}
+		{{/if}}
+		</div>
+		<div class="lv3 flex fw">
+			{{if level3.length}}
+			{{each level3 value i}}
+				<a class="fn flex ac jc" onclick="mallSellerApi.tagFilterMorePlatform(this)" data-id="{{value.id}}" data-parentId="{{value.parentId}}" data-tLevel="{{value.tLevel}}">{{value.name}}</a>
+			{{/each}}
+			{{/if}}
+		</div>
+	</script>
+
+	<script id="mall_seller_tpl_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>商家正在努力上架中</p>
+		</div>
+	</script>
+
+	<script id="mall_seller_tpl_closed" type="text/html">
+		<div class="closed fg flex ac h100">
+			<div>
+				<p>{{msg}}</p>
+			</div>
+		</div>
+	</script>
+
+	<script src="mall/seller/seller.js?var=1.2" async></script>
+</div>

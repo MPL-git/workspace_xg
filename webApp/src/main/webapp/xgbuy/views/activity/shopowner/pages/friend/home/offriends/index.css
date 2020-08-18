@@ -1,0 +1,117 @@
+.novaplan-offriends .f24 {
+	font-size: .24rem;
+}
+
+.novaplan-offriends .refreshText {
+	font-size: .28rem;
+	text-align: center;
+	display: none;
+}
+
+.novaplan-offriends .li {
+	height: 1.44rem;
+	padding: 0 .3rem;
+	border-bottom: 1px solid #eee;
+	background: #fff;
+}
+.novaplan-offriends .li:last-child {
+	border-bottom: none;
+}
+.novaplan-offriends .li .head {
+	width: 1rem;
+	height: 1rem;
+	margin-right: .2rem;
+}
+.novaplan-offriends .li .head-img {
+	width: 1rem;
+	height: 1rem;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.novaplan-offriends .li .head-img img {
+	width: 100%;
+	height: 100%;
+}
+.novaplan-offriends .li .gender {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: .32rem;
+	height: .32rem;
+}
+.novaplan-offriends .li .name {
+	font-size: .26rem;
+	font-weight: 500;
+	max-width: 3.8rem;
+	margin-bottom: .25rem;
+}
+.novaplan-offriends .li .laber {
+	height: .32rem;
+	font-size: .2rem;
+	color: #ff5050;
+	padding: 0 .1rem;
+	border: 1px solid #ff5050;
+	border-radius: .24rem;
+	margin-left: .2rem;
+}
+.novaplan-offriends .li .follow {
+	height: .54rem;
+	color: #ff5050;
+	font-size: .26rem;
+	padding: 0 .2rem;
+	border: 1px solid #ff5050;
+	border-radius: .27rem;
+}
+.novaplan-offriends .li .follow:before {
+	content: '';
+	width: .19rem;
+	height: .19rem;
+	margin-right: .05rem;
+	background: url('../../images/follow-1.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.novaplan-offriends .li .follow:after {
+	content: '关注'
+}
+.novaplan-offriends .li .follow-2,
+.novaplan-offriends .li .follow-3 {
+	color: #333;
+	border: 1px solid #bbb;
+}
+.novaplan-offriends .li .follow.follow-2:before {
+	content: '';
+	width: .23rem;
+	height: .15rem;
+	margin-right: .05rem;
+	background: url('../../images/follow-2.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.novaplan-offriends .li .follow.follow-2:after {
+	content: '已关注'
+}
+.novaplan-offriends .li .follow.follow-3:before {
+	content: '';
+	width: .26rem;
+	height: .21rem;
+	margin-right: .05rem;
+	background: url('../../images/follow-3.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.novaplan-offriends .li .follow.follow-3:after {
+	content: '互相关注'
+}
+
+.novaplan-offriends .empty-page {
+	width: 100%;
+	height: calc(100vh - 1.68rem);
+	font-size: .3rem;
+	background: #fff;
+}
+.novaplan-offriends .empty-page img {
+	width: 5.2rem;
+	height: auto;
+	margin-bottom: .4rem;
+}

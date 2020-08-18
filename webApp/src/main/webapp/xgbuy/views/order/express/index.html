@@ -1,0 +1,73 @@
+<div class="page order-express flex dc" data-title="查看物流" data-id="order_express">
+	<link rel="stylesheet" href="order/express/express.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('order/detail/index.html')"></i></div>
+		<p class="ellipsis">查看物流</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="flex fg content">
+		<div class="scroll-y logistics"></div>
+	</div>
+
+	<script id="order_express_tpl" type="text/html">
+		{{each list value i}}
+			{{if i == 0}}
+		<div class="logistics-tab on">
+			{{else}}
+		<div class="logistics-tab">
+			{{/if}}
+			<div class="pos-r">
+				<dl class="header flex" data-status="{{value.status}}">
+					<dt class="fn">
+						<img src="{{value.skuPic}}">
+					</dt>
+					<dd class="fg">
+						<p class="elps">{{value.productName}}</p>
+						<p class="flex ac jb f22">
+							<span class="elps specifications">{{value.productPropDesc}}</span>
+							<span>X{{value.quantity}}</span>
+						</p>
+						<p class="flex ac f22"><span>物流公司：</span>{{value.expressCompany}}</p>
+						<p class="flex ac f22"><span>物流单号：</span>{{value.expressNo}}</p>
+					</dd>
+				</dl>
+				<div class="flex ac jc copy-bt" data-clipboard-text="{{value.expressNo}}">复制</div>
+			</div>
+			<ul>
+			{{each value.tractInfo values is}}
+				{{if is == 0}}
+				<li class="on">
+				{{else}}
+				<li>
+				{{/if}}
+					<div>
+						<p>{{values.acceptStation}}</p>
+						<span>{{values.acceptTime}}</span>
+					</div>
+				</li>
+			{{/each}}
+			</ul>
+		</div>
+		{{/each}}
+	</script>
+
+	<script id="order_express_tab" type="text/html">
+		{{if list.length < 6}}
+		<div class="flex ac jc scroll-x logistics-b">
+		{{else}}
+		<div class="flex ac scroll-x logistics-b">
+		{{/if}}
+			{{each list value i}}
+				{{if i == 0}}
+			<img class="fn on" src="{{value.skuPic}}" alt="" onclick="orderExpressApi.getTab('{{i}}')">
+				{{else}}
+			<img class="fn" src="{{value.skuPic}}" alt="" onclick="orderExpressApi.getTab('{{i}}')">
+				{{/if}}
+			{{/each}}
+		</div>
+	</script>
+
+	<script src="order/express/express.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,47 @@
+<div class="page order-detail-change" data-title="修改地址" data-id="order_detail_change">
+	<link rel="stylesheet" href="order/detail/change/index.css">
+
+	<header class="flex ac jb">
+		<div class="flex fn"><i class="back ico-btn" onclick="getUrl(`order/detail/index.html?combineOrderId=${orderDetailChangeApi.data.combineOrderId}&subOrderId=${orderDetailChangeApi.data.subOrderId}`, true)"></i></div>
+		<p class="ellipsis">修改地址</p>
+		<div class="fn"></div>
+  </header>
+  <div class="odc-address" onclick="orderDetailChangeApi.choseAddress()"></div>
+  <div class="odc-change-content"></div>
+  <script id="orderDetailChangeAddress" type="text/html">
+    <i></i>
+    <div class="odc-address-content">
+      <div class="odc-address-member">
+        <span>{{receiverName}}</span>
+        <p>{{receiverPhone}}</p>
+      </div>
+      <p>{{receiverAddress}}</p>
+    </div>
+    <span class="odc-address-arrow"></span>
+  </script>
+  <script id="orderDetailChangeList" type="text/html">
+    <h3>您的商品</h3>
+    <ul class="odc-order-list">
+      {{each productList item i}}
+      <li>
+        <img src="{{item.skuPic}}" />
+        <div class="odc-order-item">
+          <p>{{item.productName}}</p>
+          <div class="odc-order-size">
+            {{item.productPropDesc}}
+          </div>
+          <span>￥{{item.salePrice}}</span>
+        </div>
+        <span>x{{item.quantity}}</span>
+      </li>
+      {{/each}}
+    </ul>
+
+    <div class="odc-btns">
+      <div onclick="getUrl(`order/detail/index.html?combineOrderId=${orderDetailChangeApi.data.combineOrderId}&subOrderId=${orderDetailChangeApi.data.subOrderId}`, true)">取消</div>
+      <div class="odc-btn-submit" onclick="orderDetailChangeApi.submit()">提交修改</div>
+    </div>
+  </script>
+
+	<script src="order/detail/change/index.js?var=1.1" async></script>
+</div>

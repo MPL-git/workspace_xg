@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ImpeachMemberCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ImpeachMemberCustom"  extends="com.jf.dao.ImpeachMemberMapper.BaseResultMap">
+  	<result column="sub_order_codes" property="subOrderCodes" jdbcType="VARCHAR" />
+	<result column="type_desc" property="typeDesc" jdbcType="VARCHAR" />
+<!--   	
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="liability_desc" property="liabilityDesc" jdbcType="VARCHAR" />
+  	<result column="user_type_desc" property="userTypeDesc" jdbcType="VARCHAR" /> -->
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+       id, member_ids, mcht_id, code, status, type, scene, sub_order_ids, description, name, 
+    mobile, need_limit, limit_member_action, reject_reason, case_close_desc, 
+    commissioner_inner_remarks, commissioner_audit_by, commissioner_audit_date, fw_inner_remarks, 
+    fw_reject_reason, fw_audit_by, fw_audit_date, end_inner_remarks, end_reject_reason, 
+    end_audit_by, end_audit_date, last_edit_date, source, create_by, create_date, update_by, 
+    update_date, remarks, del_flag,
+    
+    FUN_GET_STATUS_DESC("BU_IMPEACH_MEMBER","TYPE", type) type_desc,
+   (SELECT GROUP_CONCAT(a.sub_order_code) FROM bu_sub_order a WHERE a.del_flag='0' and find_in_set(a.id,bi.sub_order_ids))sub_order_codes
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ImpeachMemberCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_impeach_member bi
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" resultType="java.lang.Integer" parameterType="com.jf.entity.ImpeachMemberCustomExample" >
+    select count(*) from bu_impeach_member bi
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+</mapper>

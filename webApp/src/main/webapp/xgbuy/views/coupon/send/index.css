@@ -1,0 +1,55 @@
+.coupon-send input {
+	width: 6rem;
+	height: .8rem;
+	margin: 1.9rem auto .4rem;
+	padding-left: .2rem;
+	background-color: #f0f0f0;
+	border-radius: .04rem;
+	border: 1px solid #dddddd;
+	font-size: .3rem;
+}
+.coupon-send input ::-webkit-input-placeholder { /* WebKit browsers */
+	color: #999;
+  }
+.coupon-send button {
+	width: 6rem;
+	height: .8rem;
+	margin: 0 auto .7rem;
+	background-color: #ff5050;
+	font-size: .3rem;
+	color: #fff;
+	border-radius: .04rem;
+}
+.coupon-send .text {
+	width: 6rem;
+	margin: auto;
+	font-size: .26rem;
+	color: #333333;
+}
+.coupon-send .popup-clear-con {
+	position: relative;
+	width: 6rem;
+	background-color: #fff;
+	border-radius: .16rem;
+	font-size: .32rem;
+}
+.coupon-send .tab-body {
+	width: auto;
+	min-height: .8rem;
+	line-height: .4rem;
+	padding: .6rem;
+	color: #666;
+	word-break: break-all;
+	text-align: center;
+}
+.coupon-send .clear-btn {
+	width: 100%;
+	border-top: 1px solid #ddd;
+}
+.coupon-send .clear-btn a {
+	width: 50%;
+	height: .8rem;
+}
+.coupon-send .bdrg {
+	border-right: 1px solid #ddd;
+}

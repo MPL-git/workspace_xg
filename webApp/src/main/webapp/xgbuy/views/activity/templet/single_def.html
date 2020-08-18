@@ -1,0 +1,245 @@
+<div class="page common-activity activity-single flex dc" data-id="activity_templet_single_def">
+	<link rel="stylesheet" href="../static/css/common-activity.css?var=1.0">
+	<link rel="stylesheet" href="activity/templet/css/single.css?var=1.0">
+
+	<!-- 修改会场顶部 -->
+	<div id="singleDefTop"></div>
+	<script id="singleDefHeader" type="text/html">
+		<header class="flex ac jb fn">
+			<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+			<p class="ellipsis"></p>
+			<div class="fn"></div>
+		</header>
+	</script>
+	<script id="singleDefDownload" type="text/html">
+		<div class="download-bg activity-download"></div>
+		<div class="activity-decorate-download activity-download">
+			<div class="download-info">
+				<i onclick="closeDownload()"></i>
+				<div class="download-logo"></div>
+				<div class="download-text">
+					<p>新人领500元大红包</p>
+					<p>唤醒潮流   开心购物</p>
+				</div>
+			</div>
+			<div class="download-btn" onclick="downloadAppp()">下载领取</div>
+		</div>
+	</script>
+
+	<div class="scroll-y fg scroll-more">
+		<div class="swiper-container">
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide">
+					<img>
+				</li>
+			</ul>
+		</div>
+
+		<div class="tag-box">
+			<div class="tag flex">
+				<a class="fg flex ac jc stock" onclick="singleDef.getPagingList(this)">有货</a>
+				<a class="fg flex ac jc sale" onclick="singleDef.getPagingList(this)">价格<b class="flex dc ac jb"><i
+							class="arrow-t t"></i><i class="arrow-t b"></i></b></a>
+				<a class="fg flex ac jc disc" onclick="singleDef.getPagingList(this)">折扣<b class="flex dc ac jb"><i
+							class="arrow-t t"></i><i class="arrow-t b"></i></b></a>
+				<a class="fg flex ac jc filter" onclick="singleDef.filterDialog(this)">分类</a>
+			</div>
+		</div>
+
+		<div class="con-ticket"></div>
+
+		<div class="time flex ac jc dc">
+			<p>离活动结束仅剩</p>
+			<div class="flex ac count-time">
+				<span>0</span>天
+				<span>0</span>时
+				<span>0</span>分
+				<span>0</span>秒
+			</div>
+		</div>
+
+		<div class="content"></div>
+	</div>
+
+	<div class="activity-cart" onclick="getQuickCart()"></div>
+
+	<div class="dialog dialog-filter flex fg dc hide">
+		<div class="filter-section fg scroll-y"></div>
+		<div class="filter-footer flex fn">
+			<div class="fg flex ac jc" onclick="singleDef.filterReset()">重置</div>
+			<div class="fg flex ac jc" onclick="singleDef.filterConfirm()">确定</div>
+		</div>
+	</div>
+
+	<script id="activity_single_tpl" type="text/html">
+		<div class="filter-succ flex jb ac hide">
+			<p class="ellipsis filter-succ-con"></p>
+			<a class="clear" onclick="singleDef.filterClear()"></a>
+		</div>
+
+		<div class="section">
+			<div class="activity-single-con clearfix w75">
+				{{include 'activity_single_list_tpl'}}
+			</div>
+		</div>
+	</script>
+
+	<script id="activity_single_list_tpl" type="text/html">
+		{{if produtMapList.length}}
+		{{each produtMapList value i}}
+		<a class="mb20 {{value.deposit == 0 || value.deductAmount == 0?'':'arrival-a'}}" onclick="getUrlGoods(this, {pos: '{{page + i}}', data: singleDef.data})"
+			data-activityareaid="{{activityAreaId}}" data-productid="{{value.productId}}">
+			<div class="con-1 h345">
+				<img src="{{value.pic}}">
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+
+				{{if productWkPicM}}
+				<b class="wk-pic opc0 wk-{{productWkPosition}}">
+					<img src="{{productWkPicM}}">
+				</b>
+				{{/if}}
+			</div>
+			<div class="con-2">
+				{{if value.deposit == 0 || value.deductAmount == 0 || !value.deposit || !value.deductAmount}}
+				<p title="{{value.productName}}">{{value.productName}}</p>
+				<div class="flex ac jb scroll-x">
+					<span>
+						<strong class="f50">{{value.salePrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</span>
+					{{if value.dsicount}}
+					<mark class="btn-f50">{{value.dsicount}}折</mark>
+					{{/if}}
+				</div>
+				{{if value.svipSalePrice > 0}}
+				<div class="flex ac decorate-svip" onclick="getSvip(event)">
+					<img src="activity/templet/images/svip.png">
+					<span>¥{{value.svipSalePrice}}</span>
+				</div>
+				{{/if}}
+				{{else}}
+				<p class="arrival-p" title="{{value.productName}}">{{value.productName}}</p>
+				<div class="flex ac jb">
+					<span class="arrival-span">到手价:<strong class="f50">{{value.arrivalPrice}}</strong>{{value.hasDifferentPrice}}</span>
+					<s class="c9">{{value.salePrice}}</s>
+				</div>
+				<button class="arrival-btn">定金{{value.deposit}}抵{{value.deductAmount}}</button>
+
+				{{/if}}
+			</div>
+		</a>
+		{{/each}}
+		{{else}}
+		{{include 'activity_single_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="activity_single_coupon_tpl" type="text/html">
+		{{if couponList.length}}
+		<div class="ticket ellipsis">
+			<ul class="coupon-list">
+				{{each couponList value i}}
+				<li class="flex jb ac">
+					<div class="flex ac">
+						<i class="ticket f0"></i>
+						<p>满{{value.minimum}}-{{value.money}}元优惠券</p>
+					</div>
+
+					{{if value.memberIsHasCouponType == '0'}}
+					<a class="f50" onclick="getCoupon(this)" data-id="{{value.couponId}}">领取</a>
+					{{else if value.memberIsHasCouponType == '1'}}
+					<a class="c9">已领取</a>
+					{{else}}
+					<a class="c9">已抢光</a>
+					{{/if}}
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="activity_single_empty" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>暂无商品</p>
+		</div>
+	</script>
+
+	<script id="activity_single_def_msg" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>{{returnMsg}}</p>
+		</div>
+	</script>
+	<!-- 618 -->
+	<script id="activity_decorate_618_popup_tpl" type="text/html">
+		<div class="popup popup-ance">
+			<div class="popup-ance-con" onclick="stopSelf()">
+					<div class="section4 flex ac jc">
+						<img class="img1" src="activity/templet/images/618_1.png"/>
+					</div>
+					<div class="section1 flex ac jc">
+						<img class="img3" src="activity/templet/images/618_3.png" />
+						<div class="content">
+							<div class="flex ac jb head">
+								<p>已获得购物津贴: <span style="color:#FFDF4F" class="allowanceBalance">{{allowanceBalance}}元</span></p>
+								<p class="flex ac jc" onclick="getUrl('allowance/index.html?activityAreaId=' + {{activityAreaId}} , 'self');">详情 <img src="activity/templet/images/detail.png"/></p>
+							</div>
+							
+							<h3 class="flex ac jc">
+							{{if lastExchangeAllowance}}
+							抢到<span style="color:#FFDF4F" class="lastExchangeAllowance">{{lastExchangeAllowance}}元</span>购物津贴
+							{{else}}
+							{{exchangeDesc}}
+							{{/if}}
+							</h3>
+						</div>
+					</div>
+					<div class="section3 flex ac jc">
+						<div class="card">
+							<div class="content">
+								<h3>￥<span class="lastExchangeAllowance">{{lastExchangeAllowance}}</span><br/> 购物津贴</h3>
+								<p>{{areaAllowanceDesc}}</p>
+							</div>
+							<img class="img2" src="activity/templet/images/618_2.png" />
+						</div>
+						<div class="card out" style="position:absolute;z-index:-1;left:0.36rem;">
+							<div class="content">
+								<h3><br/> 购物津贴</h3>
+								<p>{{areaAllowanceDesc}}</p>
+							</div>
+							<img class="img2" src="activity/templet/images/618_2.png" />
+						</div>
+					</div>
+					<div class="section2  flex ac jc">
+						<div class="content flex dc ac jc">
+							<p class="flex ac jc">当前醒购积分: <span class="integral">{{integral}}</span> </p>
+							<div class="btns flex ac jb">
+								{{each exchangeList value i}}
+								<button class="btn" data-id="{{value.id}}" onclick="exchange({{allowanceInfoId}},{{value.id}})">{{value.desc}}</button>
+								{{/each}}
+							</div>
+						</div>
+						<img class="img4" src="activity/templet/images/618_4.png" />
+					</div>
+					<div class="section5 flex ac jc">
+						<img src="activity/templet/images/close.png" onclick="ancePopupHide()"/>
+					</div>
+			</div>
+		</div>
+	</script>
+	<script id="activity_decorate_618_tpl" type="text/html">
+		<div>
+			<div class="ance" onclick="ancePopupShow({{activityAreaId}})">
+				<img src="{{pic}}" />
+			</div>
+			
+		</div>
+	</script>
+	
+	<script src="activity/templet/js/single-def.js?var=1.1" async></script>
+</div>

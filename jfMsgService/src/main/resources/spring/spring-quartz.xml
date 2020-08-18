@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	   		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+	   		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan base-package="com.jf.task" />
+
+	<!--开启这个配置，spring才能识别@Scheduled注解-->
+	<task:annotation-driven scheduler="myScheduler" mode="proxy"/>
+	<!--推荐配置线程池，若不配置多任务下会有问题-->
+	<task:scheduler id="myScheduler" pool-size="10"/>
+</beans>

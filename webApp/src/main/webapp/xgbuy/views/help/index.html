@@ -1,0 +1,46 @@
+<div class="page help bgf4 flex dc" data-title="帮助中心" data-id="help">
+	<link rel="stylesheet" href="help/help.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">帮助中心</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="content fg flex dc">
+		<form class="fn" onsubmit="helpApi.submit(this)">
+			<div class="input-box">
+				<label for="help_search"></label>
+				<input type="search" id="help_search" placeholder="有问题？点我搜搜看吧~" maxlength="50" required>
+			</div>
+		</form>
+		
+		<div class="scroll-y fg scroll-more">
+			<ul class="touchfix"></ul>
+		</div>
+
+		<a onclick="confirmPhone('01053185321', '( 工作日 9:00-22:00 )')" class="flex ac jc fn btn-red">客服电话：01053185321</a>
+	</div>
+
+	<script id="help_tpl" type="text/html">
+		{{if returnData.length}}
+			{{each returnData value i}}
+				<li class="flex ac jb" onclick="helpApi.detail('{{value.id}}', '{{value.name}}')">
+					<p class="ellipsis fg">{{value.name}}</p>
+					<i class="ico-btn arrow-r fn"></i>
+				</li>
+			{{/each}}
+		{{else}}
+			{{include 'help_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="help_tpl_empty" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+	</script>
+
+	<script src="help/help.js?var=1.1" async></script>
+</div>

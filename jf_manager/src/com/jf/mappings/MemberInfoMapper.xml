@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="login_code" property="loginCode" jdbcType="VARCHAR" />
+    <result column="login_pass" property="loginPass" jdbcType="VARCHAR" />
+    <result column="sup_id" property="supId" jdbcType="INTEGER" />
+    <result column="nick" property="nick" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="m_verfiy_flag" property="mVerfiyFlag" jdbcType="CHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="e_verfiy_flag" property="eVerfiyFlag" jdbcType="CHAR" />
+    <result column="weixin_id" property="weixinId" jdbcType="VARCHAR" />
+    <result column="weixin_unionid" property="weixinUnionid" jdbcType="VARCHAR" />
+    <result column="sex_type" property="sexType" jdbcType="CHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="county" property="county" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="weixin_head" property="weixinHead" jdbcType="VARCHAR" />
+    <result column="spr_chnl" property="sprChnl" jdbcType="VARCHAR" />
+    <result column="reg_client" property="regClient" jdbcType="CHAR" />
+    <result column="req_mobile_brand" property="reqMobileBrand" jdbcType="VARCHAR" />
+    <result column="req_mobile_model" property="reqMobileModel" jdbcType="VARCHAR" />
+    <result column="req_imei" property="reqImei" jdbcType="VARCHAR" />
+    <result column="reg_ip" property="regIp" jdbcType="VARCHAR" />
+    <result column="reg_area" property="regArea" jdbcType="VARCHAR" />
+    <result column="is_inf_perfect" property="isInfPerfect" jdbcType="CHAR" />
+    <result column="is_accept_push" property="isAcceptPush" jdbcType="CHAR" />
+    <result column="weixin_xcx_spr_dtl_id" property="weixinXcxSprDtlId" jdbcType="INTEGER" />
+    <result column="new_weixin_xcx_spr_dtl_id" property="newWeixinXcxSprDtlId" jdbcType="INTEGER" />
+    <result column="weixin_gdt_vid" property="weixinGdtVid" jdbcType="VARCHAR" />
+    <result column="weixin_adinfo" property="weixinAdinfo" jdbcType="VARCHAR" />
+    <result column="cancel_reason" property="cancelReason" jdbcType="VARCHAR" />
+    <result column="limit_function" property="limitFunction" jdbcType="VARCHAR" />
+    <result column="black_reason" property="blackReason" jdbcType="VARCHAR" />
+    <result column="black_inner_remarks" property="blackInnerRemarks" jdbcType="VARCHAR" />
+    <result column="is_svip" property="isSvip" jdbcType="CHAR" />
+    <result column="svip_expire_date" property="svipExpireDate" jdbcType="TIMESTAMP" />
+    <result column="invitation_code" property="invitationCode" jdbcType="VARCHAR" />
+    <result column="invitation_member_id" property="invitationMemberId" jdbcType="INTEGER" />
+    <result column="invitation_code_bind_time" property="invitationCodeBindTime" jdbcType="TIMESTAMP" />
+    <result column="nova_project_begin_date" property="novaProjectBeginDate" jdbcType="TIMESTAMP" />
+    <result column="nova_project_end_date" property="novaProjectEndDate" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, type, login_code, login_pass, sup_id, nick, group_id, status, mobile, m_verfiy_flag, 
+    email, e_verfiy_flag, weixin_id, weixin_unionid, sex_type, birthday, province, city, 
+    county, pic, weixin_head, spr_chnl, reg_client, req_mobile_brand, req_mobile_model, 
+    req_imei, reg_ip, reg_area, is_inf_perfect, is_accept_push, weixin_xcx_spr_dtl_id, 
+    new_weixin_xcx_spr_dtl_id, weixin_gdt_vid, weixin_adinfo, cancel_reason, limit_function, 
+    black_reason, black_inner_remarks, is_svip, svip_expire_date, invitation_code, invitation_member_id, 
+    invitation_code_bind_time, nova_project_begin_date, nova_project_end_date, create_by, 
+    create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_member_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_member_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MemberInfoExample" >
+    delete from bu_member_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MemberInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_info (type, login_code, login_pass, 
+      sup_id, nick, group_id, 
+      status, mobile, m_verfiy_flag, 
+      email, e_verfiy_flag, weixin_id, 
+      weixin_unionid, sex_type, birthday, 
+      province, city, county, 
+      pic, weixin_head, spr_chnl, 
+      reg_client, req_mobile_brand, req_mobile_model, 
+      req_imei, reg_ip, reg_area, 
+      is_inf_perfect, is_accept_push, weixin_xcx_spr_dtl_id, 
+      new_weixin_xcx_spr_dtl_id, weixin_gdt_vid, weixin_adinfo, 
+      cancel_reason, limit_function, black_reason, 
+      black_inner_remarks, is_svip, svip_expire_date, 
+      invitation_code, invitation_member_id, invitation_code_bind_time, 
+      nova_project_begin_date, nova_project_end_date, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{type,jdbcType=VARCHAR}, #{loginCode,jdbcType=VARCHAR}, #{loginPass,jdbcType=VARCHAR}, 
+      #{supId,jdbcType=INTEGER}, #{nick,jdbcType=VARCHAR}, #{groupId,jdbcType=INTEGER}, 
+      #{status,jdbcType=CHAR}, #{mobile,jdbcType=VARCHAR}, #{mVerfiyFlag,jdbcType=CHAR}, 
+      #{email,jdbcType=VARCHAR}, #{eVerfiyFlag,jdbcType=CHAR}, #{weixinId,jdbcType=VARCHAR}, 
+      #{weixinUnionid,jdbcType=VARCHAR}, #{sexType,jdbcType=CHAR}, #{birthday,jdbcType=DATE}, 
+      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{county,jdbcType=INTEGER}, 
+      #{pic,jdbcType=VARCHAR}, #{weixinHead,jdbcType=VARCHAR}, #{sprChnl,jdbcType=VARCHAR}, 
+      #{regClient,jdbcType=CHAR}, #{reqMobileBrand,jdbcType=VARCHAR}, #{reqMobileModel,jdbcType=VARCHAR}, 
+      #{reqImei,jdbcType=VARCHAR}, #{regIp,jdbcType=VARCHAR}, #{regArea,jdbcType=VARCHAR}, 
+      #{isInfPerfect,jdbcType=CHAR}, #{isAcceptPush,jdbcType=CHAR}, #{weixinXcxSprDtlId,jdbcType=INTEGER}, 
+      #{newWeixinXcxSprDtlId,jdbcType=INTEGER}, #{weixinGdtVid,jdbcType=VARCHAR}, #{weixinAdinfo,jdbcType=VARCHAR}, 
+      #{cancelReason,jdbcType=VARCHAR}, #{limitFunction,jdbcType=VARCHAR}, #{blackReason,jdbcType=VARCHAR}, 
+      #{blackInnerRemarks,jdbcType=VARCHAR}, #{isSvip,jdbcType=CHAR}, #{svipExpireDate,jdbcType=TIMESTAMP}, 
+      #{invitationCode,jdbcType=VARCHAR}, #{invitationMemberId,jdbcType=INTEGER}, #{invitationCodeBindTime,jdbcType=TIMESTAMP}, 
+      #{novaProjectBeginDate,jdbcType=TIMESTAMP}, #{novaProjectEndDate,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MemberInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="loginCode != null" >
+        login_code,
+      </if>
+      <if test="loginPass != null" >
+        login_pass,
+      </if>
+      <if test="supId != null" >
+        sup_id,
+      </if>
+      <if test="nick != null" >
+        nick,
+      </if>
+      <if test="groupId != null" >
+        group_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="mVerfiyFlag != null" >
+        m_verfiy_flag,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="eVerfiyFlag != null" >
+        e_verfiy_flag,
+      </if>
+      <if test="weixinId != null" >
+        weixin_id,
+      </if>
+      <if test="weixinUnionid != null" >
+        weixin_unionid,
+      </if>
+      <if test="sexType != null" >
+        sex_type,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="county != null" >
+        county,
+      </if>
+      <if test="pic != null" >
+        pic,
+      </if>
+      <if test="weixinHead != null" >
+        weixin_head,
+      </if>
+      <if test="sprChnl != null" >
+        spr_chnl,
+      </if>
+      <if test="regClient != null" >
+        reg_client,
+      </if>
+      <if test="reqMobileBrand != null" >
+        req_mobile_brand,
+      </if>
+      <if test="reqMobileModel != null" >
+        req_mobile_model,
+      </if>
+      <if test="reqImei != null" >
+        req_imei,
+      </if>
+      <if test="regIp != null" >
+        reg_ip,
+      </if>
+      <if test="regArea != null" >
+        reg_area,
+      </if>
+      <if test="isInfPerfect != null" >
+        is_inf_perfect,
+      </if>
+      <if test="isAcceptPush != null" >
+        is_accept_push,
+      </if>
+      <if test="weixinXcxSprDtlId != null" >
+        weixin_xcx_spr_dtl_id,
+      </if>
+      <if test="newWeixinXcxSprDtlId != null" >
+        new_weixin_xcx_spr_dtl_id,
+      </if>
+      <if test="weixinGdtVid != null" >
+        weixin_gdt_vid,
+      </if>
+      <if test="weixinAdinfo != null" >
+        weixin_adinfo,
+      </if>
+      <if test="cancelReason != null" >
+        cancel_reason,
+      </if>
+      <if test="limitFunction != null" >
+        limit_function,
+      </if>
+      <if test="blackReason != null" >
+        black_reason,
+      </if>
+      <if test="blackInnerRemarks != null" >
+        black_inner_remarks,
+      </if>
+      <if test="isSvip != null" >
+        is_svip,
+      </if>
+      <if test="svipExpireDate != null" >
+        svip_expire_date,
+      </if>
+      <if test="invitationCode != null" >
+        invitation_code,
+      </if>
+      <if test="invitationMemberId != null" >
+        invitation_member_id,
+      </if>
+      <if test="invitationCodeBindTime != null" >
+        invitation_code_bind_time,
+      </if>
+      <if test="novaProjectBeginDate != null" >
+        nova_project_begin_date,
+      </if>
+      <if test="novaProjectEndDate != null" >
+        nova_project_end_date,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCode != null" >
+        #{loginCode,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPass != null" >
+        #{loginPass,jdbcType=VARCHAR},
+      </if>
+      <if test="supId != null" >
+        #{supId,jdbcType=INTEGER},
+      </if>
+      <if test="nick != null" >
+        #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mVerfiyFlag != null" >
+        #{mVerfiyFlag,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="eVerfiyFlag != null" >
+        #{eVerfiyFlag,jdbcType=CHAR},
+      </if>
+      <if test="weixinId != null" >
+        #{weixinId,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinUnionid != null" >
+        #{weixinUnionid,jdbcType=VARCHAR},
+      </if>
+      <if test="sexType != null" >
+        #{sexType,jdbcType=CHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="county != null" >
+        #{county,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinHead != null" >
+        #{weixinHead,jdbcType=VARCHAR},
+      </if>
+      <if test="sprChnl != null" >
+        #{sprChnl,jdbcType=VARCHAR},
+      </if>
+      <if test="regClient != null" >
+        #{regClient,jdbcType=CHAR},
+      </if>
+      <if test="reqMobileBrand != null" >
+        #{reqMobileBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="reqMobileModel != null" >
+        #{reqMobileModel,jdbcType=VARCHAR},
+      </if>
+      <if test="reqImei != null" >
+        #{reqImei,jdbcType=VARCHAR},
+      </if>
+      <if test="regIp != null" >
+        #{regIp,jdbcType=VARCHAR},
+      </if>
+      <if test="regArea != null" >
+        #{regArea,jdbcType=VARCHAR},
+      </if>
+      <if test="isInfPerfect != null" >
+        #{isInfPerfect,jdbcType=CHAR},
+      </if>
+      <if test="isAcceptPush != null" >
+        #{isAcceptPush,jdbcType=CHAR},
+      </if>
+      <if test="weixinXcxSprDtlId != null" >
+        #{weixinXcxSprDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="newWeixinXcxSprDtlId != null" >
+        #{newWeixinXcxSprDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="weixinGdtVid != null" >
+        #{weixinGdtVid,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinAdinfo != null" >
+        #{weixinAdinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelReason != null" >
+        #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="limitFunction != null" >
+        #{limitFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="blackReason != null" >
+        #{blackReason,jdbcType=VARCHAR},
+      </if>
+      <if test="blackInnerRemarks != null" >
+        #{blackInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isSvip != null" >
+        #{isSvip,jdbcType=CHAR},
+      </if>
+      <if test="svipExpireDate != null" >
+        #{svipExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invitationCode != null" >
+        #{invitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationMemberId != null" >
+        #{invitationMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="invitationCodeBindTime != null" >
+        #{invitationCodeBindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="novaProjectBeginDate != null" >
+        #{novaProjectBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="novaProjectEndDate != null" >
+        #{novaProjectEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MemberInfoExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_member_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginCode != null" >
+        login_code = #{record.loginCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginPass != null" >
+        login_pass = #{record.loginPass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supId != null" >
+        sup_id = #{record.supId,jdbcType=INTEGER},
+      </if>
+      <if test="record.nick != null" >
+        nick = #{record.nick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupId != null" >
+        group_id = #{record.groupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.mobile != null" >
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mVerfiyFlag != null" >
+        m_verfiy_flag = #{record.mVerfiyFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.eVerfiyFlag != null" >
+        e_verfiy_flag = #{record.eVerfiyFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.weixinId != null" >
+        weixin_id = #{record.weixinId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixinUnionid != null" >
+        weixin_unionid = #{record.weixinUnionid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sexType != null" >
+        sex_type = #{record.sexType,jdbcType=CHAR},
+      </if>
+      <if test="record.birthday != null" >
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.county != null" >
+        county = #{record.county,jdbcType=INTEGER},
+      </if>
+      <if test="record.pic != null" >
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixinHead != null" >
+        weixin_head = #{record.weixinHead,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sprChnl != null" >
+        spr_chnl = #{record.sprChnl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regClient != null" >
+        reg_client = #{record.regClient,jdbcType=CHAR},
+      </if>
+      <if test="record.reqMobileBrand != null" >
+        req_mobile_brand = #{record.reqMobileBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqMobileModel != null" >
+        req_mobile_model = #{record.reqMobileModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqImei != null" >
+        req_imei = #{record.reqImei,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regIp != null" >
+        reg_ip = #{record.regIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regArea != null" >
+        reg_area = #{record.regArea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isInfPerfect != null" >
+        is_inf_perfect = #{record.isInfPerfect,jdbcType=CHAR},
+      </if>
+      <if test="record.isAcceptPush != null" >
+        is_accept_push = #{record.isAcceptPush,jdbcType=CHAR},
+      </if>
+      <if test="record.weixinXcxSprDtlId != null" >
+        weixin_xcx_spr_dtl_id = #{record.weixinXcxSprDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.newWeixinXcxSprDtlId != null" >
+        new_weixin_xcx_spr_dtl_id = #{record.newWeixinXcxSprDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.weixinGdtVid != null" >
+        weixin_gdt_vid = #{record.weixinGdtVid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixinAdinfo != null" >
+        weixin_adinfo = #{record.weixinAdinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cancelReason != null" >
+        cancel_reason = #{record.cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitFunction != null" >
+        limit_function = #{record.limitFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blackReason != null" >
+        black_reason = #{record.blackReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blackInnerRemarks != null" >
+        black_inner_remarks = #{record.blackInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSvip != null" >
+        is_svip = #{record.isSvip,jdbcType=CHAR},
+      </if>
+      <if test="record.svipExpireDate != null" >
+        svip_expire_date = #{record.svipExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.invitationCode != null" >
+        invitation_code = #{record.invitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invitationMemberId != null" >
+        invitation_member_id = #{record.invitationMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.invitationCodeBindTime != null" >
+        invitation_code_bind_time = #{record.invitationCodeBindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.novaProjectBeginDate != null" >
+        nova_project_begin_date = #{record.novaProjectBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.novaProjectEndDate != null" >
+        nova_project_end_date = #{record.novaProjectEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_member_info
+    set id = #{record.id,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      login_code = #{record.loginCode,jdbcType=VARCHAR},
+      login_pass = #{record.loginPass,jdbcType=VARCHAR},
+      sup_id = #{record.supId,jdbcType=INTEGER},
+      nick = #{record.nick,jdbcType=VARCHAR},
+      group_id = #{record.groupId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=CHAR},
+      mobile = #{record.mobile,jdbcType=VARCHAR},
+      m_verfiy_flag = #{record.mVerfiyFlag,jdbcType=CHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      e_verfiy_flag = #{record.eVerfiyFlag,jdbcType=CHAR},
+      weixin_id = #{record.weixinId,jdbcType=VARCHAR},
+      weixin_unionid = #{record.weixinUnionid,jdbcType=VARCHAR},
+      sex_type = #{record.sexType,jdbcType=CHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      county = #{record.county,jdbcType=INTEGER},
+      pic = #{record.pic,jdbcType=VARCHAR},
+      weixin_head = #{record.weixinHead,jdbcType=VARCHAR},
+      spr_chnl = #{record.sprChnl,jdbcType=VARCHAR},
+      reg_client = #{record.regClient,jdbcType=CHAR},
+      req_mobile_brand = #{record.reqMobileBrand,jdbcType=VARCHAR},
+      req_mobile_model = #{record.reqMobileModel,jdbcType=VARCHAR},
+      req_imei = #{record.reqImei,jdbcType=VARCHAR},
+      reg_ip = #{record.regIp,jdbcType=VARCHAR},
+      reg_area = #{record.regArea,jdbcType=VARCHAR},
+      is_inf_perfect = #{record.isInfPerfect,jdbcType=CHAR},
+      is_accept_push = #{record.isAcceptPush,jdbcType=CHAR},
+      weixin_xcx_spr_dtl_id = #{record.weixinXcxSprDtlId,jdbcType=INTEGER},
+      new_weixin_xcx_spr_dtl_id = #{record.newWeixinXcxSprDtlId,jdbcType=INTEGER},
+      weixin_gdt_vid = #{record.weixinGdtVid,jdbcType=VARCHAR},
+      weixin_adinfo = #{record.weixinAdinfo,jdbcType=VARCHAR},
+      cancel_reason = #{record.cancelReason,jdbcType=VARCHAR},
+      limit_function = #{record.limitFunction,jdbcType=VARCHAR},
+      black_reason = #{record.blackReason,jdbcType=VARCHAR},
+      black_inner_remarks = #{record.blackInnerRemarks,jdbcType=VARCHAR},
+      is_svip = #{record.isSvip,jdbcType=CHAR},
+      svip_expire_date = #{record.svipExpireDate,jdbcType=TIMESTAMP},
+      invitation_code = #{record.invitationCode,jdbcType=VARCHAR},
+      invitation_member_id = #{record.invitationMemberId,jdbcType=INTEGER},
+      invitation_code_bind_time = #{record.invitationCodeBindTime,jdbcType=TIMESTAMP},
+      nova_project_begin_date = #{record.novaProjectBeginDate,jdbcType=TIMESTAMP},
+      nova_project_end_date = #{record.novaProjectEndDate,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MemberInfo" >
+    update bu_member_info
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCode != null" >
+        login_code = #{loginCode,jdbcType=VARCHAR},
+      </if>
+      <if test="loginPass != null" >
+        login_pass = #{loginPass,jdbcType=VARCHAR},
+      </if>
+      <if test="supId != null" >
+        sup_id = #{supId,jdbcType=INTEGER},
+      </if>
+      <if test="nick != null" >
+        nick = #{nick,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="mVerfiyFlag != null" >
+        m_verfiy_flag = #{mVerfiyFlag,jdbcType=CHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="eVerfiyFlag != null" >
+        e_verfiy_flag = #{eVerfiyFlag,jdbcType=CHAR},
+      </if>
+      <if test="weixinId != null" >
+        weixin_id = #{weixinId,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinUnionid != null" >
+        weixin_unionid = #{weixinUnionid,jdbcType=VARCHAR},
+      </if>
+      <if test="sexType != null" >
+        sex_type = #{sexType,jdbcType=CHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="county != null" >
+        county = #{county,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinHead != null" >
+        weixin_head = #{weixinHead,jdbcType=VARCHAR},
+      </if>
+      <if test="sprChnl != null" >
+        spr_chnl = #{sprChnl,jdbcType=VARCHAR},
+      </if>
+      <if test="regClient != null" >
+        reg_client = #{regClient,jdbcType=CHAR},
+      </if>
+      <if test="reqMobileBrand != null" >
+        req_mobile_brand = #{reqMobileBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="reqMobileModel != null" >
+        req_mobile_model = #{reqMobileModel,jdbcType=VARCHAR},
+      </if>
+      <if test="reqImei != null" >
+        req_imei = #{reqImei,jdbcType=VARCHAR},
+      </if>
+      <if test="regIp != null" >
+        reg_ip = #{regIp,jdbcType=VARCHAR},
+      </if>
+      <if test="regArea != null" >
+        reg_area = #{regArea,jdbcType=VARCHAR},
+      </if>
+      <if test="isInfPerfect != null" >
+        is_inf_perfect = #{isInfPerfect,jdbcType=CHAR},
+      </if>
+      <if test="isAcceptPush != null" >
+        is_accept_push = #{isAcceptPush,jdbcType=CHAR},
+      </if>
+      <if test="weixinXcxSprDtlId != null" >
+        weixin_xcx_spr_dtl_id = #{weixinXcxSprDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="newWeixinXcxSprDtlId != null" >
+        new_weixin_xcx_spr_dtl_id = #{newWeixinXcxSprDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="weixinGdtVid != null" >
+        weixin_gdt_vid = #{weixinGdtVid,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinAdinfo != null" >
+        weixin_adinfo = #{weixinAdinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelReason != null" >
+        cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="limitFunction != null" >
+        limit_function = #{limitFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="blackReason != null" >
+        black_reason = #{blackReason,jdbcType=VARCHAR},
+      </if>
+      <if test="blackInnerRemarks != null" >
+        black_inner_remarks = #{blackInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isSvip != null" >
+        is_svip = #{isSvip,jdbcType=CHAR},
+      </if>
+      <if test="svipExpireDate != null" >
+        svip_expire_date = #{svipExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invitationCode != null" >
+        invitation_code = #{invitationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invitationMemberId != null" >
+        invitation_member_id = #{invitationMemberId,jdbcType=INTEGER},
+      </if>
+      <if test="invitationCodeBindTime != null" >
+        invitation_code_bind_time = #{invitationCodeBindTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="novaProjectBeginDate != null" >
+        nova_project_begin_date = #{novaProjectBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="novaProjectEndDate != null" >
+        nova_project_end_date = #{novaProjectEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MemberInfo" >
+    update bu_member_info
+    set type = #{type,jdbcType=VARCHAR},
+      login_code = #{loginCode,jdbcType=VARCHAR},
+      login_pass = #{loginPass,jdbcType=VARCHAR},
+      sup_id = #{supId,jdbcType=INTEGER},
+      nick = #{nick,jdbcType=VARCHAR},
+      group_id = #{groupId,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      m_verfiy_flag = #{mVerfiyFlag,jdbcType=CHAR},
+      email = #{email,jdbcType=VARCHAR},
+      e_verfiy_flag = #{eVerfiyFlag,jdbcType=CHAR},
+      weixin_id = #{weixinId,jdbcType=VARCHAR},
+      weixin_unionid = #{weixinUnionid,jdbcType=VARCHAR},
+      sex_type = #{sexType,jdbcType=CHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      county = #{county,jdbcType=INTEGER},
+      pic = #{pic,jdbcType=VARCHAR},
+      weixin_head = #{weixinHead,jdbcType=VARCHAR},
+      spr_chnl = #{sprChnl,jdbcType=VARCHAR},
+      reg_client = #{regClient,jdbcType=CHAR},
+      req_mobile_brand = #{reqMobileBrand,jdbcType=VARCHAR},
+      req_mobile_model = #{reqMobileModel,jdbcType=VARCHAR},
+      req_imei = #{reqImei,jdbcType=VARCHAR},
+      reg_ip = #{regIp,jdbcType=VARCHAR},
+      reg_area = #{regArea,jdbcType=VARCHAR},
+      is_inf_perfect = #{isInfPerfect,jdbcType=CHAR},
+      is_accept_push = #{isAcceptPush,jdbcType=CHAR},
+      weixin_xcx_spr_dtl_id = #{weixinXcxSprDtlId,jdbcType=INTEGER},
+      new_weixin_xcx_spr_dtl_id = #{newWeixinXcxSprDtlId,jdbcType=INTEGER},
+      weixin_gdt_vid = #{weixinGdtVid,jdbcType=VARCHAR},
+      weixin_adinfo = #{weixinAdinfo,jdbcType=VARCHAR},
+      cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+      limit_function = #{limitFunction,jdbcType=VARCHAR},
+      black_reason = #{blackReason,jdbcType=VARCHAR},
+      black_inner_remarks = #{blackInnerRemarks,jdbcType=VARCHAR},
+      is_svip = #{isSvip,jdbcType=CHAR},
+      svip_expire_date = #{svipExpireDate,jdbcType=TIMESTAMP},
+      invitation_code = #{invitationCode,jdbcType=VARCHAR},
+      invitation_member_id = #{invitationMemberId,jdbcType=INTEGER},
+      invitation_code_bind_time = #{invitationCodeBindTime,jdbcType=TIMESTAMP},
+      nova_project_begin_date = #{novaProjectBeginDate,jdbcType=TIMESTAMP},
+      nova_project_end_date = #{novaProjectEndDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

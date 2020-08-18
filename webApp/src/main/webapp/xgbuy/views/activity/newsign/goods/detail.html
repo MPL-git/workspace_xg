@@ -1,0 +1,112 @@
+<div class="page flex dc goods-detail goods-detail2" data-title="商品详情" data-id="activity_newsign_goods_detail">
+	<link rel="stylesheet" href="../static/css/swiper.min.css">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+	<link rel="stylesheet" href="../static/css/goods-detail.css?var=2.5">
+	<link rel="stylesheet" href="activity/newsign/goods/detail.css?ver=1.0">
+
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">商品详情</p>
+		<div class="fn flex ac je"></div>
+	</header>
+
+	<div class="flex dc fg has-header content"></div>
+
+	<script id="checkin_newsign_goods_detail_tpl" type="text/html">
+		{{if picMapList}}
+			<div class="scroll-y scroll-fix fg scroll-more">
+				<div class="touchfix w75">
+					<div class="swiper-container">
+						<ul class="swiper-wrapper">
+							{{each picMapList value i}}
+							<li class="swiper-slide"><img src="{{value.pic}}"></li>
+							{{/each}}
+						</ul>
+						<div class="pagination"></div>
+
+						<div class="popup-info-color">
+							<img src="">
+						</div>
+
+						{{if productWkPic}}
+							{{if jumpType == 0}}
+						<a class="wk-pic opc0 wk-{{productWkPosition}}" onclick="getMapUrl(this)" data-type="1" data-link="{{productWkLinkId}}">
+							{{else}}
+						<a class="wk-pic opc0 wk-{{productWkPosition}}">
+							{{/if}}
+							<img src="{{productWkPic}}">
+						</a>
+						{{/if}}
+					</div>
+
+					{{if tagPrice}}
+					<div class="con-price flex ac fst30">市场价<span  class="fstw56">{{tagPrice}}</span></div>
+					{{/if}}
+
+					<!-- 商品名 -->
+					<div class="con con-name flex ac jb">
+						<h3>{{productName}}</h3>
+					</div>
+					
+					{{if standardMapList.length > 0}}
+					<!-- 规格 -->
+					<div class="con con-info info bt">
+						{{include 'checkin_goods_detail_info2_tpl'}}
+					</div>
+					{{/if}}
+	
+					{{if brandContent}}
+					<div class="con bt flex ac jb">
+						<h3>{{brandContent}}</h3>
+					</div>
+					{{/if}}
+	
+					{{if productArtNo}}
+					<div class="con bt flex ac jb">
+						<h3>{{productArtNo}}</h3>
+					</div>
+					{{/if}}
+
+					<div class="pull-more flex ac jc" ></div>
+					<div class="mt20 con detail clearfix"></div>
+				</div>
+			</div>
+		{{/if}}
+	</script>
+
+	<script id="checkin_goods_detail_info2_tpl" type="text/html">
+		{{each standardMapList value i}}
+			{{if value.propName == '颜色' || value.propName == '颜色分类'}}
+				{{if standardMapList.length == 1}}
+		<div class="info-list info-color info-color-only flex dc" data-id="{{value.propId}}">
+				{{else}}
+		<div class="info-list info-color flex dc" data-id="{{value.propId}}">
+				{{/if}}
+	
+			<h3>{{value.propName}} <span class="f50 info-color-choice"></span></h3>
+			
+			<ul class="clearfix flex fw fg">
+				{{each value.propValueMapList val i}}
+				<li class="fn" data-propvalid="{{val.propValId}}" data-status="{{val.status}}">
+					<img src="{{val.specPic}}" alt="{{val.propValue}}">
+					<p class="ellipsis">{{val.propValue}}</p>
+				</li>
+				{{/each}}
+			</ul>
+			{{else}}
+		<div class="info-list" data-id="{{value.propId}}">
+			<h3>{{value.propName}}</h3>
+			<ul class="clearfix">
+				{{each value.propValueMapList val i}}
+				<li data-propvalid="{{val.propValId}}" data-status="{{val.status}}">{{val.propValue}}</li>
+				{{/each}}
+			</ul>
+			{{/if}}
+		</div>
+		{{/each}}
+	</script>
+
+	<script src="activity/newsign/goods/goods-detail.js?ver=1.1" async></script>
+</body>
+</html>

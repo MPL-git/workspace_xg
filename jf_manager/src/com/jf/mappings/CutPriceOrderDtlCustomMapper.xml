@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CutPriceOrderDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CutPriceOrderDtlCustom" extends="com.jf.dao.CutPriceOrderDtlMapper.BaseResultMap" >
+    <result column="member_nick" property="memberNick" jdbcType="VARCHAR" />
+    <result column="member_weixin_head" property="memberWeixinHead" jdbcType="VARCHAR" />
+    <result column="cut_price_order_dtl_count" property="cutPriceOrderDtlCount" jdbcType="INTEGER" />
+    <result column="amount_sum" property="amountSum" jdbcType="DECIMAL" />
+    <result column="super_cut_price_order_dtl_count" property="superCutPriceOrderDtlCount" jdbcType="INTEGER" />
+    <result column="xf_count" property="xfCount" jdbcType="INTEGER" />
+    <result column="ljkj_count" property="ljkjCount" jdbcType="INTEGER" />
+    <result column="fqkj_count" property="fqkjCount" jdbcType="INTEGER" />
+    <result column="cgkj_count" property="cgkjCount" jdbcType="INTEGER" />
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, cut_price_order_id, status, member_id, amount, is_new_member, create_by, create_date, 
+    update_by, update_date, remarks, del_flag,
+    (select mi.nick from bu_member_info mi where mi.del_flag = '0' and mi.id = t.member_id ) member_nick,
+    (select mi.weixin_head from bu_member_info mi where mi.del_flag = '0' and mi.id = t.member_id ) member_weixin_head,
+    <![CDATA[
+	    (select count(1) from bu_cut_price_order_dtl cpod, bu_cut_price_order cpo, bu_single_product_activity spa where cpod.del_flag = '0' and cpo.del_flag = '0' and spa.del_flag = '0' and cpod.cut_price_order_id = cpo.id and cpo.single_product_activity_id = spa.id and spa.type = '7' and cpod.create_date >= CONCAT(CURDATE(), ' 00:00:00') and cpod.create_date <= CONCAT(CURDATE(), ' 23:59:59') and cpod.member_id = t.member_id ) cut_price_order_dtl_count,
+	    (select IFNULL(sum(cpod.amount), 0) from bu_cut_price_order_dtl cpod where cpod.del_flag = '0' and cpod.cut_price_order_id = t.cut_price_order_id and cpod.create_date <= t.create_date ) amount_sum,
+	    (select count(1) from bu_cut_price_order_dtl cpod where cpod.del_flag = '0' and cpod.cut_price_order_id = t.cut_price_order_id and cpod.create_date <= t.create_date ) super_cut_price_order_dtl_count,
+    ]]>
+    (select count(1) from bu_combine_order co where co.del_flag = '0' and co.pay_status = '1' and co.order_type not in('3','4') and co.member_id = t.member_id ) xf_count,
+    (select count(1) from bu_cut_price_order_dtl cpod, bu_cut_price_order cpo where cpod.del_flag = '0' and cpo.del_flag = '0' and cpod.cut_price_order_id = cpo.id and cpo.activity_type = '7' and cpod.member_id = t.member_id ) ljkj_count,
+    (select count(1) from bu_cut_price_order cpo where cpo.del_flag = '0' and cpo.member_id = t.member_id ) fqkj_count,
+    (select count(1) from bu_cut_price_order cpo where cpo.del_flag = '0' and cpo.status in('2','4') and cpo.member_id = t.member_id ) cgkj_count
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CutPriceOrderDtlCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_cut_price_order_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_cut_price_order_dtl t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.CutPriceOrderDtlCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_cut_price_order_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_cut_price_order_dtl t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.cutPriceOrderId != null" >
+        cut_price_order_id = #{record.cutPriceOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isNewMember != null" >
+        is_new_member = #{record.isNewMember,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

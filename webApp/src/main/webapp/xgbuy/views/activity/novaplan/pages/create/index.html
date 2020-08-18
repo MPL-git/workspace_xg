@@ -1,0 +1,58 @@
+<div class="page novaplan-create row-1 flex dc" data-title="醒购新星计划协议" data-id="activity_novaplan_pages_create">
+	<link rel="stylesheet" href="activity/novaplan/pages/create/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">醒购新星计划协议</p>
+		<div class="fn">
+			<a class="xieyi" onclick="getUrl('activity/novaplan/pages/create/record/index.html')">开通记录</a>
+		</div>
+	</header>
+
+	<div class="row-1 content fg scroll-y flex dc"></div>
+	<div class="checkbox fn"></div>
+
+	<div class="popup popup-clear" onclick="closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">温馨提示</div>
+			<div class="tab-body"></div>
+			<div class="flex clear-btn">
+				<a class="flex ac jc c9 bdrg" onclick="closeSelf(this)">下次再说</a>
+				<a class="flex ac jc f50" onclick="renewalTaskProgress(), closeSelf();">立即完成</a>
+			</div>
+		</div>
+	</div>
+
+	<script id="novaplan_create_tpl" type="text/html">
+		{{if catalogId == 67}}
+		<div class="foot-table">
+			{{if openType == 0}}
+			<div class="footer flex ac jc" onclick="novaplanCreateApi.open()">开通新星计划</div>
+			{{else if openType == 1}}
+				{{if currentDate < beginDate}}
+			<div class="footer h110 ccc">
+				<div class="flex ac jc pt13">续签</div>
+				<div class="flex ac jc">{{endDate}}</div>
+			</div>
+				{{else}}
+			<div class="footer h110" onclick="novaplanCreateApi.open()">
+				<div class="flex ac jc pt13">续签</div>
+				<div class="flex ac jc">{{endDate}}</div>
+			</div>
+				{{/if}}
+			{{else}}
+			<div class="footer h110" onclick="novaplanCreateApi.open()">
+				<div class="flex ac jc pt13">续签</div>
+				<div class="flex ac jc">{{endDate}}</div>
+			</div>
+			{{/if}}
+		</div>
+		{{/if}}
+		<div class="checkbox-item fn flex ac jc" onclick="novaplanCreateApi.change(this)">
+			<a class="ticked checked"></a>
+			<p>已阅读并同意《醒购新星计划协议》</p>
+		</div>
+	</script>
+
+	<script src="activity/novaplan/pages/create/index.js?var=1.1"></script>
+</div>

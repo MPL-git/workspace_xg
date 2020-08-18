@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.IntegralDailyStatisticsMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.IntegralDailyStatistics" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="statistic_date" property="statisticDate" jdbcType="VARCHAR" />
+    <result column="begin_integral" property="beginIntegral" jdbcType="INTEGER" />
+    <result column="order_give" property="orderGive" jdbcType="INTEGER" />
+    <result column="other_give" property="otherGive" jdbcType="INTEGER" />
+    <result column="violate_give" property="violateGive" jdbcType="INTEGER" />
+    <result column="order_use" property="orderUse" jdbcType="INTEGER" />
+    <result column="other_use" property="otherUse" jdbcType="INTEGER" />
+    <result column="integral_type_1" property="integralType1" jdbcType="INTEGER" />
+    <result column="integral_type_2" property="integralType2" jdbcType="INTEGER" />
+    <result column="integral_type_3" property="integralType3" jdbcType="INTEGER" />
+    <result column="integral_type_4" property="integralType4" jdbcType="INTEGER" />
+    <result column="integral_type_5" property="integralType5" jdbcType="INTEGER" />
+    <result column="integral_type_6" property="integralType6" jdbcType="INTEGER" />
+    <result column="integral_type_7" property="integralType7" jdbcType="INTEGER" />
+    <result column="integral_type_8" property="integralType8" jdbcType="INTEGER" />
+    <result column="integral_type_9" property="integralType9" jdbcType="INTEGER" />
+    <result column="integral_type_10" property="integralType10" jdbcType="INTEGER" />
+    <result column="integral_type_17" property="integralType17" jdbcType="INTEGER" />
+    <result column="integral_type_18" property="integralType18" jdbcType="INTEGER" />
+    <result column="invalid_integral" property="invalidIntegral" jdbcType="INTEGER" />
+    <result column="end_integral" property="endIntegral" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, statistic_date, begin_integral, order_give, other_give, violate_give, order_use, 
+    other_use, integral_type_1, integral_type_2, integral_type_3, integral_type_4, integral_type_5, 
+    integral_type_6, integral_type_7, integral_type_8, integral_type_9, integral_type_10, 
+    integral_type_17, integral_type_18, invalid_integral, end_integral, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.IntegralDailyStatisticsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_integral_daily_statistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_integral_daily_statistics
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_integral_daily_statistics
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.IntegralDailyStatisticsExample" >
+    delete from bu_integral_daily_statistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.IntegralDailyStatistics" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_integral_daily_statistics (statistic_date, begin_integral, order_give, 
+      other_give, violate_give, order_use, 
+      other_use, integral_type_1, integral_type_2, 
+      integral_type_3, integral_type_4, integral_type_5, 
+      integral_type_6, integral_type_7, integral_type_8, 
+      integral_type_9, integral_type_10, integral_type_17, 
+      integral_type_18, invalid_integral, end_integral, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{statisticDate,jdbcType=VARCHAR}, #{beginIntegral,jdbcType=INTEGER}, #{orderGive,jdbcType=INTEGER}, 
+      #{otherGive,jdbcType=INTEGER}, #{violateGive,jdbcType=INTEGER}, #{orderUse,jdbcType=INTEGER}, 
+      #{otherUse,jdbcType=INTEGER}, #{integralType1,jdbcType=INTEGER}, #{integralType2,jdbcType=INTEGER}, 
+      #{integralType3,jdbcType=INTEGER}, #{integralType4,jdbcType=INTEGER}, #{integralType5,jdbcType=INTEGER}, 
+      #{integralType6,jdbcType=INTEGER}, #{integralType7,jdbcType=INTEGER}, #{integralType8,jdbcType=INTEGER}, 
+      #{integralType9,jdbcType=INTEGER}, #{integralType10,jdbcType=INTEGER}, #{integralType17,jdbcType=INTEGER}, 
+      #{integralType18,jdbcType=INTEGER}, #{invalidIntegral,jdbcType=INTEGER}, #{endIntegral,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.IntegralDailyStatistics" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_integral_daily_statistics
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="statisticDate != null" >
+        statistic_date,
+      </if>
+      <if test="beginIntegral != null" >
+        begin_integral,
+      </if>
+      <if test="orderGive != null" >
+        order_give,
+      </if>
+      <if test="otherGive != null" >
+        other_give,
+      </if>
+      <if test="violateGive != null" >
+        violate_give,
+      </if>
+      <if test="orderUse != null" >
+        order_use,
+      </if>
+      <if test="otherUse != null" >
+        other_use,
+      </if>
+      <if test="integralType1 != null" >
+        integral_type_1,
+      </if>
+      <if test="integralType2 != null" >
+        integral_type_2,
+      </if>
+      <if test="integralType3 != null" >
+        integral_type_3,
+      </if>
+      <if test="integralType4 != null" >
+        integral_type_4,
+      </if>
+      <if test="integralType5 != null" >
+        integral_type_5,
+      </if>
+      <if test="integralType6 != null" >
+        integral_type_6,
+      </if>
+      <if test="integralType7 != null" >
+        integral_type_7,
+      </if>
+      <if test="integralType8 != null" >
+        integral_type_8,
+      </if>
+      <if test="integralType9 != null" >
+        integral_type_9,
+      </if>
+      <if test="integralType10 != null" >
+        integral_type_10,
+      </if>
+      <if test="integralType17 != null" >
+        integral_type_17,
+      </if>
+      <if test="integralType18 != null" >
+        integral_type_18,
+      </if>
+      <if test="invalidIntegral != null" >
+        invalid_integral,
+      </if>
+      <if test="endIntegral != null" >
+        end_integral,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="statisticDate != null" >
+        #{statisticDate,jdbcType=VARCHAR},
+      </if>
+      <if test="beginIntegral != null" >
+        #{beginIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="orderGive != null" >
+        #{orderGive,jdbcType=INTEGER},
+      </if>
+      <if test="otherGive != null" >
+        #{otherGive,jdbcType=INTEGER},
+      </if>
+      <if test="violateGive != null" >
+        #{violateGive,jdbcType=INTEGER},
+      </if>
+      <if test="orderUse != null" >
+        #{orderUse,jdbcType=INTEGER},
+      </if>
+      <if test="otherUse != null" >
+        #{otherUse,jdbcType=INTEGER},
+      </if>
+      <if test="integralType1 != null" >
+        #{integralType1,jdbcType=INTEGER},
+      </if>
+      <if test="integralType2 != null" >
+        #{integralType2,jdbcType=INTEGER},
+      </if>
+      <if test="integralType3 != null" >
+        #{integralType3,jdbcType=INTEGER},
+      </if>
+      <if test="integralType4 != null" >
+        #{integralType4,jdbcType=INTEGER},
+      </if>
+      <if test="integralType5 != null" >
+        #{integralType5,jdbcType=INTEGER},
+      </if>
+      <if test="integralType6 != null" >
+        #{integralType6,jdbcType=INTEGER},
+      </if>
+      <if test="integralType7 != null" >
+        #{integralType7,jdbcType=INTEGER},
+      </if>
+      <if test="integralType8 != null" >
+        #{integralType8,jdbcType=INTEGER},
+      </if>
+      <if test="integralType9 != null" >
+        #{integralType9,jdbcType=INTEGER},
+      </if>
+      <if test="integralType10 != null" >
+        #{integralType10,jdbcType=INTEGER},
+      </if>
+      <if test="integralType17 != null" >
+        #{integralType17,jdbcType=INTEGER},
+      </if>
+      <if test="integralType18 != null" >
+        #{integralType18,jdbcType=INTEGER},
+      </if>
+      <if test="invalidIntegral != null" >
+        #{invalidIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="endIntegral != null" >
+        #{endIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.IntegralDailyStatisticsExample" resultType="java.lang.Integer" >
+    select count(*) from bu_integral_daily_statistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_integral_daily_statistics
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.statisticDate != null" >
+        statistic_date = #{record.statisticDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.beginIntegral != null" >
+        begin_integral = #{record.beginIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderGive != null" >
+        order_give = #{record.orderGive,jdbcType=INTEGER},
+      </if>
+      <if test="record.otherGive != null" >
+        other_give = #{record.otherGive,jdbcType=INTEGER},
+      </if>
+      <if test="record.violateGive != null" >
+        violate_give = #{record.violateGive,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderUse != null" >
+        order_use = #{record.orderUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.otherUse != null" >
+        other_use = #{record.otherUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType1 != null" >
+        integral_type_1 = #{record.integralType1,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType2 != null" >
+        integral_type_2 = #{record.integralType2,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType3 != null" >
+        integral_type_3 = #{record.integralType3,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType4 != null" >
+        integral_type_4 = #{record.integralType4,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType5 != null" >
+        integral_type_5 = #{record.integralType5,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType6 != null" >
+        integral_type_6 = #{record.integralType6,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType7 != null" >
+        integral_type_7 = #{record.integralType7,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType8 != null" >
+        integral_type_8 = #{record.integralType8,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType9 != null" >
+        integral_type_9 = #{record.integralType9,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType10 != null" >
+        integral_type_10 = #{record.integralType10,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType17 != null" >
+        integral_type_17 = #{record.integralType17,jdbcType=INTEGER},
+      </if>
+      <if test="record.integralType18 != null" >
+        integral_type_18 = #{record.integralType18,jdbcType=INTEGER},
+      </if>
+      <if test="record.invalidIntegral != null" >
+        invalid_integral = #{record.invalidIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="record.endIntegral != null" >
+        end_integral = #{record.endIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_integral_daily_statistics
+    set id = #{record.id,jdbcType=INTEGER},
+      statistic_date = #{record.statisticDate,jdbcType=VARCHAR},
+      begin_integral = #{record.beginIntegral,jdbcType=INTEGER},
+      order_give = #{record.orderGive,jdbcType=INTEGER},
+      other_give = #{record.otherGive,jdbcType=INTEGER},
+      violate_give = #{record.violateGive,jdbcType=INTEGER},
+      order_use = #{record.orderUse,jdbcType=INTEGER},
+      other_use = #{record.otherUse,jdbcType=INTEGER},
+      integral_type_1 = #{record.integralType1,jdbcType=INTEGER},
+      integral_type_2 = #{record.integralType2,jdbcType=INTEGER},
+      integral_type_3 = #{record.integralType3,jdbcType=INTEGER},
+      integral_type_4 = #{record.integralType4,jdbcType=INTEGER},
+      integral_type_5 = #{record.integralType5,jdbcType=INTEGER},
+      integral_type_6 = #{record.integralType6,jdbcType=INTEGER},
+      integral_type_7 = #{record.integralType7,jdbcType=INTEGER},
+      integral_type_8 = #{record.integralType8,jdbcType=INTEGER},
+      integral_type_9 = #{record.integralType9,jdbcType=INTEGER},
+      integral_type_10 = #{record.integralType10,jdbcType=INTEGER},
+      integral_type_17 = #{record.integralType17,jdbcType=INTEGER},
+      integral_type_18 = #{record.integralType18,jdbcType=INTEGER},
+      invalid_integral = #{record.invalidIntegral,jdbcType=INTEGER},
+      end_integral = #{record.endIntegral,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=VARCHAR},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.IntegralDailyStatistics" >
+    update bu_integral_daily_statistics
+    <set >
+      <if test="statisticDate != null" >
+        statistic_date = #{statisticDate,jdbcType=VARCHAR},
+      </if>
+      <if test="beginIntegral != null" >
+        begin_integral = #{beginIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="orderGive != null" >
+        order_give = #{orderGive,jdbcType=INTEGER},
+      </if>
+      <if test="otherGive != null" >
+        other_give = #{otherGive,jdbcType=INTEGER},
+      </if>
+      <if test="violateGive != null" >
+        violate_give = #{violateGive,jdbcType=INTEGER},
+      </if>
+      <if test="orderUse != null" >
+        order_use = #{orderUse,jdbcType=INTEGER},
+      </if>
+      <if test="otherUse != null" >
+        other_use = #{otherUse,jdbcType=INTEGER},
+      </if>
+      <if test="integralType1 != null" >
+        integral_type_1 = #{integralType1,jdbcType=INTEGER},
+      </if>
+      <if test="integralType2 != null" >
+        integral_type_2 = #{integralType2,jdbcType=INTEGER},
+      </if>
+      <if test="integralType3 != null" >
+        integral_type_3 = #{integralType3,jdbcType=INTEGER},
+      </if>
+      <if test="integralType4 != null" >
+        integral_type_4 = #{integralType4,jdbcType=INTEGER},
+      </if>
+      <if test="integralType5 != null" >
+        integral_type_5 = #{integralType5,jdbcType=INTEGER},
+      </if>
+      <if test="integralType6 != null" >
+        integral_type_6 = #{integralType6,jdbcType=INTEGER},
+      </if>
+      <if test="integralType7 != null" >
+        integral_type_7 = #{integralType7,jdbcType=INTEGER},
+      </if>
+      <if test="integralType8 != null" >
+        integral_type_8 = #{integralType8,jdbcType=INTEGER},
+      </if>
+      <if test="integralType9 != null" >
+        integral_type_9 = #{integralType9,jdbcType=INTEGER},
+      </if>
+      <if test="integralType10 != null" >
+        integral_type_10 = #{integralType10,jdbcType=INTEGER},
+      </if>
+      <if test="integralType17 != null" >
+        integral_type_17 = #{integralType17,jdbcType=INTEGER},
+      </if>
+      <if test="integralType18 != null" >
+        integral_type_18 = #{integralType18,jdbcType=INTEGER},
+      </if>
+      <if test="invalidIntegral != null" >
+        invalid_integral = #{invalidIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="endIntegral != null" >
+        end_integral = #{endIntegral,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.IntegralDailyStatistics" >
+    update bu_integral_daily_statistics
+    set statistic_date = #{statisticDate,jdbcType=VARCHAR},
+      begin_integral = #{beginIntegral,jdbcType=INTEGER},
+      order_give = #{orderGive,jdbcType=INTEGER},
+      other_give = #{otherGive,jdbcType=INTEGER},
+      violate_give = #{violateGive,jdbcType=INTEGER},
+      order_use = #{orderUse,jdbcType=INTEGER},
+      other_use = #{otherUse,jdbcType=INTEGER},
+      integral_type_1 = #{integralType1,jdbcType=INTEGER},
+      integral_type_2 = #{integralType2,jdbcType=INTEGER},
+      integral_type_3 = #{integralType3,jdbcType=INTEGER},
+      integral_type_4 = #{integralType4,jdbcType=INTEGER},
+      integral_type_5 = #{integralType5,jdbcType=INTEGER},
+      integral_type_6 = #{integralType6,jdbcType=INTEGER},
+      integral_type_7 = #{integralType7,jdbcType=INTEGER},
+      integral_type_8 = #{integralType8,jdbcType=INTEGER},
+      integral_type_9 = #{integralType9,jdbcType=INTEGER},
+      integral_type_10 = #{integralType10,jdbcType=INTEGER},
+      integral_type_17 = #{integralType17,jdbcType=INTEGER},
+      integral_type_18 = #{integralType18,jdbcType=INTEGER},
+      invalid_integral = #{invalidIntegral,jdbcType=INTEGER},
+      end_integral = #{endIntegral,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

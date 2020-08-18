@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtCloseApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtCloseApply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="stop_begin_date" property="stopBeginDate" jdbcType="TIMESTAMP" />
+    <result column="stop_begin_status" property="stopBeginStatus" jdbcType="CHAR" />
+    <result column="stop_end_date" property="stopEndDate" jdbcType="TIMESTAMP" />
+    <result column="stop_end_status" property="stopEndStatus" jdbcType="CHAR" />
+    <result column="close_flag" property="closeFlag" jdbcType="CHAR" />
+    <result column="close_begin_date" property="closeBeginDate" jdbcType="TIMESTAMP" />
+    <result column="close_begin_status" property="closeBeginStatus" jdbcType="CHAR" />
+    <result column="close_end_date" property="closeEndDate" jdbcType="TIMESTAMP" />
+    <result column="close_end_status" property="closeEndStatus" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="request_by" property="requestBy" jdbcType="INTEGER" />
+    <result column="request_type" property="requestType" jdbcType="CHAR" />
+    <result column="request_date" property="requestDate" jdbcType="TIMESTAMP" />
+    <result column="request_remarks" property="requestRemarks" jdbcType="VARCHAR" />
+    <result column="operate_audit_by" property="operateAuditBy" jdbcType="INTEGER" />
+    <result column="operate_audit_status" property="operateAuditStatus" jdbcType="CHAR" />
+    <result column="operate_audit_date" property="operateAuditDate" jdbcType="TIMESTAMP" />
+    <result column="operate_audit_remarks" property="operateAuditRemarks" jdbcType="VARCHAR" />
+    <result column="merchants_audit_by" property="merchantsAuditBy" jdbcType="INTEGER" />
+    <result column="merchants_audit_status" property="merchantsAuditStatus" jdbcType="CHAR" />
+    <result column="merchants_audit_date" property="merchantsAuditDate" jdbcType="TIMESTAMP" />
+    <result column="merchants_audit_remarks" property="merchantsAuditRemarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, stop_begin_date, stop_begin_status, stop_end_date, stop_end_status, 
+    close_flag, close_begin_date, close_begin_status, close_end_date, close_end_status, 
+    status, request_by, request_type, request_date, request_remarks, operate_audit_by, 
+    operate_audit_status, operate_audit_date, operate_audit_remarks, merchants_audit_by, 
+    merchants_audit_status, merchants_audit_date, merchants_audit_remarks, create_by, 
+    create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtCloseApplyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_close_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_close_apply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_close_apply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtCloseApplyExample" >
+    delete from bu_mcht_close_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtCloseApply" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_close_apply (mcht_id, stop_begin_date, stop_begin_status, 
+      stop_end_date, stop_end_status, close_flag, 
+      close_begin_date, close_begin_status, close_end_date, 
+      close_end_status, status, request_by, 
+      request_type, request_date, request_remarks, 
+      operate_audit_by, operate_audit_status, operate_audit_date, 
+      operate_audit_remarks, merchants_audit_by, 
+      merchants_audit_status, merchants_audit_date, 
+      merchants_audit_remarks, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{mchtId,jdbcType=INTEGER}, #{stopBeginDate,jdbcType=TIMESTAMP}, #{stopBeginStatus,jdbcType=CHAR}, 
+      #{stopEndDate,jdbcType=TIMESTAMP}, #{stopEndStatus,jdbcType=CHAR}, #{closeFlag,jdbcType=CHAR}, 
+      #{closeBeginDate,jdbcType=TIMESTAMP}, #{closeBeginStatus,jdbcType=CHAR}, #{closeEndDate,jdbcType=TIMESTAMP}, 
+      #{closeEndStatus,jdbcType=CHAR}, #{status,jdbcType=VARCHAR}, #{requestBy,jdbcType=INTEGER}, 
+      #{requestType,jdbcType=CHAR}, #{requestDate,jdbcType=TIMESTAMP}, #{requestRemarks,jdbcType=VARCHAR}, 
+      #{operateAuditBy,jdbcType=INTEGER}, #{operateAuditStatus,jdbcType=CHAR}, #{operateAuditDate,jdbcType=TIMESTAMP}, 
+      #{operateAuditRemarks,jdbcType=VARCHAR}, #{merchantsAuditBy,jdbcType=INTEGER}, 
+      #{merchantsAuditStatus,jdbcType=CHAR}, #{merchantsAuditDate,jdbcType=TIMESTAMP}, 
+      #{merchantsAuditRemarks,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtCloseApply" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_close_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="stopBeginDate != null" >
+        stop_begin_date,
+      </if>
+      <if test="stopBeginStatus != null" >
+        stop_begin_status,
+      </if>
+      <if test="stopEndDate != null" >
+        stop_end_date,
+      </if>
+      <if test="stopEndStatus != null" >
+        stop_end_status,
+      </if>
+      <if test="closeFlag != null" >
+        close_flag,
+      </if>
+      <if test="closeBeginDate != null" >
+        close_begin_date,
+      </if>
+      <if test="closeBeginStatus != null" >
+        close_begin_status,
+      </if>
+      <if test="closeEndDate != null" >
+        close_end_date,
+      </if>
+      <if test="closeEndStatus != null" >
+        close_end_status,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="requestBy != null" >
+        request_by,
+      </if>
+      <if test="requestType != null" >
+        request_type,
+      </if>
+      <if test="requestDate != null" >
+        request_date,
+      </if>
+      <if test="requestRemarks != null" >
+        request_remarks,
+      </if>
+      <if test="operateAuditBy != null" >
+        operate_audit_by,
+      </if>
+      <if test="operateAuditStatus != null" >
+        operate_audit_status,
+      </if>
+      <if test="operateAuditDate != null" >
+        operate_audit_date,
+      </if>
+      <if test="operateAuditRemarks != null" >
+        operate_audit_remarks,
+      </if>
+      <if test="merchantsAuditBy != null" >
+        merchants_audit_by,
+      </if>
+      <if test="merchantsAuditStatus != null" >
+        merchants_audit_status,
+      </if>
+      <if test="merchantsAuditDate != null" >
+        merchants_audit_date,
+      </if>
+      <if test="merchantsAuditRemarks != null" >
+        merchants_audit_remarks,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="stopBeginDate != null" >
+        #{stopBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopBeginStatus != null" >
+        #{stopBeginStatus,jdbcType=CHAR},
+      </if>
+      <if test="stopEndDate != null" >
+        #{stopEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopEndStatus != null" >
+        #{stopEndStatus,jdbcType=CHAR},
+      </if>
+      <if test="closeFlag != null" >
+        #{closeFlag,jdbcType=CHAR},
+      </if>
+      <if test="closeBeginDate != null" >
+        #{closeBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeBeginStatus != null" >
+        #{closeBeginStatus,jdbcType=CHAR},
+      </if>
+      <if test="closeEndDate != null" >
+        #{closeEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeEndStatus != null" >
+        #{closeEndStatus,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="requestBy != null" >
+        #{requestBy,jdbcType=INTEGER},
+      </if>
+      <if test="requestType != null" >
+        #{requestType,jdbcType=CHAR},
+      </if>
+      <if test="requestDate != null" >
+        #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestRemarks != null" >
+        #{requestRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="operateAuditBy != null" >
+        #{operateAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="operateAuditStatus != null" >
+        #{operateAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="operateAuditDate != null" >
+        #{operateAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateAuditRemarks != null" >
+        #{operateAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantsAuditBy != null" >
+        #{merchantsAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="merchantsAuditStatus != null" >
+        #{merchantsAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="merchantsAuditDate != null" >
+        #{merchantsAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="merchantsAuditRemarks != null" >
+        #{merchantsAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtCloseApplyExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_close_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_close_apply
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stopBeginDate != null" >
+        stop_begin_date = #{record.stopBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stopBeginStatus != null" >
+        stop_begin_status = #{record.stopBeginStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.stopEndDate != null" >
+        stop_end_date = #{record.stopEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.stopEndStatus != null" >
+        stop_end_status = #{record.stopEndStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.closeFlag != null" >
+        close_flag = #{record.closeFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.closeBeginDate != null" >
+        close_begin_date = #{record.closeBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.closeBeginStatus != null" >
+        close_begin_status = #{record.closeBeginStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.closeEndDate != null" >
+        close_end_date = #{record.closeEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.closeEndStatus != null" >
+        close_end_status = #{record.closeEndStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requestBy != null" >
+        request_by = #{record.requestBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.requestType != null" >
+        request_type = #{record.requestType,jdbcType=CHAR},
+      </if>
+      <if test="record.requestDate != null" >
+        request_date = #{record.requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.requestRemarks != null" >
+        request_remarks = #{record.requestRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operateAuditBy != null" >
+        operate_audit_by = #{record.operateAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.operateAuditStatus != null" >
+        operate_audit_status = #{record.operateAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.operateAuditDate != null" >
+        operate_audit_date = #{record.operateAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.operateAuditRemarks != null" >
+        operate_audit_remarks = #{record.operateAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantsAuditBy != null" >
+        merchants_audit_by = #{record.merchantsAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.merchantsAuditStatus != null" >
+        merchants_audit_status = #{record.merchantsAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.merchantsAuditDate != null" >
+        merchants_audit_date = #{record.merchantsAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.merchantsAuditRemarks != null" >
+        merchants_audit_remarks = #{record.merchantsAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_close_apply
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      stop_begin_date = #{record.stopBeginDate,jdbcType=TIMESTAMP},
+      stop_begin_status = #{record.stopBeginStatus,jdbcType=CHAR},
+      stop_end_date = #{record.stopEndDate,jdbcType=TIMESTAMP},
+      stop_end_status = #{record.stopEndStatus,jdbcType=CHAR},
+      close_flag = #{record.closeFlag,jdbcType=CHAR},
+      close_begin_date = #{record.closeBeginDate,jdbcType=TIMESTAMP},
+      close_begin_status = #{record.closeBeginStatus,jdbcType=CHAR},
+      close_end_date = #{record.closeEndDate,jdbcType=TIMESTAMP},
+      close_end_status = #{record.closeEndStatus,jdbcType=CHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      request_by = #{record.requestBy,jdbcType=INTEGER},
+      request_type = #{record.requestType,jdbcType=CHAR},
+      request_date = #{record.requestDate,jdbcType=TIMESTAMP},
+      request_remarks = #{record.requestRemarks,jdbcType=VARCHAR},
+      operate_audit_by = #{record.operateAuditBy,jdbcType=INTEGER},
+      operate_audit_status = #{record.operateAuditStatus,jdbcType=CHAR},
+      operate_audit_date = #{record.operateAuditDate,jdbcType=TIMESTAMP},
+      operate_audit_remarks = #{record.operateAuditRemarks,jdbcType=VARCHAR},
+      merchants_audit_by = #{record.merchantsAuditBy,jdbcType=INTEGER},
+      merchants_audit_status = #{record.merchantsAuditStatus,jdbcType=CHAR},
+      merchants_audit_date = #{record.merchantsAuditDate,jdbcType=TIMESTAMP},
+      merchants_audit_remarks = #{record.merchantsAuditRemarks,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtCloseApply" >
+    update bu_mcht_close_apply
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="stopBeginDate != null" >
+        stop_begin_date = #{stopBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopBeginStatus != null" >
+        stop_begin_status = #{stopBeginStatus,jdbcType=CHAR},
+      </if>
+      <if test="stopEndDate != null" >
+        stop_end_date = #{stopEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopEndStatus != null" >
+        stop_end_status = #{stopEndStatus,jdbcType=CHAR},
+      </if>
+      <if test="closeFlag != null" >
+        close_flag = #{closeFlag,jdbcType=CHAR},
+      </if>
+      <if test="closeBeginDate != null" >
+        close_begin_date = #{closeBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeBeginStatus != null" >
+        close_begin_status = #{closeBeginStatus,jdbcType=CHAR},
+      </if>
+      <if test="closeEndDate != null" >
+        close_end_date = #{closeEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeEndStatus != null" >
+        close_end_status = #{closeEndStatus,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="requestBy != null" >
+        request_by = #{requestBy,jdbcType=INTEGER},
+      </if>
+      <if test="requestType != null" >
+        request_type = #{requestType,jdbcType=CHAR},
+      </if>
+      <if test="requestDate != null" >
+        request_date = #{requestDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="requestRemarks != null" >
+        request_remarks = #{requestRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="operateAuditBy != null" >
+        operate_audit_by = #{operateAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="operateAuditStatus != null" >
+        operate_audit_status = #{operateAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="operateAuditDate != null" >
+        operate_audit_date = #{operateAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateAuditRemarks != null" >
+        operate_audit_remarks = #{operateAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantsAuditBy != null" >
+        merchants_audit_by = #{merchantsAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="merchantsAuditStatus != null" >
+        merchants_audit_status = #{merchantsAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="merchantsAuditDate != null" >
+        merchants_audit_date = #{merchantsAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="merchantsAuditRemarks != null" >
+        merchants_audit_remarks = #{merchantsAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtCloseApply" >
+    update bu_mcht_close_apply
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      stop_begin_date = #{stopBeginDate,jdbcType=TIMESTAMP},
+      stop_begin_status = #{stopBeginStatus,jdbcType=CHAR},
+      stop_end_date = #{stopEndDate,jdbcType=TIMESTAMP},
+      stop_end_status = #{stopEndStatus,jdbcType=CHAR},
+      close_flag = #{closeFlag,jdbcType=CHAR},
+      close_begin_date = #{closeBeginDate,jdbcType=TIMESTAMP},
+      close_begin_status = #{closeBeginStatus,jdbcType=CHAR},
+      close_end_date = #{closeEndDate,jdbcType=TIMESTAMP},
+      close_end_status = #{closeEndStatus,jdbcType=CHAR},
+      status = #{status,jdbcType=VARCHAR},
+      request_by = #{requestBy,jdbcType=INTEGER},
+      request_type = #{requestType,jdbcType=CHAR},
+      request_date = #{requestDate,jdbcType=TIMESTAMP},
+      request_remarks = #{requestRemarks,jdbcType=VARCHAR},
+      operate_audit_by = #{operateAuditBy,jdbcType=INTEGER},
+      operate_audit_status = #{operateAuditStatus,jdbcType=CHAR},
+      operate_audit_date = #{operateAuditDate,jdbcType=TIMESTAMP},
+      operate_audit_remarks = #{operateAuditRemarks,jdbcType=VARCHAR},
+      merchants_audit_by = #{merchantsAuditBy,jdbcType=INTEGER},
+      merchants_audit_status = #{merchantsAuditStatus,jdbcType=CHAR},
+      merchants_audit_date = #{merchantsAuditDate,jdbcType=TIMESTAMP},
+      merchants_audit_remarks = #{merchantsAuditRemarks,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

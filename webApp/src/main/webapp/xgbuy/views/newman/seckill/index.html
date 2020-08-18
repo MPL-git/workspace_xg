@@ -1,0 +1,96 @@
+<div class="page newman-seckill flex dc" data-title="新人秒杀" data-id="newman_seckill">
+	<link rel="stylesheet" href="newman/seckill/seckill.css?ver=1.2">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">新人秒杀</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-fix fg scroll-more">
+		<div class="touchfix w75">
+			<div class="swiper"></div>
+			<div class="main"></div>
+		</div>
+	</div>
+
+	<script id="newman_seckill_tpl_swiper" type="text/html">
+		{{if data.length}}
+		<div class="swiper-container">
+			<ul class="swiper-wrapper">
+				{{each data value i}}
+				<li onclick="getBrandDef(this, {pos: '{{i}}', data: newmanSeckill.data})"
+					data-id="{{value.id}}"
+					data-productid="{{value.linkId}}"
+					data-url="{{value.areaUrl}}"
+					data-type="{{value.linkType}}"
+					data-name="{{value.activityAreaName}}"
+					data-link="{{value.linkUrl}}"
+					class="swiper-slide">
+					<img src="{{value.pic}}">
+				</li>
+				{{/each}}
+			</ul>
+			<div class="pagination"></div>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="newman_seckill_tpl" type="text/html">
+		{{if returnData.length}}
+			{{each returnData value i}}
+		<dl class="flex"
+			data-current="{{value.currentTime}}"
+			data-begin="{{value.beginTime}}"
+			data-end="{{value.endTime}}"
+			data-stock="{{value.stock}}"
+			data-productid="{{value.productId}}"
+			onclick="getUrlGoods(this)"
+			>
+			<dt class="fn">
+				<img src="{{value.productPic}}">
+				{{if value.stock <= 0}}
+				<div class="flex jc ac">已抢光</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+			</dt>
+			<dd class="fg">
+				<h3 class="clampself">{{value.productName}}</h3>
+				<div class="flex ac">
+					<b>¥{{value.salePrice}}</b>
+					<s>{{value.tagPrice}}</s>
+
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+					{{if value.manageSelf == '1'}}
+					<i class="manageSelf ml10">自营</i>
+					{{/if}}
+				</div>
+
+				{{if value.stock > 0}}
+					{{if value.currentTime > value.endTime}}
+				<a class="btn-red btn-gray">已抢光</a>
+					{{else if value.currentTime >= value.beginTime}}
+				<a class="btn-red">马上抢购</a>
+					{{else}}
+				<a class="btn-red btn-yellow">即将开抢</a>
+					{{/if}}
+				{{else}}
+				<a class="btn-red btn-gray">已抢光</a>
+				{{/if}}
+
+				<p class="p-time f50"></p>
+			</dd>
+		</dl>
+			{{/each}}
+		{{else}}
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前暂无限时抢购</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="newman/seckill/seckill.js?ver=1.9" async></script>
+</div>

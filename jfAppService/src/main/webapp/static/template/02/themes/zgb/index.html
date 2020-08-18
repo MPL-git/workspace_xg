@@ -1,0 +1,906 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                interval:5,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'fade',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {
+
+                }
+            });
+
+        });
+    </script>
+<style>
+.cnw_intitle{ width: 995px; margin: auto; border-top: 7px solid #7a0026; background: url(images/header_bg.jpg); height: 100px; line-height: 100px; text-align: center;}
+.cnw_intitle span{ display: inline-block; white-space: nowrap; overflow: hidden; width: 292px; background: url(images/pic/intitle_bg.png) repeat-x 0 50%; letter-spacing: 49px; text-indent: 12px; font-size: 30px; color: #fff; *text-indent: 3px;}
+.cnw_inslides{height: 345px; position: relative; z-index: 1; width: 995px; margin: auto;}
+.cnw_switchable_slides{height: 345px;}
+.cnw_switchable_slides li{position: absolute; height: 345px; width: 100%; background-position:center; background-repeat: no-repeat;}
+.cnw_switchable_slides li a{display: block; height: 100%;}
+.cnw_switchable_nav{position: absolute; left: 50%; top:45%; margin-left: -498px; width: 995px; z-index: 9;}
+.cnw_switchable_nav a{ position: absolute; width: 40px; height: 40px; overflow: hidden; text-indent: -9999px; background-image: url(images/pic/inslide_nav.png);}
+.cnw_inslide_prev{left: 10px;}
+.cnw_inslide_prev:hover{ background-position: 0 -80px;}
+.cnw_inslide_next{background-position: 0 -40px; right: 10px;}
+.cnw_inslide_next:hover{ background-position: 0 -120px;}
+.cnw_inblock{ overflow: hidden; *zoom:1; width: 1005px; margin: auto; padding: 10px 0;}
+.cnw_inblock ul{ margin-left: -5px;}
+.cnw_inblock li{ position: relative; float: left; width: 325px; height: 500px; margin-left: 10px; _display:inline;}
+.cnw_initem{ position: absolute; left: 0; top: 0; height: 498px; width: 323px; padding: 1px; z-index: 9; background: url(about:blank); }
+.cnw_initem_img{}
+.cnw_iteminfo{ position: absolute; display: none; bottom: 0; width: 323px; height: 137px; text-align: center; color: #fff; background: rgba(0,0,0,.75); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#BF000000,endColorstr=#BF000000);}
+.cnw_iteminfo .item_name{display: block; margin: 10px 0; font-size: 24px; font-weight: normal;}
+.cnw_iteminfo .item_price{display: block; margin-bottom: 5px;}
+.cnw_iteminfo .item_price em{ font-size: 20px;}
+.cnw_iteminfo .item_btn{ display: inline-block; height: 20px; width: 85px; background: #7a0026;}
+.cnw_initem:hover{ padding: 0; border: 1px solid #fe0000;}
+.cnw_initem:hover .cnw_iteminfo{display: block;}
+
+.cnw_nav_content{ position: fixed; width: 100%; bottom: 65px; z-index: 20;}
+.cnw_nav_conitem{ position: absolute; bottom:0; width: 100%; background: #636363; height: 400px;}
+.cnw_nav_conitem .layout{ height: 400px;}
+.cnw_nav_itemcatelog{ background: #000; background: rgba(0,0,0,.9);}
+.cnw_catwrap{ height: 100%; width: 98%; margin: auto;}
+.cnw_catcell{ width: 100px; background: #898989; color: #0d0d0d; text-align: center; font-size: 14px;}
+.cnw_catcell_hot{background: #7a0026; color: #fff;}
+.cnw_cattbr{ padding-left: 10px;}
+.cnw_catrowwrap{ margin-top: -12px;}
+.cnw_catrow{ padding-left: 110px; clear: both; height: 30px; overflow: hidden; margin-top: 12px;}
+.cnw_catrow .cnw_catcell{ float: left; display: inline; margin-left: -110px; line-height: 30px; height: 30px;}
+.cnw_catcon{ overflow: hidden; width: 100%; height: 30px;}
+.cnw_catcon ul{ margin-left: -1px;}
+.cnw_catcon li{ float: left; height: 14px; border-left: 1px solid #fff; margin-top: 8px;}
+.cnw_catcon li a{ display: inline-block; color: #fff; padding: 0 15px; line-height: 30px; height: 30px; margin: -8px 0;}
+.cnw_catcon li a:hover{color: #fbaf5d; text-decoration: underline;}
+
+.cnw_nav_slides{ height: 400px; width: 905px; margin: auto; overflow: hidden;}
+.cnw_nav_slides li{ float: left; position: relative; width: 226px; padding-top: 70px; height: 330px; text-align: center; color: #fff;}
+.cnw_nav_slides a{ text-decoration: none; color: #fff;}
+.cnw_nav_slides .item_name{ position: absolute; left: 0; top: 32px; width: 100%; font-size: 16px;}
+.cnw_nav_slides .item_pic{ display: block; height: 225px; border:solid #959595; border-width: 0 1px; margin-right: -1px;}
+.cnw_nav_slides .item_price{display: block; margin: 5px 0;}
+.cnw_nav_slides .item_price em{ font-size: 20px;}
+.cnw_nav_slides .item_btn{ display: inline-block; height: 20px; width: 85px; background: #7a0026;}
+
+.cnw_updownbtn{ position: fixed; left: 20px; top: 230px; z-index: 100;}
+.cnw_updownbtn a{display: block; width: 45px; height: 45px; background-image: url(images/pic/btn-updown.png);}
+.cnw_down{ background-position: 0 -45px; margin-top: 5px;}
+
+.cnw_side_service{ position: fixed; right: 0; top: 200px; z-index: 300;}
+.cnw_side_service_wrap{ position: absolute; right:0; width: 133px; overflow: hidden;}
+.cnw_side_service_wrap table{ width: 106px; background: rgba(0,0,0,.4); margin-top: -1px; float: right; border-collapse: separate; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#66000000,endColorstr=#66000000);}
+.cnw_side_service_wrap td{ height: 106px; text-align: center; vertical-align: middle; border-bottom:1px solid rgba(0,0,0,.2); border-top:1px solid rgba(255,255,255,.06);}
+.cnw_side_service_wrap td p{padding: 5px 0;}
+.cnw_side_service_wrap a{color:#fff;}
+.cnw_service_toggle{ position: absolute; top: 107px; left: 0; width: 27px; height: 106px; background:rgba(0,0,0,.45); cursor: pointer; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#72000000,endColorstr=#72000000);}
+.cnw_service_toggle i{display: block; height: 100%; background:url("images/pic/service-toggle.png") no-repeat 50% 0;}
+.cnw_ss_opened .cnw_service_toggle i{ background-position: 50% 100%;}
+:root .cnw_iteminfo,:root .cnw_service_toggle,:root .cnw_side_service_wrap table{filter:none;}
+
+.ftconlist{ margin-right: 20px;}
+.ftconlist dt img{ position: static;}
+.ftconlist p{background: none;}
+</style>
+
+<script>
+$(function(){
+    $('.cnw_switchable_slides').each(function(){
+        var slides = $(this),
+                nav = slides.siblings('.cnw_switchable_nav');
+        slides.switchable({
+            triggers: false,
+            effect: 'fade',
+            easing: 'ease-in-out',
+            loop: true,
+            autoplay:true,
+            interval:5,
+            panels:'li',
+            prev: nav.find('.cnw_inslide_prev'),
+            next: nav.find('.cnw_inslide_next'),
+            onSwitch: function(event, currentIndex) {
+            }
+        });
+    });
+    $('.cnw_nav_slides').each(function(){
+        var slides = $(this),
+                nav = slides.siblings('.cnw_switchable_nav');
+        slides.switchable({
+            triggers: false,
+            effect: 'scrollLeft',
+            easing: 'ease-in-out',
+            loop: true,
+            panels:'li',
+            steps: 4,
+            visible: 4,
+            prev: nav.find('.cnw_inslide_prev'),
+            next: nav.find('.cnw_inslide_next'),
+            onSwitch: function(event, currentIndex) {
+            }
+        });
+    });
+    var nav_conitem = $('.cnw_nav_conitem').hide(),cur_item,timer,delay = 200,duration = 200;
+    $('.nav li a').each(function(index){
+        var conitem = nav_conitem.eq(index);
+        $(this).add(conitem).hover(function(){
+            clearTimeout(timer);
+            timer = setTimeout(function(){
+                cur_item && cur_item!=conitem && hideNavConItem(cur_item);
+                cur_item!=conitem && showNavConItem(conitem);
+                cur_item = conitem;
+            },delay);
+        },function(){
+            clearTimeout(timer);
+            timer = setTimeout(function(){
+                cur_item && hideNavConItem(cur_item);
+                cur_item = null;
+            },delay);
+        });
+    });
+    function showNavConItem(obj){
+        obj.css({
+            display:'block',
+            bottom:-465
+        }).animate({bottom:0},duration);
+    }
+    function hideNavConItem(obj){
+        obj.css({
+            display:'block',
+            bottom:0
+        }).animate({bottom:-465},duration);
+    }
+
+    $('.cnw_down').on('click',function(){
+        $('html,body').animate({
+            scrollTop : $('html').height()
+        },500);
+    });
+    $('.cnw_up').on('click',function(){
+        $('html,body').animate({
+            scrollTop : 0
+        },500);
+    });
+
+    var cnw_side_service_wrap = $('.cnw_side_service_wrap');
+    cnw_side_service_wrap.on('mouseenter',function(){
+        cnw_side_service_wrap.animate({right:0},100).addClass('cnw_ss_opened');
+    });
+    $('.cnw_service_toggle').on('click',function(){
+        cnw_side_service_wrap.animate({right:-106},100).removeClass('cnw_ss_opened');
+    });
+});
+</script>
+</head>
+<body class="page-index">
+<div id="topbar">
+    <div class="topbar">
+        <div class="layout">
+            <div class="toptools"></div>
+            <div class="toplinks">
+                <p><a href="#"><img src="images/ico-account.png" alt=""/>我的帐号</a></p>
+                <p><a href="#"><img src="images/ico-mobile.png" alt=""/>手机商城</a></p>
+            </div>
+            <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="header">
+    <div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <div class="hdsearch-right">
+            搜索框右侧广告
+        </div>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus="true" x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+
+<div id="nav">
+    <div class="nav">
+        <div class="layout">
+            <div class="textNav">
+                <ul>
+                    <li class="navitem_img"><a href="#"><img src="images/pic/ico-catelog.png" alt=""/></a></li>
+                    <li><a href="/products/0.html">藏品</a></li>
+                    <li><a href="/products/0.html">珍品</a></li>
+                    <li><a href="/products/0.html">生活艺术瓷</a></li>
+                    <li><a href="/products/0.html">定制系列</a></li>
+                    <li><a href="/products/0.html">新品推荐</a></li>
+                    <li><a href="/products/0.html">第六窑</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_2.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_3.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_4.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_5.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">&lt;</a>
+            <a id="inslide_next" href="javascript:void(0)">&gt;</a>
+        </div>
+    </div>
+
+    <div class="cnw_nav_content">
+        <div class="cnw_nav_conitem cnw_nav_itemcatelog">
+            <div class="layout">
+                <table class="cnw_catwrap" border="0" cellspacing="0" cellpadding="0"><tr><td>
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+                        <td class="cnw_catcell">商品分类</td>
+                        <td class="cnw_cattbr">
+                            <div class="cnw_catrowwrap">
+                                <div class="cnw_catrow">
+                                    <div class="cnw_catcell">所有产品</div>
+                                    <div class="cnw_catcon">
+                                        <ul>
+                                            <li><a href="#">藏品</a></li>
+                                            <li><a href="#">珍品</a></li>
+                                            <li><a href="#">生活艺术瓷</a></li>
+                                            <li><a href="#">定制系列</a></li>
+                                            <li><a href="#">新品推荐</a></li>
+                                            <li><a href="#">第六窑</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cnw_catrow">
+                                    <div class="cnw_catcell cnw_catcell_hot">热卖商品</div>
+                                    <div class="cnw_catcon">
+                                        <ul>
+                                            <li><a href="#">双为壶</a></li>
+                                            <li><a href="#">华夏长青</a></li>
+                                            <li><a href="#">盛世香港</a></li>
+                                            <li><a href="#">滴水穿石</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cnw_catrow">
+                                    <div class="cnw_catcell">新品上架</div>
+                                    <div class="cnw_catcon">
+                                        <ul>
+                                            <li><a href="#">02.01上新</a></li>
+                                            <li><a href="#">02.05上新</a></li>
+                                            <li><a href="#">02.10上新</a></li>
+                                            <li><a href="#">02.20上新</a></li>
+                                            <li><a href="#">02.28上新</a></li>
+                                            <li><a href="#">03.05上新</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cnw_catrow">
+                                    <div class="cnw_catcell">赠送场合</div>
+                                    <div class="cnw_catcon">
+                                        <ul>
+                                            <li><a href="#">结婚</a></li>
+                                            <li><a href="#">生子</a></li>
+                                            <li><a href="#">寿宴、生日</a></li>
+                                            <li><a href="#">乔迁</a></li>
+                                            <li><a href="#">节庆</a></li>
+                                            <li><a href="#">其他</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cnw_catrow">
+                                    <div class="cnw_catcell">赠送对象</div>
+                                    <div class="cnw_catcon">
+                                        <ul>
+                                            <li><a href="#">长辈</a></li>
+                                            <li><a href="#">朋友</a></li>
+                                            <li><a href="#">同事</a></li>
+                                            <li><a href="#">晚辈</a></li>
+                                            <li><a href="#">企业客户</a></li>
+                                            <li><a href="#">其他</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cnw_catrow">
+                                    <div class="cnw_catcell">作品工艺</div>
+                                    <div class="cnw_catcon">
+                                        <ul>
+                                            <li><a href="#">中国白</a></li>
+                                            <li><a href="#">中国红</a></li>
+                                            <li><a href="#">瓷画</a></li>
+                                            <li><a href="#">晶彩釉画</a></li>
+                                            <li><a href="#">顶级奢瓷</a></li>
+                                            <li><a href="#">彩色釉艺</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr></table>
+                </td></tr></table>
+            </div>
+        </div>
+        <div class="cnw_nav_conitem">
+            <div class="layout">
+                <div class="cnw_nav_slides">
+                    <ul>
+                        <li><a href="/product/1162.html">
+                            <span class="item_name">招财貔貅</span>
+                            <span class="item_pic"><img src="images/pic/npic_1.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>1330.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1163.html">
+                            <span class="item_name">楚天长歌</span>
+                            <span class="item_pic"><img src="images/pic/npic_2.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2350.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1159.html">
+                            <span class="item_name">年年好运</span>
+                            <span class="item_pic"><img src="images/pic/npic_3.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2680.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1201.html">
+                            <span class="item_name">出水芙蓉</span>
+                            <span class="item_pic"><img src="images/pic/npic_4.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>150.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="cnw_switchable_nav">
+                    <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+                    <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+                </div>
+            </div>
+        </div>
+        <div class="cnw_nav_conitem">
+            <div class="layout">
+                <div class="cnw_nav_slides">
+                    <ul>
+                        <li><a href="/product/1162.html">
+                            <span class="item_name">招财貔貅</span>
+                            <span class="item_pic"><img src="images/pic/npic_1.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>1330.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1163.html">
+                            <span class="item_name">楚天长歌</span>
+                            <span class="item_pic"><img src="images/pic/npic_2.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2350.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1159.html">
+                            <span class="item_name">年年好运</span>
+                            <span class="item_pic"><img src="images/pic/npic_3.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2680.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1201.html">
+                            <span class="item_name">出水芙蓉</span>
+                            <span class="item_pic"><img src="images/pic/npic_4.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>150.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="cnw_switchable_nav">
+                    <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+                    <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+                </div>
+            </div>
+        </div>
+        <div class="cnw_nav_conitem">
+            <div class="layout">
+                <div class="cnw_nav_slides">
+                    <ul>
+                        <li><a href="/product/1162.html">
+                            <span class="item_name">招财貔貅</span>
+                            <span class="item_pic"><img src="images/pic/npic_1.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>1330.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1163.html">
+                            <span class="item_name">楚天长歌</span>
+                            <span class="item_pic"><img src="images/pic/npic_2.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2350.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1159.html">
+                            <span class="item_name">年年好运</span>
+                            <span class="item_pic"><img src="images/pic/npic_3.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2680.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1201.html">
+                            <span class="item_name">出水芙蓉</span>
+                            <span class="item_pic"><img src="images/pic/npic_4.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>150.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="cnw_switchable_nav">
+                    <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+                    <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+                </div>
+            </div>
+        </div>
+        <div class="cnw_nav_conitem">
+            <div class="layout">
+                <div class="cnw_nav_slides">
+                    <ul>
+                        <li><a href="/product/1162.html">
+                            <span class="item_name">招财貔貅</span>
+                            <span class="item_pic"><img src="images/pic/npic_1.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>1330.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1163.html">
+                            <span class="item_name">楚天长歌</span>
+                            <span class="item_pic"><img src="images/pic/npic_2.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2350.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1159.html">
+                            <span class="item_name">年年好运</span>
+                            <span class="item_pic"><img src="images/pic/npic_3.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2680.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1201.html">
+                            <span class="item_name">出水芙蓉</span>
+                            <span class="item_pic"><img src="images/pic/npic_4.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>150.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="cnw_switchable_nav">
+                    <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+                    <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+                </div>
+            </div>
+        </div>
+        <div class="cnw_nav_conitem">
+            <div class="layout">
+                <div class="cnw_nav_slides">
+                    <ul>
+                        <li><a href="/product/1162.html">
+                            <span class="item_name">招财貔貅</span>
+                            <span class="item_pic"><img src="images/pic/npic_1.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>1330.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1163.html">
+                            <span class="item_name">楚天长歌</span>
+                            <span class="item_pic"><img src="images/pic/npic_2.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2350.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1159.html">
+                            <span class="item_name">年年好运</span>
+                            <span class="item_pic"><img src="images/pic/npic_3.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2680.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1201.html">
+                            <span class="item_name">出水芙蓉</span>
+                            <span class="item_pic"><img src="images/pic/npic_4.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>150.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="cnw_switchable_nav">
+                    <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+                    <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+                </div>
+            </div>
+        </div>
+        <div class="cnw_nav_conitem">
+            <div class="layout">
+                <div class="cnw_nav_slides">
+                    <ul>
+                        <li><a href="/product/1162.html">
+                            <span class="item_name">招财貔貅</span>
+                            <span class="item_pic"><img src="images/pic/npic_1.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>1330.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1163.html">
+                            <span class="item_name">楚天长歌</span>
+                            <span class="item_pic"><img src="images/pic/npic_2.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2350.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1159.html">
+                            <span class="item_name">年年好运</span>
+                            <span class="item_pic"><img src="images/pic/npic_3.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>2680.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                        <li><a href="/product/1201.html">
+                            <span class="item_name">出水芙蓉</span>
+                            <span class="item_pic"><img src="images/pic/npic_4.jpg" alt=""/></span>
+                            <span class="item_price">RMB <em>150.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </a></li>
+                    </ul>
+                </div>
+                <div class="cnw_switchable_nav">
+                    <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+                    <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cnw_side_service">
+        <div class="cnw_side_service_wrap cnw_ss_opened">
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                    <td><a href="#"><img src="images/pic/ico-weibo.png" alt=""/></a></td>
+                </tr>
+                <tr>
+                    <td><img src="images/pic/qrcode.png" alt=""/></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p><a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=%E4%BB%81%E6%B5%B7%E7%BD%91&site=cntaobao&s=1&charset=utf-8" ><img src="images/pic/kf_wangwang.png" style="vertical-align: middle"/>&nbsp;&nbsp;旺旺客服</a></p>
+                        <p><a href="http://float2006.tq.cn/static.jsp?version=vip&admiuin=9579685&ltype=0&iscallback=1&is_message_sms=0&is_send_mail=0&uin=9579685" target="_blank"><img src="images/pic/kf_tq.png" alt="" style="vertical-align: middle"/>&nbsp;&nbsp;TQ客服</a></p>
+                    </td>
+                </tr>
+            </table>
+            <div class="cnw_service_toggle"><i></i></div>
+        </div>
+    </div>
+
+	<div class="cnw_intitle">
+        <span>珍藏推荐</span>
+	</div>
+    <div class="cnw_inslides">
+        <div class="cnw_switchable_slides">
+            <ul>
+                <li style="background-image: url('images/pic/inbanner_1_1.jpg')"><a href="/product/1151.html"></a></li>
+                <li style="background-image: url('images/pic/inbanner_1_2.jpg')"><a href="/product/1300.html"></a></li>
+                <li style="background-image: url('images/pic/inbanner_1_3.jpg')"><a href="/product/1154.html"></a></li>
+            </ul>
+        </div>
+        <div class="cnw_switchable_nav">
+            <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+            <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+        </div>
+    </div>
+
+    <div class="layout">
+        <div class="cnw_inblock">
+            <ul>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_1_1.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1151.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">快乐合祥</strong>
+                            <span class="item_price">RMB <em>19600.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_1_2.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1300.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">千手观音</strong>
+                            <span class="item_price">RMB <em>30000.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_1_3.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1154.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">四方吉祥</strong>
+                            <span class="item_price">RMB <em>28600.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="cnw_intitle">
+        <span>最伴手礼</span>
+    </div>
+    <div class="cnw_inslides">
+        <div class="cnw_switchable_slides">
+            <ul>
+                <li style="background-image: url('images/pic/inbanner_2_1.jpg')"><a href="/product/1301.html"></a></li>
+                <li style="background-image: url('images/pic/inbanner_2_2.jpg')"><a href="/product/1156.html"></a></li>
+                <li style="background-image: url('images/pic/inbanner_2_3.jpg')"><a href="/product/1153.html"></a></li>
+            </ul>
+        </div>
+        <div class="cnw_switchable_nav">
+            <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+            <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+        </div>
+    </div>
+    <div class="layout">
+        <div class="cnw_inblock">
+            <ul>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_2_1.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1156.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">路路顺心</strong>
+                            <span class="item_price">RMB <em>11800.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_2_2.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1153.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">五福临门</strong>
+                            <span class="item_price">RMB <em>7800.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_2_3.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1152.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">展翅辉煌</strong>
+                            <span class="item_price">RMB <em>9800.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="cnw_intitle">
+        <span>私人订制</span>
+    </div>
+    <div class="cnw_inslides">
+        <div class="cnw_switchable_slides">
+            <ul>
+                <li style="background-image: url('images/pic/inbanner_3_1.jpg')"><a href="/product/1160.html"></a></li>
+                <li style="background-image: url('images/pic/inbanner_3_2.jpg')"><a href="/product/1161.html"></a></li>
+                <li style="background-image: url('images/pic/inbanner_3_3.jpg')"><a href="/product/1158.html"></a></li>
+            </ul>
+        </div>
+        <div class="cnw_switchable_nav">
+            <a class="cnw_inslide_prev" href="javascript:void(0)">&lt;</a>
+            <a class="cnw_inslide_next" href="javascript:void(0)">&gt;</a>
+        </div>
+    </div>
+    <div class="layout">
+        <div class="cnw_inblock">
+            <ul>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_3_1.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1159.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">年年好运</strong>
+                            <span class="item_price">RMB <em>20000.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_3_2.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1161.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">天伦之乐</strong>
+                            <span class="item_price">RMB <em>5800.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <img class="cnw_initem_img" src="images/pic/inpic_3_3.jpg" alt=""/>
+                    <a class="cnw_initem" href="/product/1158.html">
+                        <span class="cnw_iteminfo">
+                            <strong class="item_name">永结同心</strong>
+                            <span class="item_price">RMB <em>5800.00</em></span>
+                            <span class="item_btn">立即购买</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="cnw_updownbtn">
+        <a class="cnw_up" href="javascript:void(0)"></a>
+        <a class="cnw_down" href="javascript:void(0)"></a>
+    </div>
+
+
+    <div class="layout">
+        <div class="newsblock">
+            <div class="newsbox">
+                <h3 class="title"><span>电商资讯</span></h3>
+                <div class="newscon">
+                    <ul>
+                        <li><a href="/view/9bcbe350-36b9-4a81-92d5-6b9fc4b5bd2e.html" target="_blank">闽南电商频道网站上线开通仪式<span class="ico-new"></span></a></li>
+                        <li><a href="/view/23b1c0c4-1c11-4730-a4ec-6832ac5f0499.html" target="_blank">心系云南 格男仕男装携手东南早报暖冬公益在行动<span class="ico-new"></span></a></li>
+                        <li><a href="/view/88c9d2f2-6d02-4ebf-8851-ff153204169f.html" target="_blank">淘品牌的另类企业文化</a></li>
+                        <li><a href="/view/49bbfbd3-0620-41b7-80f7-b7ef83ab2598.html" target="_blank">我是吴志超，我为wo代言</a></li>
+                        <li><a href="/view/f15f459b-74f5-48c0-a9b2-ed653bb5dd23.html" target="_blank">格男仕男装荣膺年度“最佳商业价值”奖</a></li>
+                        <li><a href="/view/35d64c11-e9fe-4950-8b69-4090d346b0a3.html" target="_blank">网络男装品牌格男仕预计年底线下店超20家 </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="newsbox">
+                <h3 class="title"><span>电商资讯</span></h3>
+                <div class="newscon">
+                    <ul>
+                        <li><a href="/view/9bcbe350-36b9-4a81-92d5-6b9fc4b5bd2e.html" target="_blank">闽南电商频道网站上线开通仪式<span class="ico-new"></span></a></li>
+                        <li><a href="/view/23b1c0c4-1c11-4730-a4ec-6832ac5f0499.html" target="_blank">心系云南 格男仕男装携手东南早报暖冬公益在行动<span class="ico-new"></span></a></li>
+                        <li><a href="/view/88c9d2f2-6d02-4ebf-8851-ff153204169f.html" target="_blank">淘品牌的另类企业文化</a></li>
+                        <li><a href="/view/49bbfbd3-0620-41b7-80f7-b7ef83ab2598.html" target="_blank">我是吴志超，我为wo代言</a></li>
+                        <li><a href="/view/f15f459b-74f5-48c0-a9b2-ed653bb5dd23.html" target="_blank">格男仕男装荣膺年度“最佳商业价值”奖</a></li>
+                        <li><a href="/view/35d64c11-e9fe-4950-8b69-4090d346b0a3.html" target="_blank">网络男装品牌格男仕预计年底线下店超20家 </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+	<div class="layout">
+        <div class="ftconlist">
+            <dl>
+                <dt><img src="images/footico_1.png"><br>订购与支付</dt>
+                <dd><p><a href="#">新手注册与登录</a></p>
+                    <p><a href="#">如何购物</a></p>
+                    <p><a href="#">优惠券使用细则</a></p>
+                    <p><a href="#">在线支付宝</a></p>
+                    <p><a href="#">验收签收</a></p></dd>
+            </dl>
+            <dl>
+                <dt><img src="images/footico_2.png"><br>快递与配送</dt>
+                <dd><p><a href="#">配送方式/时间</a></p>
+                    <p><a href="#">货到付款</a></p>
+                    <p><a href="#">运费说明</a></p></dd>
+            </dl>
+            <dl>
+                <dt><img src="images/footico_3.png"><br>售后服务</dt>
+                <dd><p><a href="#">联系客服</a></p>
+                    <p><a href="#">订单查询</a></p>
+                    <p><a href="#">退换保修服务</a></p>
+                    <p><a href="#">退款方式</a></p></dd>
+            </dl>
+            <dl>
+                <dt><img src="images/footico_4.png"><br>关于中国白</dt>
+                <dd><p><a href="#">了解中国白</a></p>
+                    <p><a href="#">关注中国白</a></p>
+                    <p><a href="#">品牌文化</a></p></dd>
+            </dl>
+        </div>
+        <div class="ftcopyright">
+            <img src="images/ft_logo.png"/><br>©2014-2016 ZHONGGUOBAI.COM
+        </div>
+	</div>
+</div>
+
+</body>
+</html>

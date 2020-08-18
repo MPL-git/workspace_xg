@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CutPriceOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CutPriceOrderCustom" extends="com.jf.dao.CutPriceOrderMapper.BaseResultMap">
+  
+  </resultMap>
+	<select id="getAssistanceExpireOrder"  resultType="com.jf.entity.CutPriceOrder">
+		SELECT
+		cut.id,
+		cut.order_code,
+		cut.product_item_id,
+		cut.quantity
+		FROM
+		bu_cut_price_order cut,
+		bu_cut_price_cnf cnf
+		WHERE
+		cut.single_product_activity_id = cnf.single_product_activity_id
+		AND cut.activity_type = '10'
+		AND cut.`status` IN ('1', '2')
+		AND cut.create_date &lt;= date_add(date_add(now(), INTERVAL - 24 HOUR),INTERVAL - cnf.active_time HOUR)
+	</select>
+  	
+</mapper>

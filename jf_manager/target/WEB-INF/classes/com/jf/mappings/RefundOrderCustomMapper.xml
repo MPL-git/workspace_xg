@@ -1,0 +1,1015 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.RefundOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.RefundOrderCustom"  extends="com.jf.dao.RefundOrderMapper.BaseResultMap">
+  	<result column="combine_order_code" property="combineOrderCode" jdbcType="VARCHAR" />
+  	<result column="combine_deposit_order_code" property="combineDepositOrderCode" jdbcType="VARCHAR" />
+  	<result column="total_pay_amount" property="totalPayAmount" jdbcType="DECIMAL" />
+  	<result column="total_deposit" property="totalDeposit" jdbcType="DECIMAL" />
+  	<result column="combine_order_status_desc" property="combineOrderStatusDesc" jdbcType="VARCHAR" />
+  	<result column="combine_deposit_order_status_desc" property="combineDepositOrderStatusDesc" jdbcType="VARCHAR" />
+  	<result column="payment_name" property="paymentName" jdbcType="VARCHAR" />
+  	<result column="deposit_payment_name" property="depositPaymentName" jdbcType="VARCHAR" />
+  	<result column="payment_no" property="paymentNo" jdbcType="VARCHAR" />
+  	<result column="deposit_payment_no" property="depositPaymentNo" jdbcType="VARCHAR" />
+  	<result column="service_type_desc" property="serviceTypeDesc" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="refund_staff_name" property="refundStaffName" jdbcType="VARCHAR" />
+  	<result column="refund_method_desc" property="refundMethodDesc" jdbcType="VARCHAR" />
+  	<result column="each_day" property="eachDay" jdbcType="VARCHAR" />
+	<result column="total_count" property="totalCount" jdbcType="INTEGER" />
+	<result column="refund_amount" property="refundAmount" jdbcType="DECIMAL" />
+	<result column="wx_amount" property="wxAmount" jdbcType="DECIMAL" />
+	<result column="zfb_amount" property="zfbAmount" jdbcType="DECIMAL" />
+	<result column="yl_amount" property="ylAmount" jdbcType="DECIMAL" />
+	<result column="gzh_amount" property="gzhAmount" jdbcType="DECIMAL" />
+	<result column="other_amount" property="otherAmount" jdbcType="DECIMAL" />
+	<result column="wx_count" property="wxCount" jdbcType="INTEGER" />
+	<result column="zfb_count" property="zfbCount" jdbcType="INTEGER" />
+	<result column="yl_count" property="ylCount" jdbcType="INTEGER" />
+	<result column="gzh_count" property="gzhCount" jdbcType="INTEGER" />
+	<result column="other_count" property="otherCount" jdbcType="INTEGER" />
+	<result column="confirm_amount" property="confirmAmount" jdbcType="DECIMAL" />
+	<result column="lock_date" property="lockDate" jdbcType="VARCHAR" />
+	<result column="register_amount" property="registerAmount" jdbcType="DECIMAL" />
+	<result column="no_deal_amount" property="noDealAmount" jdbcType="DECIMAL" />
+	<result column="unusual_amount" property="unusualAmount" jdbcType="DECIMAL" />
+	<result column="customer_service_order_code" property="customerServiceOrderCode" jdbcType="VARCHAR" />
+	<result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+	<result column="order_dtl_id" property="orderDtlId" jdbcType="INTEGER" />
+	
+	<result column="each_Day1" property="eachDay1" jdbcType="VARCHAR" />
+	<result column="rowxapp_amount" property="rowxappAmount" jdbcType="DECIMAL" />
+	<result column="rowxgzh_amount" property="rowxgzhAmount" jdbcType="DECIMAL" />
+	<result column="rocdo_wx_amount" property="rocdowxAmount" jdbcType="DECIMAL" />
+	<result column="rocdo_gzh_amount" property="rocdogzhAmount" jdbcType="DECIMAL" />
+	<result column="rozFb_amount" property="rozFbAmount" jdbcType="DECIMAL" />
+	<result column="rocdo_zfb_amount" property="rocdozfbAmount" jdbcType="DECIMAL" />
+	<result column="rovip_wx_amount" property="rovipwxAmount" jdbcType="DECIMAL" />
+	<result column="rosvip_gzh_amount" property="rosvipgzhAmount" jdbcType="DECIMAL" />
+	<result column="rosvip_zfb_amount" property="rosvipzfbAmount" jdbcType="DECIMAL" />
+	<result column="wxr_amount" property="wxrAmount" jdbcType="DECIMAL" />
+	
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, combine_order_id, service_type, order_type, service_order_id, combine_deposit_order_id, 
+    refund_amount, refund_agree_date, refund_method, refund_req_no, failed_reason, try_times, 
+    status, success_date, refund_code, refund_register_date, cashier_staff_id, wx_refund_id, 
+    zfb_refund_id, create_by, create_date, update_by, update_date, remarks, del_flag,
+    (select a.combine_order_code from bu_combine_order a where a.id = t.combine_order_id)combine_order_code,
+    (select a.combine_deposit_order_code from bu_combine_deposit_order a where a.id = t.combine_deposit_order_id)combine_deposit_order_code,
+    (select a.total_pay_amount from bu_combine_order a where a.id = t.combine_order_id)total_pay_amount,
+    (select a.total_deposit from bu_combine_deposit_order a where a.id = t.combine_deposit_order_id)total_deposit,
+    FUN_GET_STATUS_DESC("BU_COMBINE_ORDER","STATUS",(select a.status from bu_combine_order a where a.id = t.combine_order_id))combine_order_status_desc,
+    FUN_GET_STATUS_DESC("BU_COMBINE_DEPOSIT_ORDER","STATUS",(select a.status from bu_combine_deposit_order a where a.id = t.combine_deposit_order_id))combine_deposit_order_status_desc,
+    (select b.remarks from bu_combine_order a,sys_payment b where a.id = t.combine_order_id and a.payment_id = b.id)payment_name,
+    (select b.remarks from bu_combine_deposit_order a,sys_payment b where a.id = t.combine_deposit_order_id and a.payment_id = b.id)deposit_payment_name,
+    (select a.payment_no from bu_combine_order a where a.id = t.combine_order_id)payment_no,
+    (select a.payment_no from bu_combine_deposit_order a where a.id = t.combine_deposit_order_id)deposit_payment_no,
+    FUN_GET_STATUS_DESC("BU_REFUND_ORDER","SERVICE_TYPE",service_type)service_type_desc,
+    FUN_GET_STATUS_DESC("BU_REFUND_ORDER","STATUS",status)status_desc,
+    (select a.STAFF_NAME from sys_staff_info a where a.STAFF_ID = t.cashier_staff_id)refund_staff_name,
+    FUN_GET_STATUS_DESC("BU_REFUND_ORDER","REFUND_METHOD",refund_method)refund_method_desc,
+    (select a.order_code from bu_customer_service_order a where a.id = t.service_order_id)customer_service_order_code,
+    (select b.sub_order_code from bu_customer_service_order a,bu_sub_order b where a.id = t.service_order_id and a.sub_order_id = b.id)sub_order_code,
+    (select cso.order_dtl_id from bu_customer_service_order cso where cso.id = t.service_order_id and cso.del_flag='0')order_dtl_id
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.RefundOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_refund_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" resultType="java.lang.Integer" parameterType="com.jf.entity.RefundOrderCustomExample" >
+    select count(*) from bu_refund_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <sql id="refundOrderCountEachDayListSql">
+SELECT
+	each_day,
+	sum(total_count) AS total_count,
+	sum(refund_amount) AS refund_amount,
+	sum(zfb_amount) AS zfb_amount,
+	sum(zfb_count) AS zfb_count,
+	sum(wx_amount) AS wx_amount,
+	sum(wx_count) AS wx_count,
+	sum(gzh_amount) AS gzh_amount,
+	sum(gzh_count) AS gzh_count,
+	sum(other_amount) AS other_amount,
+	sum(other_count) AS other_count,
+	sum(no_deal_amount) AS no_deal_amount,
+	sum(register_amount) AS register_amount,
+	sum(confirm_amount) AS confirm_amount,
+	sum(refund_amount-register_amount) AS unusual_amount,
+	(
+		SELECT
+			b.lock_date
+		FROM
+			bu_receipt_register_date_lock b
+		WHERE
+			b.lock_date = each_day
+	) lock_date
+FROM
+	(
+		SELECT
+			DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+			COUNT(ro.id) total_count,
+			SUM(ro.refund_amount) refund_amount,
+			0 AS zfb_amount,
+			0 AS zfb_count,
+			0 AS wx_amount,
+			0 AS wx_count,
+			0 AS gzh_amount,
+			0 AS gzh_count,
+			0 AS other_amount,
+			0 AS other_count,
+			0 AS no_deal_amount,
+			0 AS register_amount,
+			0 AS confirm_amount
+		FROM
+			bu_refund_order ro
+			LEFT JOIN bu_combine_order co ON ro.combine_order_id = co.id
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '1'	
+		AND ro.status in ('1','3','4')	
+		AND co.`status` = '1'
+		AND co.del_flag = '0'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		GROUP BY
+			each_day
+		UNION
+			SELECT
+				DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+				0 AS total_count,
+				0 AS refund_amount,
+				SUM(ro.refund_amount) AS zfb_amount,
+				COUNT(ro.id) AS zfb_count,
+				0 AS wx_amount,
+				0 AS wx_count,
+				0 AS gzh_amount,
+				0 AS gzh_count,
+				0 AS other_amount,
+				0 AS other_count,
+				0 AS no_deal_amount,
+				0 AS register_amount,
+				0 AS confirm_amount
+			FROM
+				bu_refund_order ro,
+				bu_combine_order co
+			WHERE
+				ro.del_flag = '0'
+			AND ro.order_type = '1'	
+			AND ro.status in ('1','3','4')	
+			AND ro.refund_method = '1'
+			AND ro.success_date IS NOT NULL
+			AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+			AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+			AND ro.combine_order_id = co.id
+			AND co.`status` = '1'
+			AND co.del_flag = '0'
+			AND co.payment_id in (1,6)
+			GROUP BY
+				each_day
+			UNION
+				SELECT
+					DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+					0 AS total_count,
+					0 AS refund_amount,
+					0 AS zfb_amount,
+					0 AS zfb_count,
+					SUM(ro.refund_amount) AS wx_amount,
+					COUNT(ro.id) AS wx_count,
+					0 AS gzh_amount,
+					0 AS gzh_count,
+					0 AS other_amount,
+					0 AS other_count,
+					0 AS no_deal_amount,
+					0 AS register_amount,
+					0 AS confirm_amount
+				FROM
+					bu_refund_order ro,
+					bu_combine_order co
+				WHERE
+					ro.del_flag = '0'
+				AND ro.order_type = '1'	
+				AND ro.status in ('1','3','4')	
+				AND ro.refund_method = '1'
+				AND ro.success_date IS NOT NULL
+				AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+				AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+				AND ro.combine_order_id = co.id
+				AND co.`status` = '1'
+				AND co.del_flag = '0'
+				AND co.payment_id in (2,5)
+				GROUP BY
+					each_day
+			UNION
+				SELECT
+					DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+					0 AS total_count,
+					0 AS refund_amount,
+					0 AS zfb_amount,
+					0 AS zfb_count,
+					0 AS wx_amount,
+					0 AS wx_count,
+					SUM(ro.refund_amount) AS gzh_amount,
+					COUNT(ro.id) AS gzh_count,
+					0 AS other_amount,
+					0 AS other_count,
+					0 AS no_deal_amount,
+					0 AS register_amount,
+					0 AS confirm_amount
+				FROM
+					bu_refund_order ro,
+					bu_combine_order co
+				WHERE
+					ro.del_flag = '0'
+				AND ro.order_type = '1'	
+				AND ro.status in ('1','3','4')	
+				AND ro.refund_method = '1'
+				AND ro.success_date IS NOT NULL
+				AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+				AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+				AND ro.combine_order_id = co.id
+				AND co.`status` = '1'
+				AND co.del_flag = '0'
+				AND co.payment_id in (4,7)
+				GROUP BY
+					each_day
+				UNION
+					SELECT
+						DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+						0 AS total_count,
+						0 AS refund_amount,
+						0 AS zfb_amount,
+						0 AS zfb_count,
+						0 AS wx_amount,
+						0 AS wx_count,
+						0 AS gzh_amount,
+						0 AS gzh_count,
+						SUM(ro.refund_amount) AS other_amount,
+						COUNT(ro.id) AS other_count,
+						0 AS no_deal_amount,
+						0 AS register_amount,
+						0 AS confirm_amount
+					FROM
+						bu_refund_order ro
+					WHERE
+						ro.del_flag = '0'
+					AND ro.order_type = '1'	
+					AND ro.status in ('1','3','4')	
+					AND ro.refund_method = '2'
+					AND ro.success_date IS NOT NULL
+					AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+					AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+					GROUP BY
+						each_day
+					UNION
+						SELECT
+							DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+							0 AS total_count,
+							0 AS refund_amount,
+							0 AS zfb_amount,
+							0 AS zfb_count,
+							0 AS wx_amount,
+							0 AS wx_count,
+							0 AS gzh_amount,
+							0 AS gzh_count,
+							0 AS other_amount,
+							0 AS other_count,
+							SUM(ro.refund_amount) AS no_deal_amount,
+							0 AS register_amount,
+							0 AS confirm_amount
+						FROM
+							bu_refund_order ro
+						WHERE
+							ro.success_date IS NOT NULL
+						AND ro.order_type = '1'	
+						AND ro.`STATUS` = '1'
+						AND ro.del_flag = '0'
+						AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+						AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+						GROUP BY
+							each_day
+						UNION
+							SELECT
+								DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+								0 AS total_count,
+								0 AS refund_amount,
+								0 AS zfb_amount,
+								0 AS zfb_count,
+								0 AS wx_amount,
+								0 AS wx_count,
+								0 AS gzh_amount,
+								0 AS gzh_count,
+								0 AS other_amount,
+								0 AS other_count,
+								0 AS no_deal_amount,
+								SUM(ro.refund_amount) AS register_amount,
+								0 AS confirm_amount
+							FROM
+								bu_refund_order ro
+							WHERE
+								ro.success_date IS NOT NULL
+							AND ro.order_type = '1'	
+							AND ro.`STATUS` = '3'
+							AND ro.del_flag = '0'
+							AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+							AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+							GROUP BY
+								each_day
+							UNION
+								SELECT
+									DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+									0 AS total_count,
+									0 AS refund_amount,
+									0 AS zfb_amount,
+									0 AS zfb_count,
+									0 AS wx_amount,
+									0 AS wx_count,
+									0 AS gzh_amount,
+									0 AS gzh_count,
+									0 AS other_amount,
+									0 AS other_count,
+									0 AS no_deal_amount,
+									0 AS register_amount,
+									SUM(ro.refund_amount) AS confirm_amount
+								FROM
+									bu_refund_order ro
+								WHERE
+									ro.success_date IS NOT NULL
+								AND ro.order_type = '1'	
+								AND ro.`STATUS` = '4'
+								AND ro.del_flag = '0'
+								AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+								AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+								GROUP BY
+									each_day
+	) t
+GROUP BY
+	t.each_day
+ORDER BY
+	t.each_day limit 61
+	</sql>
+	
+	<select id="refundOrderCountEachDayList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    	SELECT TAB.* FROM (
+		<include refid="refundOrderCountEachDayListSql" />
+		)TAB
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+  	</select>
+  	
+	<select id="getIdsByRefundCode" resultType="Integer" parameterType="java.util.HashMap" >
+    	SELECT ro.id from bu_refund_order ro where ro.refund_code =#{refundCode} and ro.del_flag='0' and ro.status in
+    	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+               #{item}       
+	    </foreach>  
+  	</select>
+  	
+	<select id="refundOrderCount" resultType="java.util.Map" parameterType="java.util.Map" >
+		select count(ro.id) totalCount,sum(ro.refund_amount) totalRefundAmount from bu_refund_order ro 
+        <if test="paymentId !=null || refundPaymentId !=null || combineOrderCode !=null">
+        ,bu_combine_order co
+        </if>
+        <if test="mchtCode !=null">
+        ,bu_mcht_info a,bu_customer_service_order b,bu_sub_order c WHERE ro.service_order_id = b.id and b.sub_order_id = c.id and c.mcht_id = a.id
+        </if>
+        <if test="serviceOrderCode !=null">
+        ,bu_customer_service_order b
+        </if>
+        where ro.del_flag='0'
+        <if test="paymentId !=null">
+        and ro.combine_order_id = co.id 
+        and co.payment_id = #{paymentId}
+        </if>
+        <if test="refundPaymentId !=null">
+	        <if test="refundPaymentId==-1">
+	        	and ro.refund_method = '2'
+	        </if>
+	        <if test="refundPaymentId==1||refundPaymentId==2||refundPaymentId==3">
+	        	and ro.refund_method = '1' 
+	        	and ro.combine_order_id = co.id 
+       			and co.payment_id = #{refundPaymentId} 
+	        </if>
+        </if>
+        <if test="status !=null">
+        and ro.status = #{status}
+        </if> 
+        <if test="serviceType !=null">
+        and ro.service_type = #{serviceType}
+        </if> 
+        <if test="mchtCode !=null">
+        and a.mcht_code = #{mchtCode}
+        </if> 
+        <if test="refund_agree_date_begin !=null">
+        and ro.refund_agree_date <![CDATA[ >= ]]> #{refund_agree_date_begin}
+        </if> 
+        <if test="refund_agree_date_end !=null">
+        and ro.refund_agree_date <![CDATA[ <= ]]> #{refund_agree_date_end}
+        </if> 
+        <if test="combineOrderCode !=null">
+        and co.combine_order_code = #{combineOrderCode}
+        </if> 
+        <if test="serviceOrderCode !=null">
+        and b.order_code = #{serviceOrderCode}
+        </if> 
+        <if test="success_date_begin !=null">
+        and ro.success_date <![CDATA[ >= ]]> #{success_date_begin}
+        </if> 
+        <if test="success_date_end !=null">
+        and ro.success_date <![CDATA[ <= ]]> #{success_date_end}
+        </if> 
+        <if test="refundCode !=null">
+        and ro.refund_code = #{refundCode}
+        </if> 
+        <if test="refund_register_date_begin !=null">
+        and ro.refund_register_date <![CDATA[ >= ]]> #{refund_register_date_begin}
+        </if>
+        <if test="refund_register_date_end !=null">
+        and ro.refund_register_date <![CDATA[ <= ]]> #{refund_register_date_end}
+        </if>
+  	</select>
+  
+  <sql id="depositOrderRefundOrderCountEachDayListSql">
+	SELECT
+		t.each_day,
+		SUM(t.total_count) total_count ,
+		SUM(t.refund_amount) refund_amount,
+		SUM(t.zfb_amount) zfb_amount,
+		SUM(t.zfb_count) zfb_count,
+		SUM(t.wx_amount) wx_amount,
+		SUM(t.wx_count) wx_count,
+		SUM(t.gzh_amount) gzh_amount,
+		SUM(t.gzh_count) gzh_count,
+		SUM(t.other_amount) other_amount,
+		SUM(t.other_count) other_count
+	FROM
+	(
+  	SELECT
+		DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+		COUNT(ro.id) total_count,
+		SUM(ro.refund_amount) refund_amount,
+		0 AS zfb_amount,
+		0 AS zfb_count,
+		0 AS wx_amount,
+		0 AS wx_count,
+		0 AS gzh_amount,
+		0 AS gzh_count,
+		0 AS other_amount,
+		0 AS other_count
+	FROM
+		bu_refund_order ro
+		LEFT JOIN bu_combine_deposit_order cdo ON ro.combine_deposit_order_id = cdo.id
+	WHERE
+		ro.del_flag = '0'
+	AND ro.order_type = '2'	
+	AND ro.status in ('1','3','4')	
+	AND cdo.`status` = '2'
+	AND cdo.del_flag = '0'
+	AND ro.success_date IS NOT NULL
+	AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+	AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+	GROUP BY
+		each_day
+	UNION
+		SELECT
+			DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+			0 AS total_count,
+			0 AS refund_amount,
+			SUM(ro.refund_amount) AS zfb_amount,
+			COUNT(ro.id) AS zfb_count,
+			0 AS wx_amount,
+			0 AS wx_count,
+			0 AS gzh_amount,
+			0 AS gzh_count,
+			0 AS other_amount,
+			0 AS other_count
+		FROM
+			bu_refund_order ro,
+			bu_combine_deposit_order cdo
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '2'	
+		AND ro.status in ('1','3','4')	
+		AND ro.refund_method = '1'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		AND ro.combine_deposit_order_id = cdo.id
+		AND cdo.`status` = '2'
+		AND cdo.del_flag = '0'
+		AND cdo.payment_id in (1,6)
+		GROUP BY
+			each_day
+	UNION
+		SELECT
+			DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+			0 AS total_count,
+			0 AS refund_amount,
+			0 AS zfb_amount,
+			0 AS zfb_count,
+			SUM(ro.refund_amount) AS wx_amount,
+			COUNT(ro.id) AS wx_count,
+			0 AS gzh_amount,
+			0 AS gzh_count,
+			0 AS other_amount,
+			0 AS other_count
+		FROM
+			bu_refund_order ro,
+			bu_combine_deposit_order cdo
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '2'
+		AND ro.status in ('1','3','4')	
+		AND ro.refund_method = '1'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		AND ro.combine_deposit_order_id = cdo.id
+		AND cdo.`status` = '2'
+		AND cdo.del_flag = '0'
+		AND cdo.payment_id in (2,5)
+		GROUP BY
+			each_day
+	UNION
+		SELECT
+			DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_day,
+			0 AS total_count,
+			0 AS refund_amount,
+			0 AS zfb_amount,
+			0 AS zfb_count,
+			0 AS wx_amount,
+			0 AS wx_count,
+			SUM(ro.refund_amount) AS gzh_amount,
+			COUNT(ro.id) AS gzh_count,
+			0 AS other_amount,
+			0 AS other_count
+		FROM
+			bu_refund_order ro,
+			bu_combine_deposit_order cdo
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '2'	
+		AND ro.status in ('1','3','4')	
+		AND ro.refund_method = '1'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		AND ro.combine_deposit_order_id = cdo.id
+		AND cdo.`status` = '2'
+		AND cdo.del_flag = '0'
+		AND cdo.payment_id in (4,7)
+		GROUP BY
+			each_day
+	) t GROUP BY t.each_day
+  </sql>
+  <select id="depositOrderRefundOrderCountEachDayList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+  	SELECT TAB.* FROM (
+		<include refid="depositOrderRefundOrderCountEachDayListSql" />
+		)TAB
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+  </select>
+  
+  
+  
+<sql id="paymenExpenditureCountEachDayListSql">
+ SELECT
+ each_Day1 AS each_Day1,
+ ifnull(sum(wxapp_amount), 0.00) AS rowxapp_amount,
+ ifnull(sum(wxgzh_amount), 0.00) AS rowxgzh_amount,
+ ifnull(sum(cdo_wx_amount), 0.00) AS rocdo_wx_amount,
+ ifnull(sum(cdo_gzh_amount), 0.00) AS rocdo_gzh_amount,
+ ifnull(sum(cdo_zfb_amount), 0.00) AS rocdo_zfb_amount,
+ ifnull(sum(zFb_amount), 0.00) AS rozFb_amount,
+ ifnull(sum(wxr_amount), 0.00) AS wxr_amount
+FROM
+(
+   SELECT
+		 DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_Day1,
+		 SUM(ro.refund_amount) AS wxapp_amount,
+          0 AS wxgzh_amount,
+          0 AS cdo_wx_amount,
+          0 AS cdo_gzh_amount,
+          0 AS cdo_zfb_amount,
+          0 AS zFb_amount,
+          0 AS wxr_amount
+		FROM
+			bu_refund_order ro,
+			bu_combine_order co
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '1'	
+		AND ro.status in ('1','3','4')	
+		AND ro.refund_method = '1'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		AND ro.combine_order_id = co.id
+		AND co.`status` = '1'
+		AND co.del_flag = '0'
+		AND co.payment_id in (2,5)
+	   GROUP BY
+		 each_Day1
+
+       UNION
+			SELECT
+			   DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_Day1,
+               0 AS wxapp_amount,
+               SUM(ro.refund_amount) AS wxgzh_amount,
+               0 AS cdo_wx_amount,
+               0 AS cdo_gzh_amount,
+               0 AS cdo_zfb_amount,
+               0 AS zFb_amount,
+               0 AS wxr_amount
+
+			FROM
+				bu_refund_order ro,
+				bu_combine_order co
+			WHERE
+					ro.del_flag = '0'
+				AND ro.order_type = '1'	
+				AND ro.status in ('1','3','4')	
+				AND ro.refund_method = '1'
+				AND ro.success_date IS NOT NULL
+				AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+				AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+				AND ro.combine_order_id = co.id
+				AND co.`status` = '1'
+				AND co.del_flag = '0'
+				AND co.payment_id in (4,7)
+				GROUP BY
+					each_Day1
+   UNION
+		SELECT
+		  DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_Day1,
+          0 AS wxapp_amount,
+          0 AS wxgzh_amount,
+		  SUM(ro.refund_amount) AS cdo_wx_amount,
+          0 AS cdo_gzh_amount,
+          0 AS cdo_zfb_amount,
+          0 AS zFb_amount,
+          0 AS wxr_amount
+		FROM
+			bu_refund_order ro,
+			bu_combine_deposit_order cdo
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '2'
+		AND ro.status in ('1','3','4')	
+		AND ro.refund_method = '1'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		AND ro.combine_deposit_order_id = cdo.id
+		AND cdo.`status` = '2'
+		AND cdo.del_flag = '0'
+		AND cdo.payment_id in (2,5)
+		GROUP BY
+			each_Day1
+
+ UNION
+	  SELECT
+	      DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_Day1,
+          0 AS wxapp_amount,
+          0 AS wxgzh_amount,
+          0 AS cdo_wx_amount,
+	      SUM(ro.refund_amount) AS cdo_gzh_amount,
+          0 AS cdo_zfb_amount,
+          0 AS zFb_amount,
+          0 AS wxr_amount
+		
+		FROM
+			bu_refund_order ro,
+			bu_combine_deposit_order cdo
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '2'	
+		AND ro.status in ('1','3','4')	
+		AND ro.refund_method = '1'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		AND ro.combine_deposit_order_id = cdo.id
+		AND cdo.`status` = '2'
+		AND cdo.del_flag = '0'
+		AND cdo.payment_id in (4,7)
+		GROUP BY
+			each_Day1
+
+  UNION
+	  SELECT
+		 DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_Day1,
+		 0 AS wxapp_amount,
+         0 AS wxgzh_amount,
+         0 AS cdo_wx_amount,
+         0 AS cdo_gzh_amount,
+		 SUM(ro.refund_amount) AS cdo_zfb_amount,
+	     0 AS zFb_amount,
+         0 AS wxr_amount
+	    FROM
+			bu_refund_order ro,
+			bu_combine_deposit_order cdo
+		WHERE
+			ro.del_flag = '0'
+		AND ro.order_type = '2'	
+		AND ro.status in ('1','3','4')	
+		AND ro.refund_method = '1'
+		AND ro.success_date IS NOT NULL
+		AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+		AND ro.combine_deposit_order_id = cdo.id
+		AND cdo.`status` = '2'
+		AND cdo.del_flag = '0'
+		AND cdo.payment_id in (1,6)
+		GROUP BY
+			each_Day1
+
+     UNION
+		 SELECT
+		   DATE_FORMAT(ro.success_date, '%Y-%m-%d') each_Day1,
+		   0 AS wxapp_amount,
+           0 AS wxgzh_amount,
+           0 AS cdo_wx_amount,
+           0 AS cdo_gzh_amount,
+           0 AS cdo_zfb_amount,
+           SUM(ro.refund_amount) AS zFb_amount,
+           0 AS wxr_amount	
+		 FROM
+				bu_refund_order ro,
+				bu_combine_order co
+		WHERE
+				ro.del_flag = '0'
+			AND ro.order_type = '1'	
+			AND ro.status in ('1','3','4')	
+			AND ro.refund_method = '1'
+			AND ro.success_date IS NOT NULL
+			AND ro.success_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+			AND ro.success_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+			AND ro.combine_order_id = co.id
+			AND co.`status` = '1'
+			AND co.del_flag = '0'
+			AND co.payment_id in (1,6)
+			GROUP BY
+				each_Day1
+
+   UNION
+	  SELECT
+		  DATE_FORMAT(wxr.create_date, '%Y-%m-%d') each_Day1,
+		  0 AS wxapp_amount,
+          0 AS wxgzh_amount,
+          0 AS cdo_wx_amount,
+          0 AS cdo_gzh_amount,
+          0 AS cdo_zfb_amount,
+          0 AS zFb_amount,
+		  SUM(wxr.amount) wxr_amount
+		FROM
+		     bu_wx_redpack wxr
+		WHERE
+		    wxr.del_flag = '0'
+		AND wxr.create_date IS NOT NULL
+        AND wxr.status='4'
+		AND wxr.create_date <![CDATA[ >= ]]> #{successDateBegin,jdbcType=VARCHAR}
+		AND wxr.create_date <![CDATA[ <= ]]> #{successDateEnd,jdbcType=VARCHAR}
+	GROUP BY
+		  each_Day1
+)t
+GROUP BY
+	t.each_Day1
+ORDER BY
+	t.each_Day1
+  </sql>
+  
+	<select id="paymenExpenditureCountEachDayList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+  	SELECT TAB.* FROM (
+		<include refid="paymenExpenditureCountEachDayListSql" />
+		)TAB
+       	<if test="limitStart != null and limitStart>=0" >
+            LIMIT #{limitStart} , #{limitSize}
+         </if>
+    </select>
+    
+    <select id="paymenExpenditureCountEachDayCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+  	SELECT COUNT(1) FROM (
+		<include refid="paymenExpenditureCountEachDayListSql" />
+		)TAB
+    </select>
+
+
+	<select id="refundOrderStatistics" resultType="java.util.Map" parameterType="java.util.Map">
+		SELECT
+			A.mcht_id,
+			A.mcht_code,
+			A.company_name,
+			A.shop_name,
+			(
+				SELECT
+					group_concat(pb. NAME)
+				FROM
+					bu_mcht_product_brand mpb,
+					bu_product_brand pb
+				WHERE
+					mpb.product_brand_id = pb.id
+				AND pb.del_flag = '0'
+				AND pb. STATUS IN ('1', '2')
+				AND mpb.del_flag = '0'
+				AND mpb. STATUS IN ('1', '2')
+				AND mpb.mcht_id = A.mcht_id
+			) product_brand_name_s,
+			sum(A.quantity_A) quantity_sum_A,
+			sum(A.amount_A) amount_sum_A,
+			sum(A.quantity_B) quantity_sum_B,
+			sum(A.amount_B) amount_sum_B
+		FROM
+			(
+				SELECT
+					mi.id mcht_id,
+					mi.mcht_code,
+					mi.company_name,
+					mi.shop_name,
+					B.quantity_A,
+					B.amount_A,
+					B.quantity_B,
+					B.amount_B
+				FROM
+					bu_mcht_info mi,
+					(
+						SELECT
+							so.mcht_id,
+							cso.quantity quantity_A,
+							cso.amount amount_A,
+							0 quantity_B,
+							0 amount_B
+						FROM
+							bu_customer_service_order cso
+							LEFT JOIN bu_sub_order so ON cso.sub_order_id = so.id
+						WHERE
+							cso.del_flag = '0'
+						AND so.del_flag = '0'
+						AND cso.service_type = 'A'
+						AND cso. STATUS = '1'
+						<if test="createDateBegin != null" >
+							AND cso.create_date <![CDATA[ >= ]]> #{createDateBegin}
+						</if>
+						<if test="createDateEnd != null" >
+							AND cso.create_date <![CDATA[ <= ]]> #{createDateEnd}
+						</if>
+					) B
+				WHERE
+					mi.id = B.mcht_id
+				AND mi.del_flag = '0'
+				<if test="shopName != ''">
+					AND (mi.company_name LIKE concat('%',#{shopName},'%') OR mi.shop_name LIKE concat('%',#{shopName},'%'))
+				</if>
+				<if test="mchtCode != ''">
+					AND mi.mcht_code = #{mchtCode}
+				</if>
+				UNION ALL
+				SELECT
+					mi.id mcht_id,
+					mi.mcht_code,
+					mi.company_name,
+					mi.shop_name,
+					C.quantity_A,
+					C.amount_A,
+					C.quantity_B,
+					C.amount_B
+				FROM
+					bu_mcht_info mi,
+					(
+						SELECT
+							so.mcht_id,
+							0 quantity_A,
+							0 amount_A,
+							cso.quantity quantity_B,
+							cso.amount amount_B
+						FROM
+							bu_customer_service_order cso
+							LEFT JOIN bu_sub_order so ON cso.sub_order_id = so.id
+						WHERE
+							cso.del_flag = '0'
+						AND so.del_flag = '0'
+						AND cso.service_type = 'B'
+						AND cso. STATUS = '1'
+						<if test="createDateBegin != null" >
+							AND cso.create_date <![CDATA[ >= ]]> #{createDateBegin}
+						</if>
+						<if test="createDateEnd != null" >
+							AND cso.create_date <![CDATA[ <= ]]> #{createDateEnd}
+						</if>
+					) C
+				WHERE
+					mi.id = C.mcht_id
+				AND mi.del_flag = '0'
+				<if test="shopName != ''">
+					AND (mi.company_name LIKE concat('%',#{shopName},'%') OR mi.shop_name LIKE concat('%',#{shopName},'%'))
+				</if>
+				<if test="mchtCode != ''">
+					AND mi.mcht_code = #{mchtCode}
+				</if>
+			) A
+		GROUP BY
+			mcht_id
+			<if test="platContactStaffId != '' or productBrandId != '' or productTypeId != ''">
+				HAVING
+				<if test="platContactStaffId != ''">
+					mcht_id IN (
+						SELECT
+							mpc.mcht_id
+						FROM
+							bu_mcht_platform_contact mpc
+						WHERE
+							mpc.del_flag = '0'
+						AND mpc. STATUS = '1'
+						AND mpc.platform_contact_id = #{platContactStaffId}
+					)
+				</if>
+				<if test="platContactStaffId != '' and productBrandId != ''">
+					AND
+				</if>
+				<if test="productBrandId != ''">
+					mcht_id IN (
+						SELECT
+							mpb.mcht_id
+						FROM
+							bu_mcht_product_brand mpb
+						WHERE
+							mpb.del_flag = '0'
+						AND mpb. STATUS IN ('1', '2')
+						AND mpb.product_brand_id = #{productBrandId}
+					)
+				</if>
+				<if test="(platContactStaffId != '' or productBrandId != '') and productTypeId != ''">
+					AND
+				</if>
+				<if test="productTypeId != ''">
+					mcht_id IN (
+						SELECT
+							mpt.mcht_id
+						FROM
+							bu_mcht_product_type mpt
+						WHERE
+							mpt.del_flag = '0'
+						AND mpt. STATUS IN ('1', '2')
+						AND mpt.product_type_id = #{productTypeId}
+					)
+				</if>
+			</if>
+		ORDER BY
+			sum(A.amount_A) + sum(A.amount_B) DESC
+	</select>
+
+
+</mapper>

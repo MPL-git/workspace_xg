@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.Product" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="CHAR" />
+    <result column="ref_id" property="refId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="off_reason" property="offReason" jdbcType="CHAR" />
+    <result column="audit_status" property="auditStatus" jdbcType="VARCHAR" />
+    <result column="audit_by" property="auditBy" jdbcType="INTEGER" />
+    <result column="audit_remarks" property="auditRemarks" jdbcType="VARCHAR" />
+    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="product_type1_id" property="productType1Id" jdbcType="INTEGER" />
+    <result column="product_type2_id" property="productType2Id" jdbcType="INTEGER" />
+    <result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+    <result column="art_no" property="artNo" jdbcType="VARCHAR" />
+    <result column="suit_sex" property="suitSex" jdbcType="VARCHAR" />
+    <result column="suit_group" property="suitGroup" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="season" property="season" jdbcType="VARCHAR" />
+    <result column="limit_buy" property="limitBuy" jdbcType="INTEGER" />
+    <result column="cs_templet_id" property="csTempletId" jdbcType="INTEGER" />
+    <result column="remarks_color" property="remarksColor" jdbcType="CHAR" />
+    <result column="sale_type" property="saleType" jdbcType="CHAR" />
+    <result column="del_date" property="delDate" jdbcType="TIMESTAMP" />
+    <result column="is_single_prop" property="isSingleProp" jdbcType="CHAR" />
+    <result column="shop_product_custom_type_id_group" property="shopProductCustomTypeIdGroup" jdbcType="VARCHAR" />
+    <result column="weights" property="weights" jdbcType="INTEGER" />
+    <result column="is_activity" property="isActivity" jdbcType="CHAR" />
+    <result column="is_show" property="isShow" jdbcType="CHAR" />
+    <result column="min_sale_price_item_id" property="minSalePriceItemId" jdbcType="INTEGER" />
+    <result column="min_price_item_id" property="minPriceItemId" jdbcType="INTEGER" />
+    <result column="min_mall_price" property="minMallPrice" jdbcType="DECIMAL" />
+    <result column="min_sale_price" property="minSalePrice" jdbcType="DECIMAL" />
+    <result column="min_tag_price" property="minTagPrice" jdbcType="DECIMAL" />
+    <result column="sale_weight" property="saleWeight" jdbcType="INTEGER" />
+    <result column="freight_template_id" property="freightTemplateId" jdbcType="INTEGER" />
+    <result column="is_shop_show" property="isShopShow" jdbcType="CHAR" />
+    <result column="search_fields" property="searchFields" jdbcType="VARCHAR" />
+    <result column="third_platform_coupon_info" property="thirdPlatformCouponInfo" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="comment_weight" property="commentWeight" jdbcType="INTEGER" />
+    <result column="svip_discount" property="svipDiscount" jdbcType="DECIMAL" />
+    <result column="is_return_7days" property="isReturn7days" jdbcType="CHAR" />
+    <result column="shelf_life" property="shelfLife" jdbcType="VARCHAR" />
+    <result column="ccc_no" property="cccNo" jdbcType="VARCHAR" />
+    <result column="year_of_listing" property="yearOfListing" jdbcType="VARCHAR" />
+    <result column="virtual_sales" property="virtualSales" jdbcType="INTEGER" />
+    <result column="virtual_payers" property="virtualPayers" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+    <result column="recommend_remarks" property="recommendRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jf.entity.Product" extends="BaseResultMap" >
+    <result column="product_desc" property="productDesc" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, code, source, ref_id, name, status, off_reason, audit_status, audit_by, 
+    audit_remarks, brand_id, product_type1_id, product_type2_id, product_type_id, art_no, 
+    suit_sex, suit_group, year, season, limit_buy, cs_templet_id, remarks_color, sale_type, 
+    del_date, is_single_prop, shop_product_custom_type_id_group, weights, is_activity, 
+    is_show, min_sale_price_item_id, min_price_item_id, min_mall_price, min_sale_price, 
+    min_tag_price, sale_weight, freight_template_id, is_shop_show, search_fields, third_platform_coupon_info, 
+    sort, comment_weight, svip_discount, is_return_7days, shelf_life, ccc_no, year_of_listing, 
+    virtual_sales, virtual_payers, create_by, create_date, update_by, update_date, remarks, 
+    del_flag, recommend_remarks
+  </sql>
+  <sql id="Blob_Column_List" >
+    product_desc
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.jf.entity.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bu_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bu_product
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_product
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.ProductExample" >
+    delete from bu_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.Product" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_product (mcht_id, code, source, 
+      ref_id, name, status, 
+      off_reason, audit_status, audit_by, 
+      audit_remarks, brand_id, product_type1_id, 
+      product_type2_id, product_type_id, art_no, 
+      suit_sex, suit_group, year, 
+      season, limit_buy, cs_templet_id, 
+      remarks_color, sale_type, del_date, 
+      is_single_prop, shop_product_custom_type_id_group, 
+      weights, is_activity, is_show, 
+      min_sale_price_item_id, min_price_item_id, min_mall_price, 
+      min_sale_price, min_tag_price, sale_weight, 
+      freight_template_id, is_shop_show, search_fields, 
+      third_platform_coupon_info, sort, comment_weight, 
+      svip_discount, is_return_7days, shelf_life, 
+      ccc_no, year_of_listing, virtual_sales, 
+      virtual_payers, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag, recommend_remarks, product_desc
+      )
+    values (#{mchtId,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{source,jdbcType=CHAR}, 
+      #{refId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{offReason,jdbcType=CHAR}, #{auditStatus,jdbcType=VARCHAR}, #{auditBy,jdbcType=INTEGER}, 
+      #{auditRemarks,jdbcType=VARCHAR}, #{brandId,jdbcType=INTEGER}, #{productType1Id,jdbcType=INTEGER}, 
+      #{productType2Id,jdbcType=INTEGER}, #{productTypeId,jdbcType=INTEGER}, #{artNo,jdbcType=VARCHAR}, 
+      #{suitSex,jdbcType=VARCHAR}, #{suitGroup,jdbcType=VARCHAR}, #{year,jdbcType=VARCHAR}, 
+      #{season,jdbcType=VARCHAR}, #{limitBuy,jdbcType=INTEGER}, #{csTempletId,jdbcType=INTEGER}, 
+      #{remarksColor,jdbcType=CHAR}, #{saleType,jdbcType=CHAR}, #{delDate,jdbcType=TIMESTAMP}, 
+      #{isSingleProp,jdbcType=CHAR}, #{shopProductCustomTypeIdGroup,jdbcType=VARCHAR}, 
+      #{weights,jdbcType=INTEGER}, #{isActivity,jdbcType=CHAR}, #{isShow,jdbcType=CHAR}, 
+      #{minSalePriceItemId,jdbcType=INTEGER}, #{minPriceItemId,jdbcType=INTEGER}, #{minMallPrice,jdbcType=DECIMAL}, 
+      #{minSalePrice,jdbcType=DECIMAL}, #{minTagPrice,jdbcType=DECIMAL}, #{saleWeight,jdbcType=INTEGER}, 
+      #{freightTemplateId,jdbcType=INTEGER}, #{isShopShow,jdbcType=CHAR}, #{searchFields,jdbcType=VARCHAR}, 
+      #{thirdPlatformCouponInfo,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{commentWeight,jdbcType=INTEGER}, 
+      #{svipDiscount,jdbcType=DECIMAL}, #{isReturn7days,jdbcType=CHAR}, #{shelfLife,jdbcType=VARCHAR}, 
+      #{cccNo,jdbcType=VARCHAR}, #{yearOfListing,jdbcType=VARCHAR}, #{virtualSales,jdbcType=INTEGER}, 
+      #{virtualPayers,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR}, #{recommendRemarks,jdbcType=VARCHAR}, #{productDesc,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.Product" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="refId != null" >
+        ref_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="offReason != null" >
+        off_reason,
+      </if>
+      <if test="auditStatus != null" >
+        audit_status,
+      </if>
+      <if test="auditBy != null" >
+        audit_by,
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks,
+      </if>
+      <if test="brandId != null" >
+        brand_id,
+      </if>
+      <if test="productType1Id != null" >
+        product_type1_id,
+      </if>
+      <if test="productType2Id != null" >
+        product_type2_id,
+      </if>
+      <if test="productTypeId != null" >
+        product_type_id,
+      </if>
+      <if test="artNo != null" >
+        art_no,
+      </if>
+      <if test="suitSex != null" >
+        suit_sex,
+      </if>
+      <if test="suitGroup != null" >
+        suit_group,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="season != null" >
+        season,
+      </if>
+      <if test="limitBuy != null" >
+        limit_buy,
+      </if>
+      <if test="csTempletId != null" >
+        cs_templet_id,
+      </if>
+      <if test="remarksColor != null" >
+        remarks_color,
+      </if>
+      <if test="saleType != null" >
+        sale_type,
+      </if>
+      <if test="delDate != null" >
+        del_date,
+      </if>
+      <if test="isSingleProp != null" >
+        is_single_prop,
+      </if>
+      <if test="shopProductCustomTypeIdGroup != null" >
+        shop_product_custom_type_id_group,
+      </if>
+      <if test="weights != null" >
+        weights,
+      </if>
+      <if test="isActivity != null" >
+        is_activity,
+      </if>
+      <if test="isShow != null" >
+        is_show,
+      </if>
+      <if test="minSalePriceItemId != null" >
+        min_sale_price_item_id,
+      </if>
+      <if test="minPriceItemId != null" >
+        min_price_item_id,
+      </if>
+      <if test="minMallPrice != null" >
+        min_mall_price,
+      </if>
+      <if test="minSalePrice != null" >
+        min_sale_price,
+      </if>
+      <if test="minTagPrice != null" >
+        min_tag_price,
+      </if>
+      <if test="saleWeight != null" >
+        sale_weight,
+      </if>
+      <if test="freightTemplateId != null" >
+        freight_template_id,
+      </if>
+      <if test="isShopShow != null" >
+        is_shop_show,
+      </if>
+      <if test="searchFields != null" >
+        search_fields,
+      </if>
+      <if test="thirdPlatformCouponInfo != null" >
+        third_platform_coupon_info,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="commentWeight != null" >
+        comment_weight,
+      </if>
+      <if test="svipDiscount != null" >
+        svip_discount,
+      </if>
+      <if test="isReturn7days != null" >
+        is_return_7days,
+      </if>
+      <if test="shelfLife != null" >
+        shelf_life,
+      </if>
+      <if test="cccNo != null" >
+        ccc_no,
+      </if>
+      <if test="yearOfListing != null" >
+        year_of_listing,
+      </if>
+      <if test="virtualSales != null" >
+        virtual_sales,
+      </if>
+      <if test="virtualPayers != null" >
+        virtual_payers,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="recommendRemarks != null" >
+        recommend_remarks,
+      </if>
+      <if test="productDesc != null" >
+        product_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=CHAR},
+      </if>
+      <if test="refId != null" >
+        #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="offReason != null" >
+        #{offReason,jdbcType=CHAR},
+      </if>
+      <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="auditBy != null" >
+        #{auditBy,jdbcType=INTEGER},
+      </if>
+      <if test="auditRemarks != null" >
+        #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="productType1Id != null" >
+        #{productType1Id,jdbcType=INTEGER},
+      </if>
+      <if test="productType2Id != null" >
+        #{productType2Id,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeId != null" >
+        #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="artNo != null" >
+        #{artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="suitSex != null" >
+        #{suitSex,jdbcType=VARCHAR},
+      </if>
+      <if test="suitGroup != null" >
+        #{suitGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="season != null" >
+        #{season,jdbcType=VARCHAR},
+      </if>
+      <if test="limitBuy != null" >
+        #{limitBuy,jdbcType=INTEGER},
+      </if>
+      <if test="csTempletId != null" >
+        #{csTempletId,jdbcType=INTEGER},
+      </if>
+      <if test="remarksColor != null" >
+        #{remarksColor,jdbcType=CHAR},
+      </if>
+      <if test="saleType != null" >
+        #{saleType,jdbcType=CHAR},
+      </if>
+      <if test="delDate != null" >
+        #{delDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSingleProp != null" >
+        #{isSingleProp,jdbcType=CHAR},
+      </if>
+      <if test="shopProductCustomTypeIdGroup != null" >
+        #{shopProductCustomTypeIdGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="weights != null" >
+        #{weights,jdbcType=INTEGER},
+      </if>
+      <if test="isActivity != null" >
+        #{isActivity,jdbcType=CHAR},
+      </if>
+      <if test="isShow != null" >
+        #{isShow,jdbcType=CHAR},
+      </if>
+      <if test="minSalePriceItemId != null" >
+        #{minSalePriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="minPriceItemId != null" >
+        #{minPriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="minMallPrice != null" >
+        #{minMallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="minSalePrice != null" >
+        #{minSalePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="minTagPrice != null" >
+        #{minTagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleWeight != null" >
+        #{saleWeight,jdbcType=INTEGER},
+      </if>
+      <if test="freightTemplateId != null" >
+        #{freightTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="isShopShow != null" >
+        #{isShopShow,jdbcType=CHAR},
+      </if>
+      <if test="searchFields != null" >
+        #{searchFields,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdPlatformCouponInfo != null" >
+        #{thirdPlatformCouponInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="commentWeight != null" >
+        #{commentWeight,jdbcType=INTEGER},
+      </if>
+      <if test="svipDiscount != null" >
+        #{svipDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="isReturn7days != null" >
+        #{isReturn7days,jdbcType=CHAR},
+      </if>
+      <if test="shelfLife != null" >
+        #{shelfLife,jdbcType=VARCHAR},
+      </if>
+      <if test="cccNo != null" >
+        #{cccNo,jdbcType=VARCHAR},
+      </if>
+      <if test="yearOfListing != null" >
+        #{yearOfListing,jdbcType=VARCHAR},
+      </if>
+      <if test="virtualSales != null" >
+        #{virtualSales,jdbcType=INTEGER},
+      </if>
+      <if test="virtualPayers != null" >
+        #{virtualPayers,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="recommendRemarks != null" >
+        #{recommendRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="productDesc != null" >
+        #{productDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.ProductExample" resultType="java.lang.Integer" >
+    select count(*) from bu_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.code != null" >
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=CHAR},
+      </if>
+      <if test="record.refId != null" >
+        ref_id = #{record.refId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.offReason != null" >
+        off_reason = #{record.offReason,jdbcType=CHAR},
+      </if>
+      <if test="record.auditStatus != null" >
+        audit_status = #{record.auditStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditBy != null" >
+        audit_by = #{record.auditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditRemarks != null" >
+        audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brandId != null" >
+        brand_id = #{record.brandId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productType1Id != null" >
+        product_type1_id = #{record.productType1Id,jdbcType=INTEGER},
+      </if>
+      <if test="record.productType2Id != null" >
+        product_type2_id = #{record.productType2Id,jdbcType=INTEGER},
+      </if>
+      <if test="record.productTypeId != null" >
+        product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.artNo != null" >
+        art_no = #{record.artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suitSex != null" >
+        suit_sex = #{record.suitSex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.suitGroup != null" >
+        suit_group = #{record.suitGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.year != null" >
+        year = #{record.year,jdbcType=VARCHAR},
+      </if>
+      <if test="record.season != null" >
+        season = #{record.season,jdbcType=VARCHAR},
+      </if>
+      <if test="record.limitBuy != null" >
+        limit_buy = #{record.limitBuy,jdbcType=INTEGER},
+      </if>
+      <if test="record.csTempletId != null" >
+        cs_templet_id = #{record.csTempletId,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarksColor != null" >
+        remarks_color = #{record.remarksColor,jdbcType=CHAR},
+      </if>
+      <if test="record.saleType != null" >
+        sale_type = #{record.saleType,jdbcType=CHAR},
+      </if>
+      <if test="record.delDate != null" >
+        del_date = #{record.delDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isSingleProp != null" >
+        is_single_prop = #{record.isSingleProp,jdbcType=CHAR},
+      </if>
+      <if test="record.shopProductCustomTypeIdGroup != null" >
+        shop_product_custom_type_id_group = #{record.shopProductCustomTypeIdGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weights != null" >
+        weights = #{record.weights,jdbcType=INTEGER},
+      </if>
+      <if test="record.isActivity != null" >
+        is_activity = #{record.isActivity,jdbcType=CHAR},
+      </if>
+      <if test="record.isShow != null" >
+        is_show = #{record.isShow,jdbcType=CHAR},
+      </if>
+      <if test="record.minSalePriceItemId != null" >
+        min_sale_price_item_id = #{record.minSalePriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.minPriceItemId != null" >
+        min_price_item_id = #{record.minPriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.minMallPrice != null" >
+        min_mall_price = #{record.minMallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.minSalePrice != null" >
+        min_sale_price = #{record.minSalePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.minTagPrice != null" >
+        min_tag_price = #{record.minTagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.saleWeight != null" >
+        sale_weight = #{record.saleWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.freightTemplateId != null" >
+        freight_template_id = #{record.freightTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isShopShow != null" >
+        is_shop_show = #{record.isShopShow,jdbcType=CHAR},
+      </if>
+      <if test="record.searchFields != null" >
+        search_fields = #{record.searchFields,jdbcType=VARCHAR},
+      </if>
+      <if test="record.thirdPlatformCouponInfo != null" >
+        third_platform_coupon_info = #{record.thirdPlatformCouponInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.commentWeight != null" >
+        comment_weight = #{record.commentWeight,jdbcType=INTEGER},
+      </if>
+      <if test="record.svipDiscount != null" >
+        svip_discount = #{record.svipDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isReturn7days != null" >
+        is_return_7days = #{record.isReturn7days,jdbcType=CHAR},
+      </if>
+      <if test="record.shelfLife != null" >
+        shelf_life = #{record.shelfLife,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cccNo != null" >
+        ccc_no = #{record.cccNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yearOfListing != null" >
+        year_of_listing = #{record.yearOfListing,jdbcType=VARCHAR},
+      </if>
+      <if test="record.virtualSales != null" >
+        virtual_sales = #{record.virtualSales,jdbcType=INTEGER},
+      </if>
+      <if test="record.virtualPayers != null" >
+        virtual_payers = #{record.virtualPayers,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.recommendRemarks != null" >
+        recommend_remarks = #{record.recommendRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productDesc != null" >
+        product_desc = #{record.productDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update bu_product
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      code = #{record.code,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=CHAR},
+      ref_id = #{record.refId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      off_reason = #{record.offReason,jdbcType=CHAR},
+      audit_status = #{record.auditStatus,jdbcType=VARCHAR},
+      audit_by = #{record.auditBy,jdbcType=INTEGER},
+      audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      brand_id = #{record.brandId,jdbcType=INTEGER},
+      product_type1_id = #{record.productType1Id,jdbcType=INTEGER},
+      product_type2_id = #{record.productType2Id,jdbcType=INTEGER},
+      product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      art_no = #{record.artNo,jdbcType=VARCHAR},
+      suit_sex = #{record.suitSex,jdbcType=VARCHAR},
+      suit_group = #{record.suitGroup,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=VARCHAR},
+      season = #{record.season,jdbcType=VARCHAR},
+      limit_buy = #{record.limitBuy,jdbcType=INTEGER},
+      cs_templet_id = #{record.csTempletId,jdbcType=INTEGER},
+      remarks_color = #{record.remarksColor,jdbcType=CHAR},
+      sale_type = #{record.saleType,jdbcType=CHAR},
+      del_date = #{record.delDate,jdbcType=TIMESTAMP},
+      is_single_prop = #{record.isSingleProp,jdbcType=CHAR},
+      shop_product_custom_type_id_group = #{record.shopProductCustomTypeIdGroup,jdbcType=VARCHAR},
+      weights = #{record.weights,jdbcType=INTEGER},
+      is_activity = #{record.isActivity,jdbcType=CHAR},
+      is_show = #{record.isShow,jdbcType=CHAR},
+      min_sale_price_item_id = #{record.minSalePriceItemId,jdbcType=INTEGER},
+      min_price_item_id = #{record.minPriceItemId,jdbcType=INTEGER},
+      min_mall_price = #{record.minMallPrice,jdbcType=DECIMAL},
+      min_sale_price = #{record.minSalePrice,jdbcType=DECIMAL},
+      min_tag_price = #{record.minTagPrice,jdbcType=DECIMAL},
+      sale_weight = #{record.saleWeight,jdbcType=INTEGER},
+      freight_template_id = #{record.freightTemplateId,jdbcType=INTEGER},
+      is_shop_show = #{record.isShopShow,jdbcType=CHAR},
+      search_fields = #{record.searchFields,jdbcType=VARCHAR},
+      third_platform_coupon_info = #{record.thirdPlatformCouponInfo,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      comment_weight = #{record.commentWeight,jdbcType=INTEGER},
+      svip_discount = #{record.svipDiscount,jdbcType=DECIMAL},
+      is_return_7days = #{record.isReturn7days,jdbcType=CHAR},
+      shelf_life = #{record.shelfLife,jdbcType=VARCHAR},
+      ccc_no = #{record.cccNo,jdbcType=VARCHAR},
+      year_of_listing = #{record.yearOfListing,jdbcType=VARCHAR},
+      virtual_sales = #{record.virtualSales,jdbcType=INTEGER},
+      virtual_payers = #{record.virtualPayers,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      recommend_remarks = #{record.recommendRemarks,jdbcType=VARCHAR},
+      product_desc = #{record.productDesc,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_product
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      code = #{record.code,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=CHAR},
+      ref_id = #{record.refId,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      off_reason = #{record.offReason,jdbcType=CHAR},
+      audit_status = #{record.auditStatus,jdbcType=VARCHAR},
+      audit_by = #{record.auditBy,jdbcType=INTEGER},
+      audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      brand_id = #{record.brandId,jdbcType=INTEGER},
+      product_type1_id = #{record.productType1Id,jdbcType=INTEGER},
+      product_type2_id = #{record.productType2Id,jdbcType=INTEGER},
+      product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      art_no = #{record.artNo,jdbcType=VARCHAR},
+      suit_sex = #{record.suitSex,jdbcType=VARCHAR},
+      suit_group = #{record.suitGroup,jdbcType=VARCHAR},
+      year = #{record.year,jdbcType=VARCHAR},
+      season = #{record.season,jdbcType=VARCHAR},
+      limit_buy = #{record.limitBuy,jdbcType=INTEGER},
+      cs_templet_id = #{record.csTempletId,jdbcType=INTEGER},
+      remarks_color = #{record.remarksColor,jdbcType=CHAR},
+      sale_type = #{record.saleType,jdbcType=CHAR},
+      del_date = #{record.delDate,jdbcType=TIMESTAMP},
+      is_single_prop = #{record.isSingleProp,jdbcType=CHAR},
+      shop_product_custom_type_id_group = #{record.shopProductCustomTypeIdGroup,jdbcType=VARCHAR},
+      weights = #{record.weights,jdbcType=INTEGER},
+      is_activity = #{record.isActivity,jdbcType=CHAR},
+      is_show = #{record.isShow,jdbcType=CHAR},
+      min_sale_price_item_id = #{record.minSalePriceItemId,jdbcType=INTEGER},
+      min_price_item_id = #{record.minPriceItemId,jdbcType=INTEGER},
+      min_mall_price = #{record.minMallPrice,jdbcType=DECIMAL},
+      min_sale_price = #{record.minSalePrice,jdbcType=DECIMAL},
+      min_tag_price = #{record.minTagPrice,jdbcType=DECIMAL},
+      sale_weight = #{record.saleWeight,jdbcType=INTEGER},
+      freight_template_id = #{record.freightTemplateId,jdbcType=INTEGER},
+      is_shop_show = #{record.isShopShow,jdbcType=CHAR},
+      search_fields = #{record.searchFields,jdbcType=VARCHAR},
+      third_platform_coupon_info = #{record.thirdPlatformCouponInfo,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=INTEGER},
+      comment_weight = #{record.commentWeight,jdbcType=INTEGER},
+      svip_discount = #{record.svipDiscount,jdbcType=DECIMAL},
+      is_return_7days = #{record.isReturn7days,jdbcType=CHAR},
+      shelf_life = #{record.shelfLife,jdbcType=VARCHAR},
+      ccc_no = #{record.cccNo,jdbcType=VARCHAR},
+      year_of_listing = #{record.yearOfListing,jdbcType=VARCHAR},
+      virtual_sales = #{record.virtualSales,jdbcType=INTEGER},
+      virtual_payers = #{record.virtualPayers,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      recommend_remarks = #{record.recommendRemarks,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.Product" >
+    update bu_product
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=CHAR},
+      </if>
+      <if test="refId != null" >
+        ref_id = #{refId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="offReason != null" >
+        off_reason = #{offReason,jdbcType=CHAR},
+      </if>
+      <if test="auditStatus != null" >
+        audit_status = #{auditStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="auditBy != null" >
+        audit_by = #{auditBy,jdbcType=INTEGER},
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="brandId != null" >
+        brand_id = #{brandId,jdbcType=INTEGER},
+      </if>
+      <if test="productType1Id != null" >
+        product_type1_id = #{productType1Id,jdbcType=INTEGER},
+      </if>
+      <if test="productType2Id != null" >
+        product_type2_id = #{productType2Id,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeId != null" >
+        product_type_id = #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="artNo != null" >
+        art_no = #{artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="suitSex != null" >
+        suit_sex = #{suitSex,jdbcType=VARCHAR},
+      </if>
+      <if test="suitGroup != null" >
+        suit_group = #{suitGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="season != null" >
+        season = #{season,jdbcType=VARCHAR},
+      </if>
+      <if test="limitBuy != null" >
+        limit_buy = #{limitBuy,jdbcType=INTEGER},
+      </if>
+      <if test="csTempletId != null" >
+        cs_templet_id = #{csTempletId,jdbcType=INTEGER},
+      </if>
+      <if test="remarksColor != null" >
+        remarks_color = #{remarksColor,jdbcType=CHAR},
+      </if>
+      <if test="saleType != null" >
+        sale_type = #{saleType,jdbcType=CHAR},
+      </if>
+      <if test="delDate != null" >
+        del_date = #{delDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isSingleProp != null" >
+        is_single_prop = #{isSingleProp,jdbcType=CHAR},
+      </if>
+      <if test="shopProductCustomTypeIdGroup != null" >
+        shop_product_custom_type_id_group = #{shopProductCustomTypeIdGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="weights != null" >
+        weights = #{weights,jdbcType=INTEGER},
+      </if>
+      <if test="isActivity != null" >
+        is_activity = #{isActivity,jdbcType=CHAR},
+      </if>
+      <if test="isShow != null" >
+        is_show = #{isShow,jdbcType=CHAR},
+      </if>
+      <if test="minSalePriceItemId != null" >
+        min_sale_price_item_id = #{minSalePriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="minPriceItemId != null" >
+        min_price_item_id = #{minPriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="minMallPrice != null" >
+        min_mall_price = #{minMallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="minSalePrice != null" >
+        min_sale_price = #{minSalePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="minTagPrice != null" >
+        min_tag_price = #{minTagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="saleWeight != null" >
+        sale_weight = #{saleWeight,jdbcType=INTEGER},
+      </if>
+      <if test="freightTemplateId != null" >
+        freight_template_id = #{freightTemplateId,jdbcType=INTEGER},
+      </if>
+      <if test="isShopShow != null" >
+        is_shop_show = #{isShopShow,jdbcType=CHAR},
+      </if>
+      <if test="searchFields != null" >
+        search_fields = #{searchFields,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdPlatformCouponInfo != null" >
+        third_platform_coupon_info = #{thirdPlatformCouponInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="commentWeight != null" >
+        comment_weight = #{commentWeight,jdbcType=INTEGER},
+      </if>
+      <if test="svipDiscount != null" >
+        svip_discount = #{svipDiscount,jdbcType=DECIMAL},
+      </if>
+      <if test="isReturn7days != null" >
+        is_return_7days = #{isReturn7days,jdbcType=CHAR},
+      </if>
+      <if test="shelfLife != null" >
+        shelf_life = #{shelfLife,jdbcType=VARCHAR},
+      </if>
+      <if test="cccNo != null" >
+        ccc_no = #{cccNo,jdbcType=VARCHAR},
+      </if>
+      <if test="yearOfListing != null" >
+        year_of_listing = #{yearOfListing,jdbcType=VARCHAR},
+      </if>
+      <if test="virtualSales != null" >
+        virtual_sales = #{virtualSales,jdbcType=INTEGER},
+      </if>
+      <if test="virtualPayers != null" >
+        virtual_payers = #{virtualPayers,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="recommendRemarks != null" >
+        recommend_remarks = #{recommendRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="productDesc != null" >
+        product_desc = #{productDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jf.entity.Product" >
+    update bu_product
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      source = #{source,jdbcType=CHAR},
+      ref_id = #{refId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      off_reason = #{offReason,jdbcType=CHAR},
+      audit_status = #{auditStatus,jdbcType=VARCHAR},
+      audit_by = #{auditBy,jdbcType=INTEGER},
+      audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      product_type1_id = #{productType1Id,jdbcType=INTEGER},
+      product_type2_id = #{productType2Id,jdbcType=INTEGER},
+      product_type_id = #{productTypeId,jdbcType=INTEGER},
+      art_no = #{artNo,jdbcType=VARCHAR},
+      suit_sex = #{suitSex,jdbcType=VARCHAR},
+      suit_group = #{suitGroup,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
+      season = #{season,jdbcType=VARCHAR},
+      limit_buy = #{limitBuy,jdbcType=INTEGER},
+      cs_templet_id = #{csTempletId,jdbcType=INTEGER},
+      remarks_color = #{remarksColor,jdbcType=CHAR},
+      sale_type = #{saleType,jdbcType=CHAR},
+      del_date = #{delDate,jdbcType=TIMESTAMP},
+      is_single_prop = #{isSingleProp,jdbcType=CHAR},
+      shop_product_custom_type_id_group = #{shopProductCustomTypeIdGroup,jdbcType=VARCHAR},
+      weights = #{weights,jdbcType=INTEGER},
+      is_activity = #{isActivity,jdbcType=CHAR},
+      is_show = #{isShow,jdbcType=CHAR},
+      min_sale_price_item_id = #{minSalePriceItemId,jdbcType=INTEGER},
+      min_price_item_id = #{minPriceItemId,jdbcType=INTEGER},
+      min_mall_price = #{minMallPrice,jdbcType=DECIMAL},
+      min_sale_price = #{minSalePrice,jdbcType=DECIMAL},
+      min_tag_price = #{minTagPrice,jdbcType=DECIMAL},
+      sale_weight = #{saleWeight,jdbcType=INTEGER},
+      freight_template_id = #{freightTemplateId,jdbcType=INTEGER},
+      is_shop_show = #{isShopShow,jdbcType=CHAR},
+      search_fields = #{searchFields,jdbcType=VARCHAR},
+      third_platform_coupon_info = #{thirdPlatformCouponInfo,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      comment_weight = #{commentWeight,jdbcType=INTEGER},
+      svip_discount = #{svipDiscount,jdbcType=DECIMAL},
+      is_return_7days = #{isReturn7days,jdbcType=CHAR},
+      shelf_life = #{shelfLife,jdbcType=VARCHAR},
+      ccc_no = #{cccNo,jdbcType=VARCHAR},
+      year_of_listing = #{yearOfListing,jdbcType=VARCHAR},
+      virtual_sales = #{virtualSales,jdbcType=INTEGER},
+      virtual_payers = #{virtualPayers,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      recommend_remarks = #{recommendRemarks,jdbcType=VARCHAR},
+      product_desc = #{productDesc,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.Product" >
+    update bu_product
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      source = #{source,jdbcType=CHAR},
+      ref_id = #{refId,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      off_reason = #{offReason,jdbcType=CHAR},
+      audit_status = #{auditStatus,jdbcType=VARCHAR},
+      audit_by = #{auditBy,jdbcType=INTEGER},
+      audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      brand_id = #{brandId,jdbcType=INTEGER},
+      product_type1_id = #{productType1Id,jdbcType=INTEGER},
+      product_type2_id = #{productType2Id,jdbcType=INTEGER},
+      product_type_id = #{productTypeId,jdbcType=INTEGER},
+      art_no = #{artNo,jdbcType=VARCHAR},
+      suit_sex = #{suitSex,jdbcType=VARCHAR},
+      suit_group = #{suitGroup,jdbcType=VARCHAR},
+      year = #{year,jdbcType=VARCHAR},
+      season = #{season,jdbcType=VARCHAR},
+      limit_buy = #{limitBuy,jdbcType=INTEGER},
+      cs_templet_id = #{csTempletId,jdbcType=INTEGER},
+      remarks_color = #{remarksColor,jdbcType=CHAR},
+      sale_type = #{saleType,jdbcType=CHAR},
+      del_date = #{delDate,jdbcType=TIMESTAMP},
+      is_single_prop = #{isSingleProp,jdbcType=CHAR},
+      shop_product_custom_type_id_group = #{shopProductCustomTypeIdGroup,jdbcType=VARCHAR},
+      weights = #{weights,jdbcType=INTEGER},
+      is_activity = #{isActivity,jdbcType=CHAR},
+      is_show = #{isShow,jdbcType=CHAR},
+      min_sale_price_item_id = #{minSalePriceItemId,jdbcType=INTEGER},
+      min_price_item_id = #{minPriceItemId,jdbcType=INTEGER},
+      min_mall_price = #{minMallPrice,jdbcType=DECIMAL},
+      min_sale_price = #{minSalePrice,jdbcType=DECIMAL},
+      min_tag_price = #{minTagPrice,jdbcType=DECIMAL},
+      sale_weight = #{saleWeight,jdbcType=INTEGER},
+      freight_template_id = #{freightTemplateId,jdbcType=INTEGER},
+      is_shop_show = #{isShopShow,jdbcType=CHAR},
+      search_fields = #{searchFields,jdbcType=VARCHAR},
+      third_platform_coupon_info = #{thirdPlatformCouponInfo,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      comment_weight = #{commentWeight,jdbcType=INTEGER},
+      svip_discount = #{svipDiscount,jdbcType=DECIMAL},
+      is_return_7days = #{isReturn7days,jdbcType=CHAR},
+      shelf_life = #{shelfLife,jdbcType=VARCHAR},
+      ccc_no = #{cccNo,jdbcType=VARCHAR},
+      year_of_listing = #{yearOfListing,jdbcType=VARCHAR},
+      virtual_sales = #{virtualSales,jdbcType=INTEGER},
+      virtual_payers = #{virtualPayers,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      recommend_remarks = #{recommendRemarks,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSettleOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtSettleOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="begin_date" property="beginDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="mcht_type" property="mchtType" jdbcType="CHAR" />
+    <result column="product_num" property="productNum" jdbcType="INTEGER" />
+    <result column="settle_price_total" property="settlePriceTotal" jdbcType="DECIMAL" />
+    <result column="mcht_preferential_total" property="mchtPreferentialTotal" jdbcType="DECIMAL" />
+    <result column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
+    <result column="refund_amount" property="refundAmount" jdbcType="DECIMAL" />
+    <result column="commission_amount" property="commissionAmount" jdbcType="DECIMAL" />
+    <result column="settle_amount" property="settleAmount" jdbcType="DECIMAL" />
+    <result column="deposit_amount" property="depositAmount" jdbcType="DECIMAL" />
+    <result column="need_pay_amount" property="needPayAmount" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="earnest_money" property="earnestMoney" jdbcType="DECIMAL" />
+    <result column="confirm_status" property="confirmStatus" jdbcType="CHAR" />
+    <result column="mcht_confirm_date" property="mchtConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="platform_confirm_date" property="platformConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_collect_type" property="mchtCollectType" jdbcType="CHAR" />
+    <result column="mcht_receiver_name" property="mchtReceiverName" jdbcType="VARCHAR" />
+    <result column="mcht_receiver_phone" property="mchtReceiverPhone" jdbcType="VARCHAR" />
+    <result column="mcht_receiver_address" property="mchtReceiverAddress" jdbcType="VARCHAR" />
+    <result column="mcht_invoice_status" property="mchtInvoiceStatus" jdbcType="CHAR" />
+    <result column="mcht_invoice_date" property="mchtInvoiceDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_invoice_express_id" property="mchtInvoiceExpressId" jdbcType="INTEGER" />
+    <result column="mcht_invoice_express_no" property="mchtInvoiceExpressNo" jdbcType="VARCHAR" />
+    <result column="platform_collect_status" property="platformCollectStatus" jdbcType="CHAR" />
+    <result column="platform_invoice_status" property="platformInvoiceStatus" jdbcType="CHAR" />
+    <result column="platform_invoice_date" property="platformInvoiceDate" jdbcType="TIMESTAMP" />
+    <result column="platform_invoice_express_id" property="platformInvoiceExpressId" jdbcType="INTEGER" />
+    <result column="platform_invoice_express_no" property="platformInvoiceExpressNo" jdbcType="VARCHAR" />
+    <result column="manage_self_freight" property="manageSelfFreight" jdbcType="DECIMAL" />
+    <result column="pay_status" property="payStatus" jdbcType="CHAR" />
+    <result column="pay_ready_date" property="payReadyDate" jdbcType="DATE" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="pay_code" property="payCode" jdbcType="VARCHAR" />
+    <result column="pay_staff_id" property="payStaffId" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, begin_date, end_date, mcht_id, mcht_type, product_num, settle_price_total, mcht_preferential_total, 
+    order_amount, refund_amount, commission_amount, settle_amount, deposit_amount, need_pay_amount, 
+    pay_amount, earnest_money, confirm_status, mcht_confirm_date, platform_confirm_date, 
+    mcht_collect_type, mcht_receiver_name, mcht_receiver_phone, mcht_receiver_address, 
+    mcht_invoice_status, mcht_invoice_date, mcht_invoice_express_id, mcht_invoice_express_no, 
+    platform_collect_status, platform_invoice_status, platform_invoice_date, platform_invoice_express_id, 
+    platform_invoice_express_no, manage_self_freight, pay_status, pay_ready_date, pay_date, 
+    pay_code, pay_staff_id, create_by, create_date, update_by, update_date, remarks, 
+    del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtSettleOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_settle_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_settle_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_settle_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtSettleOrderExample" >
+    delete from bu_mcht_settle_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtSettleOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_settle_order (begin_date, end_date, mcht_id, 
+      mcht_type, product_num, settle_price_total, 
+      mcht_preferential_total, order_amount, refund_amount, 
+      commission_amount, settle_amount, deposit_amount, 
+      need_pay_amount, pay_amount, earnest_money, 
+      confirm_status, mcht_confirm_date, platform_confirm_date, 
+      mcht_collect_type, mcht_receiver_name, mcht_receiver_phone, 
+      mcht_receiver_address, mcht_invoice_status, mcht_invoice_date, 
+      mcht_invoice_express_id, mcht_invoice_express_no, 
+      platform_collect_status, platform_invoice_status, 
+      platform_invoice_date, platform_invoice_express_id, 
+      platform_invoice_express_no, manage_self_freight, 
+      pay_status, pay_ready_date, pay_date, 
+      pay_code, pay_staff_id, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{beginDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{mchtId,jdbcType=INTEGER}, 
+      #{mchtType,jdbcType=CHAR}, #{productNum,jdbcType=INTEGER}, #{settlePriceTotal,jdbcType=DECIMAL}, 
+      #{mchtPreferentialTotal,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, #{refundAmount,jdbcType=DECIMAL}, 
+      #{commissionAmount,jdbcType=DECIMAL}, #{settleAmount,jdbcType=DECIMAL}, #{depositAmount,jdbcType=DECIMAL}, 
+      #{needPayAmount,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, #{earnestMoney,jdbcType=DECIMAL}, 
+      #{confirmStatus,jdbcType=CHAR}, #{mchtConfirmDate,jdbcType=TIMESTAMP}, #{platformConfirmDate,jdbcType=TIMESTAMP}, 
+      #{mchtCollectType,jdbcType=CHAR}, #{mchtReceiverName,jdbcType=VARCHAR}, #{mchtReceiverPhone,jdbcType=VARCHAR}, 
+      #{mchtReceiverAddress,jdbcType=VARCHAR}, #{mchtInvoiceStatus,jdbcType=CHAR}, #{mchtInvoiceDate,jdbcType=TIMESTAMP}, 
+      #{mchtInvoiceExpressId,jdbcType=INTEGER}, #{mchtInvoiceExpressNo,jdbcType=VARCHAR}, 
+      #{platformCollectStatus,jdbcType=CHAR}, #{platformInvoiceStatus,jdbcType=CHAR}, 
+      #{platformInvoiceDate,jdbcType=TIMESTAMP}, #{platformInvoiceExpressId,jdbcType=INTEGER}, 
+      #{platformInvoiceExpressNo,jdbcType=VARCHAR}, #{manageSelfFreight,jdbcType=DECIMAL}, 
+      #{payStatus,jdbcType=CHAR}, #{payReadyDate,jdbcType=DATE}, #{payDate,jdbcType=TIMESTAMP}, 
+      #{payCode,jdbcType=VARCHAR}, #{payStaffId,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtSettleOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_settle_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="beginDate != null" >
+        begin_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="mchtType != null" >
+        mcht_type,
+      </if>
+      <if test="productNum != null" >
+        product_num,
+      </if>
+      <if test="settlePriceTotal != null" >
+        settle_price_total,
+      </if>
+      <if test="mchtPreferentialTotal != null" >
+        mcht_preferential_total,
+      </if>
+      <if test="orderAmount != null" >
+        order_amount,
+      </if>
+      <if test="refundAmount != null" >
+        refund_amount,
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount,
+      </if>
+      <if test="settleAmount != null" >
+        settle_amount,
+      </if>
+      <if test="depositAmount != null" >
+        deposit_amount,
+      </if>
+      <if test="needPayAmount != null" >
+        need_pay_amount,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="earnestMoney != null" >
+        earnest_money,
+      </if>
+      <if test="confirmStatus != null" >
+        confirm_status,
+      </if>
+      <if test="mchtConfirmDate != null" >
+        mcht_confirm_date,
+      </if>
+      <if test="platformConfirmDate != null" >
+        platform_confirm_date,
+      </if>
+      <if test="mchtCollectType != null" >
+        mcht_collect_type,
+      </if>
+      <if test="mchtReceiverName != null" >
+        mcht_receiver_name,
+      </if>
+      <if test="mchtReceiverPhone != null" >
+        mcht_receiver_phone,
+      </if>
+      <if test="mchtReceiverAddress != null" >
+        mcht_receiver_address,
+      </if>
+      <if test="mchtInvoiceStatus != null" >
+        mcht_invoice_status,
+      </if>
+      <if test="mchtInvoiceDate != null" >
+        mcht_invoice_date,
+      </if>
+      <if test="mchtInvoiceExpressId != null" >
+        mcht_invoice_express_id,
+      </if>
+      <if test="mchtInvoiceExpressNo != null" >
+        mcht_invoice_express_no,
+      </if>
+      <if test="platformCollectStatus != null" >
+        platform_collect_status,
+      </if>
+      <if test="platformInvoiceStatus != null" >
+        platform_invoice_status,
+      </if>
+      <if test="platformInvoiceDate != null" >
+        platform_invoice_date,
+      </if>
+      <if test="platformInvoiceExpressId != null" >
+        platform_invoice_express_id,
+      </if>
+      <if test="platformInvoiceExpressNo != null" >
+        platform_invoice_express_no,
+      </if>
+      <if test="manageSelfFreight != null" >
+        manage_self_freight,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="payReadyDate != null" >
+        pay_ready_date,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="payCode != null" >
+        pay_code,
+      </if>
+      <if test="payStaffId != null" >
+        pay_staff_id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="beginDate != null" >
+        #{beginDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtType != null" >
+        #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="productNum != null" >
+        #{productNum,jdbcType=INTEGER},
+      </if>
+      <if test="settlePriceTotal != null" >
+        #{settlePriceTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="mchtPreferentialTotal != null" >
+        #{mchtPreferentialTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null" >
+        #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmount != null" >
+        #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="settleAmount != null" >
+        #{settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="depositAmount != null" >
+        #{depositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="needPayAmount != null" >
+        #{needPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="earnestMoney != null" >
+        #{earnestMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="confirmStatus != null" >
+        #{confirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtConfirmDate != null" >
+        #{mchtConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformConfirmDate != null" >
+        #{platformConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtCollectType != null" >
+        #{mchtCollectType,jdbcType=CHAR},
+      </if>
+      <if test="mchtReceiverName != null" >
+        #{mchtReceiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtReceiverPhone != null" >
+        #{mchtReceiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtReceiverAddress != null" >
+        #{mchtReceiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtInvoiceStatus != null" >
+        #{mchtInvoiceStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtInvoiceDate != null" >
+        #{mchtInvoiceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtInvoiceExpressId != null" >
+        #{mchtInvoiceExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtInvoiceExpressNo != null" >
+        #{mchtInvoiceExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="platformCollectStatus != null" >
+        #{platformCollectStatus,jdbcType=CHAR},
+      </if>
+      <if test="platformInvoiceStatus != null" >
+        #{platformInvoiceStatus,jdbcType=CHAR},
+      </if>
+      <if test="platformInvoiceDate != null" >
+        #{platformInvoiceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformInvoiceExpressId != null" >
+        #{platformInvoiceExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="platformInvoiceExpressNo != null" >
+        #{platformInvoiceExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="manageSelfFreight != null" >
+        #{manageSelfFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="payReadyDate != null" >
+        #{payReadyDate,jdbcType=DATE},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payCode != null" >
+        #{payCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payStaffId != null" >
+        #{payStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtSettleOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_settle_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_settle_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.beginDate != null" >
+        begin_date = #{record.beginDate,jdbcType=DATE},
+      </if>
+      <if test="record.endDate != null" >
+        end_date = #{record.endDate,jdbcType=DATE},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtType != null" >
+        mcht_type = #{record.mchtType,jdbcType=CHAR},
+      </if>
+      <if test="record.productNum != null" >
+        product_num = #{record.productNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.settlePriceTotal != null" >
+        settle_price_total = #{record.settlePriceTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mchtPreferentialTotal != null" >
+        mcht_preferential_total = #{record.mchtPreferentialTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderAmount != null" >
+        order_amount = #{record.orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundAmount != null" >
+        refund_amount = #{record.refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commissionAmount != null" >
+        commission_amount = #{record.commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.settleAmount != null" >
+        settle_amount = #{record.settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.depositAmount != null" >
+        deposit_amount = #{record.depositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.needPayAmount != null" >
+        need_pay_amount = #{record.needPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.earnestMoney != null" >
+        earnest_money = #{record.earnestMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="record.confirmStatus != null" >
+        confirm_status = #{record.confirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtConfirmDate != null" >
+        mcht_confirm_date = #{record.mchtConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.platformConfirmDate != null" >
+        platform_confirm_date = #{record.platformConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtCollectType != null" >
+        mcht_collect_type = #{record.mchtCollectType,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtReceiverName != null" >
+        mcht_receiver_name = #{record.mchtReceiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtReceiverPhone != null" >
+        mcht_receiver_phone = #{record.mchtReceiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtReceiverAddress != null" >
+        mcht_receiver_address = #{record.mchtReceiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtInvoiceStatus != null" >
+        mcht_invoice_status = #{record.mchtInvoiceStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtInvoiceDate != null" >
+        mcht_invoice_date = #{record.mchtInvoiceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtInvoiceExpressId != null" >
+        mcht_invoice_express_id = #{record.mchtInvoiceExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtInvoiceExpressNo != null" >
+        mcht_invoice_express_no = #{record.mchtInvoiceExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformCollectStatus != null" >
+        platform_collect_status = #{record.platformCollectStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.platformInvoiceStatus != null" >
+        platform_invoice_status = #{record.platformInvoiceStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.platformInvoiceDate != null" >
+        platform_invoice_date = #{record.platformInvoiceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.platformInvoiceExpressId != null" >
+        platform_invoice_express_id = #{record.platformInvoiceExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.platformInvoiceExpressNo != null" >
+        platform_invoice_express_no = #{record.platformInvoiceExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manageSelfFreight != null" >
+        manage_self_freight = #{record.manageSelfFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payStatus != null" >
+        pay_status = #{record.payStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.payReadyDate != null" >
+        pay_ready_date = #{record.payReadyDate,jdbcType=DATE},
+      </if>
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payCode != null" >
+        pay_code = #{record.payCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payStaffId != null" >
+        pay_staff_id = #{record.payStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_settle_order
+    set id = #{record.id,jdbcType=INTEGER},
+      begin_date = #{record.beginDate,jdbcType=DATE},
+      end_date = #{record.endDate,jdbcType=DATE},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      mcht_type = #{record.mchtType,jdbcType=CHAR},
+      product_num = #{record.productNum,jdbcType=INTEGER},
+      settle_price_total = #{record.settlePriceTotal,jdbcType=DECIMAL},
+      mcht_preferential_total = #{record.mchtPreferentialTotal,jdbcType=DECIMAL},
+      order_amount = #{record.orderAmount,jdbcType=DECIMAL},
+      refund_amount = #{record.refundAmount,jdbcType=DECIMAL},
+      commission_amount = #{record.commissionAmount,jdbcType=DECIMAL},
+      settle_amount = #{record.settleAmount,jdbcType=DECIMAL},
+      deposit_amount = #{record.depositAmount,jdbcType=DECIMAL},
+      need_pay_amount = #{record.needPayAmount,jdbcType=DECIMAL},
+      pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      earnest_money = #{record.earnestMoney,jdbcType=DECIMAL},
+      confirm_status = #{record.confirmStatus,jdbcType=CHAR},
+      mcht_confirm_date = #{record.mchtConfirmDate,jdbcType=TIMESTAMP},
+      platform_confirm_date = #{record.platformConfirmDate,jdbcType=TIMESTAMP},
+      mcht_collect_type = #{record.mchtCollectType,jdbcType=CHAR},
+      mcht_receiver_name = #{record.mchtReceiverName,jdbcType=VARCHAR},
+      mcht_receiver_phone = #{record.mchtReceiverPhone,jdbcType=VARCHAR},
+      mcht_receiver_address = #{record.mchtReceiverAddress,jdbcType=VARCHAR},
+      mcht_invoice_status = #{record.mchtInvoiceStatus,jdbcType=CHAR},
+      mcht_invoice_date = #{record.mchtInvoiceDate,jdbcType=TIMESTAMP},
+      mcht_invoice_express_id = #{record.mchtInvoiceExpressId,jdbcType=INTEGER},
+      mcht_invoice_express_no = #{record.mchtInvoiceExpressNo,jdbcType=VARCHAR},
+      platform_collect_status = #{record.platformCollectStatus,jdbcType=CHAR},
+      platform_invoice_status = #{record.platformInvoiceStatus,jdbcType=CHAR},
+      platform_invoice_date = #{record.platformInvoiceDate,jdbcType=TIMESTAMP},
+      platform_invoice_express_id = #{record.platformInvoiceExpressId,jdbcType=INTEGER},
+      platform_invoice_express_no = #{record.platformInvoiceExpressNo,jdbcType=VARCHAR},
+      manage_self_freight = #{record.manageSelfFreight,jdbcType=DECIMAL},
+      pay_status = #{record.payStatus,jdbcType=CHAR},
+      pay_ready_date = #{record.payReadyDate,jdbcType=DATE},
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      pay_code = #{record.payCode,jdbcType=VARCHAR},
+      pay_staff_id = #{record.payStaffId,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtSettleOrder" >
+    update bu_mcht_settle_order
+    <set >
+      <if test="beginDate != null" >
+        begin_date = #{beginDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtType != null" >
+        mcht_type = #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="productNum != null" >
+        product_num = #{productNum,jdbcType=INTEGER},
+      </if>
+      <if test="settlePriceTotal != null" >
+        settle_price_total = #{settlePriceTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="mchtPreferentialTotal != null" >
+        mcht_preferential_total = #{mchtPreferentialTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null" >
+        order_amount = #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="refundAmount != null" >
+        refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount = #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="settleAmount != null" >
+        settle_amount = #{settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="depositAmount != null" >
+        deposit_amount = #{depositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="needPayAmount != null" >
+        need_pay_amount = #{needPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="earnestMoney != null" >
+        earnest_money = #{earnestMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="confirmStatus != null" >
+        confirm_status = #{confirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtConfirmDate != null" >
+        mcht_confirm_date = #{mchtConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformConfirmDate != null" >
+        platform_confirm_date = #{platformConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtCollectType != null" >
+        mcht_collect_type = #{mchtCollectType,jdbcType=CHAR},
+      </if>
+      <if test="mchtReceiverName != null" >
+        mcht_receiver_name = #{mchtReceiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtReceiverPhone != null" >
+        mcht_receiver_phone = #{mchtReceiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtReceiverAddress != null" >
+        mcht_receiver_address = #{mchtReceiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtInvoiceStatus != null" >
+        mcht_invoice_status = #{mchtInvoiceStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtInvoiceDate != null" >
+        mcht_invoice_date = #{mchtInvoiceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtInvoiceExpressId != null" >
+        mcht_invoice_express_id = #{mchtInvoiceExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtInvoiceExpressNo != null" >
+        mcht_invoice_express_no = #{mchtInvoiceExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="platformCollectStatus != null" >
+        platform_collect_status = #{platformCollectStatus,jdbcType=CHAR},
+      </if>
+      <if test="platformInvoiceStatus != null" >
+        platform_invoice_status = #{platformInvoiceStatus,jdbcType=CHAR},
+      </if>
+      <if test="platformInvoiceDate != null" >
+        platform_invoice_date = #{platformInvoiceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformInvoiceExpressId != null" >
+        platform_invoice_express_id = #{platformInvoiceExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="platformInvoiceExpressNo != null" >
+        platform_invoice_express_no = #{platformInvoiceExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="manageSelfFreight != null" >
+        manage_self_freight = #{manageSelfFreight,jdbcType=DECIMAL},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="payReadyDate != null" >
+        pay_ready_date = #{payReadyDate,jdbcType=DATE},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payCode != null" >
+        pay_code = #{payCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payStaffId != null" >
+        pay_staff_id = #{payStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtSettleOrder" >
+    update bu_mcht_settle_order
+    set begin_date = #{beginDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      mcht_type = #{mchtType,jdbcType=CHAR},
+      product_num = #{productNum,jdbcType=INTEGER},
+      settle_price_total = #{settlePriceTotal,jdbcType=DECIMAL},
+      mcht_preferential_total = #{mchtPreferentialTotal,jdbcType=DECIMAL},
+      order_amount = #{orderAmount,jdbcType=DECIMAL},
+      refund_amount = #{refundAmount,jdbcType=DECIMAL},
+      commission_amount = #{commissionAmount,jdbcType=DECIMAL},
+      settle_amount = #{settleAmount,jdbcType=DECIMAL},
+      deposit_amount = #{depositAmount,jdbcType=DECIMAL},
+      need_pay_amount = #{needPayAmount,jdbcType=DECIMAL},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      earnest_money = #{earnestMoney,jdbcType=DECIMAL},
+      confirm_status = #{confirmStatus,jdbcType=CHAR},
+      mcht_confirm_date = #{mchtConfirmDate,jdbcType=TIMESTAMP},
+      platform_confirm_date = #{platformConfirmDate,jdbcType=TIMESTAMP},
+      mcht_collect_type = #{mchtCollectType,jdbcType=CHAR},
+      mcht_receiver_name = #{mchtReceiverName,jdbcType=VARCHAR},
+      mcht_receiver_phone = #{mchtReceiverPhone,jdbcType=VARCHAR},
+      mcht_receiver_address = #{mchtReceiverAddress,jdbcType=VARCHAR},
+      mcht_invoice_status = #{mchtInvoiceStatus,jdbcType=CHAR},
+      mcht_invoice_date = #{mchtInvoiceDate,jdbcType=TIMESTAMP},
+      mcht_invoice_express_id = #{mchtInvoiceExpressId,jdbcType=INTEGER},
+      mcht_invoice_express_no = #{mchtInvoiceExpressNo,jdbcType=VARCHAR},
+      platform_collect_status = #{platformCollectStatus,jdbcType=CHAR},
+      platform_invoice_status = #{platformInvoiceStatus,jdbcType=CHAR},
+      platform_invoice_date = #{platformInvoiceDate,jdbcType=TIMESTAMP},
+      platform_invoice_express_id = #{platformInvoiceExpressId,jdbcType=INTEGER},
+      platform_invoice_express_no = #{platformInvoiceExpressNo,jdbcType=VARCHAR},
+      manage_self_freight = #{manageSelfFreight,jdbcType=DECIMAL},
+      pay_status = #{payStatus,jdbcType=CHAR},
+      pay_ready_date = #{payReadyDate,jdbcType=DATE},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      pay_code = #{payCode,jdbcType=VARCHAR},
+      pay_staff_id = #{payStaffId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

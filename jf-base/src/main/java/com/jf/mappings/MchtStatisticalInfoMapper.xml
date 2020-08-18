@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtStatisticalInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtStatisticalInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="activity_count_7_days" property="activityCount7Days" jdbcType="INTEGER" />
+    <result column="pay_amount_sum_7_days" property="payAmountSum7Days" jdbcType="DECIMAL" />
+    <result column="sub_order_count_7_days" property="subOrderCount7Days" jdbcType="INTEGER" />
+    <result column="return_rate_7_days" property="returnRate7Days" jdbcType="DECIMAL" />
+    <result column="appeal_rate_7_days" property="appealRate7Days" jdbcType="DECIMAL" />
+    <result column="intervention_rate_7_days" property="interventionRate7Days" jdbcType="DECIMAL" />
+    <result column="product_sale_count_7_day" property="productSaleCount7Day" jdbcType="INTEGER" />
+    <result column="activity_count_30_days" property="activityCount30Days" jdbcType="INTEGER" />
+    <result column="pay_amount_sum_30_days" property="payAmountSum30Days" jdbcType="DECIMAL" />
+    <result column="sub_order_count_30_days" property="subOrderCount30Days" jdbcType="INTEGER" />
+    <result column="return_rate_30_days" property="returnRate30Days" jdbcType="DECIMAL" />
+    <result column="appeal_rate_30_days" property="appealRate30Days" jdbcType="DECIMAL" />
+    <result column="intervention_rate_30_days" property="interventionRate30Days" jdbcType="DECIMAL" />
+    <result column="product_sale_count_30_day" property="productSaleCount30Day" jdbcType="INTEGER" />
+    <result column="activity_count_90_days" property="activityCount90Days" jdbcType="INTEGER" />
+    <result column="pay_amount_sum_90_days" property="payAmountSum90Days" jdbcType="DECIMAL" />
+    <result column="sub_order_count_90_days" property="subOrderCount90Days" jdbcType="INTEGER" />
+    <result column="return_rate_90_days" property="returnRate90Days" jdbcType="DECIMAL" />
+    <result column="appeal_rate_90_days" property="appealRate90Days" jdbcType="DECIMAL" />
+    <result column="intervention_rate_90_days" property="interventionRate90Days" jdbcType="DECIMAL" />
+    <result column="product_sale_count_90_day" property="productSaleCount90Day" jdbcType="INTEGER" />
+    <result column="product_applause_rate" property="productApplauseRate" jdbcType="DECIMAL" />
+    <result column="product_score_avg" property="productScoreAvg" jdbcType="DECIMAL" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, activity_count_7_days, pay_amount_sum_7_days, sub_order_count_7_days, 
+    return_rate_7_days, appeal_rate_7_days, intervention_rate_7_days, product_sale_count_7_day, 
+    activity_count_30_days, pay_amount_sum_30_days, sub_order_count_30_days, return_rate_30_days, 
+    appeal_rate_30_days, intervention_rate_30_days, product_sale_count_30_day, activity_count_90_days, 
+    pay_amount_sum_90_days, sub_order_count_90_days, return_rate_90_days, appeal_rate_90_days, 
+    intervention_rate_90_days, product_sale_count_90_day, product_applause_rate, product_score_avg, 
+    create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtStatisticalInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_statistical_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_statistical_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_statistical_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtStatisticalInfoExample" >
+    delete from bu_mcht_statistical_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtStatisticalInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_statistical_info (mcht_id, activity_count_7_days, pay_amount_sum_7_days, 
+      sub_order_count_7_days, return_rate_7_days, appeal_rate_7_days, 
+      intervention_rate_7_days, product_sale_count_7_day, 
+      activity_count_30_days, pay_amount_sum_30_days, 
+      sub_order_count_30_days, return_rate_30_days, 
+      appeal_rate_30_days, intervention_rate_30_days, 
+      product_sale_count_30_day, activity_count_90_days, 
+      pay_amount_sum_90_days, sub_order_count_90_days, 
+      return_rate_90_days, appeal_rate_90_days, intervention_rate_90_days, 
+      product_sale_count_90_day, product_applause_rate, 
+      product_score_avg, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{mchtId,jdbcType=INTEGER}, #{activityCount7Days,jdbcType=INTEGER}, #{payAmountSum7Days,jdbcType=DECIMAL}, 
+      #{subOrderCount7Days,jdbcType=INTEGER}, #{returnRate7Days,jdbcType=DECIMAL}, #{appealRate7Days,jdbcType=DECIMAL}, 
+      #{interventionRate7Days,jdbcType=DECIMAL}, #{productSaleCount7Day,jdbcType=INTEGER}, 
+      #{activityCount30Days,jdbcType=INTEGER}, #{payAmountSum30Days,jdbcType=DECIMAL}, 
+      #{subOrderCount30Days,jdbcType=INTEGER}, #{returnRate30Days,jdbcType=DECIMAL}, 
+      #{appealRate30Days,jdbcType=DECIMAL}, #{interventionRate30Days,jdbcType=DECIMAL}, 
+      #{productSaleCount30Day,jdbcType=INTEGER}, #{activityCount90Days,jdbcType=INTEGER}, 
+      #{payAmountSum90Days,jdbcType=DECIMAL}, #{subOrderCount90Days,jdbcType=INTEGER}, 
+      #{returnRate90Days,jdbcType=DECIMAL}, #{appealRate90Days,jdbcType=DECIMAL}, #{interventionRate90Days,jdbcType=DECIMAL}, 
+      #{productSaleCount90Day,jdbcType=INTEGER}, #{productApplauseRate,jdbcType=DECIMAL}, 
+      #{productScoreAvg,jdbcType=DECIMAL}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtStatisticalInfo" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_statistical_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="activityCount7Days != null" >
+        activity_count_7_days,
+      </if>
+      <if test="payAmountSum7Days != null" >
+        pay_amount_sum_7_days,
+      </if>
+      <if test="subOrderCount7Days != null" >
+        sub_order_count_7_days,
+      </if>
+      <if test="returnRate7Days != null" >
+        return_rate_7_days,
+      </if>
+      <if test="appealRate7Days != null" >
+        appeal_rate_7_days,
+      </if>
+      <if test="interventionRate7Days != null" >
+        intervention_rate_7_days,
+      </if>
+      <if test="productSaleCount7Day != null" >
+        product_sale_count_7_day,
+      </if>
+      <if test="activityCount30Days != null" >
+        activity_count_30_days,
+      </if>
+      <if test="payAmountSum30Days != null" >
+        pay_amount_sum_30_days,
+      </if>
+      <if test="subOrderCount30Days != null" >
+        sub_order_count_30_days,
+      </if>
+      <if test="returnRate30Days != null" >
+        return_rate_30_days,
+      </if>
+      <if test="appealRate30Days != null" >
+        appeal_rate_30_days,
+      </if>
+      <if test="interventionRate30Days != null" >
+        intervention_rate_30_days,
+      </if>
+      <if test="productSaleCount30Day != null" >
+        product_sale_count_30_day,
+      </if>
+      <if test="activityCount90Days != null" >
+        activity_count_90_days,
+      </if>
+      <if test="payAmountSum90Days != null" >
+        pay_amount_sum_90_days,
+      </if>
+      <if test="subOrderCount90Days != null" >
+        sub_order_count_90_days,
+      </if>
+      <if test="returnRate90Days != null" >
+        return_rate_90_days,
+      </if>
+      <if test="appealRate90Days != null" >
+        appeal_rate_90_days,
+      </if>
+      <if test="interventionRate90Days != null" >
+        intervention_rate_90_days,
+      </if>
+      <if test="productSaleCount90Day != null" >
+        product_sale_count_90_day,
+      </if>
+      <if test="productApplauseRate != null" >
+        product_applause_rate,
+      </if>
+      <if test="productScoreAvg != null" >
+        product_score_avg,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="activityCount7Days != null" >
+        #{activityCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountSum7Days != null" >
+        #{payAmountSum7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount7Days != null" >
+        #{subOrderCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="returnRate7Days != null" >
+        #{returnRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="appealRate7Days != null" >
+        #{appealRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="interventionRate7Days != null" >
+        #{interventionRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="productSaleCount7Day != null" >
+        #{productSaleCount7Day,jdbcType=INTEGER},
+      </if>
+      <if test="activityCount30Days != null" >
+        #{activityCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountSum30Days != null" >
+        #{payAmountSum30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount30Days != null" >
+        #{subOrderCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="returnRate30Days != null" >
+        #{returnRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="appealRate30Days != null" >
+        #{appealRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="interventionRate30Days != null" >
+        #{interventionRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="productSaleCount30Day != null" >
+        #{productSaleCount30Day,jdbcType=INTEGER},
+      </if>
+      <if test="activityCount90Days != null" >
+        #{activityCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountSum90Days != null" >
+        #{payAmountSum90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount90Days != null" >
+        #{subOrderCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="returnRate90Days != null" >
+        #{returnRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="appealRate90Days != null" >
+        #{appealRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="interventionRate90Days != null" >
+        #{interventionRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="productSaleCount90Day != null" >
+        #{productSaleCount90Day,jdbcType=INTEGER},
+      </if>
+      <if test="productApplauseRate != null" >
+        #{productApplauseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="productScoreAvg != null" >
+        #{productScoreAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtStatisticalInfoExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_statistical_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_statistical_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityCount7Days != null" >
+        activity_count_7_days = #{record.activityCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmountSum7Days != null" >
+        pay_amount_sum_7_days = #{record.payAmountSum7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.subOrderCount7Days != null" >
+        sub_order_count_7_days = #{record.subOrderCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnRate7Days != null" >
+        return_rate_7_days = #{record.returnRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.appealRate7Days != null" >
+        appeal_rate_7_days = #{record.appealRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.interventionRate7Days != null" >
+        intervention_rate_7_days = #{record.interventionRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productSaleCount7Day != null" >
+        product_sale_count_7_day = #{record.productSaleCount7Day,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityCount30Days != null" >
+        activity_count_30_days = #{record.activityCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmountSum30Days != null" >
+        pay_amount_sum_30_days = #{record.payAmountSum30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.subOrderCount30Days != null" >
+        sub_order_count_30_days = #{record.subOrderCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnRate30Days != null" >
+        return_rate_30_days = #{record.returnRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.appealRate30Days != null" >
+        appeal_rate_30_days = #{record.appealRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.interventionRate30Days != null" >
+        intervention_rate_30_days = #{record.interventionRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productSaleCount30Day != null" >
+        product_sale_count_30_day = #{record.productSaleCount30Day,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityCount90Days != null" >
+        activity_count_90_days = #{record.activityCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmountSum90Days != null" >
+        pay_amount_sum_90_days = #{record.payAmountSum90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.subOrderCount90Days != null" >
+        sub_order_count_90_days = #{record.subOrderCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.returnRate90Days != null" >
+        return_rate_90_days = #{record.returnRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.appealRate90Days != null" >
+        appeal_rate_90_days = #{record.appealRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.interventionRate90Days != null" >
+        intervention_rate_90_days = #{record.interventionRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productSaleCount90Day != null" >
+        product_sale_count_90_day = #{record.productSaleCount90Day,jdbcType=INTEGER},
+      </if>
+      <if test="record.productApplauseRate != null" >
+        product_applause_rate = #{record.productApplauseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productScoreAvg != null" >
+        product_score_avg = #{record.productScoreAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_statistical_info
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      activity_count_7_days = #{record.activityCount7Days,jdbcType=INTEGER},
+      pay_amount_sum_7_days = #{record.payAmountSum7Days,jdbcType=DECIMAL},
+      sub_order_count_7_days = #{record.subOrderCount7Days,jdbcType=INTEGER},
+      return_rate_7_days = #{record.returnRate7Days,jdbcType=DECIMAL},
+      appeal_rate_7_days = #{record.appealRate7Days,jdbcType=DECIMAL},
+      intervention_rate_7_days = #{record.interventionRate7Days,jdbcType=DECIMAL},
+      product_sale_count_7_day = #{record.productSaleCount7Day,jdbcType=INTEGER},
+      activity_count_30_days = #{record.activityCount30Days,jdbcType=INTEGER},
+      pay_amount_sum_30_days = #{record.payAmountSum30Days,jdbcType=DECIMAL},
+      sub_order_count_30_days = #{record.subOrderCount30Days,jdbcType=INTEGER},
+      return_rate_30_days = #{record.returnRate30Days,jdbcType=DECIMAL},
+      appeal_rate_30_days = #{record.appealRate30Days,jdbcType=DECIMAL},
+      intervention_rate_30_days = #{record.interventionRate30Days,jdbcType=DECIMAL},
+      product_sale_count_30_day = #{record.productSaleCount30Day,jdbcType=INTEGER},
+      activity_count_90_days = #{record.activityCount90Days,jdbcType=INTEGER},
+      pay_amount_sum_90_days = #{record.payAmountSum90Days,jdbcType=DECIMAL},
+      sub_order_count_90_days = #{record.subOrderCount90Days,jdbcType=INTEGER},
+      return_rate_90_days = #{record.returnRate90Days,jdbcType=DECIMAL},
+      appeal_rate_90_days = #{record.appealRate90Days,jdbcType=DECIMAL},
+      intervention_rate_90_days = #{record.interventionRate90Days,jdbcType=DECIMAL},
+      product_sale_count_90_day = #{record.productSaleCount90Day,jdbcType=INTEGER},
+      product_applause_rate = #{record.productApplauseRate,jdbcType=DECIMAL},
+      product_score_avg = #{record.productScoreAvg,jdbcType=DECIMAL},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtStatisticalInfo" >
+    update bu_mcht_statistical_info
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="activityCount7Days != null" >
+        activity_count_7_days = #{activityCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountSum7Days != null" >
+        pay_amount_sum_7_days = #{payAmountSum7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount7Days != null" >
+        sub_order_count_7_days = #{subOrderCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="returnRate7Days != null" >
+        return_rate_7_days = #{returnRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="appealRate7Days != null" >
+        appeal_rate_7_days = #{appealRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="interventionRate7Days != null" >
+        intervention_rate_7_days = #{interventionRate7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="productSaleCount7Day != null" >
+        product_sale_count_7_day = #{productSaleCount7Day,jdbcType=INTEGER},
+      </if>
+      <if test="activityCount30Days != null" >
+        activity_count_30_days = #{activityCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountSum30Days != null" >
+        pay_amount_sum_30_days = #{payAmountSum30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount30Days != null" >
+        sub_order_count_30_days = #{subOrderCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="returnRate30Days != null" >
+        return_rate_30_days = #{returnRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="appealRate30Days != null" >
+        appeal_rate_30_days = #{appealRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="interventionRate30Days != null" >
+        intervention_rate_30_days = #{interventionRate30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="productSaleCount30Day != null" >
+        product_sale_count_30_day = #{productSaleCount30Day,jdbcType=INTEGER},
+      </if>
+      <if test="activityCount90Days != null" >
+        activity_count_90_days = #{activityCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="payAmountSum90Days != null" >
+        pay_amount_sum_90_days = #{payAmountSum90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount90Days != null" >
+        sub_order_count_90_days = #{subOrderCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="returnRate90Days != null" >
+        return_rate_90_days = #{returnRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="appealRate90Days != null" >
+        appeal_rate_90_days = #{appealRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="interventionRate90Days != null" >
+        intervention_rate_90_days = #{interventionRate90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="productSaleCount90Day != null" >
+        product_sale_count_90_day = #{productSaleCount90Day,jdbcType=INTEGER},
+      </if>
+      <if test="productApplauseRate != null" >
+        product_applause_rate = #{productApplauseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="productScoreAvg != null" >
+        product_score_avg = #{productScoreAvg,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtStatisticalInfo" >
+    update bu_mcht_statistical_info
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      activity_count_7_days = #{activityCount7Days,jdbcType=INTEGER},
+      pay_amount_sum_7_days = #{payAmountSum7Days,jdbcType=DECIMAL},
+      sub_order_count_7_days = #{subOrderCount7Days,jdbcType=INTEGER},
+      return_rate_7_days = #{returnRate7Days,jdbcType=DECIMAL},
+      appeal_rate_7_days = #{appealRate7Days,jdbcType=DECIMAL},
+      intervention_rate_7_days = #{interventionRate7Days,jdbcType=DECIMAL},
+      product_sale_count_7_day = #{productSaleCount7Day,jdbcType=INTEGER},
+      activity_count_30_days = #{activityCount30Days,jdbcType=INTEGER},
+      pay_amount_sum_30_days = #{payAmountSum30Days,jdbcType=DECIMAL},
+      sub_order_count_30_days = #{subOrderCount30Days,jdbcType=INTEGER},
+      return_rate_30_days = #{returnRate30Days,jdbcType=DECIMAL},
+      appeal_rate_30_days = #{appealRate30Days,jdbcType=DECIMAL},
+      intervention_rate_30_days = #{interventionRate30Days,jdbcType=DECIMAL},
+      product_sale_count_30_day = #{productSaleCount30Day,jdbcType=INTEGER},
+      activity_count_90_days = #{activityCount90Days,jdbcType=INTEGER},
+      pay_amount_sum_90_days = #{payAmountSum90Days,jdbcType=DECIMAL},
+      sub_order_count_90_days = #{subOrderCount90Days,jdbcType=INTEGER},
+      return_rate_90_days = #{returnRate90Days,jdbcType=DECIMAL},
+      appeal_rate_90_days = #{appealRate90Days,jdbcType=DECIMAL},
+      intervention_rate_90_days = #{interventionRate90Days,jdbcType=DECIMAL},
+      product_sale_count_90_day = #{productSaleCount90Day,jdbcType=INTEGER},
+      product_applause_rate = #{productApplauseRate,jdbcType=DECIMAL},
+      product_score_avg = #{productScoreAvg,jdbcType=DECIMAL},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

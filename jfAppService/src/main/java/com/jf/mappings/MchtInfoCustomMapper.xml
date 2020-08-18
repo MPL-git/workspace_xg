@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtInfoCustom" extends="com.jf.dao.MchtInfoMapper.BaseResultMap">
+  	<result column="source_niche_id" property="sourceNicheId" jdbcType="INTEGER" />
+  	<result column="product_ids" property="productIds" jdbcType="VARCHAR" />
+  	<result column="coupon_ids" property="couponIds" jdbcType="VARCHAR" />
+  	<result column="old_product_ids" property="oldProductIds" jdbcType="VARCHAR" />
+  	<result column="product_sale_count_90_day" property="productSaleCount90Day" jdbcType="INTEGER" />
+  	<result column="product_applause_rate" property="productApplauseRate" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <select id="getEveryDayShopList" parameterType="map" resultType="com.jf.entity.MchtInfoCustom">
+  SELECT 
+  	t.* ,
+	msi.product_sale_count_90_day,
+	msi.product_applause_rate
+  FROM
+  	(SELECT
+		mi.id,
+		mi.shop_logo,
+		mi.shop_name,
+		sn.id as source_niche_id,
+		mi.shop_type,
+		(select
+			IFNULL(GROUP_CONCAT(p.id),"")	 
+		from bu_source_niche_product snp, bu_product p,bu_mcht_product_brand mpb 
+		where snp.source_niche_id = sn.id AND snp.product_id = p.id
+			AND p.mcht_id = mpb.mcht_id
+			AND p.brand_id = mpb.product_brand_id
+			AND snp.del_flag='0'
+			AND mpb.`status` = '1'
+			AND mpb.audit_status = '3'
+			AND mpb.del_flag = '0'
+			AND p.STATUS = '1'
+			AND p.audit_status = '2'
+			AND p.del_flag = '0'
+			AND p.sale_type = '1'
+			AND EXISTS(select pi.id from bu_product_item pi where pi.del_flag = '0' and pi.product_id = p.id and pi.stock - pi.locked_amount > 0)
+		ORDER BY
+			p.weights DESC,p.id DESC
+		)AS product_ids,
+		(
+		SELECT
+			GROUP_CONCAT(c.id)
+		FROM
+			bu_coupon c
+		WHERE
+			c.mcht_id = mi.id
+		AND c.del_flag = '0'
+		AND c.belong = '2'
+		AND c.status = '1'
+		AND c.rang = '4'
+	    AND c.is_integral_turntable = '0'
+		<![CDATA[
+		AND c.rec_begin_date <= NOW()
+		AND c.rec_end_date >= NOW()
+		]]>
+		) AS coupon_ids,
+		(
+		SELECT
+			IFNULL(substring_index(group_concat(p.id SEPARATOR ','), ',', 3),"")
+		FROM
+			bu_product p,
+			bu_mcht_product_brand mpb
+		WHERE
+			p.mcht_id = mpb.mcht_id
+		AND p.brand_id = mpb.product_brand_id
+		AND p.mcht_id = mi.id
+		AND mpb.`status` = '1'
+		AND mpb.audit_status = '3'
+		AND mpb.del_flag = '0'
+		AND p. STATUS = '1'
+		AND p.audit_status = '2'
+		AND p.del_flag = '0'
+		AND p.sale_type = '1'
+		ORDER BY
+			p.weights DESC,
+			p.id DESC
+		) AS old_product_ids
+	FROM
+		bu_source_niche sn,
+		bu_mcht_info mi
+	WHERE
+		sn.link_id = mi.id
+	AND sn.type = '2'
+	AND sn.del_flag = '0'
+	AND sn.status = '0'
+	AND sn.audit_status = '1'
+	<![CDATA[
+	AND sn.up_date<=now()
+	]]>
+	AND mi.`status` = '1'
+	AND mi.shop_status = '1'
+	AND mi.del_flag = '0'
+	<if test="productType1Id != null and productType1Id != ''">
+		AND EXISTS (
+			SELECT
+				mpt.id
+			FROM
+				bu_mcht_product_type mpt
+			WHERE
+			 	mpt.mcht_id = mi.id
+			AND	mpt.is_main = '1'
+			AND mpt.`status` = '1'
+			AND mpt.del_flag = '0'
+			AND mpt.product_type_id = #{productType1Id}
+		)
+	</if>
+	ORDER BY
+		IFNULL(sn.seq_no, 99999) asc,
+		sn.weight desc,
+		id DESC
+	)t,bu_mcht_statistical_info msi
+  WHERE
+  	t.id = msi.mcht_id AND 
+  	CONCAT(t.product_ids,t.old_product_ids)!=''	
+	<if test="currentPage != null and pageSize != null">
+		limit #{currentPage} , #{pageSize} 
+	</if>
+  	</select>
+  	
+  	<select id="getCouponListByIds" parameterType="map" resultType="com.jf.entity.Coupon">
+  		select p.* from bu_coupon p where p.del_flag='0' and p.id in
+  		<foreach collection="couponIdList" item="id" open="(" close=")" separator="," >
+	    	#{id}
+	    </foreach>
+  	</select>
+  	
+</mapper>

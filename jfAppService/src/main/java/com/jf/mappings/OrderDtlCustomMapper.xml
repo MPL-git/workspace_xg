@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.OrderDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.OrderDtlCustom"  extends="com.jf.dao.OrderDtlMapper.BaseResultMap">
+    <result column="combineOrderId" property="combineOrderId" jdbcType="INTEGER" />
+    <result column="subOrderId" property="subOrderId" jdbcType="INTEGER" />
+    <result column="orderDtlId" property="orderDtlId" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+    <result column="combine_order_code" property="combineOrderCode" jdbcType="VARCHAR" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="combineOrderStatus" property="combineOrderStatus" jdbcType="CHAR" />
+    <result column="provinceName" property="provinceName" jdbcType="VARCHAR" />
+    <result column="cityName" property="cityName" jdbcType="VARCHAR" />
+    <result column="countyName" property="countyName" jdbcType="VARCHAR" />
+    
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="customerServiceOrderStatus" property="customerServiceOrderStatus" jdbcType="VARCHAR" />
+    <result column="pro_status" property="proStatus" jdbcType="VARCHAR" />
+    <result column="deposit_amount" property="depositAmount" jdbcType="DECIMAL" />
+    <result column="customerServiceOrderId" property="customerServiceOrderId" jdbcType="VARCHAR" />
+    
+    <result column="subIntegralPreferential" property="subIntegralPreferential" jdbcType="DECIMAL" />
+    <result column="subPayAmount" property="subPayAmount" jdbcType="DECIMAL" />
+    <result column="combineIntegralPreferential" property="combineIntegralPreferential" jdbcType="DECIMAL" />
+    <result column="combinePayAmount" property="combinePayAmount" jdbcType="DECIMAL" />
+    <result column="combineAmount" property="combineAmount" jdbcType="DECIMAL" />
+    
+    <result column="expressId" property="expressId" jdbcType="VARCHAR" />
+    <result column="expressNo" property="expressNo" jdbcType="VARCHAR" />
+    <result column="deliveryDate" property="deliveryDate" jdbcType="TIMESTAMP" />
+     <result column="cancel_date" property="cancelDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="getOrderDtlList" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select t.* from(	
+		<if test="subStatus == null or subStatus == '' or subStatus == '0'.toString()">		
+		select
+  		combineOrder.id AS combineOrderId,
+  		combineOrder.svip_order_id as svipOrderId,
+  		combineOrder.status as combineOrderStatus,
+  		subOrder.id AS subOrderId,
+		combineOrder.combine_order_code,
+		subOrder.sub_order_code,
+		subOrder.express_id as expressId,
+		subOrder.express_no as expressNo,
+		subOrder.delivery_date as deliveryDate,
+		subOrder.status,
+		subOrder.pay_amount as subPayAmount,
+		subOrder.is_comment as isComment,
+		subOrder.complete_date as completeDate,
+		subOrder.receipt_date as receiptDate,
+		subOrder.audit_status as auditStatus,
+		combineOrder.total_pay_amount as combinePayAmount,
+		combineOrder.create_date
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		where combineOrder.del_flag = '0'
+		and subOrder.del_flag = '0'
+		and combineOrder.member_id = #{memberId}
+		<if test="subOrderStatus !=null and subOrderStatus.size() > 0">
+			and subOrder.status in
+			<foreach collection="subOrderStatus" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+		and subOrder.is_user_del = '0'
+		and combineOrder.is_user_del = '0'
+		and combineOrder.status in ('0','4')
+		group by combineOrder.id
+		
+		UNION
+		</if>
+		
+		select
+  		combineOrder.id AS combineOrderId,
+	    combineOrder.svip_order_id as svipOrderId,
+  		combineOrder.status as combineOrderStatus,
+  		subOrder.id AS subOrderId,
+		combineOrder.combine_order_code,
+		subOrder.sub_order_code,
+		subOrder.express_id as expressId,
+		subOrder.express_no as expressNo,
+		subOrder.delivery_date as deliveryDate,
+		subOrder.status,
+		subOrder.pay_amount as subPayAmount,
+		subOrder.is_comment as isComment,
+		subOrder.complete_date as completeDate,
+		subOrder.receipt_date as receiptDate,
+	  	subOrder.audit_status as auditStatus,
+		combineOrder.total_pay_amount as CombinePayAmount,
+		combineOrder.create_date
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		where combineOrder.del_flag = '0'
+		and subOrder.del_flag = '0'
+		and combineOrder.member_id = #{memberId}
+		<if test="subOrderStatus !=null and subOrderStatus.size() > 0">
+			and subOrder.status in
+			<foreach collection="subOrderStatus" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+		and subOrder.is_user_del = '0'
+		and combineOrder.is_user_del = '0'
+		and combineOrder.status = '1'
+		<if test="isComment != null and isComment != ''">
+			and subOrder.is_comment = '0'
+			and subOrder.status != '5'
+		</if>
+		) t
+		order by t.create_date desc
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getOrderProductInfoList" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+  		combineOrder.id AS combineOrderId,
+  		subOrder.id AS subOrderId,
+		combineOrder.combine_order_code,
+		subOrder.sub_order_code,
+		subOrder.express_id as expressId,
+		subOrder.express_no as expressNo,
+		subOrder.delivery_date as deliveryDate,
+		dtl.product_name,
+		dtl.id,
+		dtl.product_item_id,
+		dtl.product_prop_desc,
+		dtl.sale_price,
+		dtl.sku_pic,
+		dtl.product_status,
+		dtl.quantity,
+		dtl.freight,
+		dtl.is_give,
+		dtl.dtl_express_no,
+		subOrder.status,
+		subOrder.pay_amount,
+		combineOrder.create_date
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		left join bu_order_dtl dtl on dtl.sub_order_id = subOrder.id
+		where combineOrder.member_id = #{memberId}
+		<if test="subOrderStatus !=null and subOrderStatus.size() > 0">
+			and subOrder.status in
+			<foreach collection="subOrderStatus" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+		<if test="subOrderCode !=null and subOrderCode != ''">
+			and subOrder.sub_order_code = #{subOrderCode}
+		</if>
+		<if test="combineOrderCode !=null and combineOrderCode != ''">
+			and combineOrder.combine_order_code = #{combineOrderCode}
+		</if>
+		and subOrder.is_user_del = '0'	
+		and combineOrder.del_flag = '0'
+		and subOrder.del_flag = '0'
+		and dtl.del_flag = '0'
+  	</select>
+  	
+  	<!-- 弃用 -->
+  	<select id="getOrderDtlCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select count(*)
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		left join bu_order_dtl dtl on dtl.sub_order_id = subOrder.id
+		where combineOrder.member_id = #{memberId}
+		<if test="subOrderStatus !=null and subOrderStatus.size() > 0">
+			and subOrder.status in
+			<foreach collection="subOrderStatus" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+		and subOrder.is_user_del = '0'
+		and subOrder.del_flag = '0'
+  	</select>
+  	
+  	<select id="getOrderCode" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select 
+		combineOrder.id as combineOrderId,
+		combineOrder.svip_order_id as svipOrderId,
+		combineOrder.combine_order_code,
+		subOrder.sub_order_code,
+		subOrder.status,
+		subOrder.pay_amount as subPayAmount,
+		subOrder.amount,
+		subOrder.id as subOrderId,
+		subOrder.mcht_id as mchtId,
+		subOrder.express_id as expressId,
+		subOrder.express_no as expressNo,
+		subOrder.delivery_date as deliveryDate,
+		subOrder.is_comment as isComment,
+		subOrder.complete_date as completeDate,
+		subOrder.receipt_date as receiptDate,
+		subOrder.close_date as closeDate,
+		subOrder.audit_status as auditStatus,
+		combineOrder.create_date,
+		combineOrder.pay_date,
+		combineOrder.receiver_name,
+		combineOrder.receiver_phone,
+		combineOrder.receiver_address,
+		combineOrder.total_pay_amount as combinePayAmount,
+		combineOrder.total_amount as combineAmount,
+		combineOrder.status as combineOrderStatus,
+		combineOrder.cancel_date
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		where combineOrder.member_id = #{memberId}
+		<if test="subOrderStatus !=null and subOrderStatus.size() > 0">
+			and subOrder.status in
+			<foreach collection="subOrderStatus" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+		<if test="subOrderCode !=null and subOrderCode != ''">
+			and subOrder.sub_order_code = #{subOrderCode}
+		</if>
+		<if test="combineOrderId !=null and combineOrderId != ''">
+			and combineOrder.id = #{combineOrderId}
+		</if>
+		<if test="subOrderId !=null and subOrderId != ''">
+			and subOrder.id = #{subOrderId}
+		</if>
+		and combineOrder.del_flag = '0'
+		and subOrder.del_flag = '0'
+  	</select>
+  	
+  	<select id="getOrderDtlInfoList" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+		combineOrder.id combineOrderId,
+		combineOrder.receiver_name, <!-- #联系人 -->
+		combineOrder.receiver_phone,<!-- #联系人电话 -->
+		combineOrder.receiver_address,<!-- #联系人 -->
+		combineOrder.remarks,
+		combineOrder.order_type,
+		dtl.product_name, <!-- #商品名称 -->
+		dtl.product_prop_desc,<!-- #商品规格 -->
+		dtl.quantity, <!-- #商品数量 -->
+		dtl.pay_amount,<!-- 商品的实付金额 -->
+		dtl.is_give,
+		subOrder.amount, <!-- #订单商品总金额 -->
+		subOrder.pay_amount as subPayAmount,<!-- #订单实付金额 -->
+		subOrder.status,<!-- #订单明细状态 待付款，待发货，待收货 -->
+		dtl.product_status,<!-- #商品状态 1.完成 2.退款 3.退货 -->
+		subOrder.sub_order_code,<!-- #子订单编码 -->
+		subOrder.create_date,<!-- #创建时间 -->
+		subOrder.complete_date as completeDate,
+		combineOrder.pay_date, <!-- #付款时间 -->
+		dtl.sku_pic,
+		dtl.product_item_id,
+		dtl.id,
+		dtl.product_id,
+		dtl.sale_price,
+		dtl.tag_price,
+		dtl.single_product_activity_id,
+		dtl.activity_area_id,
+		dtl.freight,
+		dtl.marked_out_of_stock,
+		dtl.delivery_status,
+		dtl.dtl_express_id,
+		dtl.dtl_express_no,
+		dtl.delivery_date,
+		subOrder.mcht_id,
+		subOrder.audit_status as auditStatus,
+		(select p.sale_type from bu_product p where p.id = dtl.product_id and p.del_flag = '0') as saleType
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		left join bu_order_dtl dtl on dtl.sub_order_id = subOrder.id
+		where subOrder.del_flag = '0'
+		<if test="combineOrderId !=null and combineOrderId != ''">
+			and combineOrder.id = #{combineOrderId}
+		</if>
+		<if test="subOrderId !=null and subOrderId != ''">
+			and subOrder.id = #{subOrderId}
+		</if>
+		and combineOrder.del_flag = '0'
+		and subOrder.del_flag = '0'
+		and dtl.del_flag = '0'
+  	</select>
+  	
+  	<select id="getCustomerServiceList" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+  		sco.id as customerServiceOrderId,
+		sco.order_code,
+		sco.status as customerServiceOrderStatus,
+		sco.pro_status,
+		sco.deposit_amount,
+		od.quantity,
+		od.product_name,
+		od.product_prop_desc,
+		od.pay_amount,
+		od.product_id,
+		od.id as orderDtlId,
+		od.sku_pic,
+		so.sub_order_code,
+		so.id as subOrderId,
+		so.express_id as expressId,
+		so.express_no as expressNo,
+		so.mcht_id
+		from bu_customer_service_order sco
+		left join bu_order_dtl od on od.id = sco.order_dtl_id
+		left join bu_sub_order so on so.id = od.sub_order_id
+		left join bu_combine_order co on co.id = so.combine_order_id
+		where sco.del_flag = '0'
+		and od.del_flag = '0'
+		and so.del_flag = '0'
+		and co.del_flag = '0'
+		and co.member_id = #{memberId}
+		and sco.status != '3'
+		order by sco.create_date desc
+		limit #{currentPage} , #{pageSize} 
+  	</select>
+  	
+  	<select id="getCustomerServiceCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select count(*)
+		from bu_customer_service_order sco
+		left join bu_order_dtl od on od.id = sco.order_dtl_id
+		left join bu_sub_order so on so.id = od.sub_order_id
+		left join bu_combine_order co on co.id = so.combine_order_id
+		where sco.del_flag = '0'
+		and od.del_flag = '0'
+		and so.del_flag = '0'
+		and co.member_id = #{memberId}
+  	</select>
+  	
+  	<select id="getProductInfoById" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select 
+		dtl.id,
+		dtl.product_id,
+		dtl.product_name,
+		dtl.product_prop_desc,
+		dtl.quantity,
+		pic.pic as skuPic
+		from bu_order_dtl dtl
+		left join bu_product_pic pic on pic.product_id = dtl.product_id
+		where dtl.del_flag = '0'
+		and pic.del_flag = '0'
+		and pic.is_default = '1'
+		and dtl.id = #{orderDtlId}
+  	</select>
+  	
+  	<select id="getOrderDtlInfoById" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+		dtl.id as orderDtlId,
+		dtl.integral_preferential,
+		dtl.pay_amount,
+		dtl.quantity,
+		sub.id as subOrderId,
+		sub.integral_preferential as subIntegralPreferential,
+		sub.pay_amount as subPayAmount,
+		combine.id as combineOrderId,
+		combine.total_integral_preferential combineIntegralPreferential,
+		combine.total_pay_amount as combinePayAmount,
+		combine.total_amount as combineAmount
+		from bu_order_dtl dtl
+		left join bu_sub_order sub on sub.id = dtl.sub_order_id
+		left join bu_combine_order combine on combine.id = sub.combine_order_id
+		where dtl.del_flag = '0'
+		and sub.del_flag = '0'
+		and combine.del_flag = '0'
+		and combine.id = #{combineOrderId}
+  	</select>
+  	
+  	<select id="findMchtAddress" parameterType="java.lang.Integer" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+		tmp.address receiver_address,
+		tmp.recipient as receiver_name,
+		tmp.phone as receiver_phone,
+		tmp.remarks,
+		provinceArea.AREA_NAME AS provinceName,
+		cityArea.AREA_NAME AS cityName,
+		countyArea.AREA_NAME AS countyName
+		from bu_order_dtl dtl
+		left join bu_product pro on pro.id = dtl.product_id
+		left join bu_product_after_templet tmp on tmp.id = pro.cs_templet_id
+		left join bu_p_area provinceArea on tmp.province = provinceArea.AREA_ID
+		left join bu_p_area cityArea on tmp.city = cityArea.AREA_ID
+		left join bu_p_area countyArea on tmp.county = countyArea.AREA_ID
+		where dtl.id = #{orderDtlId}
+		and dtl.del_flag = '0'
+		and pro.del_flag = '0'
+		and tmp.del_flag = '0'
+  	</select>
+  	
+  	<select id="getPayQuantity" parameterType="java.util.Map" resultType="java.lang.Integer">
+  			select ifnull(sum(dtl.quantity),0) as quantity from bu_combine_order combine
+			left join bu_sub_order sub on sub.combine_order_id = combine.id
+			left join bu_order_dtl dtl on dtl.sub_order_id = sub.id
+			where combine.del_flag = '0'
+			and sub.del_flag = '0'
+			and dtl.del_flag = '0'
+			and combine.status = '1'
+			and dtl.product_id = #{productId}
+			and dtl.single_product_activity_id = #{singleProductActivityId}
+  </select>
+  
+  <select id="getAlreadyPaidCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  			select count(*) from bu_combine_order combine
+			left join bu_sub_order sub on sub.combine_order_id = combine.id
+			where combine.del_flag = '0'
+			and sub.del_flag = '0'
+			and combine.status = '1'
+			and combine.member_id = #{memberId}
+			<choose>
+				<when test="status != null and status == '3'.toString()">
+					and sub.is_comment = '0'
+					and sub.status in ('3','6')
+					and sub.is_user_del = '0'
+				</when>
+				<otherwise>
+					and sub.status = #{status}
+				</otherwise>
+			</choose>
+  </select>
+  
+  <select id="getCombineOrderData" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select 
+  		c.minimum,
+  		c.money,
+  		t.id as combineOrderId,
+  		t.total_pay_amount as combinePayAmount,
+  		t.total_amount as combineAmount,
+  		t.total_integral_preferential as combineIntegralAmount
+  		from bu_member_coupon m,bu_coupon c,bu_combine_order t
+		where m.coupon_id = c.id and m.order_id = t.id
+		and c.rang = '1'
+		and m.`status` = '1' and m.use_date &gt;= '2018-06-18 00:00:00' and m.use_date &lt;= '2018-06-20 23:59:59'
+		and t.`status` in ('1','0') and t.create_date &gt;= '2018-06-18 00:00:00' and t.create_date &lt;= '2018-06-20 23:59:59'
+		and t.id not in(
+					select sub.combine_order_id from bu_sub_order sub where sub.id in(
+				select cso.sub_order_id from bu_customer_service_order cso where cso.order_dtl_id in(
+			select od.id from bu_order_dtl od where od.sub_order_id in (
+		select so.id from bu_sub_order so where so.combine_order_id in (
+		select 
+	  		t.id as combineOrderId
+	  		from bu_member_coupon m,bu_coupon c,bu_combine_order t
+			where m.coupon_id = c.id and m.order_id = t.id
+			and c.rang = '1'
+			and m.`status` = '1' and m.use_date &gt;= '2018-06-18 00:00:00' and m.use_date &lt;= '2018-06-20 23:59:59'
+			and t.`status` in ('1','0') and t.create_date &gt;= '2018-06-18 00:00:00' and t.create_date &lt;= '2018-06-20 23:59:59'
+		)))))
+		and t.id not in(
+			select so1.combine_order_id from bu_order_dtl od1, bu_sub_order so1
+			where od1.sub_order_id = so1.id
+			and od1.create_date &gt;= '2018-06-18 00:00:00' and od1.create_date &lt;= '2018-06-20 23:59:59'
+			group by so1.combine_order_id having count(1) &lt;= 1
+		)
+		<if test="cid != null and cid != ''">
+			and t.id = #{cid}
+		</if>
+  	</select>
+  	
+  	
+  	 <select id="getUnComplateOrderNum" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+		sub.sub_order_code
+		from bu_combine_order combine,bu_sub_order sub
+		where combine.id = sub.combine_order_id
+		and combine.del_flag = '0'
+		and combine.member_id = #{memberId}
+		and sub.del_flag = '0'
+		<choose>
+			<when test="type != null and type == '1'.toString()">
+				and sub.`status` in ('0','1','2','6')
+			</when>
+			<otherwise>
+				and sub.`status` in ('3')
+				and sub.complete_date> date_add(now(), interval -15 day)
+			</otherwise>
+		</choose>
+  		LIMIT 1
+  	</select>
+  	
+  	<select id="getSvipSaveAmount" parameterType="int" resultType="java.math.BigDecimal">
+  		select
+  		ifnull(sum(truncate(orderDtl.original_price * orderDtl.quantity * (1 - orderDtl.svip_discount),2)),0) as saveAmount
+		from bu_combine_order combineOrder,bu_sub_order subOrder,bu_order_dtl orderDtl
+		where combineOrder.id = subOrder.combine_order_id and subOrder.id = orderDtl.sub_order_id
+		and combineOrder.`status` = '1'
+		and combineOrder.del_flag = '0'
+		and combineOrder.member_id = #{memberId}
+		and subOrder.del_flag = '0'
+		and orderDtl.del_flag = '0'
+		and orderDtl.is_svip_buy = '1'
+		and orderDtl.original_price is not null
+		and (orderDtl.product_status NOT IN ('2','3') or orderDtl.product_status is null)
+  	</select>
+  	
+  	<select id="getSvipSaveAmountOrderList" parameterType="map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+		orderDtl.product_name,
+		orderDtl.original_price,
+		orderDtl.quantity,
+		orderDtl.svip_discount,
+		combineOrder.pay_date as payDate
+		from bu_combine_order combineOrder,bu_sub_order subOrder,bu_order_dtl orderDtl
+		where combineOrder.id = subOrder.combine_order_id and subOrder.id = orderDtl.sub_order_id
+		and combineOrder.`status` = '1'
+		and combineOrder.del_flag = '0'
+		and combineOrder.member_id = #{memberId}
+		and subOrder.del_flag = '0'
+		and orderDtl.del_flag = '0'
+		and orderDtl.is_svip_buy = '1'
+		and orderDtl.original_price is not null
+		and (orderDtl.product_status NOT IN ('2','3') or orderDtl.product_status is null)
+		order by orderDtl.id desc
+		<if test="currentPage != null and currentPage>=0" >
+	    	limit #{currentPage} , #{pageSize}
+	    </if>
+  	</select>
+  	
+  	<select id="getSubMemberHistoryOrderList" parameterType="map" resultType="com.jf.entity.OrderDtlCustom">
+  	select 
+  	t.*,
+  	(select mi.pic from bu_member_info mi where mi.id = t.member_id) as pic,
+  	(select mi.nick from bu_member_info mi where mi.id = t.member_id) as nick
+  	from(
+  		select
+  		a.member_id,
+		a.pay_date,
+		b.sub_order_code,
+		b.status,
+		c.quantity,
+		c.pay_amount,
+		c.distribution_amount,
+		c.product_status,
+		c.distribution_settle_status
+		from bu_combine_order a,bu_sub_order b,bu_order_dtl c
+		where a.id = b.combine_order_id and b.id = c.sub_order_id
+		and a.del_flag = '0'
+		and a.status = '1'
+		and a.promotion_type = '1'
+		<if test="memberIds !=null and memberIds.size() > 0">
+			and a.member_id in
+			<foreach collection="memberIds" index="index" item="memberId" open="(" separator="," close=")">
+	             #{memberId}
+	        </foreach>
+		</if>
+		and b.del_flag = '0'
+		and c.del_flag = '0'
+		<choose>
+			<when test="type == '1'.toString()">
+				and b.status in ('1','2')
+				and (c.product_status is null or c.product_status = '1')
+			</when>
+			<when test="type == '2'.toString()">
+				and b.status in ('3','6')
+				and (c.product_status is null or c.product_status = '1')
+				and (c.distribution_settle_status = '0' or c.distribution_settle_status is null)
+			</when>
+			<when test="type == '3'.toString()">
+				and b.status = '3'
+				and (c.product_status is null or c.product_status = '1')
+				and c.distribution_settle_status = '1'
+			</when>
+			<when test="type == '4'.toString()">
+				and c.product_status IN ('2','3')
+			</when>
+		</choose>
+		order by a.pay_date desc
+	    )t
+		<if test="currentPage != null and currentPage>=0" >
+			limit #{currentPage} , #{pageSize}
+		</if>
+  	</select>
+  	
+  	<select id="countSaleByMchtIdList" parameterType="java.util.Map" resultType="com.jf.entity.MchtInfoCustom">
+		select 
+			so.mcht_id as id,
+  			IFNULL(sum(od.quantity),0) as totalSaleQuantity
+  		from bu_order_dtl od ,bu_sub_order so,bu_combine_order co 
+  			where od.sub_order_id = so.id 
+  			and so.mcht_id IN 
+  			<foreach collection="mchtIdList" item="id" open="(" close=")" separator="," >
+	    		#{id}
+	    	</foreach>
+  			and od.del_flag='0' 
+  			and so.del_flag='0'
+  			and co.id = so.combine_order_id 
+  			and co.status = '1' 
+  			and co.del_flag='0'
+  			AND od.product_status='1'
+			AND co.pay_status='1'
+			AND so.status='3'
+			<![CDATA[
+			AND co.pay_date>=date_sub(NOW(),interval 90 day)
+			AND so.create_date>=date_sub(NOW(),interval 90 day)
+			]]> 
+			GROUP BY so.mcht_id	
+  	</select>
+
+	<select id="countByCombineOrderId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		SELECT count(od.id) FROM bu_order_dtl od,bu_sub_order so,bu_combine_order co WHERE od.sub_order_id = so.id AND so.combine_order_id = co.id AND od.del_flag='0' AND so.del_flag='0' AND co.del_flag='0' AND co.id=#{combineOrderId}
+  	</select>
+
+</mapper>

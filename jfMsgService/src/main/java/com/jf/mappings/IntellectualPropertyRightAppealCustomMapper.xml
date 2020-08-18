@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.IntellectualPropertyRightAppealCustomMapper">
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and a.${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and a.${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and a.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and a.${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        a.id, a.obligee_id, a.intellectual_property_right_id, a.mcht_id, a.appeal_reason, a.appeal_type, a.relevant_value,
+        a.reason_desc, a.accept_status, a.remarks_to_obligee, a.remarks_to_mcht, a.inner_remarks, a.commit_date,
+        a.status, a.status_date, a.complain_end_date, a.staff_id, a.create_by, a.create_date, a.update_by,
+        a.update_date, a.remarks, a.del_flag
+    </sql>
+
+    <select id="selectOverDueByExample" resultType="com.jf.entity.IntellectualPropertyRightAppeal"
+            parameterType="com.jf.entity.IntellectualPropertyRightAppealExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>,
+        t1.complain_id,
+        t1.complain_status
+        FROM
+        bu_intellectual_property_right_appeal a
+        LEFT JOIN (
+            SELECT p.id AS complain_id,
+            p.intellectual_property_right_appeal_id,
+            p.status AS complain_status
+            FROM bu_property_right_complain p WHERE p.del_flag = '0'
+        ) t1 ON t1.intellectual_property_right_appeal_id = a.id
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        and (t1.complain_id is null or t1.complain_status in (1,2))
+    </select>
+
+</mapper>

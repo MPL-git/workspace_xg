@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no, email=no">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<title></title>
+	<style>
+		section, article, aside, header, footer, nav, figure, figcaption, canvas, img {
+			display: block;
+		}
+		body, dl, dd, p, form, input, ol, ul, h1, h2, h3, h4, h5, h6, pre, figure, fieldset {
+			margin: 0;
+		}
+		ol, ul, td, input, fieldset {
+			padding: 0;
+		}
+		h1, h2, h3, h4, h5, h6, strong, b, label, table {
+			font-weight: normal;
+			font-size: inherit;
+		}
+		img {
+			width: 100%;
+			border: none;
+		}
+		li {
+			list-style: none;
+		}
+		a {
+			text-decoration: none;
+			color: inherit;
+			cursor: pointer;
+		}
+		.information.page {
+			background: #fff;
+		}
+		.information .main {
+			padding: .2rem;
+			font-size: .26rem;
+		}
+		.information .main p {
+			margin-top: .2rem;
+			word-break: break-all;
+		}
+
+		.information table {
+			width: 100% !important;
+		}
+		.information .dow-bt {
+			display: block;
+			width: 100%;
+			height: .8rem;
+			color: #fff;
+			font-size: .32rem;
+			text-align: center;
+			line-height: .8rem;
+			margin-top: .2rem;
+			background: #ff5050;
+			border: none;
+		}
+		div.layui-m-layercont {
+			max-width: 6rem;
+			padding: .5rem .3rem;
+    		word-wrap: break-word;
+		}
+	</style>
+</head>
+<body>
+	<div class="page information">
+		<div class="scroll-y main"></div>
+	</div>
+	<script src="../../xgbuy/static/js/jquery-3.2.1.min.js"></script>
+	<script src="../../xgbuy/static/js/clipboard.min.js"></script>
+	<script src="layer.js"></script>
+	<script>
+		// rem处理
+		var html = document.querySelector('html'),
+			font_size = 100;
+
+		function fontFix() {
+			font_size = html.offsetWidth / 7.5;
+			html.style.fontSize = font_size + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+
+		// 获取URL参数
+		function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return unescape(r[2]); return null; //返回参数值
+		}
+
+		function requestPage () {
+			var _id = getUrlParam('id'),
+				_type = getUrlParam('type');
+
+			$.ajax({
+				method: 'post',
+				url: '../../api/n/getInformation',
+				timeout: 10e3,
+				data: JSON.stringify({
+					reqData:{
+						type: _type,
+						id: _id
+					}
+				}),
+				success: function (res) {
+					var _l = res.returnData;
+					$('title').html(_l.title);
+					$('.page:visible .main').html(_l.content);
+
+					if (_l.fileSite) {
+						urlText = _l.fileSite;
+						$('.page:visible .main').append('<button class="dow-bt" data-clipboard-text="' + _l.fileSite + '">下载</button>');
+
+						var _a = new Clipboard('.dow-bt');
+						_a.on('success', function(e) {
+							e.clearSelection();
+						});
+						_a.on('error', function(e) {
+							layer.open({
+								content: '该设备不支持快捷复制, 请通过长按来复制',
+								skin: 'msg',
+								time: 2 
+							});
+						});
+					}
+				}
+			});
+		}
+
+		var urlText;
+
+		$('body').on('click', '.dow-bt', function(){
+			layer.open({
+				content: '请复制链接' + urlText + '到浏览器下载文件',
+				btn: '复制',
+				yes: function (index) {
+					layer.close(index);
+					layer.open({
+						content: '复制成功',
+						skin: 'msg',
+						time: 2 
+					});
+				},
+			});
+		});
+		requestPage();
+	</script>
+</body>
+</html>

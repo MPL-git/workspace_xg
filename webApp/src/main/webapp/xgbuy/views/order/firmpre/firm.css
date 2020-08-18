@@ -1,0 +1,37 @@
+.order-firmpre .stage {
+	height: 2.66rem;
+	background: #fff;
+}
+
+.order-firmpre .stage>div {
+	padding: 0 .2rem;
+	border-top: 1px solid #eee;
+	font-size: .26rem;
+}
+
+.order-firmpre .stage .row-1 {
+	height: .8rem;
+}
+.order-firmpre .stage .row-2 {
+	padding-top: .2rem;
+}
+.order-firmpre .stage .col-1,
+.order-firmpre .stage .col-2,
+.order-firmpre .stage .col-3 {
+	height: .4rem;
+}
+.order-firmpre .stage .col-2 {
+	margin-bottom: .14rem;
+	color: #999;
+	font-size: .22rem;
+}
+
+.order-firmpre .stage .col-3 a {
+	width: .26rem;
+	height: .26rem;
+	margin-left: .1rem;
+	background: #ff5050;
+	border-radius: 100%;
+	font-size: .22rem;
+	color: #fff;
+}

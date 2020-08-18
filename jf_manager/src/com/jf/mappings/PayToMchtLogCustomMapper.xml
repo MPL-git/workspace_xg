@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.PayToMchtLogCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.PayToMchtLogCustom"  extends="com.jf.dao.PayToMchtLogMapper.BaseResultMap">
+  	<result column="type_desc" property="typeDesc" jdbcType="VARCHAR" />
+  	<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+  	<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  	<result column="pay_staff_name" property="payStaffName" jdbcType="VARCHAR" />
+  	<result column="confirm_status_desc" property="confirmStatusDesc" jdbcType="VARCHAR" />
+  	<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+  	<result column="begin_date" property="beginDate" jdbcType="TIMESTAMP" />
+  	<result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="product_name" property="productName" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+  	id, type, mcht_settle_order_id, mcht_id, pay_code, pay_date, pay_staff_id, settle_amount, 
+    deposit_amount, pay_amount, need_pay_amount, before_pay_amount, confirm_status, create_by, 
+    create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_PAY_TO_MCHT_LOG","TYPE", type)type_desc,
+    (select a.shop_name from bu_mcht_info a where a.id = t.mcht_id)shop_name,
+    (select a.company_name from bu_mcht_info a where a.id = t.mcht_id)company_name,
+    (select a.STAFF_NAME from sys_staff_info a where a.STAFF_ID = t.pay_staff_id)pay_staff_name,
+    FUN_GET_STATUS_DESC("BU_PAY_TO_MCHT_LOG","CONFIRM_STATUS", confirm_status)confirm_status_desc,
+    (select a.mcht_code from bu_mcht_info a where a.id = t.mcht_id)mcht_code,
+    (SELECT b.begin_date FROM bu_mcht_settle_order b WHERE t.mcht_settle_order_id=b.id AND b.del_flag='0' order by b.id desc LIMIT 1) begin_date,
+    (SELECT b.end_date FROM bu_mcht_settle_order b WHERE t.mcht_settle_order_id=b.id AND b.del_flag='0' order by b.id desc LIMIT 1) end_date,
+    (select pt.name from bu_product_type pt,bu_mcht_product_type mpt where mpt.mcht_id = t.mcht_id and mpt.is_main = '1' and mpt.status = '1' and mpt.del_flag = '0' and mpt.product_type_id = pt.id and pt.status = '1' and pt.del_flag = '0') as product_name
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.PayToMchtLogCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_pay_to_mcht_log t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.PayToMchtLogCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_pay_to_mcht_log t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+</mapper>

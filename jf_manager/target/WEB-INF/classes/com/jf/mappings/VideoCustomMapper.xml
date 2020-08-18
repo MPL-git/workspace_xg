@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.VideoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.VideoCustom" extends="com.jf.dao.VideoMapper.BaseResultMap">
+    <result column="video_status_desc" property="videoStatusDesc" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="mchtproducttype_name" property="mchtProductTypeName" jdbcType="VARCHAR" />
+    <result column="play_Count" property="playCount" jdbcType="INTEGER" />
+    <result column="like_Count" property="likeCount" jdbcType="INTEGER" />
+    <result column="comment_Count" property="commentCount" jdbcType="INTEGER" />
+    <result column="collect_Count" property="collectCount" jdbcType="INTEGER" />
+    <result column="fw_staff_id" property="fwStaffId" jdbcType="INTEGER" />
+    <result column="fw_assistant_id" property="fwAssistantId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, product_type_id, title, description, video_url,video_xcx_code, video_cover, video_thumbnails, 
+    video_time, video_size, audit_status, audit_time,audit_remark,status, season_weight, play_weight, like_weicht,
+    comment_weight, collect_weight, manual_weicht, total_weicht, weight_time, isRecommend, 
+    seq_no, create_by, create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_VIDEO","VIDEO_SOURCE", video_source) video_status_desc,
+    (select mi.company_name from bu_mcht_info mi where mi.id=v.mcht_id and mi.del_flag='0') company_name,
+    (select mi.mcht_code from bu_mcht_info mi where mi.id=v.mcht_id and mi.del_flag='0') mcht_code,
+    (select pt.name from bu_mcht_product_type mpt,bu_product_type pt where mpt.mcht_id=v.mcht_id and mpt.is_main='1' and mpt.status='1' and mpt.product_type_id=pt.id and pt.status='1' and pt.del_flag='0' and mpt.del_flag='0') mchtproducttype_name,
+    (select vie.play_count from bu_video_extend vie where vie.video_id=v.id and vie.del_flag='0') play_Count,<!-- 播放量 -->
+    (select vie.like_count from bu_video_extend vie where vie.video_id=v.id and vie.del_flag='0') like_Count,<!-- 点赞量 -->
+    (select vie.comment_count from bu_video_extend vie where vie.video_id=v.id and vie.del_flag='0') comment_Count,<!-- 评论量 -->
+    (select vie.collect_count from bu_video_extend vie where vie.video_id=v.id and vie.del_flag='0') collect_Count,<!-- 收藏量 -->
+    (select c.staff_id from bu_platform_contact c,bu_mcht_platform_contact b where c.id = b.platform_contact_id and b.mcht_id = v.mcht_id and c.contact_type = '7' and b.del_flag='0' and c.del_flag='0' and b.status='1' and c.status='0' LIMIT 1)fw_staff_id,
+    (select pc.staff_id from bu_platform_contact c,bu_mcht_platform_contact b,bu_platform_contact pc where c.id = b.platform_contact_id and c.assistant_id=pc.id and b.mcht_id = v.mcht_id and c.contact_type = '7' and b.del_flag='0' and c.del_flag='0' and pc.del_flag='0' and b.status='1' and c.status='0' LIMIT 1)fw_assistant_id
+  </sql>
+  <select id="selectByVideoCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.VideoCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_video v
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByVideoCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_video v
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+ 
+  <select id="countByVideoCustomExample" parameterType="com.jf.entity.VideoCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_video v
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+</mapper>

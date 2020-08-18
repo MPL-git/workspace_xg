@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CouponCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CouponCustom"  extends="com.jf.dao.CouponMapper.BaseResultMap">
+    <result column="use_num" property="useNum" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+     <result column="product_art_no" property="productArtNo" jdbcType="VARCHAR" />
+    <result column="is_integral_turntable_desc" property="isIntegralTurntableDesc" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, rang, belong, coupon_type, type_ids, can_superpose, activity_area_id, mcht_id, 
+    preferential_type, money, discount, max_discount_money, condition_type, minimum, 
+    minicount, status, rec_type, care_shop_can_rec, need_integral, rec_begin_date, rec_end_date, 
+    min_member_group, expiry_type, expiry_begin_date, expiry_end_date, expiry_days, grant_quantity, 
+    rec_quantity, rec_limit_type, rec_each, link_type, link_value,create_by, create_date,
+    update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_COUPON","IS_INTEGRAL_TURNTABLE", c.is_integral_turntable) is_integral_turntable_desc,
+    (select count(mc.coupon_id) from bu_member_coupon mc where mc.coupon_id= c.id and mc.del_flag="0" and mc.status="1") use_num,
+    (select a.pic from bu_product_pic a where c.type_ids=a.product_id and a.del_flag='0' and a.is_default=1) pic,
+    (select p.code from bu_product p where c.type_ids=p.id and p.del_flag='0')product_code,
+    (select p.name from bu_product p where c.type_ids=p.id and p.del_flag='0')product_name,
+    (select p.art_no from bu_product p,bu_product_brand pb where c.type_ids=p.id and p.brand_id=pb.id and pb.del_flag='0') product_art_no
+    
+
+
+  </sql>
+  <select id="selectCouponCustomByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CouponExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_coupon c
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countCouponCustomByExample" parameterType="com.jf.entity.CouponExample" resultType="java.lang.Integer" >
+    select count(*)  from bu_coupon c
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <select id="queryCouponAndAreaId" parameterType="java.lang.Integer" resultType="java.util.Map">
+    select id,activity_begin_time activityBeginTime,activity_end_time activityEndTime from (
+    select distinct a.* from bu_activity_area a left join bu_coupon c  on a.id = c.activity_area_id
+    left join bu_activity ac on a.`id`=ac.`activity_area_id`  where a.preferential_type='1'
+    and a.source = '2' and a.del_flag='0'  and a.mcht_id = #{mchtId}  and c.del_flag = '0'
+    and c.status = '1' and c. rang = '3'and ac.`status` = '6'and ac.del_flag = '0'
+    <if test="status == 0" >
+      and a.activity_begin_time &gt; NOW()
+    </if>
+    <if test="status == 1" >
+      and a.activity_begin_time &lt;= NOW() and activity_end_time &gt; NOW()
+    </if>
+    <if test="status == 2" >
+      and a.activity_end_time &lt;= NOW()
+    </if>
+    order by a.create_date desc
+    <if test="limitStart != null" >
+      limit #{limitStart},#{limitSize}
+    </if>
+    ) tab
+
+   </select>
+</mapper>

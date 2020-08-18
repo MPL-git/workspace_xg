@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CouponRainSetupMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CouponRainSetup" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="include_integral" property="includeIntegral" jdbcType="CHAR" />
+    <result column="include_integral_percent" property="includeIntegralPercent" jdbcType="DECIMAL" />
+    <result column="include_integral_min" property="includeIntegralMin" jdbcType="INTEGER" />
+    <result column="include_integral_max" property="includeIntegralMax" jdbcType="INTEGER" />
+    <result column="include_product_coupon" property="includeProductCoupon" jdbcType="CHAR" />
+    <result column="include_product_coupon_percent" property="includeProductCouponPercent" jdbcType="DECIMAL" />
+    <result column="rec_begin_date" property="recBeginDate" jdbcType="TIMESTAMP" />
+    <result column="rec_end_date" property="recEndDate" jdbcType="TIMESTAMP" />
+    <result column="limit_rec_count" property="limitRecCount" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="include_sale" property="includeSale" jdbcType="CHAR" />
+    <result column="include_sale_percent" property="includeSalePercent" jdbcType="DECIMAL" />
+    <result column="include_platform_coupon" property="includePlatformCoupon" jdbcType="CHAR" />
+    <result column="include_platform_coupon_percent" property="includePlatformCouponPercent" jdbcType="DECIMAL" />
+    <result column="seq_no" property="seqNo" jdbcType="INTEGER" />
+    <result column="red_envelope_type" property="redEnvelopeType" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, title, include_integral, include_integral_percent, include_integral_min, include_integral_max, 
+    include_product_coupon, include_product_coupon_percent, rec_begin_date, rec_end_date, 
+    limit_rec_count, pic, include_sale, include_sale_percent, include_platform_coupon, 
+    include_platform_coupon_percent, seq_no, red_envelope_type, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CouponRainSetupExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_coupon_rain_setup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_coupon_rain_setup
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_coupon_rain_setup
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.CouponRainSetupExample" >
+    delete from bu_coupon_rain_setup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.CouponRainSetup" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_coupon_rain_setup (title, include_integral, include_integral_percent, 
+      include_integral_min, include_integral_max, 
+      include_product_coupon, include_product_coupon_percent, 
+      rec_begin_date, rec_end_date, limit_rec_count, 
+      pic, include_sale, include_sale_percent, 
+      include_platform_coupon, include_platform_coupon_percent, 
+      seq_no, red_envelope_type, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{title,jdbcType=VARCHAR}, #{includeIntegral,jdbcType=CHAR}, #{includeIntegralPercent,jdbcType=DECIMAL}, 
+      #{includeIntegralMin,jdbcType=INTEGER}, #{includeIntegralMax,jdbcType=INTEGER}, 
+      #{includeProductCoupon,jdbcType=CHAR}, #{includeProductCouponPercent,jdbcType=DECIMAL}, 
+      #{recBeginDate,jdbcType=TIMESTAMP}, #{recEndDate,jdbcType=TIMESTAMP}, #{limitRecCount,jdbcType=INTEGER}, 
+      #{pic,jdbcType=VARCHAR}, #{includeSale,jdbcType=CHAR}, #{includeSalePercent,jdbcType=DECIMAL}, 
+      #{includePlatformCoupon,jdbcType=CHAR}, #{includePlatformCouponPercent,jdbcType=DECIMAL}, 
+      #{seqNo,jdbcType=INTEGER}, #{redEnvelopeType,jdbcType=CHAR}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.CouponRainSetup" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_coupon_rain_setup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="includeIntegral != null" >
+        include_integral,
+      </if>
+      <if test="includeIntegralPercent != null" >
+        include_integral_percent,
+      </if>
+      <if test="includeIntegralMin != null" >
+        include_integral_min,
+      </if>
+      <if test="includeIntegralMax != null" >
+        include_integral_max,
+      </if>
+      <if test="includeProductCoupon != null" >
+        include_product_coupon,
+      </if>
+      <if test="includeProductCouponPercent != null" >
+        include_product_coupon_percent,
+      </if>
+      <if test="recBeginDate != null" >
+        rec_begin_date,
+      </if>
+      <if test="recEndDate != null" >
+        rec_end_date,
+      </if>
+      <if test="limitRecCount != null" >
+        limit_rec_count,
+      </if>
+      <if test="pic != null" >
+        pic,
+      </if>
+      <if test="includeSale != null" >
+        include_sale,
+      </if>
+      <if test="includeSalePercent != null" >
+        include_sale_percent,
+      </if>
+      <if test="includePlatformCoupon != null" >
+        include_platform_coupon,
+      </if>
+      <if test="includePlatformCouponPercent != null" >
+        include_platform_coupon_percent,
+      </if>
+      <if test="seqNo != null" >
+        seq_no,
+      </if>
+      <if test="redEnvelopeType != null" >
+        red_envelope_type,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="includeIntegral != null" >
+        #{includeIntegral,jdbcType=CHAR},
+      </if>
+      <if test="includeIntegralPercent != null" >
+        #{includeIntegralPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="includeIntegralMin != null" >
+        #{includeIntegralMin,jdbcType=INTEGER},
+      </if>
+      <if test="includeIntegralMax != null" >
+        #{includeIntegralMax,jdbcType=INTEGER},
+      </if>
+      <if test="includeProductCoupon != null" >
+        #{includeProductCoupon,jdbcType=CHAR},
+      </if>
+      <if test="includeProductCouponPercent != null" >
+        #{includeProductCouponPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="recBeginDate != null" >
+        #{recBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recEndDate != null" >
+        #{recEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitRecCount != null" >
+        #{limitRecCount,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="includeSale != null" >
+        #{includeSale,jdbcType=CHAR},
+      </if>
+      <if test="includeSalePercent != null" >
+        #{includeSalePercent,jdbcType=DECIMAL},
+      </if>
+      <if test="includePlatformCoupon != null" >
+        #{includePlatformCoupon,jdbcType=CHAR},
+      </if>
+      <if test="includePlatformCouponPercent != null" >
+        #{includePlatformCouponPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="seqNo != null" >
+        #{seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="redEnvelopeType != null" >
+        #{redEnvelopeType,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.CouponRainSetupExample" resultType="java.lang.Integer" >
+    select count(*) from bu_coupon_rain_setup
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_coupon_rain_setup
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.includeIntegral != null" >
+        include_integral = #{record.includeIntegral,jdbcType=CHAR},
+      </if>
+      <if test="record.includeIntegralPercent != null" >
+        include_integral_percent = #{record.includeIntegralPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="record.includeIntegralMin != null" >
+        include_integral_min = #{record.includeIntegralMin,jdbcType=INTEGER},
+      </if>
+      <if test="record.includeIntegralMax != null" >
+        include_integral_max = #{record.includeIntegralMax,jdbcType=INTEGER},
+      </if>
+      <if test="record.includeProductCoupon != null" >
+        include_product_coupon = #{record.includeProductCoupon,jdbcType=CHAR},
+      </if>
+      <if test="record.includeProductCouponPercent != null" >
+        include_product_coupon_percent = #{record.includeProductCouponPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="record.recBeginDate != null" >
+        rec_begin_date = #{record.recBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recEndDate != null" >
+        rec_end_date = #{record.recEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.limitRecCount != null" >
+        limit_rec_count = #{record.limitRecCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.pic != null" >
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.includeSale != null" >
+        include_sale = #{record.includeSale,jdbcType=CHAR},
+      </if>
+      <if test="record.includeSalePercent != null" >
+        include_sale_percent = #{record.includeSalePercent,jdbcType=DECIMAL},
+      </if>
+      <if test="record.includePlatformCoupon != null" >
+        include_platform_coupon = #{record.includePlatformCoupon,jdbcType=CHAR},
+      </if>
+      <if test="record.includePlatformCouponPercent != null" >
+        include_platform_coupon_percent = #{record.includePlatformCouponPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="record.seqNo != null" >
+        seq_no = #{record.seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.redEnvelopeType != null" >
+        red_envelope_type = #{record.redEnvelopeType,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_coupon_rain_setup
+    set id = #{record.id,jdbcType=INTEGER},
+      title = #{record.title,jdbcType=VARCHAR},
+      include_integral = #{record.includeIntegral,jdbcType=CHAR},
+      include_integral_percent = #{record.includeIntegralPercent,jdbcType=DECIMAL},
+      include_integral_min = #{record.includeIntegralMin,jdbcType=INTEGER},
+      include_integral_max = #{record.includeIntegralMax,jdbcType=INTEGER},
+      include_product_coupon = #{record.includeProductCoupon,jdbcType=CHAR},
+      include_product_coupon_percent = #{record.includeProductCouponPercent,jdbcType=DECIMAL},
+      rec_begin_date = #{record.recBeginDate,jdbcType=TIMESTAMP},
+      rec_end_date = #{record.recEndDate,jdbcType=TIMESTAMP},
+      limit_rec_count = #{record.limitRecCount,jdbcType=INTEGER},
+      pic = #{record.pic,jdbcType=VARCHAR},
+      include_sale = #{record.includeSale,jdbcType=CHAR},
+      include_sale_percent = #{record.includeSalePercent,jdbcType=DECIMAL},
+      include_platform_coupon = #{record.includePlatformCoupon,jdbcType=CHAR},
+      include_platform_coupon_percent = #{record.includePlatformCouponPercent,jdbcType=DECIMAL},
+      seq_no = #{record.seqNo,jdbcType=INTEGER},
+      red_envelope_type = #{record.redEnvelopeType,jdbcType=CHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.CouponRainSetup" >
+    update bu_coupon_rain_setup
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="includeIntegral != null" >
+        include_integral = #{includeIntegral,jdbcType=CHAR},
+      </if>
+      <if test="includeIntegralPercent != null" >
+        include_integral_percent = #{includeIntegralPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="includeIntegralMin != null" >
+        include_integral_min = #{includeIntegralMin,jdbcType=INTEGER},
+      </if>
+      <if test="includeIntegralMax != null" >
+        include_integral_max = #{includeIntegralMax,jdbcType=INTEGER},
+      </if>
+      <if test="includeProductCoupon != null" >
+        include_product_coupon = #{includeProductCoupon,jdbcType=CHAR},
+      </if>
+      <if test="includeProductCouponPercent != null" >
+        include_product_coupon_percent = #{includeProductCouponPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="recBeginDate != null" >
+        rec_begin_date = #{recBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recEndDate != null" >
+        rec_end_date = #{recEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="limitRecCount != null" >
+        limit_rec_count = #{limitRecCount,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="includeSale != null" >
+        include_sale = #{includeSale,jdbcType=CHAR},
+      </if>
+      <if test="includeSalePercent != null" >
+        include_sale_percent = #{includeSalePercent,jdbcType=DECIMAL},
+      </if>
+      <if test="includePlatformCoupon != null" >
+        include_platform_coupon = #{includePlatformCoupon,jdbcType=CHAR},
+      </if>
+      <if test="includePlatformCouponPercent != null" >
+        include_platform_coupon_percent = #{includePlatformCouponPercent,jdbcType=DECIMAL},
+      </if>
+      <if test="seqNo != null" >
+        seq_no = #{seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="redEnvelopeType != null" >
+        red_envelope_type = #{redEnvelopeType,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.CouponRainSetup" >
+    update bu_coupon_rain_setup
+    set title = #{title,jdbcType=VARCHAR},
+      include_integral = #{includeIntegral,jdbcType=CHAR},
+      include_integral_percent = #{includeIntegralPercent,jdbcType=DECIMAL},
+      include_integral_min = #{includeIntegralMin,jdbcType=INTEGER},
+      include_integral_max = #{includeIntegralMax,jdbcType=INTEGER},
+      include_product_coupon = #{includeProductCoupon,jdbcType=CHAR},
+      include_product_coupon_percent = #{includeProductCouponPercent,jdbcType=DECIMAL},
+      rec_begin_date = #{recBeginDate,jdbcType=TIMESTAMP},
+      rec_end_date = #{recEndDate,jdbcType=TIMESTAMP},
+      limit_rec_count = #{limitRecCount,jdbcType=INTEGER},
+      pic = #{pic,jdbcType=VARCHAR},
+      include_sale = #{includeSale,jdbcType=CHAR},
+      include_sale_percent = #{includeSalePercent,jdbcType=DECIMAL},
+      include_platform_coupon = #{includePlatformCoupon,jdbcType=CHAR},
+      include_platform_coupon_percent = #{includePlatformCouponPercent,jdbcType=DECIMAL},
+      seq_no = #{seqNo,jdbcType=INTEGER},
+      red_envelope_type = #{redEnvelopeType,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

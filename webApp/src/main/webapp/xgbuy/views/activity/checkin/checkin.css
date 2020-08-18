@@ -1,0 +1,362 @@
+.checkin .scroll-more{
+	position: relative;
+}
+
+.checkin .row-1 {
+	background: #fff url(resources/bg.png) no-repeat 0 .13rem;
+	background-size: 100% auto;
+}
+
+.checkin .row-1 .col-1 {
+	height: .84rem;
+	padding: 0 .2rem;
+}
+.checkin .rule {
+	font-size: .28rem;
+	color: #ff5050;
+}
+.checkin .rule i {
+	width: .34rem;
+	height: .34rem;
+	margin-right: .1rem;
+	border: 2px solid #ff5050;
+	border-radius: 100%;
+}
+.checkin .remind {
+	font-size: .22rem;
+}
+.checkin .remind i {
+	position: relative;
+	width: .88rem;
+	height: .44rem;
+	margin-left: .1rem;
+	border: 1px solid #ffc9c9;
+	border-radius: .22rem;
+	box-sizing: border-box;
+}
+.checkin .remind i:after {
+	position: absolute;
+	top: 50%;
+	left: .02rem;
+	content: '';
+	width: .4rem;
+	height: .4rem;
+	margin-top: -.2rem;
+	border: 1px solid #ffc9c9;
+	box-sizing: border-box;
+	border-radius: 100%;
+	background: #fff;
+}
+.checkin .remind.on i {
+	background: #ff5050;
+	border-color: #ff5050;
+}
+.checkin .remind.on i:after {
+	left: auto;
+	right: .02rem;
+	border-color: #fff;
+}
+
+.checkin .row-1 .col-2 .con-1 {
+	position: relative;
+	height: 1.22rem;
+}
+
+.checkin .role-text {
+	top: 1.15rem;
+	width: 1.55rem;
+	height: .6rem;
+	line-height: .29rem;
+	font-size: .22rem;
+	background: #fff0f0;
+	border: 1px solid #ffc9c9;
+	border-radius: 0 .3rem .3rem 0;
+}
+.checkin .role-text ul {
+	width: calc(100% - .4rem);
+	margin: 0 .2rem !important;
+}
+
+.checkin .row-1 .col-2 .con-1 span {
+	position: relative;
+	height: 100%;
+	font-size: .32rem;
+	color: #ff5050;
+}
+.checkin .row-1 .col-2 .con-1 strong {
+	font-size: .8rem;
+	font-weight: bold;
+}
+.checkin .row-1 .col-2 .con-1 a {
+	position: absolute;
+	top: 50%;
+	right: -1.2rem;
+	width: 1rem;
+	/*height: .44rem;*/
+	padding: .0753rem 0;
+	line-height: .28rem;
+	margin-top: -.22rem;
+	font-size: .28rem;
+	border: 1px solid #ffc9c9;
+	border-radius: .22rem;
+}
+.checkin .row-1 .col-2 .con-1 b {
+	margin: .3rem 0 0 .03rem;
+}
+
+.checkin .row-1 .col-2 .con-2 {
+	height: .88rem;
+}
+.checkin .row-1 .col-2 .con-2 a {
+	width: 2.4rem;
+	height: .7rem;
+	margin: 0 .2rem;
+	border-radius: .35rem;
+	font-size: .3rem;
+	color: #fff;
+	background: #ff5050;
+}
+.checkin .row-1 .col-2 .con-2 a.longer {
+	width: 2.8rem;
+}
+
+.checkin .row-1 .col-3 {
+	height: 1.88rem;
+	padding-bottom: .19rem;
+}
+.checkin .row-1 .col-3 span {
+	width: .56rem;
+	height: .7rem;
+	background: url(resources/red-0.png) no-repeat;
+	background-size: contain;
+}
+.checkin .row-1 .col-3 span.red1 {
+	background-image: url(resources/red-1.png);
+}
+.checkin .row-1 .col-3 span.red2 {
+	background-image: url(resources/red-2.png);
+}
+.checkin .row-1 .col-3>div {
+	position: relative;
+}
+.checkin .row-1 .col-3 em {
+	position: absolute;
+	top: .1rem;
+	right: .1rem;
+	width: 1.16rem;
+	height: .32rem;
+	margin-bottom: .14rem;
+	border: 1px solid #ff5050;
+	border-radius: .16rem;
+	background: #fff0f0;
+	font-size: .22rem;
+}
+.checkin .row-1 .col-3 em b {
+	position: relative;
+	z-index: 2;
+}
+.checkin .row-1 .col-3 em:after {
+	position: absolute;
+	bottom: calc(-1px - .05rem);
+	left: 50%;
+	z-index: 1;
+	content: '';
+	width: .1rem;
+	height: .1rem;
+	margin-left: .1rem;
+	background: #fff0f0;
+	border-right: 1px solid #ff5050;
+	border-bottom: 1px solid #ff5050;
+	box-sizing: border-box;
+
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.checkin .row-1 .col-3 p {
+	height: .43rem;
+	font-size: .24rem;
+}
+
+.checkin .decorate .box-list {
+	padding: 0;
+}
+.checkin .decorate .page-empty {
+	height: calc(100vh - 4.82rem - 1.76rem);
+	margin: 0;
+}
+
+/*弹窗*/
+.checkin .popup-checkin-con {
+	overflow: hidden;
+	position: relative;
+	width: 5.8rem;
+	background: #fff;
+	border-radius: .04rem;
+}
+.checkin .btn-checkin {
+	width: 100%;
+	height: .8rem;
+	margin-top: .3rem;
+	border-radius: .04rem;
+	background: #ff5050;
+	font-size: .3rem;
+	color: #fff;
+}
+.checkin .btn-checkin.btn-gray {
+	background: #eee;
+}
+
+/*签到领现金红包*/
+.checkin .popup-style-sign h3 {
+	height: .86rem;
+	margin-top: .2rem;
+	font-size: .3rem;
+}
+.checkin .popup-style-sign h4 {
+	height: .6rem;
+	font-size: .5rem;
+	font-weight: bold;
+	color: #ff5050;
+}
+.checkin .popup-style-sign p {
+	line-height: .32rem;
+	font-size: .26rem;
+}
+.checkin .popup-style-sign .popup-checkin-con {
+	padding: 0 .4rem .4rem;
+}
+
+.checkin .popup-sign .bg-sign {
+	height: 2.8rem;
+	background: url(resources/bg-sign.png) no-repeat 1.78rem .1rem;
+	background-size: 2.5rem auto;
+}
+
+/*好友签到记录*/
+.checkin .popup-friend h3 {
+	margin-top: .43rem;
+	font-size: .36rem;
+}
+.checkin .popup-friend ul {
+	height: 1.46rem;
+}
+
+.checkin .popup-friend li {
+	position: relative;
+	width: .9rem;
+	height: 1.24rem;
+}
+.checkin .popup-friend .suff-2 li,
+.checkin .popup-friend .suff-3 li,
+.checkin .popup-friend .suff-4 li {
+	margin: 0 .2rem;
+}
+.checkin .popup-friend .suff-5 li {
+	margin: 0 -.1rem;
+}
+.checkin .popup-friend .suff-6 li {
+	margin: 0 -.09rem;
+}
+.checkin .popup-friend .suff-7 li {
+	margin: 0 -.12rem;
+}
+.checkin .popup-friend .suff-8 li {
+	margin: 0 -.15rem;
+}
+.checkin .popup-friend .suff-9 li {
+	margin: 0 -.18rem;
+}
+.checkin .popup-friend .suff-10 li {
+	margin: 0 -.21rem;
+}
+
+.checkin .popup-friend li:before {
+	display: block;
+	content: attr(data-money);
+	height: .34rem;
+	line-height: .3rem;
+	font-size: .24rem;
+	color: #ff5050;
+	text-align: center;
+}
+.checkin .popup-friend li span {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	z-index: 3;
+	width: .58rem;
+	height: .2rem;
+	line-height: .2rem;
+	margin-left: -.29rem;
+	background: url(resources/new.png) no-repeat;
+	background-size: contain;
+}
+.checkin .popup-friend .img {
+	position: relative;
+	overflow: hidden;
+	width: .9rem;
+	height: .9rem;
+	border-radius: 100%;
+	background: #eee;
+	border: 1px dashed #ddd;
+	box-sizing: border-box;
+}
+.checkin .popup-friend .img img {
+	border-radius: 100%;
+}
+.checkin .popup-friend .red-tip {
+	height: .3rem;
+	margin-top: .28rem;
+	font-size: .28rem;
+}
+
+/*是否分享*/
+.checkin .popup-doyoushare h3 {
+	margin-top: .93rem;
+	margin: .93rem 0 .47rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+.checkin .popup-doyoushare .no-share {
+	width: 2rem;
+	margin-right: .38rem;
+	background: none;
+	border: 1px solid #ff5050;
+	color: #ff5050;
+}
+.checkin .popup-doyoushare .is-share {
+	width: 2.62rem;
+}
+
+/*tab*/
+.checkin .tab-body {
+	height: 6.2rem;
+	background: #fff;
+}
+.checkin .tab-body dl {
+	height: 1.23rem;
+	padding: 0 .3rem;
+	border-bottom: 1px solid #eee;
+}
+.checkin .tab-body dt,
+.checkin .tab-con {
+	height: 100%;
+	box-sizing: border-box;
+}
+.checkin .tab-body h3 {
+	margin-bottom: .1rem;
+	font-size: .28rem;
+	font-weight: bold;
+}
+.checkin .tab-body em {
+	font-size: .4rem;
+}
+
+.checkin .popup-checkin-rule .tab-con {
+	padding: .3rem .3rem 0;
+}
+.checkin .popup-checkin-rule .tab-con p {
+	margin-bottom: .3rem;
+	text-indent: 2em;
+	font-size: .28rem;
+}

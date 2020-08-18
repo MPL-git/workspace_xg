@@ -1,0 +1,387 @@
+.points-lottery {
+  background: linear-gradient(90deg,#9539fd 0%,#a338fd 100%);
+  position: relative;
+  overflow-y: auto;
+}
+.points-lottery .points-lottery-content {
+  height: 100%;
+  padding: 0.3rem;
+  background: url('images/points_lottery_bg.png') no-repeat;
+  background-size: 100%;
+  text-align: center;
+}
+.points-lottery .lottery-rule {
+  width: 1.26rem;
+  height: 0.38rem;
+  background: rgba(0, 0, 0, .5);
+  border-radius: 0.19rem;
+  font-size: 0.24rem;
+  font-weight: 500;
+  color: #fff;
+  line-height: 0.38rem;
+  margin-left: auto;
+}
+.points-lottery .main-integral {
+  width: 5.02rem;
+  height: 1.42rem;
+  background: url('images/pl_intergal.png') no-repeat center;
+  background-size: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+.points-lottery .main-integral p {
+  font-size: 0.32rem;
+  font-weight: 800;
+  color: #FEFEFE;
+  text-shadow: 0 0.03rem 0.07rem rgba(231, 18, 58, 0.35);
+  line-height: 1;
+  position: absolute;
+  bottom: 0.24rem;
+  padding-left: 1.8rem;
+}
+.points-lottery .points-lottery-box {
+  width: 6.5rem;
+  height: 6.7rem;
+  margin: 0.56rem auto 0.4rem;
+  background: url('images/pl_box_bg.png') no-repeat center;
+  background-size: 100%;
+  position: relative;
+}
+.points-lottery .lottery-box-item {
+  width: 1.4rem;
+  height: 1.6rem;
+  padding: .2rem .2rem 0;
+  background: url('images/box_item_bg.png') no-repeat center;
+  background-size: 100%;
+  background-position-y: bottom;
+  position: absolute;
+}
+.points-lottery .lottery-box-item img {
+  width: 1rem;
+  height: 1rem;
+  margin: 0 auto;
+}
+.points-lottery .lottery-box-item p {
+  font-size: 0.22rem;
+  font-weight: 800;
+  color: #DF7826;
+  line-height: 1;
+  margin-top: 0.19rem;
+}
+.points-lottery .lottery-box-item .lottery-integral {
+  margin-top: .1rem;
+}
+.points-lottery .lottery-box-item .points-lottery-discount {
+  width: 1rem;
+  height: 0.34rem;
+  margin: 0.06rem auto 0;
+  background: url('images/coupon_bg1.png') no-repeat center;
+  background-size: 100%;
+  font-size: 0.18rem;
+  font-weight: 500;
+  color: #fff;
+  line-height: 0.34rem;
+}
+.points-lottery .lottery-box-item .lottery-thank {
+  width: 0.8rem;
+  margin: 0.24rem auto 0;
+  font-size: 0.4rem;
+  line-height: 0.47rem;
+}
+.points-lottery .points-lottery-coins {
+  width: 1rem;
+  height: 1rem;
+  background: url('images/pl_coin.png') no-repeat center;
+  background-size: 100%;
+  margin: 0.08rem auto 0;
+}
+.points-lottery .draw-1 {
+  top: 0.42rem;
+  left: 0.42rem;
+}
+.points-lottery .draw-2 {
+  top: 0.42rem;
+  left: 2.35rem;
+}
+.points-lottery .draw-3 {
+  top: 0.42rem;
+  right: 0.42rem;
+}
+.points-lottery .draw-4 {
+  top: 2.35rem;
+  right: 0.42rem;
+}
+.points-lottery .draw-5 {
+  bottom: 0.62rem;
+  right: 0.42rem;
+}
+.points-lottery .draw-6 {
+  bottom: 0.62rem;
+  left: 2.35rem;
+}
+.points-lottery .draw-7 {
+  bottom: 0.62rem;
+  left: 0.42rem;
+}
+.points-lottery .draw-8 {
+  top: 2.35rem;
+  left: 0.42rem;
+}
+.points-lottery .activity {
+  background: url('images/box_item_active.png') no-repeat center;
+  background-size: 100%;
+}
+.points-lottery .lottery {
+  width: 1.8rem;
+  height: 1.8rem;
+  background: url('images/pl_draw.png') no-repeat center;
+  background-size: 100%;
+  background-position-y: bottom;
+  position: absolute;
+  top: 2.35rem;
+  left: 2.35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #E73A12;
+}
+.points-lottery .lottery p {
+  font-size: 0.46rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 0.12rem;
+}
+.points-lottery .lottery span {
+  font-size: 0.24rem;
+  font-weight: 500;
+  line-height: 1;
+}
+.points-lottery .points-lottery-winner {
+  box-sizing: border-box;
+  width: 6.5rem;
+  /* height: calc(100% - 9.8rem); */
+  height: 4.6rem;
+  margin: 0 auto;
+  padding: 0.3rem 0.2rem;
+  border-radius: 0.3rem;
+  background-color: rgba(255, 255, 255, .14);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+.points-lottery .lottery-winner-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 0.12rem;
+  margin-bottom: 0.3rem;
+}
+.points-lottery .lottery-winner-title h3 {
+  font-size: 0.34rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.points-lottery .lottery-winner-title p {
+  font-size: 0.22rem;
+  font-weight: 500;
+  line-height: 1;
+  display: flex;
+}
+.points-lottery .lottery-winner-title i {
+  width: 0.1rem;
+  height: 0.18rem;
+  margin-left: 0.1rem;
+  margin-top: 0.04rem;
+  background: url('images/pl_turnto.png') no-repeat center;
+  background-size: 100%;
+}
+.points-lottery .lottery-winner-content {
+  padding: 0 .3rem;
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+.points-lottery .lottery-winner-content ul {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.points-lottery .lottery-winner-content p {
+  padding: .3rem;
+}
+.points-lottery .points-lottery-winner li {
+  font-size: 0.24rem;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.points-lottery .points-modal {
+  width: 5rem;
+  padding: .4rem .5rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-color: #fff;
+  border-radius: .1rem;
+}
+.points-lottery .points-modal i {
+  width: .2rem;
+  height: .2rem;
+  padding: .1rem;
+  background: url('images/pl_close.png') no-repeat center;
+  background-size: 50%;
+  position: absolute;
+  top: .1rem;
+  right: .1rem;
+}
+.points-lottery .points-modal h3 {
+  font-size: 0.36rem;
+  font-weight: 600;
+  color: #333333;
+  line-height: 1;
+  margin-bottom: .4rem;
+}
+.points-lottery .modal-prize {
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: .2rem;
+  background: url('images/box_item_bg.png') no-repeat center;
+  background-size: 100%;
+  background-position-y: bottom;
+  margin: 0 auto;
+}
+.points-lottery .modal-prize img {
+  width: 1rem;
+  height: 1rem;
+  margin: 0 auto .2rem;
+}
+.points-lottery .modal-prize p {
+  font-size: 0.22rem;
+  font-weight: 800;
+  color: #F08732;
+  line-height: 1;
+}
+.points-lottery .modal-prize .modal-prize-thinks {
+  width: 0.8rem;
+  margin: 0.24rem auto 0;
+  font-size: 0.4rem;
+  line-height: 0.47rem;
+  overflow: auto;
+  text-overflow: clip;
+  white-space: normal;
+}
+.points-lottery .modal-prize-coin {
+  height: 1.38rem;
+  padding-top: .22rem;
+}
+.points-lottery .modal-prize-coin .prize-coin-img {
+  width: 1rem;
+  height: 1rem;
+  margin: 0 auto .13rem;
+  background: url('images/pl_coin.png') no-repeat center;
+  background-size: 100%;
+}
+.points-lottery .modal-get-internal {
+  font-size: 0.28rem;
+  font-weight: 500;
+  color: #FD6A3A;
+  margin-top: .3rem;
+  margin-bottom: -0.2rem;
+}
+.points-lottery .modal-prize-coin p {
+  font-size: 0.26rem;
+}
+.points-lottery .modal-prize-coupon {
+  height: 1rem;
+  padding: .3rem .4rem;
+  background: url('images/coupon_bg2.png') no-repeat;
+  background-size: 100%;
+  display: flex;
+}
+.points-lottery .modal-prize-coupon img {
+  width: 1rem;
+  height: 1rem;
+  margin-right: .3rem;
+}
+.points-lottery .coupon-direction-title {
+  display: flex;
+  align-items: center;
+  margin-bottom: .2rem;
+}
+.points-lottery .coupon-direction-title p {
+  font-size: .4rem;
+  font-weight: 800;
+  color: #FF5050;
+  margin-right: .18rem;
+  line-height: 1;
+}
+.points-lottery .coupon-direction-title span {
+  padding: 0.04rem 0.07rem;
+  font-size: .2rem;
+  color: #fff;
+  line-height: 1;
+  background-color: #FF5050;
+  border-radius: 0.04rem;
+}
+.points-lottery .modal-prize-date {
+  font-size: 0.22rem;
+  color: #222;
+  line-height: 1;
+}
+.points-lottery .points-lottery-share {
+  font-size: 0.22rem;
+  font-weight: 500;
+  color: #999999;
+  line-height: 1;
+  margin-top: .3rem;
+}
+.points-lottery .modal-btn {
+  width: 3.05rem;
+  height: .7rem;
+  border-radius: 0.04rem;
+  background-color: #FF5050;
+  font-size: .3rem;
+  color: #fff;
+  line-height: .7rem;
+  margin: .4rem auto 0;
+}
+.points-lottery .points-lottery-rules {
+  box-sizing: border-box;
+  width: 6rem;
+  height: 6rem;
+  padding: .4rem;
+  font-size: .3rem;
+  background-color: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: .1rem;
+}
+.points-lottery .points-lottery-rules i {
+  width: .2rem;
+  height: .2rem;
+  padding: .1rem;
+  background: url('images/pl_close.png') no-repeat center;
+  background-size: 50%;
+  position: absolute;
+  top: .1rem;
+  right: .1rem;
+}
+.points-lottery .points-lottery-rules h3 {
+  font-size: .36rem;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  margin-bottom: .35rem;
+}
+.points-lottery .points-rule-content {
+  height: 4.5rem;
+  overflow-y: auto;
+}
+.points-lottery .points-lottery-refresh p {
+  line-height: 1rem;
+}

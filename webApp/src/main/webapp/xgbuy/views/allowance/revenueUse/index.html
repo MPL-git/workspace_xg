@@ -1,0 +1,63 @@
+<div class="page revenueUse flex dc" data-title="购物津贴" data-id="revenueUse">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="allowance/revenueUse/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">购物津贴</p>
+		<div class="fn">
+		</div>
+	</header>
+
+	<div class="tab-top flex fn">
+		<a class="revenue flex fg dc ac" onclick="revenueUseApi.getPagingList(1)"><span class="fg flex ac">收入</span></a>
+		<a class="use flex fg dc ac" onclick="revenueUseApi.getPagingList(2)"><span class="fg flex ac">使用</span></a>
+	</div>
+
+	<div class="tab-body fg">
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc con-revenue">
+
+			</div>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc con-use">456</div>
+		</div>
+
+	</div>
+
+	<script id="revenue_tpl" type="text/html">
+		{{if list.length }}
+		{{if totalAllowance && cur==0}}
+		<div class="total flex ac">共收入购物津贴{{totalAllowance}}元</div>
+		{{/if}}
+		<div class="list flex dc">
+			{{each list value i}}
+			<div class="flex card ac jb bb1">
+				<div class="card-left flex ac">
+					{{if value.name == '商品退款'}}
+					<img src="allowance/resources/refund.png" alt="">
+					{{else if value.name == '购物津贴大礼包'}}
+					<img src="allowance/resources/package.png" alt="">
+					{{else}}
+					<img src="allowance/resources/deduction.png" alt="">
+					{{/if}}
+					<span>{{value.name}}</span>
+				</div>
+				<div class="card-right flex dc ae">
+					<span class="card-time">{{value.createDateDesc}}</span>
+					<span class="card-price">{{value.amount}}</span>
+				</div>
+			</div>
+			{{/each}}
+		</div>
+		{{else}}
+		<div class="page-empty empty-text flex dc ac jc">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="allowance/revenueUse/index.js?ver=1.0" async></script>
+</div>

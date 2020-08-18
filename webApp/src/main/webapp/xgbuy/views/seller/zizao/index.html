@@ -1,0 +1,56 @@
+<div class="page seller-zizao bgf4" data-title="工商执照" data-id="seller_zizao">
+	<link rel="stylesheet" href="seller/zizao/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">工商执照</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg scroll-y">
+		<div class="row-1">
+			<h2 class="flex ac">网店经营者营业执照信息</h2>
+			<h3 class="flex ac jc">醒购网店经营者营业执照信息</h3>
+			<p class="c9">根据国家工商总局《网络交易管理办法》要求对网店营业执照信息公司如下：</p>
+			<div class="main"></div>
+		</div>
+		<p class="row-2 hide">注：以上营业执照信息来源于卖家自行申报或者工商系统数据，具体以工商部门登记为准。经营者需确保信息真实有效，平台也将定期核查。如与实际不符，为避免违规，请联系当地工商部门或者平台客服更新。</p>
+	</div>
+
+	<script id="seller_zizao1_tpl" type="text/html">
+		<form class="col-1 flex dc ac" onsubmit="sellerZizaoApi.main(this)">
+			<p class="flex ac">请输入下图中验证码后查看:</p>
+
+			<div class="flex">
+				<input class="con-text" type="text" name="validCode" required maxlength="6" autocomplete="off">
+				<input class="con-submit ml20" type="submit" value="确定">
+			</div>
+
+
+			<div class="con-code flex" onclick="sellerZizaoApi.getImgCode()">
+				<div class="get-vcode"></div>
+				<span class="flex ac jc">看不清?<br>换一种</span>
+			</div>
+		</form>
+
+		<div class="col-2 btn-red flex ac jc hide" onclick="back()">关闭</div>
+	</script>
+
+	<script id="seller_zizao2_tpl" type="text/html">
+		<div class="col-3">
+			<p>统一信用代码：{{uscc}}</p>
+			<p>公司名称：{{companyName}}</p>
+			<p>公司类型：{{companyTypeName}}</p>
+			<p>公司住所：{{companyAddress}}</p>
+			<p>法定代表人：{{corporationName}}</p>
+			<p>成立日期：{{foundedDate}}</p>
+			<p>注册资本：{{regCapital}}</p>
+			{{if yearlyInspectionDate}}<p>营业期限：{{foundedDate}}至{{yearlyInspectionDate}}</p>{{/if}}
+			{{if scopeOfBusiness}}<p>经营范围：{{scopeOfBusiness}}</p>{{/if}}
+		</div>
+
+		<p class="col-4">详细信息请前往<em>国家企业信用信息公示系统</em>查询</p>
+	</script>
+
+	<script src="seller/zizao/index.js?var=1.0" async></script>
+</div>

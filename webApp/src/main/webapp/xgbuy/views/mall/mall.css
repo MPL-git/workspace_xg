@@ -1,0 +1,79 @@
+.mall .content .nav,
+.mall .content .main {
+	height: 100%;
+}
+
+/*左侧*/
+.mall .content .nav {
+	position: relative;
+	width: 2rem;
+	background: #f4f4f4;
+	font-size: .28rem;
+	color: #666;
+}
+.mall .content .nav a {
+	height: 1rem;
+}
+.mall .content .nav a.active {
+	position: relative;
+	background: #fff;
+	font-size: .3rem;
+	font-weight: bold;
+	color: #333;
+}
+.mall .content .nav a.active:before {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	z-index: 1;
+	content: '';
+	width: .06rem;
+	height: .28rem;
+	margin-top: -.14rem;
+	background: #ff5050;
+}
+
+/*右侧*/
+.mall .content .main {
+	overflow-y: overlay;
+	padding: .2rem;
+	font-size: .24rem;
+	box-sizing: border-box;
+}
+.mall .content h3 {
+	height: .4rem;
+	margin-top: .2rem;
+	font-weight: bold;
+}
+
+.mall .content .row-1 a {
+	display: block;
+	overflow: hidden;
+	height: 1.8rem;
+}
+
+.mall .content .col-1 {
+	border-bottom: 1px solid #eee;
+}
+.mall .content .col-1:last-child {
+	border: none;
+}
+.mall .content .col-1 li {
+	position: relative;
+	overflow: hidden;
+	width: 1.64rem;
+	height: 1.64rem;
+	margin-right: .09rem;
+	cursor: pointer;
+}
+.mall .content .col-1 li:nth-child(3n) {
+	margin: 0;
+}
+.mall .content .col-1 li p {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+	height: .71rem;
+}

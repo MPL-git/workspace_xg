@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SportCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SportCustom" extends="com.jf.dao.SportMapper.BaseResultMap">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="win_rate" property="wimRate" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <select id="getSportWinGuessList" parameterType="java.util.Map" resultType="com.jf.entity.SportCustom">
+  		select
+		s.id,
+		s.sport_name,
+		s.home_team,
+		s.home_rate,
+		st1.name as homeTeamName,
+		st1.pic as homeTeamPic,
+		s.away_team,
+		s.aways_rate,
+		st2.name as awayTeamName,
+		st2.pic as awayTeamPic,
+		s.draw_rate,
+		s.begin_time
+		from bu_sport s,bu_sport_team st1,bu_sport_team st2
+		where s.home_team = st1.id and s.away_team = st2.id
+		and s.del_flag = '0'
+		and st1.del_flag = '0'
+		and st2.del_flag = '0'
+		and s.result = '0'
+		and s.audit_status = '0'
+		and st1.result = '0'
+		and st1.audit_status = '0'
+		and st2.result = '0'
+		and st2.audit_status = '0'
+		order by s.begin_time &lt; now(),s.begin_time
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	
+  	<select id="getSportRecordList" parameterType="java.util.Map" resultType="com.jf.entity.SportCustom">
+		select
+		s.id,
+		s.sport_name,
+		s.home_team,
+		s.home_rate,
+		s.home_score,
+		st1.name as homeTeamName,
+		st1.pic as homeTeamPic,
+		s.away_team,
+		s.aways_rate,
+		s.aways_score,
+		st2.name as awayTeamName,
+		st2.pic as awayTeamPic,
+		s.begin_time
+		from bu_sport s,bu_sport_team st1,bu_sport_team st2
+		where s.home_team = st1.id and s.away_team = st2.id
+		and s.del_flag = '0'
+		and st1.del_flag = '0'
+		and st2.del_flag = '0'
+		and s.audit_status = '2'
+		order by s.begin_time desc
+		
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getSportGuessRecord" parameterType="java.util.Map" resultType="com.jf.entity.SportCustom">
+  		select * from(
+			select
+			sg.create_date,
+			sg.id as guessId,
+			sg.result as guessResult,
+			sg.guess_code as guessCode,
+			sg.guess_win_team as guessWinTeam,
+			sg.guess_type as guessType,
+			sg.integral,
+			sg.rate,
+			st1.id as homeTeamId,
+			st1.name as homeTeamName,
+			s.home_rate,
+			'' as teamResult,
+			st2.id as awayTeamId,
+			st2.name as awayTeamName,
+			s.aways_rate as awaysRate,
+			s.draw_rate as drawRate,
+			s.home_score as homeScore,
+			s.aways_score as awaysScore,
+			s.result
+			from bu_sport_guess sg,bu_sport s,bu_sport_team st1,bu_sport_team st2
+			where sg.sport_id = s.id and s.home_team = st1.id and s.away_team = st2.id
+			and sg.del_flag = '0' and sg.guess_type = '1' and sg.member_id = #{memberId}
+			<if test="result != null and result != ''">and sg.result = #{result}</if>
+			
+			union
+			
+			select
+			sg.create_date,
+			sg.id as guessId,
+			sg.result as guessResult,
+			sg.guess_code as guessCode,
+			sg.guess_win_team as guessWinTeam,
+			sg.guess_type as guessType,
+			sg.integral,
+			sg.rate,
+			st.id as homeTeamId,
+			st.name as homeTeamName,
+			st.win_rate as homeRate,
+			st.result as teamResult,
+			null as awayTeamId,
+			'' as awayTeamName,
+			null as awaysRate,
+			null as drawRate,
+			null as homeScore,
+			null as awaysScore,
+			'' as result
+			from bu_sport_guess sg,bu_sport_team st
+			where sg.guess_win_team = st.id
+			and sg.del_flag = '0' and sg.guess_type = '2' and sg.member_id = #{memberId}
+			<if test="result != null and result != ''">and sg.result = #{result}</if>
+			) apiA
+			order by apiA.create_date
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+</mapper>

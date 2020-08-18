@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberCouponCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberCouponCustom" extends="com.jf.dao.MemberCouponMapper.BaseResultMap">
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <select id="selectByCustomExample" resultType="java.lang.Integer">
+    SELECT
+    *
+    FROM
+    (
+    SELECT DISTINCT
+    t.member_id
+    FROM
+    bu_member_coupon t,
+    bu_member_info mi,
+    bu_member_extend me
+    WHERE
+    t.member_id = mi.id
+    AND mi.id = me.member_id
+    AND t.coupon_id IN
+    <foreach item="item" collection="couponIdList" separator="," open="(" close=")" index="">
+    #{item}
+    </foreach>
+    AND t.rec_date <![CDATA[ < ]]> date_sub(NOW(),interval 5 day)
+    AND t.`status` = '0'
+    AND t.expiry_end_date > now()
+    AND t.del_flag = '0'
+    AND me.new_user_500_coupon_remind = '0'
+    AND mi.is_accept_push = '1'
+    ) tmp
+    WHERE
+    NOT EXISTS (
+    SELECT
+    a.id
+    FROM
+    bu_member_coupon a
+    WHERE
+    a.member_id = tmp.member_id
+    AND a.coupon_id IN
+    <foreach item="item" collection="couponIdList" separator="," open="(" close=")" index="">
+    #{item}
+    </foreach>
+    AND a. STATUS = '1'
+    )
+    LIMIT #{limitNumber}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_member_coupon
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MemberCouponExample" >
+    delete from bu_member_coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MemberCoupon" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_coupon (member_id, coupon_id, rec_date, 
+      expiry_begin_date, expiry_end_date, status, 
+      use_date, order_id, receive_type, 
+      is_give, from_order_dtl_id, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{memberId,jdbcType=INTEGER}, #{couponId,jdbcType=INTEGER}, #{recDate,jdbcType=TIMESTAMP}, 
+      #{expiryBeginDate,jdbcType=TIMESTAMP}, #{expiryEndDate,jdbcType=TIMESTAMP}, #{status,jdbcType=CHAR}, 
+      #{useDate,jdbcType=TIMESTAMP}, #{orderId,jdbcType=INTEGER}, #{receiveType,jdbcType=CHAR}, 
+      #{isGive,jdbcType=CHAR}, #{fromOrderDtlId,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MemberCoupon" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_coupon
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="recDate != null" >
+        rec_date,
+      </if>
+      <if test="expiryBeginDate != null" >
+        expiry_begin_date,
+      </if>
+      <if test="expiryEndDate != null" >
+        expiry_end_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="useDate != null" >
+        use_date,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="receiveType != null" >
+        receive_type,
+      </if>
+      <if test="isGive != null" >
+        is_give,
+      </if>
+      <if test="fromOrderDtlId != null" >
+        from_order_dtl_id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="recDate != null" >
+        #{recDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiryBeginDate != null" >
+        #{expiryBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiryEndDate != null" >
+        #{expiryEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="useDate != null" >
+        #{useDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="receiveType != null" >
+        #{receiveType,jdbcType=CHAR},
+      </if>
+      <if test="isGive != null" >
+        #{isGive,jdbcType=CHAR},
+      </if>
+      <if test="fromOrderDtlId != null" >
+        #{fromOrderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MemberCouponExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_coupon
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_member_coupon
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.couponId != null" >
+        coupon_id = #{record.couponId,jdbcType=INTEGER},
+      </if>
+      <if test="record.recDate != null" >
+        rec_date = #{record.recDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expiryBeginDate != null" >
+        expiry_begin_date = #{record.expiryBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expiryEndDate != null" >
+        expiry_end_date = #{record.expiryEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.useDate != null" >
+        use_date = #{record.useDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiveType != null" >
+        receive_type = #{record.receiveType,jdbcType=CHAR},
+      </if>
+      <if test="record.isGive != null" >
+        is_give = #{record.isGive,jdbcType=CHAR},
+      </if>
+      <if test="record.fromOrderDtlId != null" >
+        from_order_dtl_id = #{record.fromOrderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_member_coupon
+    set id = #{record.id,jdbcType=INTEGER},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      coupon_id = #{record.couponId,jdbcType=INTEGER},
+      rec_date = #{record.recDate,jdbcType=TIMESTAMP},
+      expiry_begin_date = #{record.expiryBeginDate,jdbcType=TIMESTAMP},
+      expiry_end_date = #{record.expiryEndDate,jdbcType=TIMESTAMP},
+      status = #{record.status,jdbcType=CHAR},
+      use_date = #{record.useDate,jdbcType=TIMESTAMP},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      receive_type = #{record.receiveType,jdbcType=CHAR},
+      is_give = #{record.isGive,jdbcType=CHAR},
+      from_order_dtl_id = #{record.fromOrderDtlId,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MemberCoupon" >
+    update bu_member_coupon
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        coupon_id = #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="recDate != null" >
+        rec_date = #{recDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiryBeginDate != null" >
+        expiry_begin_date = #{expiryBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expiryEndDate != null" >
+        expiry_end_date = #{expiryEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="useDate != null" >
+        use_date = #{useDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="receiveType != null" >
+        receive_type = #{receiveType,jdbcType=CHAR},
+      </if>
+      <if test="isGive != null" >
+        is_give = #{isGive,jdbcType=CHAR},
+      </if>
+      <if test="fromOrderDtlId != null" >
+        from_order_dtl_id = #{fromOrderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MemberCoupon" >
+    update bu_member_coupon
+    set member_id = #{memberId,jdbcType=INTEGER},
+      coupon_id = #{couponId,jdbcType=INTEGER},
+      rec_date = #{recDate,jdbcType=TIMESTAMP},
+      expiry_begin_date = #{expiryBeginDate,jdbcType=TIMESTAMP},
+      expiry_end_date = #{expiryEndDate,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=CHAR},
+      use_date = #{useDate,jdbcType=TIMESTAMP},
+      order_id = #{orderId,jdbcType=INTEGER},
+      receive_type = #{receiveType,jdbcType=CHAR},
+      is_give = #{isGive,jdbcType=CHAR},
+      from_order_dtl_id = #{fromOrderDtlId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

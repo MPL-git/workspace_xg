@@ -1,0 +1,52 @@
+<div class="page certification flex dc bgf4" data-title="大学生认证" data-id="activity_certification">
+	<link rel="stylesheet" href="activity/certification/index.css?ver=1.0">
+
+	<header class="top bg-none flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">在校大学生认证</p>
+		<div class="fn">
+			<!-- <a class="row-1" onclick="certification.about()">大学生认证</a> -->
+		</div>
+	</header>
+
+	<div class="scroll-y scroll-fix fg content">
+		<div class="touchfix">
+
+
+
+		</div>
+	</div>
+
+	<script id="cer_tpl" type="text/html">
+		<div data-status="{{status}}">
+			{{if status == 0}}
+			<span class="remarks">{{remarks}}</span>
+			<div class="up-btn">
+				<input type="file" accept="image/*" capture="camera">
+				<!-- <input type="file" accept="image/gif,image/jpg,image/jpeg,image/bmp,image/png" required  multiple="multiple"> -->
+				<div class="up-img flex" onclick="certification.fileEvent(event)">
+				</div>
+			</div>
+			<div class="h3">示例</div>
+			<img class="example" src="activity/certification/resources/example.jpg" alt="">
+			{{if commitBtn}}
+			<button class="btn" onclick="certification.submit()">提交审核</button>
+			{{/if}}
+			{{ else if status == 1}}
+			<span class="remarks">{{remarks}}</span>
+			{{else if status == 2}}
+			<span class="remarks">{{remarks}}</span>
+			{{else if status == 3}}
+			<span class="remarks">{{remarks}}</span>
+			<div class="remarks">
+				{{auditReason}}
+			</div>
+			{{if anewCommitBtn}}
+			<button class="btn" onclick="certification.getInfo(true)">重新认证</button>
+			{{/if}}
+			{{/if}}
+		</div>
+	</script>
+
+	<script src="activity/certification/index.js?ver=1.2" async></script>
+</div>

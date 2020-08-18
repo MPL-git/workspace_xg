@@ -1,0 +1,39 @@
+<div class="page flex dc" data-id="link">
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn link-back"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg flex dc"></div>
+
+	<script defer>
+		$(function () {
+			var _page = getStorage('link_page'),
+				page_link = $('.page[data-id="link"]:visible'),
+				link_scroll = page_link.find('.scroll-y');
+
+			if (_page) {
+				_page = JSON.parse(_page);
+
+				var _url = _page.url,
+					_urls = _page.urls,
+					_self = _page.self || '',
+					_title = _page.title || initial_title;
+
+				$('title').html(_title);
+				$('.page:visible header p').html(_title);
+
+				link_scroll.html('<iframe src="' + _url + '" class="link-page fg scroll-y"></iframe>');
+
+				page_link.find('.link-back').click(function () {
+					_urls ? getUrl(_urls) : back(_self);
+				});
+			} else {
+				page_link.find('.link-back').click(back);
+			}
+
+			traffic.setPv();
+		});
+	</script>
+</div>

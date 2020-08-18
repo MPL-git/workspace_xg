@@ -1,0 +1,725 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var globalNav = $("#nav .navwrap");
+            var navheight = globalNav.height(),navtop = globalNav.offset().top;
+            $(window).on("scroll",function(){
+                var scrolltop = $(this).scrollTop();
+                globalNav.removeAttr("style");
+                if(scrolltop > navtop){
+                    globalNav.addClass("global-nav-fix");
+                }else{
+                    globalNav.removeClass("global-nav-fix");
+                }
+            });
+
+            $(".global-catalog").hover(function(){
+                showGlobalCat();
+            }, function(){
+                hideGlobalCat();
+            });
+            var globalCatalog = $('.global-catalog'),
+                    globalCatCon = $('.gbc-blockcon'),
+                    gbcDuration = 200;
+            function showGlobalCat(){
+                globalCatCon.stop().slideDown(gbcDuration);
+                globalCatalog.addClass('global-catalog-open');
+            }
+            function hideGlobalCat(){
+                globalCatCon.stop().slideUp(gbcDuration);
+                globalCatalog.removeClass('global-catalog-open');
+            }
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'fade',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {
+
+                }
+            });
+        });
+    </script>
+</head>
+<body class="page-index">
+<div id="topbar">
+	<div class="topbar">
+        <div class="layout">
+	        <div class="toptools"></div>
+			<div class="toplinks">
+                <p><a href="#"><img src="images/ico-follow.png" alt=""/>关注</a></p>
+                <p><a href="#"><img src="images/ico-share.png" alt=""/>分享</a></p>
+                <p><a href="#"><img src="images/ico-mobile.png" alt=""/>二维码</a></p>
+			</div>
+	        <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+	        </div>
+		</div>
+    </div>
+</div>
+<div id="header">
+	<div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+		</div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <div class="hdsearch-right">
+            搜索框右侧广告
+        </div>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus="true" x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+<div id="nav">
+    <div class="navwrap">
+        <div class="global-catalog">
+            <div class="gbc-wrap">
+                <h2 class="gbc-title"><span>全部商品分类</span></h2>
+                <div class="gbc-blockcon">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli tree-hover">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="sublayer">
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="layout">
+                <div class="textNav">
+                    <p><a class="current" href="http://www.genanx.com/">首页</a></p>
+                    <p><a href="http://www.genanx.com/products/0.html">新品上架</a></p>
+                    <p><a href="http://www.genanx.com/products/3-10.html">T恤</a></p>
+                    <p><a href="http://www.genanx.com/products/3-12.html">POLO衫</a></p>
+                    <p><a href="http://www.genanx.com/products/3-22.html">衬衫</a></p>
+                    <p><a href="http://www.genanx.com/products/0-26.html">夹克</a></p>
+                    <p><a href="http://www.genanx.com/products/3-28.html">皮衣</a></p>
+                    <p><a href="http://www.genanx.com/products/4-18.html">五分裤</a></p>
+                    <p><a href="http://www.genanx.com/products/0-19.html">休闲裤</a></p>
+                    <p><a href="http://www.genanx.com/products/0-20.html">牛仔裤</a></p>
+                    <p><a href="http://www.genanx.com/Login.html">会员中心</a></p>
+                    <p><a href="http://fx.genanx.com/fenxiao/CustomPage.aspx?pageid=1">代理加盟</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">上一张</a>
+            <a id="inslide_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+<style>
+    .bage_inwrap .layout{width:1000px!important;}
+    .bage_inbg{background: #d7d7d7;}
+    .bage_intb{ width: 100%; margin: -10px 0 0 -10px;}
+    .bage_intb td{padding: 12px 0 0 12px;}
+    .bage_intb_item{display: block; position: relative; height: 100%; background: url(about:blank); color: #fff;}
+    .bage_intb_info{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; background: rgba(0,0,0,.7);}
+    .bage_intb_item:hover .bage_intb_info{display: block;}
+    .bage_price{ text-align: right; padding: 15px 10px 0 0; line-height: 1;}
+    .bage_price em{display: block; font-size: 36px;}
+    .bage_name{ position: absolute; bottom: 0; left: 0; width: 100%; border-top: 1px solid #46b036; text-align: right;}
+    .bage_name span{display: block; padding: 14px 10px;}
+    .bage_buy{ float: right; margin-top: 10px; width: 48px; height: 48px; background: #46b036; color: #fff; text-align: center;}
+    .bage_buy span{ display: inline-block; width: 2em; line-height: 1.1; margin-top: 10px;}
+</style>
+    <div class="bage_inwrap bage_inbg">
+        <div class="layout">
+            <table class="bage_intb">
+                <tr>
+                    <td rowspan="2" colspan="2"><a href="#"><img src="images/pic/inpic_1a.jpg" alt=""/></a></td>
+                    <td rowspan="2"><a href="#"><img src="images/pic/inpic_1b.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/inpic_1c.jpg" alt=""/></a></td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/inpic_1d.jpg" alt=""/></a></td>
+                </tr>
+                <tr>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_11.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_12.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_13.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_14.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="bage_inwrap">
+        <div class="layout">
+            <table class="bage_intb">
+                <tr>
+                    <td rowspan="2" colspan="2"><a href="#"><img src="images/pic/inpic_2a.jpg" alt=""/></a></td>
+                    <td rowspan="2"><a href="#"><img src="images/pic/inpic_2b.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/inpic_2c.jpg" alt=""/></a></td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/inpic_2d.jpg" alt=""/></a></td>
+                </tr>
+                <tr>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_21.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_22.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_23.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_24.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="bage_inwrap bage_inbg">
+        <div class="layout">
+            <table class="bage_intb">
+                <tr>
+                    <td rowspan="2" colspan="2"><a href="#"><img src="images/pic/inpic_3a.jpg" alt=""/></a></td>
+                    <td rowspan="2"><a href="#"><img src="images/pic/inpic_3b.jpg" alt=""/></a></td>
+                    <td><a href="#"><img src="images/pic/inpic_3c.jpg" alt=""/></a></td>
+                </tr>
+                <tr>
+                    <td><a href="#"><img src="images/pic/inpic_3d.jpg" alt=""/></a></td>
+                </tr>
+                <tr>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_31.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_32.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_33.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                    <td><a class="bage_intb_item" href="#"><img src="images/pic/inpic_34.jpg" alt=""/>
+                        <div class="bage_intb_info">
+                            <div class="bage_price"><span><em>169.00</em>rmb</span></div>
+                            <div class="bage_name"><span>2014男款复古板鞋 金属鞋带头 七彩拼接<br>【板鞋系列】KAXB23668</span></div>
+                            <div class="bage_buy"><span>立即购买</span></div>
+                        </div>
+                    </a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+    <div class="footinfo">
+        <div class="layout">
+            <img src="images/foot_info.png" alt=""/>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footwarranty">
+            <div class="layout">
+                <img src="images/foot_warranty.png" alt=""/>
+            </div>
+        </div>
+        <div class="footothers">
+            <div class="layout">
+                <div class="ftconlist">
+                    <dl>
+                        <dt><img src="images/footico_1.png"/>订购与支付</dt>
+                        <dd>
+                            <p><a href="#">新手注册与登录</a></p>
+                            <p><a href="#">如何购物</a></p>
+                            <p><a href="#">优惠券使用细则</a></p>
+                            <p><a href="#">在线支付宝</a></p>
+                            <p><a href="#">验收签收</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="images/footico_2.png"/>快递与配送</dt>
+                        <dd>
+                            <p><a href="#">配送方式/时间</a></p>
+                            <p><a href="#">货到付款</a></p>
+                            <p><a href="#">运费说明</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="images/footico_3.png"/>售后服务</dt>
+                        <dd>
+                            <p><a href="#">联系客服</a></p>
+                            <p><a href="#">订单查询</a></p>
+                            <p><a href="#">退换保修服务</a></p>
+                            <p><a href="#">退款方式</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="images/footico_4.png"/>关于我们</dt>
+                        <dd>
+                            <p><a href="#">了解八哥</a></p>
+                            <p><a href="#">关注八哥</a></p>
+                            <p><a href="#">品牌文化</a></p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ftqrcode">
+                    <ul>
+                        <li>
+                            <div><img src="images/qrcode_weixin.png"/></div>
+                            <p>八哥手机商城</p>
+                        </li>
+                        <li>
+                            <div><img src="images/qrcode_weixin.png"/></div>
+                            <p>八哥官方微信</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ftfriends">
+                    <h3>友情链接：</h3>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                </div>
+                <div class="ftcopyright">
+                    八哥（中国）有限公司 版权所有 闽ICP备11010387号-1     Mstore企业版    技术支持：讯网科技  云智盛世
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--在线客服-->
+<style>
+.SonlineBox{ width:162px; font-size:12px;overflow:hidden; z-index:9999;}
+.SonlineBox .openTrigger{ width:30px; height:110px; position:absolute; top:0px;  z-index:1; cursor:pointer;  background:#0176ba url(images/pic/openTrigger.gif) no-repeat;}
+.SonlineBox .titleBox{ width:158px; height:35px; line-height:35px; background:#038bdc; border-bottom:2px solid #0176ba;}
+.SonlineBox .titleBox span{ margin-left:10px; color:#fff; font-size:14px; font-family:Microsoft Yahei;}
+.SonlineBox .contentBox{ width:158px; height:auto; border:2px solid #0176ba; background:#fff; position:absolute; z-index:2;}
+.SonlineBox .contentBox .closeTrigger{ width:25px; height:25px; display:block; cursor:pointer; background: url(images/pic/closeBtnImg.gif) no-repeat center; position:absolute; top:5px;right:5px;-webkit-transition:all 0.8s ease-out;}
+.SonlineBox .contentBox .closeTrigger:hover{-webkit-transform:scale(1) rotate(360deg);}
+.SonlineBox .contentBox .listBox{overflow:hidden; margin-bottom:10px;}
+.SonlineBox .contentBox .listBox .QQList{ display:block; width:86%; height:22px; margin:10px auto 0px auto;}
+.SonlineBox .contentBox .listBox .QQList span{float:left; line-height:22px;}
+.SonlineBox .contentBox .listBox .QQList a{float:left;}
+</style>
+<script>
+    (function($){
+        $.fn.Sonline = function(options){
+            var opts = $.extend({}, $.fn.Sonline.defualts, options);
+            $.fn.setList(opts); //调用列表设置
+            if(opts.DefaultsOpen == false){
+                $.fn.Sonline.close(opts.Position,0);
+            }
+            //展开
+            $("#SonlineBox").on("click",".openTrigger",function(){$.fn.Sonline.open(opts.Position);});
+            //关闭
+            $("#SonlineBox > .contentBox").on("click",".closeTrigger",function(){$.fn.Sonline.close(opts.Position,"fast");});
+
+            //Ie6兼容或滚动方式显示
+            if (navigator.userAgent.indexOf('IE 6') > 0 && !$.support.style||opts.Effect==true) {$.fn.Sonline.scrollType();}
+            else if(opts.Effect==false){$("#SonlineBox").css({position:"fixed"});}
+        }
+        //plugin defaults
+        $.fn.Sonline.defualts ={
+            Position:"left",//left或right
+            Top:200,//顶部距离，默认200px
+            Effect:true, //滚动或者固定两种方式，布尔值：true或
+            DefaultsOpen:true, //默认展开：true,默认收缩：false
+            Qqlist:"" //多个QQ用','隔开，QQ和客服名用'|'隔开
+        }
+
+        //展开
+        $.fn.Sonline.open = function(positionType){
+            var widthValue = $("#SonlineBox > .contentBox").width();
+            if(positionType=="left"){$("#SonlineBox > .contentBox").animate({left: 0},"fast");}
+            else if(positionType=="right"){$("#SonlineBox > .contentBox").animate({right: 0},"fast");}
+            $("#SonlineBox").css({width:widthValue+4});
+            $("#SonlineBox > .openTrigger").hide();
+        }
+
+        //关闭
+        $.fn.Sonline.close = function(positionType,speed){
+            $("#SonlineBox > .openTrigger").show();
+            var widthValue =$("#SonlineBox > .openTrigger").width();
+            var allWidth =(-($("#SonlineBox > .contentBox").width())-6);
+            if(positionType=="left"){$("#SonlineBox > .contentBox").animate({left: allWidth},speed);}
+            else if(positionType=="right"){$("#SonlineBox > .contentBox").animate({right: allWidth},speed);}
+            $("#SonlineBox").animate({width:widthValue},speed);
+
+        }
+
+        //子插件：设置列表参数
+        $.fn.setList = function(opts){
+            $("body").append("<div class='SonlineBox' id='SonlineBox' style='top:-600px;'><div class='openTrigger' style='display:none' title='展开'></div><div class='contentBox'><div class='closeTrigger'></div><div class='titleBox'><span>客服中心</span></div><div class='listBox'></div></div></div>");
+            if(opts.Qqlist==""){$("#SonlineBox > .contentBox > .listBox").append("<p style='padding:15px'>暂无在线客服。</p>")}
+            else{var qqListHtml = $.fn.Sonline.splitStr(opts);$("#SonlineBox > .contentBox > .listBox").append(qqListHtml);	}
+            if(opts.Position=="left"){$("#SonlineBox").css({left:0});}
+            else if(opts.Position=="right"){$("#SonlineBox").css({right:0})}
+            $("#SonlineBox").css({top:opts.Top});
+            var allHeights=0;
+            if($("#SonlineBox > .contentBox").height() < $("#SonlineBox > .openTrigger").height()){
+                allHeights = $("#SonlineBox > .openTrigger").height()+4;
+            } else{allHeights = $("#SonlineBox > .contentBox").height()+4;}
+            $("#SonlineBox").height(allHeights);
+            if(opts.Position=="left"){$("#SonlineBox > .openTrigger").css({left:0});}
+            else if(opts.Position=="right"){$("#SonlineBox > .openTrigger").css({right:0});}
+        }
+
+        //滑动式效果
+        $.fn.Sonline.scrollType = function(){
+            $("#SonlineBox").css({position:"absolute"});
+            var topNum = parseInt($("#SonlineBox").css("top")+"");
+            $(window).scroll(function(){
+                var scrollTopNum = $(window).scrollTop();//获取网页被卷去的高
+                $("#SonlineBox").stop(true,true).delay(0).animate({top:scrollTopNum+topNum},"slow");
+            });
+        }
+
+        //分割QQ
+        $.fn.Sonline.splitStr = function(opts){
+            var strs= new Array(); //定义一数组
+            var QqlistText = opts.Qqlist;
+            strs=QqlistText.split(","); //字符分割
+            var QqHtml=""
+            for (var i=0;i<strs.length;i++){
+                var subStrs= new Array(); //定义一数组
+                var subQqlist = strs[i];
+                subStrs = subQqlist.split("|"); //字符分割
+                QqHtml = QqHtml+"<div class='QQList'><span>"+subStrs[1]+"：</span><a target='_blank' href='http://wpa.qq.com/msgrd?v=3&uin="+subStrs[0]+"&site=qq&menu=yes'><img border='0' src='http://wpa.qq.com/pa?p=2:"+subStrs[0]+":41 &amp;r=0.22914223582483828' alt='点击这里'></a></div>"
+            }
+            return QqHtml;
+        }
+    })(jQuery);
+
+
+    $("body").Sonline({
+        Position:"right",//left或right
+        Top:200,//顶部距离，默认200px
+        Effect:false, //滚动或者固定两种方式，布尔值：true或false
+        DefaultsOpen:true, //默认展开：true,默认收缩：false
+        Qqlist:"2072096113|客服" //多个QQ用','隔开，QQ和客服名用'|'隔开
+    })
+</script>
+</body>
+</html>

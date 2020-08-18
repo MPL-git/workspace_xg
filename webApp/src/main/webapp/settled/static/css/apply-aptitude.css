@@ -1,0 +1,34 @@
+p.indext,
+.indext p {
+	text-indent: 2em;
+}
+
+.wrapper {
+	line-height: .36rem;
+	padding: .35rem .3rem 2.07rem;
+}
+h1, h2, h3 {
+	font-weight: bold;
+}
+
+h1 {
+	line-height: .9rem;
+	font-size: .44rem;
+	text-align: center;
+}
+h2 {
+	line-height: .68rem;
+	padding-top: .3rem;
+	font-size: .6rem;
+}
+h3 {
+	line-height: .36rem;
+	padding: .48rem 0 .28rem;
+	font-size: .3rem;
+}
+p {
+	margin-top: .36rem;
+}
+div p:first-child {
+	margin: 0;
+}

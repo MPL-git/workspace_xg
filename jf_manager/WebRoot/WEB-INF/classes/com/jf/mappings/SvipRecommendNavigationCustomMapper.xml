@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SvipRecommendNavigationCustomMapper" >
+
+  <update id="updateSeqNoIsNull">
+  	update bu_svip_recommend_navigation set seq_no=null,update_by=#{staffID},update_date=#{date} where id=#{id}
+  </update>
+  
+</mapper>

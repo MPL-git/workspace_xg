@@ -1,0 +1,63 @@
+/*优惠券*/
+.common-activity .ticket {
+	padding: .15rem .2rem;
+	background: #fff;
+}
+.common-activity .ticket li {
+	height: .52rem;
+	color: #444;
+	font-size: .24rem;
+}
+.common-activity .ticket i {
+	width: .28rem;
+	height: .22rem;
+	margin-right: .2rem;
+	background: url(../images/activity/ticket.png) no-repeat center;
+	background-size: contain;
+}
+.common-activity .ticket p {
+	max-width: 5.5rem;
+}
+
+/*倒计时*/
+.common-activity .time {
+	height: 1.05rem;
+	padding-top: .26rem;
+	font-size: .24rem;
+	color: #999;
+}
+.common-activity .time p {
+	margin-bottom: .07rem;
+}
+.common-activity .time span {
+	padding: 0 .1rem;
+	color: #000;
+	font-size: .32rem;
+}
+.common-activity .time div:before,
+.common-activity .time div:after {
+	display: inline-block;
+	font-size: 0;
+	content: '';
+	width: .2rem;
+	height: .02rem;
+	margin: 0 .1rem;
+	background: #444;
+}
+
+/*收藏(会场/特卖)*/
+.remind-active {
+	width: .5rem;
+	height: .5rem;
+}
+.remind-active:before {
+	content: '';
+	width: .4rem;
+	height: .38rem;
+	background: url(../images/advance/remind-goods.png) no-repeat center center;
+	background-size: contain;
+}
+.remind-active.reminded:before {
+	background: url(../images/advance/reminded-goods.png) no-repeat center center;
+	background-size: contain;
+}

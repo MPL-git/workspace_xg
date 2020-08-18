@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductTypeCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductTypeCustom" extends="com.jf.dao.ProductTypeMapper.BaseResultMap">
+
+  </resultMap>
+  	<select id="getThreeIdByIds" parameterType="java.util.Map" resultType="com.jf.entity.ProductTypeCustom">
+  		select proType3.id from bu_product_type proType3 where proType3.del_flag = '0' and proType3.status = '1' and proType3.parent_id in 
+		(select proType2.id from bu_product_type proType2 where proType2.del_flag = '0' and proType2.status = '1' 
+		<if test="productType2IdList !=null and productType2IdList.size() > 0">
+			and proType2.id in
+			<foreach collection="productType2IdList" index="index" item="productType2Id" open="(" separator="," close=")">
+	             #{productType2Id}
+	        </foreach>
+		</if>
+		<if test="productType1IdList !=null and productType1IdList.size() > 0">
+			and proType2.parent_id in
+			<foreach collection="productType1IdList" index="index" item="productType1Id" open="(" separator="," close=")">
+	             #{productType1Id}
+	        </foreach>
+		</if>
+		)
+  	</select>
+  	
+</mapper>

@@ -1,0 +1,70 @@
+<div class="page opinion flex dc bgf4" data-title="投诉举报与建议" data-id="my_opinion">
+	<link rel="stylesheet" href="my/opinion/opinion.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('my')"></i></div>
+		<p class="ellipsis">投诉举报与建议</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg">
+		<form action="">
+			<div class="row flex bf" onclick="myOpinionApi.call()">
+				<div class="flex ac colb">投诉举报电话</div>
+				<div class="flex ac je w5">
+					<p class="f50">0592-5920391</p>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="flex ac">选择反馈的类型</h3>
+				<div class="con flex ac jb" onclick="myOpinionApi.tab(this)">
+					<div class="flex">
+						<label>功能异常</label>
+						<span>功能不能使用</span>
+					</div>
+					<i class="tick" data-type="1"></i>
+				</div>
+				<div class="con bt flex ac jb" onclick="myOpinionApi.tab(this)">
+					<div class="flex">
+						<label>其他问题</label>
+						<span>功能用的不爽、功能建议</span>
+					</div>
+					<i class="tick ticked" data-type="2"></i>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="flex ac">问题描述</h3>
+				<div class="con-area flex">
+					<textarea name="content" maxlength="512" placeholder="请您描述下使用过程遇到的问题，或者您有更好的有图片更佳哦，我们会尽快的查找问题。" required></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<h3 class="flex ac">上传图片</h3>
+				<div class="con-img flex">
+					<div class="img-box fn flex"></div>
+					<div class="img-add fn">
+						<input type="file" accept="image/gif,image/jpg,image/jpeg,image/bmp,image/png">
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt20">
+				<div class="con flex ac jb">
+					<label for="my_opinion_tel">联系电话</label>
+					<input class="fg" type="tel" name="contactPhone" id="my_opinion_tel" placeholder="方便客服与您联系" pattern="^1\d{10}$" required>
+				</div>
+			</div>
+
+			<div class="con-tip">
+				温馨提示：如有涉及知识产权投诉，请前往醒购知识产权保护平台(<b data-clipboard-text="http://ipp.xgbuy.cc">http://ipp.xgbuy.cc</b>)
+			</div>
+
+			<input class="btn-submit" type="submit" value="提交">
+		</form>
+	</div>
+
+	<script src="my/opinion/opinion.js?var=1.4" async></script>
+</div>

@@ -1,0 +1,339 @@
+.cup .row-1 {
+	padding: .3rem .2rem;
+	/*margin-bottom: .3rem;*/
+}
+.cup .row-1 dt {
+	overflow: hidden;
+	width: 1rem;
+	height: 1rem;
+	margin-right: .2rem;
+	border-radius: 100%;
+	background: #eee;
+}
+.cup .row-1 dd {
+	width: 1.8rem;
+}
+.cup .row-1 h3 {
+	font-size: .32rem;
+	font-weight: bold;
+
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.cup .row-1 p {
+	font-size: .26rem;
+}
+.cup .row-1 ul {
+	font-size: .22rem;
+	text-align: center;
+	white-space: nowrap;
+}
+.cup .row-1 ul li {
+	margin-left: .15rem;
+	line-height: .3rem;
+	cursor: pointer;
+}
+.cup .row-1 ul li:first-child {
+	margin: 0;
+}
+.cup .row-1 ul li:before {
+	display: block;
+	content: '';
+	width: .68rem;
+	height: .68rem;
+	margin: 0 auto;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+.cup .row-1 ul li.points:before {
+	background-image: url(resources/points.png);
+	background-size: .54rem auto;
+}
+.cup .row-1 ul li.diamond:before {
+	background-image: url(resources/diamond.png);
+	background-size: .52rem auto;
+}
+.cup .row-1 ul li.record:before {
+	background-image: url(resources/record.png);
+	background-size: .4rem auto;
+}
+.cup .row-1 ul li.rule:before {
+	background-image: url(resources/rule.png);
+	background-size: .4rem auto;
+}
+
+.cup .row-2 {
+	padding: 0 .3rem;
+}
+.cup .row-2 .tab-head {
+	height: .9rem;
+}
+.cup .row-2 .tab-head a {
+	position: relative;
+	width: 1.9rem;
+	height: .56rem;
+	border: 1px solid #3b5ce8;
+	color: #3b5ce8;
+	font-size: .28rem;
+	border-radius: .28rem;
+}
+.cup .row-2 .tab-head b {
+	z-index: 1;
+	position: relative;
+}
+.cup .row-2 .tab-head a:active,
+.cup .row-2 .tab-head a.active {
+	color: #fff;
+	border: none;
+}
+.cup .row-2 .tab-head a:active:after,
+.cup .row-2 .tab-head a.active:after {
+	position: absolute;
+	top: -.1rem;
+	left: -.07rem;
+	content: '';
+	width: 2.04rem;
+	height: .9rem;
+	background: url(resources/btn-bg.png) no-repeat;
+	background-size: contain;
+}
+
+.cup .row-2 .tab-body {
+	/*overflow-x: hidden;*/
+	/*height: calc(100vh - 3.68rem);*/
+	/*height: calc(100vh - 6.5rem);*/
+}
+.cup .row-2 .tab-body .scroll-y {
+	height: 100%;
+}
+.cup .row-2 .con-1s .con {
+	padding: 0 .15rem .3rem;
+	margin-bottom: .3rem;
+	border-radius: .1rem;
+	background: #3b5ce8 url(resources/vs.png) no-repeat center .77rem;
+	background-size: 1.66rem auto;
+}
+.cup .row-2 .con-1s h4 {
+	height: .6rem;
+	color: #fff;
+	font-size: .22rem;
+	font-weight: bold;
+}
+.cup .row-2 .con-1s dl {
+	width: 2rem;
+}
+.cup .row-2 .con-1s dd {
+	width: 100%;
+	height: .8rem;
+	text-align: center;
+	background: #fff;
+	color: #1d3fd0;
+	font-size: .24rem;
+	border-radius: .4rem;
+	cursor: pointer;
+}
+.cup .row-2 .con-1s dd.op0 {
+	opacity: 0;
+	pointer-events: none;
+}
+.cup .row-2 .con-1s dt {
+	width: 1.2rem;
+	height: 1.2rem;
+}
+.cup .row-2 .con-1s dt.pic {
+	overflow: hidden;
+	border: .03rem solid #fff;
+	border-radius: 100%;
+}
+.cup .row-2 .con-1s span {
+	width: 1rem;
+	height: .34rem;
+	border-radius: .17rem;
+	background: #fff;
+	font-size: .26rem;
+	color: #3b5ce8;
+}
+
+.cup .row-2 .con-1 .con {
+	height: 3.5rem;
+}
+.cup .row-2 .con-1 .time dd {
+	position: relative;
+}
+.cup .row-2 .con-1 .time p {
+	line-height: .3rem;
+	font-size: .22rem;
+	color: #fff;
+	text-align: center;
+}
+
+.cup .row-2 .con-2 .con {
+	overflow: hidden;
+	padding: .3rem .15rem 0;
+	margin-bottom: .3rem;
+	background: #3b5ce8;
+	border-radius: .1rem;
+	color: #fff;
+	text-align: center;
+	box-sizing: border-box;
+}
+.cup .row-2 .con-2 ul {
+	width: calc(100% + .2rem);
+}
+.cup .row-2 .con-2 .bot {
+	height: .88rem;
+	font-size: .3rem;
+}
+.cup .row-2 .con-2 h4 {
+	height: .64rem;
+	font-size: .46rem;
+	font-weight: bold;
+}
+.cup .row-2 .con-2 .con p {
+	margin-top: .1rem;
+	font-weight: bold;
+	line-height: .26rem;
+	font-size: .28rem;
+}
+.cup .row-2 .con-2 li {
+	position: relative;
+	float: left;
+	width: 2rem;
+	height: .8rem;
+	margin: .3rem 0 0 .3rem;
+	border-radius: .4rem;
+	background: #2545cc;
+	color: #516ad6;
+	font-size: .24rem;
+	word-break: keep-all;
+}
+.cup .row-2 .con-2 li:nth-child(3n+1) {
+	margin-left: 0;
+}
+.cup .row-2 .con-2 li.on,
+.cup .row-2 .con-2 li.first {
+	color: #fff;
+}
+.cup .row-2 .con-2 li.on {
+	cursor: pointer;
+}
+.cup .row-2 .con-2 li.first {
+	position: relative;
+	border: .02rem solid #fff;
+
+	background: -webkit-linear-gradient(left, #3b5ce8, #378bf5);
+	background: -moz-linear-gradient(left, #3b5ce8, #378bf5);
+	background: -ms-linear-gradient(left, #3b5ce8, #378bf5);
+}
+.cup .row-2 .con-2 li.first:before {
+	position: absolute;
+	top: -.1rem;
+	right: -.1rem;
+	content: '';
+	width: .56rem;
+	height: .52rem;
+	background: url(resources/champion.png) no-repeat;
+	background-size: contain;
+}
+.cup .row-2 .con-3 .con p {
+	margin-top: .15rem;
+	color: #fff;
+	font-size: .22rem;
+}
+
+.cup .popup-cup-con {
+	overflow: hidden;
+	position: relative;
+	width: 5.8rem;
+	background: #fff;
+	border-radius: .04rem;
+}
+.cup .popup-btn {
+	height: .8rem;
+	font-size: .32rem;
+	color: #fff;
+	border-radius: .4rem;
+	box-shadow: 0 .08rem .08rem rgba(0, 0, 0, .1);
+
+	background: -webkit-linear-gradient(left, #3b5ce8, #378bf5);
+	background: -moz-linear-gradient(left, #3b5ce8, #378bf5);
+	background: -ms-linear-gradient(left, #3b5ce8, #378bf5);
+}
+
+/*竞猜*/
+.cup .popup-guess .popup-cup-con {
+	height: 3.36rem;
+	background: #fff;
+	width: 100%;
+	border-radius: 0;
+}
+.cup .popup-guess .col-1 {
+	height: 1rem;
+	padding: 0 .2rem;
+	font-size: .3rem;
+	border-bottom: 1px solid #eee;
+}
+.cup .popup-guess .col-2 {
+	padding: 0 .2rem;
+}
+.cup .popup-guess .con-1 {
+	height: 1.16rem;
+}
+.cup .popup-guess .col-2 span,
+.cup .popup-guess .col-2 input {
+	width: 1.5rem;
+	height: .56rem;
+	font-size: .28rem;
+	color: #3b5ce8;
+	border: 1px solid #3b5ce8;
+	border-radius: .28rem;
+}
+.cup .popup-guess .col-2 span {
+	cursor: pointer;
+}
+.cup .popup-guess .col-2 span.on {
+	background: #3b5ce8;
+	color: #fff;
+	border: none;
+}
+.cup .popup-guess .col-2 input {
+	width: 5.42rem;
+	text-align: center;
+	outline: none;
+}
+.cup .popup-guess .col-2 input::-webkit-input-placeholder {
+	color: #89a0ff;
+}
+
+/*竞猜成功*/
+.cup .popup-succ h3 {
+	height: 1.24rem;
+	margin-top: .28rem;
+	color: #3b5ce8;
+	font-size: .5rem;
+	font-weight: bold;
+}
+.cup .popup-succ span {
+	display: block;
+	width: 1.76rem;
+	height: 1.76rem;
+	background: url(resources/gold.png) no-repeat;
+	background-size: contain;
+	margin: 0 auto .08rem;
+}
+.cup .popup-succ p {
+	height: .98rem;
+	font-size: .26rem;
+}
+.cup .popup-succ .popup-btn {
+	width: 4rem;
+	margin: 0 auto .5rem;
+}
+
+/*轮播图*/
+.cup .swiper-container {
+	overflow: hidden;
+	height: 2.92rem;
+	margin-bottom: .2rem;
+}

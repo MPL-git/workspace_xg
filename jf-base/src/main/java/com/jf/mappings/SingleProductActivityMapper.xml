@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SingleProductActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SingleProductActivity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="coupon_id" property="couponId" jdbcType="INTEGER" />
+    <result column="original_price" property="originalPrice" jdbcType="VARCHAR" />
+    <result column="activity_price" property="activityPrice" jdbcType="DECIMAL" />
+    <result column="seckill_type" property="seckillType" jdbcType="CHAR" />
+    <result column="compare_price" property="comparePrice" jdbcType="DECIMAL" />
+    <result column="expected_date" property="expectedDate" jdbcType="TIMESTAMP" />
+    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="audit_status" property="auditStatus" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="is_close" property="isClose" jdbcType="CHAR" />
+    <result column="first_audit_by" property="firstAuditBy" jdbcType="INTEGER" />
+    <result column="schedule_audit_by" property="scheduleAuditBy" jdbcType="INTEGER" />
+    <result column="again_audit_by" property="againAuditBy" jdbcType="INTEGER" />
+    <result column="seq_no" property="seqNo" jdbcType="INTEGER" />
+    <result column="unreality_num" property="unrealityNum" jdbcType="INTEGER" />
+    <result column="tomorrow_increase_min" property="tomorrowIncreaseMin" jdbcType="INTEGER" />
+    <result column="tomorrow_increase_max" property="tomorrowIncreaseMax" jdbcType="INTEGER" />
+    <result column="is_watermark" property="isWatermark" jdbcType="CHAR" />
+    <result column="platform_preferential" property="platformPreferential" jdbcType="DECIMAL" />
+    <result column="seckill_time_id" property="seckillTimeId" jdbcType="INTEGER" />
+    <result column="is_recommend" property="isRecommend" jdbcType="CHAR" />
+    <result column="recommend_seq_no" property="recommendSeqNo" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, type, mcht_id, product_id, coupon_id, original_price, activity_price, seckill_type, 
+    compare_price, expected_date, begin_time, end_time, audit_status, status, is_close, 
+    first_audit_by, schedule_audit_by, again_audit_by, seq_no, unreality_num, tomorrow_increase_min, 
+    tomorrow_increase_max, is_watermark, platform_preferential, seckill_time_id, is_recommend, 
+    recommend_seq_no, create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SingleProductActivityExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_single_product_activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_single_product_activity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_single_product_activity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.SingleProductActivityExample" >
+    delete from bu_single_product_activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.SingleProductActivity" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_single_product_activity (type, mcht_id, product_id, 
+      coupon_id, original_price, activity_price, 
+      seckill_type, compare_price, expected_date, 
+      begin_time, end_time, audit_status, 
+      status, is_close, first_audit_by, 
+      schedule_audit_by, again_audit_by, seq_no, 
+      unreality_num, tomorrow_increase_min, tomorrow_increase_max, 
+      is_watermark, platform_preferential, seckill_time_id, 
+      is_recommend, recommend_seq_no, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{type,jdbcType=CHAR}, #{mchtId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
+      #{couponId,jdbcType=INTEGER}, #{originalPrice,jdbcType=VARCHAR}, #{activityPrice,jdbcType=DECIMAL}, 
+      #{seckillType,jdbcType=CHAR}, #{comparePrice,jdbcType=DECIMAL}, #{expectedDate,jdbcType=TIMESTAMP}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{auditStatus,jdbcType=CHAR}, 
+      #{status,jdbcType=CHAR}, #{isClose,jdbcType=CHAR}, #{firstAuditBy,jdbcType=INTEGER}, 
+      #{scheduleAuditBy,jdbcType=INTEGER}, #{againAuditBy,jdbcType=INTEGER}, #{seqNo,jdbcType=INTEGER}, 
+      #{unrealityNum,jdbcType=INTEGER}, #{tomorrowIncreaseMin,jdbcType=INTEGER}, #{tomorrowIncreaseMax,jdbcType=INTEGER}, 
+      #{isWatermark,jdbcType=CHAR}, #{platformPreferential,jdbcType=DECIMAL}, #{seckillTimeId,jdbcType=INTEGER}, 
+      #{isRecommend,jdbcType=CHAR}, #{recommendSeqNo,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.SingleProductActivity" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_single_product_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="couponId != null" >
+        coupon_id,
+      </if>
+      <if test="originalPrice != null" >
+        original_price,
+      </if>
+      <if test="activityPrice != null" >
+        activity_price,
+      </if>
+      <if test="seckillType != null" >
+        seckill_type,
+      </if>
+      <if test="comparePrice != null" >
+        compare_price,
+      </if>
+      <if test="expectedDate != null" >
+        expected_date,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="auditStatus != null" >
+        audit_status,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="isClose != null" >
+        is_close,
+      </if>
+      <if test="firstAuditBy != null" >
+        first_audit_by,
+      </if>
+      <if test="scheduleAuditBy != null" >
+        schedule_audit_by,
+      </if>
+      <if test="againAuditBy != null" >
+        again_audit_by,
+      </if>
+      <if test="seqNo != null" >
+        seq_no,
+      </if>
+      <if test="unrealityNum != null" >
+        unreality_num,
+      </if>
+      <if test="tomorrowIncreaseMin != null" >
+        tomorrow_increase_min,
+      </if>
+      <if test="tomorrowIncreaseMax != null" >
+        tomorrow_increase_max,
+      </if>
+      <if test="isWatermark != null" >
+        is_watermark,
+      </if>
+      <if test="platformPreferential != null" >
+        platform_preferential,
+      </if>
+      <if test="seckillTimeId != null" >
+        seckill_time_id,
+      </if>
+      <if test="isRecommend != null" >
+        is_recommend,
+      </if>
+      <if test="recommendSeqNo != null" >
+        recommend_seq_no,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="originalPrice != null" >
+        #{originalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="activityPrice != null" >
+        #{activityPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillType != null" >
+        #{seckillType,jdbcType=CHAR},
+      </if>
+      <if test="comparePrice != null" >
+        #{comparePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="expectedDate != null" >
+        #{expectedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="isClose != null" >
+        #{isClose,jdbcType=CHAR},
+      </if>
+      <if test="firstAuditBy != null" >
+        #{firstAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="scheduleAuditBy != null" >
+        #{scheduleAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="againAuditBy != null" >
+        #{againAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="seqNo != null" >
+        #{seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="unrealityNum != null" >
+        #{unrealityNum,jdbcType=INTEGER},
+      </if>
+      <if test="tomorrowIncreaseMin != null" >
+        #{tomorrowIncreaseMin,jdbcType=INTEGER},
+      </if>
+      <if test="tomorrowIncreaseMax != null" >
+        #{tomorrowIncreaseMax,jdbcType=INTEGER},
+      </if>
+      <if test="isWatermark != null" >
+        #{isWatermark,jdbcType=CHAR},
+      </if>
+      <if test="platformPreferential != null" >
+        #{platformPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillTimeId != null" >
+        #{seckillTimeId,jdbcType=INTEGER},
+      </if>
+      <if test="isRecommend != null" >
+        #{isRecommend,jdbcType=CHAR},
+      </if>
+      <if test="recommendSeqNo != null" >
+        #{recommendSeqNo,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.SingleProductActivityExample" resultType="java.lang.Integer" >
+    select count(*) from bu_single_product_activity
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_single_product_activity
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.couponId != null" >
+        coupon_id = #{record.couponId,jdbcType=INTEGER},
+      </if>
+      <if test="record.originalPrice != null" >
+        original_price = #{record.originalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activityPrice != null" >
+        activity_price = #{record.activityPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.seckillType != null" >
+        seckill_type = #{record.seckillType,jdbcType=CHAR},
+      </if>
+      <if test="record.comparePrice != null" >
+        compare_price = #{record.comparePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.expectedDate != null" >
+        expected_date = #{record.expectedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.beginTime != null" >
+        begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.auditStatus != null" >
+        audit_status = #{record.auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.isClose != null" >
+        is_close = #{record.isClose,jdbcType=CHAR},
+      </if>
+      <if test="record.firstAuditBy != null" >
+        first_audit_by = #{record.firstAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.scheduleAuditBy != null" >
+        schedule_audit_by = #{record.scheduleAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.againAuditBy != null" >
+        again_audit_by = #{record.againAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.seqNo != null" >
+        seq_no = #{record.seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.unrealityNum != null" >
+        unreality_num = #{record.unrealityNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.tomorrowIncreaseMin != null" >
+        tomorrow_increase_min = #{record.tomorrowIncreaseMin,jdbcType=INTEGER},
+      </if>
+      <if test="record.tomorrowIncreaseMax != null" >
+        tomorrow_increase_max = #{record.tomorrowIncreaseMax,jdbcType=INTEGER},
+      </if>
+      <if test="record.isWatermark != null" >
+        is_watermark = #{record.isWatermark,jdbcType=CHAR},
+      </if>
+      <if test="record.platformPreferential != null" >
+        platform_preferential = #{record.platformPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="record.seckillTimeId != null" >
+        seckill_time_id = #{record.seckillTimeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isRecommend != null" >
+        is_recommend = #{record.isRecommend,jdbcType=CHAR},
+      </if>
+      <if test="record.recommendSeqNo != null" >
+        recommend_seq_no = #{record.recommendSeqNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_single_product_activity
+    set id = #{record.id,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=CHAR},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      coupon_id = #{record.couponId,jdbcType=INTEGER},
+      original_price = #{record.originalPrice,jdbcType=VARCHAR},
+      activity_price = #{record.activityPrice,jdbcType=DECIMAL},
+      seckill_type = #{record.seckillType,jdbcType=CHAR},
+      compare_price = #{record.comparePrice,jdbcType=DECIMAL},
+      expected_date = #{record.expectedDate,jdbcType=TIMESTAMP},
+      begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
+      end_time = #{record.endTime,jdbcType=TIMESTAMP},
+      audit_status = #{record.auditStatus,jdbcType=CHAR},
+      status = #{record.status,jdbcType=CHAR},
+      is_close = #{record.isClose,jdbcType=CHAR},
+      first_audit_by = #{record.firstAuditBy,jdbcType=INTEGER},
+      schedule_audit_by = #{record.scheduleAuditBy,jdbcType=INTEGER},
+      again_audit_by = #{record.againAuditBy,jdbcType=INTEGER},
+      seq_no = #{record.seqNo,jdbcType=INTEGER},
+      unreality_num = #{record.unrealityNum,jdbcType=INTEGER},
+      tomorrow_increase_min = #{record.tomorrowIncreaseMin,jdbcType=INTEGER},
+      tomorrow_increase_max = #{record.tomorrowIncreaseMax,jdbcType=INTEGER},
+      is_watermark = #{record.isWatermark,jdbcType=CHAR},
+      platform_preferential = #{record.platformPreferential,jdbcType=DECIMAL},
+      seckill_time_id = #{record.seckillTimeId,jdbcType=INTEGER},
+      is_recommend = #{record.isRecommend,jdbcType=CHAR},
+      recommend_seq_no = #{record.recommendSeqNo,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.SingleProductActivity" >
+    update bu_single_product_activity
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="couponId != null" >
+        coupon_id = #{couponId,jdbcType=INTEGER},
+      </if>
+      <if test="originalPrice != null" >
+        original_price = #{originalPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="activityPrice != null" >
+        activity_price = #{activityPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillType != null" >
+        seckill_type = #{seckillType,jdbcType=CHAR},
+      </if>
+      <if test="comparePrice != null" >
+        compare_price = #{comparePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="expectedDate != null" >
+        expected_date = #{expectedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditStatus != null" >
+        audit_status = #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="isClose != null" >
+        is_close = #{isClose,jdbcType=CHAR},
+      </if>
+      <if test="firstAuditBy != null" >
+        first_audit_by = #{firstAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="scheduleAuditBy != null" >
+        schedule_audit_by = #{scheduleAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="againAuditBy != null" >
+        again_audit_by = #{againAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="seqNo != null" >
+        seq_no = #{seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="unrealityNum != null" >
+        unreality_num = #{unrealityNum,jdbcType=INTEGER},
+      </if>
+      <if test="tomorrowIncreaseMin != null" >
+        tomorrow_increase_min = #{tomorrowIncreaseMin,jdbcType=INTEGER},
+      </if>
+      <if test="tomorrowIncreaseMax != null" >
+        tomorrow_increase_max = #{tomorrowIncreaseMax,jdbcType=INTEGER},
+      </if>
+      <if test="isWatermark != null" >
+        is_watermark = #{isWatermark,jdbcType=CHAR},
+      </if>
+      <if test="platformPreferential != null" >
+        platform_preferential = #{platformPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="seckillTimeId != null" >
+        seckill_time_id = #{seckillTimeId,jdbcType=INTEGER},
+      </if>
+      <if test="isRecommend != null" >
+        is_recommend = #{isRecommend,jdbcType=CHAR},
+      </if>
+      <if test="recommendSeqNo != null" >
+        recommend_seq_no = #{recommendSeqNo,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.SingleProductActivity" >
+    update bu_single_product_activity
+    set type = #{type,jdbcType=CHAR},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      coupon_id = #{couponId,jdbcType=INTEGER},
+      original_price = #{originalPrice,jdbcType=VARCHAR},
+      activity_price = #{activityPrice,jdbcType=DECIMAL},
+      seckill_type = #{seckillType,jdbcType=CHAR},
+      compare_price = #{comparePrice,jdbcType=DECIMAL},
+      expected_date = #{expectedDate,jdbcType=TIMESTAMP},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      audit_status = #{auditStatus,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      is_close = #{isClose,jdbcType=CHAR},
+      first_audit_by = #{firstAuditBy,jdbcType=INTEGER},
+      schedule_audit_by = #{scheduleAuditBy,jdbcType=INTEGER},
+      again_audit_by = #{againAuditBy,jdbcType=INTEGER},
+      seq_no = #{seqNo,jdbcType=INTEGER},
+      unreality_num = #{unrealityNum,jdbcType=INTEGER},
+      tomorrow_increase_min = #{tomorrowIncreaseMin,jdbcType=INTEGER},
+      tomorrow_increase_max = #{tomorrowIncreaseMax,jdbcType=INTEGER},
+      is_watermark = #{isWatermark,jdbcType=CHAR},
+      platform_preferential = #{platformPreferential,jdbcType=DECIMAL},
+      seckill_time_id = #{seckillTimeId,jdbcType=INTEGER},
+      is_recommend = #{isRecommend,jdbcType=CHAR},
+      recommend_seq_no = #{recommendSeqNo,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

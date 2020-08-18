@@ -1,0 +1,100 @@
+<div class="page earnest flex dc bgf4" data-title="预售定金" data-id="order_earnest">
+	<link rel="stylesheet" href="order/earnest/index.css?var=1.0">
+
+	<header class="flex ac jb fn violet" style="color:#fff">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">预售定金</p>
+		<div class="fn">
+			<a onclick="getQuickCart()"></a>
+		</div>
+	</header>
+
+	<div class="top-tip flex ac jc fn">预售商品尾款前往购物车，和其他宝贝合并下单</div>
+
+	<div class="scroll-y fg scroll-more"></div>
+
+	<script id="earnest_tpl" type="text/html">
+		{{if returnData.length}}
+		<div class="top-bg"></div>
+		<ul>{{include 'earnest_tpl_con'}}</ul>
+		{{else}}
+			{{include 'earnest_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="earnest_tpl_con" type="text/html">
+		{{each returnData value}}
+		<li>
+			<div class="padd row-1 flex ac jb">
+				<p class="ellipsis">订单编号：{{value.subDepositOrderCode}}</p>
+				<em class="f50">{{value.titleStr}}</em>
+			</div>
+
+			<dl class="row-2 flex fg">
+				<dt class="fn">
+					<img src="{{value.skuPic}}">
+				</dt>
+				<dd class="fg">
+					<h3 class="clampself">{{value.productName}}</h3>
+					<p class="flex ac jb c9">
+						<span>{{value.productPropDesc}}</span>
+						<b>X{{value.quantity}}</b>
+					</p>
+				</dd>
+			</dl>
+
+			<div class="row-3">
+				<div class="col-1 flex ac je">
+					预售价<em class="mr10">￥{{value.salePrice}}</em>定金<em class="f50 mr10">￥{{value.deposit}}</em>
+					抵用<em class="mr10">￥{{value.deductAmount}}</em>尾款<em class="f50">￥{{value.endPayment}}</em>
+				</div>
+
+				<div class="col-2 flex ac je">
+					<span class="c9 mr10">共{{value.quantity}}件商品</span>
+					<span class="c9 mr10">定金{{if value.cancelButton}}待{{else}}已{{/if}}支付:￥{{value.deposit}}</span>
+					<span>尾款待支付￥{{value.endPayment}}</span>
+				</div>
+
+				{{if value.endPaymentDateStr}}
+				<div class="col-3 c9 flex ac je">{{value.endPaymentDateStr}}</div>
+				{{/if}}
+			</div>
+
+			<div class="padd row-4 con-31 flex ac je">
+				{{if value.cancelButton}}
+				<a class="flex ac jc btn-666" onclick="orderEarnestApi.cancel(this, '{{value.combineDepositOrderId}}')">取消订单</a>
+				<a class="flex ac jc btn-red" onclick="orderPayType('{{value.combineDepositOrderId}}', '{{value.deposit}}')">去付款</a>
+				{{else}}
+				<a class="flex ac jc btn-red" onclick="getQuickCart()">去付款</a>
+				{{/if}}
+			</div>
+		</li>
+		{{/each}}
+	</script>
+
+	<script id="earnest_tpl_empty" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>当前订单为空</p>
+		</div>
+	</script>
+
+	<div class="popup popup-paymethod" onclick="closeSelf(this)">
+		<div class="popup-pay popup-bottom" onclick="stopSelf()">
+			<div class="bot bot-1 flex ac">支付方式</div>
+
+			<div class="bot bot-2 scroll-y"></div>
+
+			<div class="order-detail-footer">
+				<div class="con-2 flex ac jb fn">
+					<div>
+						应付金额：<strong></strong>
+					</div>
+					<span class="flex ac jc btn-red" onclick="orderEarnestApi.payMent(this)">确认支付</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="order/earnest/index.js?var=1.2" async></script>
+</div>

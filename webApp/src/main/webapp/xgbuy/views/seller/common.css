@@ -1,0 +1,85 @@
+.seller-common .btn-service,
+.seller-common .btn-collect {
+	width: 1rem;
+	height: .4rem;
+	margin-right: .2rem;
+	font-size: .24rem;
+	color: #fff;
+	border-radius: .2rem;
+	background: rgba(0, 0, 0, .5);
+}
+.seller-common .btn-collect {
+	background: #ff5050;
+}
+
+.seller-common .shop-logo {
+	overflow: hidden;
+	width: 1rem;
+	height: 1rem;
+	margin-right: .2rem;
+	border: 1px solid #eee;
+	border-radius: .08rem;
+	box-sizing: border-box;
+}
+.seller-common .shop-logo img {
+	height: 100%;
+}
+
+.seller-common .ico-more {
+	width: .46rem;
+	height: .1rem;
+	background-image: url(image/ico-more.png);
+}
+
+.seller-common .popup-menu {
+	background: none;
+}
+.seller-common .popup-menu .popup-con {
+	position: relative;
+	width: 2.3rem;
+	margin: .88rem .2rem 0 0;
+	color: #fff;
+	background: #444;
+	font-size: .26rem;
+	color: #fff;
+	border-radius: .06rem;
+}
+.seller-common .popup-menu .popup-con:before {
+	position: absolute;
+	top: -.1rem;
+	right: .22rem;
+	content: '';
+	width: 0;
+	border-right: .11rem solid transparent;
+	border-left: .11rem solid transparent;
+	border-bottom: .1rem solid #444;
+}
+.seller-common .popup-menu a {
+	height: .8rem;
+}
+.seller-common .popup-menu a:before {
+	width: .8rem;
+	height: 100%;
+	content: '';
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: auto .32rem;
+}
+.seller-common .popup-menu span {
+	height: 100%;
+}
+.seller-common .popup-menu span.btb {
+	border-top: 1px solid #bbb;
+}
+.seller-common .popup-menu .m-home:before {
+	background-image: url(image/m-home.png);
+}
+.seller-common .popup-menu .m-cart:before {
+	background-image: url(image/m-cart.png);
+}
+.seller-common .popup-menu .m-collect:before {
+	background-image: url(image/m-collect.png);
+}
+.seller-common .popup-menu .m-info:before {
+	background-image: url(image/m-info.png);
+}

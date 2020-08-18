@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SingleProductActivityCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SingleProductActivityCustom" extends="com.jf.dao.SingleProductActivityMapper.BaseResultMap">
+    	 <result column="sale_price" property="salePrice" jdbcType="VARCHAR" />
+    	 <result column="tag_price" property="tagPrice" jdbcType="VARCHAR" />
+    	 <result column="locked_amount" property="lockedAmount" jdbcType="VARCHAR" />
+    	 <result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+    	 <result column="stock_sum" property="stockSum" jdbcType="INTEGER" />
+    	 <result column="svip_discount" property="svipDiscount" jdbcType="DECIMAL" />
+    	 <result column="product_sale_quantity" property="productSaleQuantity" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="getSeckillTimeTab" resultType="com.jf.entity.SingleProductActivityCustom">
+  		select 
+		single.begin_time,
+		single.end_time
+		from bu_seckill_time seckill
+		left join bu_single_product_activity single on CONCAT(seckill.start_hours,seckill.start_min) = date_format(single.begin_time,'%H%i')
+		left join bu_product product on product.id = single.product_id
+		where single.del_flag = '0'
+		and seckill.del_flag = '0'
+		and product.del_flag = '0'
+		and seckill.status = '1'
+		and seckill.seckill_type = '1'
+		and single.seckill_type = '1'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and single.type = '3'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and single.end_time &gt;now()
+		and single.begin_time &gt;= date_format(date_add(now(), interval -1 day),'%Y-%m-%d% 00:00:00')
+		and single.begin_time &lt;= date_format(date_add(now(), interval 1 day),'%Y-%m-%d% 23:59:59')
+		group by single.begin_time
+		order by single.begin_time
+  	</select>
+  	
+  	<select id="getSeckillTimeList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+			SELECT T.*,
+				(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T.product_id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS productPic,
+				(select sum(item.stock) from bu_product_item item where item.product_id = T.product_id and item.del_flag = '0') AS stock,
+				(select sum(item.locked_amount) from bu_product_item item where item.product_id = T.product_id and item.del_flag = '0') AS locked_amount
+			FROM(
+				SELECT
+					single.id,
+					single.product_id,
+					single.seq_no,
+					single.type,
+					single.unreality_num,
+					single.begin_time,
+					single.end_time,
+					product.NAME AS productName,
+					(select item.sale_price from bu_product_item item where item.id = product.min_sale_price_item_id and item.del_flag = '0' ) AS salePrice,
+					(select item.tag_price from bu_product_item item where item.id = product.min_sale_price_item_id and item.del_flag = '0') AS tagPrice
+				FROM
+					bu_single_product_activity single, bu_seckill_time seckill, bu_product product
+				WHERE
+				single.is_close = '0'
+				AND single.audit_status = '3'
+				AND single.type = '3'
+				AND single.del_flag = '0'
+				AND single.begin_time = FROM_UNIXTIME(#{beginTime})
+				and seckill.seckill_type = #{seckillType}
+				and single.seckill_type = #{seckillType}
+				AND CONCAT(seckill.start_hours,seckill.start_min) = date_format(single.begin_time, '%H%i')
+				AND seckill.del_flag = '0' 
+				AND seckill.STATUS = '1' 
+				AND product.id = single.product_id
+				AND product.del_flag = '0'
+				AND product. STATUS = '1'
+				AND product.audit_status = '2'
+				ORDER BY
+					ifnull(single.seq_no, 99999),
+					single.id
+				 		<!-- #分页 -->
+						<if test="currentPage != null and pageSize != null">
+								limit #{currentPage} , #{pageSize} 
+						</if>
+			)T
+  	</select>
+  	
+  	<select id="getNewSeckillTimeList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+			SELECT T.*,
+				(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T.product_id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS productPic,
+				(select sum(item.stock) from bu_product_item item where item.product_id = T.product_id and item.del_flag = '0') AS stock,
+				(select sum(item.locked_amount) from bu_product_item item where item.product_id = T.product_id and item.del_flag = '0') AS locked_amount,
+				(select ifnull(sum(od.quantity), 0) from bu_order_dtl od where od.del_flag = '0' and od.product_id = T.product_id) product_sale_quantity
+				FROM(
+				SELECT
+					single.id,
+					single.product_id,
+					single.seq_no,
+					single.type,
+					single.unreality_num,
+					single.begin_time,
+					single.end_time,
+					product.NAME AS productName,
+					(select is_manage_self from bu_mcht_info where id = product.mcht_id and del_flag = '0') isManageSelf,
+					(select item.sale_price from bu_product_item item where item.id = product.min_sale_price_item_id and item.del_flag = '0' ) AS salePrice,
+					(select item.tag_price from bu_product_item item where item.id = product.min_sale_price_item_id and item.del_flag = '0') AS tagPrice
+				FROM
+					bu_single_product_activity single, bu_product product
+				WHERE
+				single.is_close = '0'
+				AND single.audit_status = '3'
+				AND single.type = '3'
+				AND single.del_flag = '0'
+				AND single.begin_time = FROM_UNIXTIME(#{beginTime})
+				AND single.end_time &gt; now()
+				and single.seckill_type = #{seckillType}
+				AND product.id = single.product_id
+				AND product.del_flag = '0'
+				AND product.STATUS = '1'
+				AND product.audit_status = '2'
+				AND product.sale_type = '2'
+				AND single.id not in (
+					select sbgp.single_product_activity_id from bu_seckill_brand_group brandGroup, bu_seckill_brand_group_product sbgp
+					where brandGroup.id = sbgp.seckill_brand_group_id and brandGroup.del_flag = '0' and sbgp.del_flag = '0'
+					and single.begin_time = brandGroup.begin_time and brandGroup.status = '1'
+				)
+				ORDER BY
+					ifnull(single.seq_no, 99999),
+					single.id desc
+				<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+		)T
+  	</select>
+  	
+  	<select id="getSingleNewExplosionActivityList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+  		select 
+		single.product_id,
+		single.seq_no,
+		single.id,
+		single.begin_time,
+		single.end_time,
+		single.is_watermark,
+		product.name as productName,
+		product.product_type1_id as product_type_id,
+		product.suit_sex,
+		product.suit_group,
+		product.svip_discount,
+		item.sale_price as salePrice,
+		item.tag_price as tagPrice,
+		round(item.sale_price/item.tag_price,2) discount,
+		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = product.id and item.del_flag = '0') AS stockSum,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = product.id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS productPic
+		from bu_single_product_activity single FORCE index (index_single_product_activity_3)
+		left join bu_product product on product.id = single.product_id
+		left join bu_product_item item on item.id = product.min_sale_price_item_id
+		where single.del_flag = '0'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and single.begin_time &lt;= NOW()
+		and single.end_time &gt;= NOW()
+		and single.type = '2'
+		and product.del_flag = '0'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and product.sale_type = '2'
+		and product.product_type1_id = #{productTypeIdOne}
+		ORDER by ifnull(single.seq_no,99999),single.id
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getSingleExplosionActivityList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+  		select * from(
+		select *,sum(stock-locked_amount) as stockSum from(
+		select 
+		single.product_id,
+		single.seq_no,
+		single.id,
+		single.begin_time,
+		pic.pic as productPic,
+		product.name as productName,
+		proType.parent_id as product_type_id,
+		product.suit_sex,
+		product.suit_group,
+		item.sale_price,
+		item.tag_price,
+		round(item.sale_price/item.tag_price,2) discount,
+		item.stock,
+		item.locked_amount
+		from bu_single_product_activity single
+		left join bu_product product on product.id = single.product_id
+		left join bu_product_pic pic on pic.product_id = product.id
+		left join bu_product_item item on item.product_id = product.id
+		left join bu_product_type proType on proType.id = product.product_type_id
+		where single.del_flag = '0'
+		and product.del_flag = '0'
+		and proType.del_flag = '0'
+		and pic.del_flag = '0'
+		and item.del_flag = '0'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and pic.is_default = '1'
+		and proType.status = '1'
+		and single.type = #{type}
+		and now() &gt;= single.begin_time
+		and now() &lt;= single.end_time
+		order by item.sale_price) apiA
+		group by apiA.product_id) apiB
+		where 1=1
+			<!-- #性别 -->
+			<if test="suitSex != null and suitSex != ''">
+				and apiB.suit_sex = #{suitSex}
+			</if>
+			<!-- #适合人群 -->
+			<if test="suitGroup != null and suitGroup != ''">
+				and apiB.suit_group like #{suitGroup}
+			</if>
+			<!-- #商品品类 -->
+			<if test="productTypeIdList != null and productTypeIdList.size() > 0">
+				and apiB.product_type_id in
+				<foreach collection="productTypeIdList" index="index" item="productTypeId" open="(" separator="," close=")">
+		             #{productTypeId}
+		        </foreach>
+			</if>
+			<!-- #价格区间 -->
+			<if test="salePriceMin != null and salePriceMin != ''">
+				and apiB.sale_price &gt;= #{salePriceMin}
+			</if>
+			<if test="salePriceMax != null and salePriceMax != ''">
+				and apiB.sale_price &lt;= #{salePriceMax}
+			</if>
+			<!-- #库存 -->
+			<if test="stockMark != null and stockMark != ''">
+				and apiB.stockSum &gt; 0
+			</if>
+			<choose>
+				<!-- #折扣排序 -->
+				<when test="discountSort != null and discountSort != ''">
+					ORDER BY apiB.discount ${discountSort}
+				</when>
+				<!-- #价格排序 -->
+				<when test="salePriceSort != null and salePriceSort != ''">
+					ORDER BY apiB.sale_price ${salePriceSort}
+				</when>
+				<otherwise>
+					ORDER by ifnull(apiB.seq_no,99999),apiB.id
+				</otherwise>
+			</choose>
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getSingleBrokenCodeClearingActivityList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+		SELECT
+			apiA.*,
+			pi.sale_price,
+			pi.tag_price,
+			(
+				SELECT
+					pic.pic
+				FROM
+					bu_product_pic pic
+				WHERE
+					pic.product_id = apiA.product_id
+				AND pic.del_flag = '0'
+				AND pic.is_default = '1'
+				LIMIT 1
+			) AS productPic
+		FROM
+		(
+			SELECT
+				single.product_id,
+				single.seq_no,
+				single.id,
+				item.prop_val_id,
+				single.begin_time,
+				product. NAME AS productName,
+				product.product_type2_id AS product_type_id,
+				product.suit_sex,
+				product.suit_group,
+				product.svip_discount,
+				product.min_sale_price_item_id,
+				(select is_manage_self from bu_mcht_info where id = product.mcht_id and del_flag = '0') isManageSelf,
+				product.sale_weight,
+				product.min_mall_price,
+				single.recommend_seq_no
+			FROM
+				bu_single_product_activity single,
+				bu_product product,
+				bu_product_item item
+			WHERE
+				single.del_flag = '0'
+			AND single.is_close = '0'
+			AND single.audit_status = '3'
+			AND single.type =  #{type}
+			AND now() >= single.begin_time
+			AND now() &lt;= single.end_time
+			AND product.id = single.product_id
+			AND product. STATUS = '1'
+			AND product.audit_status = '2'
+			AND product.del_flag = '0'
+			<if test="isRecommend != null and isRecommend != ''">
+				AND single.is_recommend = #{isRecommend}
+			</if>
+			<if test="productTypeIdList != null and productTypeIdList.size() > 0">
+				AND product.product_type2_id IN
+				<foreach collection="productTypeIdList" index="index" item="productTypeId" open="(" separator="," close=")">
+					#{productTypeId}
+				</foreach>
+			</if>
+			<if test="propValId != null and propValId != ''">
+				AND FIND_IN_SET(#{propValId},item.prop_val_id)
+			</if>
+			<if test="propValIdLists !=null and propValIdLists.size() > 0">
+				AND (
+				<foreach collection="propValIdLists" index="index" item="item" >
+					FIND_IN_SET(#{item},item.prop_val_id) or
+				</foreach>
+				FIND_IN_SET(999999999999,item.prop_val_id))
+			</if>
+			AND item.product_id = product.id
+			AND item.del_flag = '0'
+			AND item.stock > item.locked_amount
+			GROUP BY
+				single.product_id
+		) apiA,
+			bu_product_item pi
+		WHERE
+			apiA.min_sale_price_item_id = pi.id
+		<if test="isRecommend != null and isRecommend != ''">
+			ORDER BY
+				ifnull(apiA.recommend_seq_no, 99999),
+				apiA.id DESC
+		</if>
+		<if test="isRecommend == null or isRecommend == ''">
+			<choose>
+				<when test="saleWeightSorf != null and saleWeightSorf != ''">ORDER BY apiA.sale_weight ${saleWeightSorf}, apiA.id DESC</when>
+				<when test="salePriceSorf != null and salePriceSorf != ''">ORDER BY apiA.min_mall_price ${salePriceSorf}, apiA.id DESC</when>
+				<otherwise>ORDER BY ifnull(apiA.seq_no, 99999), apiA.id DESC</otherwise>
+			</choose>
+		</if>
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>	
+  	</select>
+  	
+  	<select id="getSingleScreeningConditions6" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+		select 
+		proType2.name as productTypeName,       <!-- 2级品类名称 -->
+		proType2.id as productTypeIdTwo, <!-- 2级品类id -->
+		proType2.parent_id as productTypeIdOne, <!-- 1级品类id -->
+		item.prop_val_id as propValId
+		from bu_single_product_activity single
+		left join bu_product product on product.id = single.product_id
+		left join bu_product_item item on item.product_id = product.id
+		left join bu_product_type proType3 on proType3.id = product.product_type_id
+		left join bu_product_type proType2 on proType2.id = proType3.parent_id
+		where single.del_flag = '0'
+		and product.del_flag = '0'
+		and proType2.del_flag = '0'
+		and proType3.del_flag = '0'
+		and proType2.status = '1'
+		and proType3.status = '1'
+		and item.del_flag = '0'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and single.type = #{type}
+		and item.stock &gt; 0
+		and now() &gt;= single.begin_time
+		and now() &lt;= single.end_time
+		<if test="productTypeIdList != null and productTypeIdList.size() > 0">
+			and proType2.parent_id in
+			<foreach collection="productTypeIdList" index="index" item="productTypeId" open="(" separator="," close=")">
+	             #{productTypeId}
+	        </foreach>
+		</if>
+		order by proType2.seq_no,proType2.id
+  	</select>
+  	<select id="getTwoCategoryProductSize" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+		select
+		item.prop_val_id as propValId
+		from bu_single_product_activity single
+		left join bu_product product on product.id = single.product_id
+		left join bu_product_item item on item.product_id = product.id
+		left join bu_product_type proType on proType.id = product.product_type_id
+		where single.del_flag = '0'
+		and product.del_flag = '0'
+		and proType.del_flag = '0'
+		and item.del_flag = '0'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and proType.status = '1'
+		and single.type = #{type}
+		and item.stock &gt; 0
+		and now() &gt;= single.begin_time
+		and now() &lt;= single.end_time
+		<if test="productTypeId != null and productTypeId != ''">
+			and proType.parent_id = #{productTypeId}
+		</if>
+  	</select>
+  	
+  	<select id="getSingleNewEnjoyActivityList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+  		select 
+		single.product_id,
+		single.seq_no,
+		single.id,
+		single.begin_time,
+		single.end_time,
+		product.name as productName,
+		item.sale_price as salePrice,
+		item.tag_price as tagPrice,
+		round(item.sale_price/item.tag_price,2) discount,
+		(select is_manage_self from bu_mcht_info where id = product.mcht_id and del_flag = '0') isManageSelf,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = product.id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS productPic,
+		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = product.id and item.del_flag = '0') AS stockSum
+		from bu_single_product_activity single
+		left join bu_product product on product.id = single.product_id
+		left join bu_product_item item on item.id = product.min_sale_price_item_id
+		where single.del_flag = '0'
+		and single.type = #{type}
+		and single.begin_time &lt;= NOW()
+		and single.end_time &gt;= NOW()
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and product.del_flag = '0'
+		and product.sale_type = '2'
+		<if test="productTypeId != null and productTypeId != ''">
+		AND product.product_type1_id = #{productTypeId}
+		</if>
+		order by ifnull(single.seq_no,99999),id
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<!-- 废弃，积分商城的商品列表用爆款的语句（getSingleNewEnjoyActivityList） -->
+  	<select id="getSingleIntegralMallActivityList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+  		SELECT T.*,
+		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = T.product_id and item.del_flag = '0') AS stockSum,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T.product_id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS productPic
+		from(
+		select 
+		single.product_id,
+		product.name as productName,
+		product.min_sale_price as salePrice,
+		product.min_tag_price as tagPrice
+		from bu_single_product_activity single
+		left join bu_product product on product.id = single.product_id
+		where single.del_flag = '0'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and single.type = #{type}
+		and single.begin_time &lt;= NOW()
+		and single.end_time &gt;= NOW()
+		and product.status = '1'
+		and product.audit_status = '2'
+		and product.del_flag = '0'
+		AND product.sale_type = '2'
+		order by single.id,ifnull(single.seq_no,99999)
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+		) T
+  	</select>
+  	
+  	<select id="getSingleActivityScreen" parameterType="java.lang.String" resultType="com.jf.entity.SingleProductActivityCustom">
+  		select 
+		proType.parent_id as product_type_id
+		from bu_single_product_activity single
+		left join bu_product product on product.id = single.product_id
+		left join bu_product_type proType on proType.id = product.product_type_id
+		where single.del_flag = '0'
+		and proType.del_flag = '0'
+		and product.del_flag = '0'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and proType.status = '1'
+		and single.type = #{type}
+		and now() &gt;= single.begin_time
+		and now() &lt;= single.end_time
+  	</select>
+  	
+  	  <select id="getNewUserSeckillTimeList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+	SELECT
+		single.*,
+		(
+			SELECT
+				sum(
+					bpi.stock - bpi.locked_amount
+				)
+			FROM
+				bu_product_item bpi
+			WHERE
+				bpi.del_flag = '0'
+			AND bpi.product_id = single.product_id
+		) stock_sum,
+
+		item.sale_price as salePrice,
+		item.tag_price as tagPrice,
+		(
+			SELECT
+				pic.pic
+			FROM
+				bu_product_pic pic
+			WHERE
+				pic.product_id = product.id
+			AND pic.del_flag = '0'
+			AND pic.is_default = '1'
+		) AS product_pic,
+		(select is_manage_self from bu_mcht_info where id = product.mcht_id and del_flag = '0') isManageSelf,
+		product.NAME AS product_name
+	FROM
+		bu_single_product_activity single,
+		bu_product product,
+		bu_product_item item
+	WHERE
+		single.is_close = '0'
+	AND single.audit_status = '3'
+	AND single.type = '4'
+	AND single.del_flag = '0'
+	AND product.id = single.product_id
+	AND item.id = product.min_sale_price_item_id
+	AND product.del_flag = '0'
+	AND product. STATUS = '1'
+	AND product.audit_status = '2'
+	<if test="productIdList !=null and productIdList.size() > 0">
+		AND product.id not in
+		<foreach collection="productIdList" item="productId" open="(" close=")" separator=",">
+			#{productId}
+		</foreach>
+	</if>
+	<choose>
+		<when test="reqType != null and reqType == '1'.toString()">AND single.begin_time &lt;= #{currentDate} AND single.end_time > #{currentDate} ORDER BY ifnull(single.seq_no,99999),single.end_time</when>
+		<when test="reqType != null and reqType == '2'.toString()">AND single.begin_time > #{currentDate} ORDER BY ifnull(single.seq_no,99999),single.begin_time</when>
+		<otherwise>AND single.end_time > #{currentDate} ORDER BY ifnull(single.seq_no,99999),single.begin_time</otherwise>
+	</choose>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  	</select>
+  	
+  	
+  	<select id="getSeckillBrandGroupList" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+  	SELECT T.*,
+	(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T.productId AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS productPic,
+	(select sum(item.stock) from bu_product_item item where item.product_id = T.productId and item.del_flag = '0') AS stock,
+	(select sum(item.locked_amount) from bu_product_item item where item.product_id = T.productId and item.del_flag = '0') AS locked_amount,
+	(select ifnull(sum(od.quantity), 0) from bu_order_dtl od where od.del_flag = '0' and od.product_id = T.productId) product_sale_quantity
+	FROM(
+  		select 
+		brandGroup.id as brandGroupId,
+		brandGroup.entry_pic as entryPic,
+		brandGroup.poster_pic as posterPic,
+		brandGroup.name as brandGroupName,
+		single.type,
+		single.unreality_num,
+		single.begin_time,
+		single.end_time,
+		pro.id as productId,
+		pro.name as productName,
+		pro.min_sale_price as salePrice,
+		pro.min_tag_price as tagPrice
+		from bu_seckill_brand_group brandGroup, 
+		bu_seckill_brand_group_product sbgp,
+		bu_single_product_activity single,
+		bu_product pro
+		where brandGroup.id = sbgp.seckill_brand_group_id 
+		and sbgp.single_product_activity_id = single.id
+		and brandGroup.begin_time = single.begin_time
+		and single.product_id = pro.id 
+		and single.seckill_type = #{seckillType}
+		and pro.status = '1' 
+		and pro.audit_status = '2'	
+		and brandGroup.del_flag = '0' and sbgp.del_flag = '0' and single.del_flag = '0'
+		and brandGroup.status = '1'
+		<if test="beginTime != null and beginTime != ''">and brandGroup.begin_time = FROM_UNIXTIME(#{beginTime})</if>
+		<if test="brandGroupId != null and brandGroupId != ''">and brandGroup.id = #{brandGroupId}</if>
+		order by ifnull(single.seq_no,99999),single.id desc
+		<choose>
+			<when test="pageSize != null and pageSize != ''">limit #{currentPage} ,#{pageSize}</when>
+			<otherwise>limit 3</otherwise>
+		</choose>
+		)T
+  	</select>
+  	
+  	<select id="getProductTypeList" resultType="com.jf.entity.ProductType">
+  		select
+  			distinct 
+  			pt.id,
+  			pt.name
+		from 
+			bu_single_product_activity spa,bu_product p,bu_product_type pt
+		where
+			spa.product_id = p.id
+			and p.product_type1_id = pt.id 
+			and spa.del_flag = '0'
+			and spa.type = '5'
+			and spa.begin_time &lt;= NOW()
+			and spa.end_time &gt;= NOW()
+			and spa.is_close = '0'
+			and spa.audit_status = '3'
+			and p.status = '1'
+			and p.audit_status = '2'
+			and p.del_flag = '0'
+			and p.sale_type = '2'
+			and pt.del_flag='0'
+			and pt.status='1'
+		order by pt.id asc	
+  	</select>
+  	
+  	<select id="getSingleProductActivityCustomsByProductTypeId" parameterType="java.util.Map" resultType="com.jf.entity.SingleProductActivityCustom">
+  		select 
+		single.product_id,
+		single.seq_no,
+		single.id,
+		single.begin_time,
+		product.name as productName,
+		item.sale_price as salePrice,
+		item.tag_price as tagPrice,
+		round(item.sale_price/item.tag_price,2) discount,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = product.id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS productPic,
+		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = product.id and item.del_flag = '0') AS stockSum
+		from bu_single_product_activity single
+		left join bu_product product on product.id = single.product_id
+		left join bu_product_item item on item.id = product.min_sale_price_item_id
+		where single.del_flag = '0'
+		and single.type = #{type}
+		and single.begin_time &lt;= NOW()
+		and single.end_time &gt;= NOW()
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and product.del_flag = '0'
+		and product.sale_type = '2'
+		<if test="productTypeId != null and productTypeId != ''">
+		AND product.product_type1_id = #{productTypeId}
+		</if>
+		order by ifnull(single.seq_no,99999),id
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+
+	<select id="getPropValIds" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT
+			GROUP_CONCAT(item.prop_val_id) prop_val_ids
+		FROM
+			bu_product p
+		LEFT JOIN bu_single_product_activity spa ON p.id = spa.product_id
+		LEFT JOIN bu_product_item item ON item.product_id = p.id
+		WHERE
+			p.del_flag = '0'
+		AND p. STATUS = '1'
+		AND p.audit_status = '2'
+		AND p.del_flag = '0'
+		AND p.sale_type = '2'
+		AND spa.del_flag = '0'
+		AND spa.is_close = '0'
+		AND spa.audit_status = '3'
+		AND spa.type = '6'
+		AND spa.begin_time &lt;= NOW()
+		AND spa.end_time &gt;= NOW()
+		AND item.stock &gt; 0
+		<if test="productTypeId2List != null and productTypeId2List.size() > 0">
+			AND p.product_type2_id IN
+			<foreach collection="productTypeId2List" index="index" item="productTypeId2" open="(" separator="," close=")">
+				#{productTypeId2}
+			</foreach>
+		</if>
+	</select>
+
+
+	
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberRemindCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberRemindCustom" extends="com.jf.dao.MemberRemindMapper.BaseResultMap">
+    <result column="entry_pic" property="entryPic" jdbcType="VARCHAR" />
+    <result column="activityAreaEntryPic" property="activityAreaEntryPic" jdbcType="VARCHAR" />
+    <result column="activityAreaType" property="activityAreaType" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="productName" property="productName" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="activityName" property="activityName" jdbcType="VARCHAR" />
+    <result column="activityAreaName" property="activityAreaName" jdbcType="VARCHAR" />
+    <result column="remindId" property="remindId" jdbcType="INTEGER" />
+    <result column="activityAreaId" property="activityAreaId" jdbcType="INTEGER" />
+    <result column="activityId" property="activityId" jdbcType="INTEGER" />
+    <result column="activity_begin_time" property="activityBeginTime" jdbcType="TIMESTAMP" />
+     <result column="activity_end_time" property="activityEndTime" jdbcType="TIMESTAMP" />
+    <result column="tag_price" property="tagPrice" jdbcType="DECIMAL" />
+    <result column="sale_rice" property="salePrice" jdbcType="DECIMAL" />
+    <result column="templet_suffix" property="templetSuffix" jdbcType="VARCHAR" />
+    <result column="benefit_point" property="benefitPoint" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getProductCollectionList" parameterType="java.util.Map" resultType="com.jf.entity.MemberRemindCustom">
+  		select
+		t.id,
+		t.remind_id,
+		p.name as productName
+		from bu_member_remind t,bu_product p
+		where t.remind_type = '2' and t.remind_id = p.id
+		and t.del_flag = '0' and p.del_flag = '0'
+		and p.status = '1' and p.audit_status = '2'
+		and t.member_id = #{memberId}
+		order by t.id desc
+		<if test="currentPage != null and currentPage>=0" >
+	    	limit #{currentPage} , #{pageSize}
+	    </if> 
+  </select>
+  
+  <!-- 废弃 -->
+  <select id="getProductRemindList" parameterType="java.util.Map" resultType="com.jf.entity.MemberRemindCustom">
+  		select * from (
+		select
+		remind.id,
+		remind.remind_id,
+		pro.name as productName,
+		activityArea.activity_begin_time as activityBeginTime,
+		activityArea.activity_end_time as activityEndTime
+		from bu_member_remind remind
+		left join bu_product pro on pro.id = remind.remind_id
+		left join bu_activity_product activitProduct on activitProduct.product_id = pro.id
+		left join bu_activity activity on activity.id = activitProduct.activity_id
+		left join bu_activity_area activityArea on activityArea.id = activity.activity_area_id
+		where remind.remind_type = #{remindType}
+		and remind.member_id = #{memberId}
+		and remind.del_flag = '0' 
+		and pro.del_flag = '0'
+		and activitProduct.del_flag = '0'
+		and activity.del_flag = '0'
+		and activityArea.del_flag = '0'
+		and pro.status = '1'
+		and pro.audit_status = '2'
+		and activitProduct.refuse_flag = '0'
+		and activitProduct.coo_audit_status = '2'
+		and activity.status = '6'
+		and activity.coo_audit_status = '2'
+		and activityArea.status = '1'
+		and activityArea.activity_begin_time &lt; activityArea.activity_end_time
+		and activityArea.activity_end_time &gt; now()
+		
+		union
+		
+		select
+		remind.id,
+		remind.remind_id,
+		pro.name as productName,
+		single.begin_time as activityBeginTime,
+		single.end_time as activityEndTime
+		from bu_member_remind remind
+		left join bu_product pro on pro.id = remind.remind_id
+		left join bu_single_product_activity single on single.product_id = pro.id
+		where remind.remind_type = #{remindType}
+		and remind.member_id = #{memberId}
+		and remind.del_flag = '0' 
+		and pro.del_flag = '0'
+		and single.del_flag = '0'
+		and pro.status = '1'
+		and pro.audit_status = '2'
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and single.begin_time &lt; single.end_time
+		and single.end_time &gt; now()
+		) apiA
+		group by apiA.id
+		order by apiA.activityBeginTime desc
+		<if test="currentPage != null and currentPage>=0" >
+	    	limit #{currentPage} , #{pageSize}
+	    </if> 
+  </select>
+    
+  <select id="getActivityRemindList" parameterType="java.util.Map" resultType="com.jf.entity.MemberRemindCustom">
+  			select * from(	
+		select
+		remind.id,
+		remind.remind_id,
+		brand.logo,
+		activity.name as activityName,
+		activity.entry_pic,
+		activity.id as activityId,
+		activityArea.source,
+		activityArea.type as activityAreaType,
+		activityArea.id as activityAreaId,
+		activityArea.activity_begin_time,
+		activityArea.entry_pic as activityAreaEntryPic,
+		activityArea.templet_suffix,
+		activityArea.benefit_point,
+		activityArea.name as activityAreaName
+		from bu_member_remind remind
+		left join bu_activity_area activityArea on activityArea.id = remind.remind_id
+		left join bu_activity activity on activity.activity_area_id = activityArea.id 
+		left join bu_product_brand brand on case activity.product_brand_id WHEN null THEN brand.id = activity.product_brand_id ELSE brand.id = activity.product_brand_id and brand.del_flag = '0' end
+		where remind.remind_type = #{remindType}
+		and remind.member_id = #{memberId}
+		and remind.del_flag = '0' 
+		and activityArea.del_flag = '0'
+		and activity.del_flag = '0'
+		and brand.del_flag = '0'
+		and activityArea.source = '1'
+		and activityArea.activity_begin_time &lt; activityArea.activity_end_time
+		and activityArea.activity_end_time &gt; now()
+		group by activityArea.id
+		
+		union
+		
+		select
+		remind.id,
+		remind.remind_id,
+		brand.logo,
+		activity.name as activityName,
+		activity.entry_pic,
+		activity.id as activityId,
+		activityArea.source,
+		activityArea.type as activityAreaType,
+		activityArea.id as activityAreaId,
+		activityArea.activity_begin_time,
+		activityArea.entry_pic as activityAreaEntryPic,
+		activityArea.templet_suffix,
+		activityArea.benefit_point,
+		activityArea.name as activityAreaName
+		from bu_member_remind remind
+		left join bu_activity_area activityArea on activityArea.id = remind.remind_id
+		left join bu_activity activity on activity.activity_area_id = activityArea.id 
+		left join bu_product_brand brand on brand.id = activity.product_brand_id
+		where remind.remind_type = #{remindType}
+		and remind.member_id = #{memberId}
+		and remind.del_flag = '0' 
+		and activityArea.del_flag = '0'
+		and activity.del_flag = '0'
+		and brand.del_flag = '0'
+		and activityArea.source = '2'
+		and activityArea.activity_begin_time &lt; activityArea.activity_end_time
+		and activityArea.activity_end_time &gt; now()
+		group by activity.id ) apiA
+		order by apiA.activity_begin_time desc
+  		limit #{currentPage} , #{pageSize} 
+  </select>
+  
+  <select id="getMchtShopList" parameterType="java.util.Map" resultType="com.jf.entity.MemberRemindCustom">
+  		select
+			remind.remind_id,
+			mcht.shop_name as shopName,
+			mcht.shop_logo as shopLogo,
+			remind.shielding_dynamics as shieldingDynamics
+		from 
+			bu_member_remind remind,bu_mcht_info mcht
+		where 
+			remind.remind_id = mcht.id
+		and remind.remind_type = '3'
+		and remind.del_flag = '0'
+		and mcht.del_flag = '0'
+		and mcht.shop_status = '1'
+		and remind.member_id = #{memberId}
+		order by remind.id desc
+		<if test="currentPage != null and currentPage>=0" >
+	    	limit #{currentPage} , #{pageSize}
+	    </if>
+  </select>
+
+</mapper>

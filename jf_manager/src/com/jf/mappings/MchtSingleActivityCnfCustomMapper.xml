@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSingleActivityCnfCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtSingleActivityCnfCustom" extends="com.jf.dao.MchtSingleActivityCnfMapper.BaseResultMap" >
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="INTEGER" />
+    <result column="limit_mcht_quality" property="limitMchtQuality" jdbcType="VARCHAR" />
+    <result column="activity_type_desc" property="activityTypeDesc" jdbcType="INTEGER" />
+    <result column="producttype_name" property="producttypeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    t.*,
+    (select mi.mcht_code from bu_mcht_info mi where mi.del_flag = '0' and mi.status = '1' and mi.id = t.mcht_id) mcht_code,
+    (select mi.company_name from bu_mcht_info mi where mi.del_flag = '0' and mi.status = '1' and mi.id = t.mcht_id) company_name,
+    (select mi.shop_name from bu_mcht_info mi where mi.del_flag = '0' and mi.status = '1' and mi.id = t.mcht_id) shop_name,
+    (select sp.limit_mcht_quality from bu_single_product_activity_cnf sp where sp.activity_type = t.activity_type and sp.del_flag = '0' limit 1) limit_mcht_quality,
+    FUN_GET_STATUS_DESC("BU_MCHT_SINGLE_ACTIVITY_CNF","ACTIVITY_TYPE", t.`activity_type`) activity_type_desc,
+    (select pt.name from bu_mcht_product_type mpt,bu_product_type pt where t.mcht_id=mpt.mcht_id and mpt.product_type_id=pt.id and mpt.status='1' and mpt.is_main='1' and mpt.del_flag='0' and pt.del_flag='0' LIMIT 1)producttype_name
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtSingleActivityCnfCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_single_activity_cnf t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByCustomExample" parameterType="com.jf.entity.MchtSingleActivityCnfCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_single_activity_cnf t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+</mapper>

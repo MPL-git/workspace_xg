@@ -1,0 +1,32 @@
+<div class="page rule-subordinate flex dc bgf4" data-title="醒购规则" data-id="rule_subordinate">
+	<link rel="stylesheet" href="rule/subordinate/index.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back(false,true)"></i></div>
+		<p class="ellipsis">醒购规则</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg flex dc">
+		<div class="row"></div>
+	</div>
+
+	<script id="rule_subordinate_row" type="text/html">
+		{{each returnData item}}
+		<a class="flex ac jb bt" onclick="ruleSubordinateApi.getRule('{{item.id}}', '{{item.type}}')">
+			<div>{{item.name}}</div>
+			<i class="arrow-r ico"></i>
+		</a>
+		{{/each}}
+	</script>
+
+	<script id="rule_subordinate_footer" type="text/html">
+		<div class="footer flex fg">
+			<div>
+				<button class="btn-submit" onclick="ruleSubordinateApi.call()" type="button">客服电话：{{tel}}</button>
+			</div>
+		</div>
+	</script>
+
+	<script src="rule/subordinate/index.js?var=1.1" async></script>
+</div>

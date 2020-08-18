@@ -1,0 +1,643 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var globalNav = $("#nav .navwrap");
+            var navheight = globalNav.height(),navtop = globalNav.offset().top;
+            $(window).on("scroll",function(){
+                var scrolltop = $(this).scrollTop();
+                globalNav.removeAttr("style");
+                if(scrolltop > navtop){
+                    globalNav.addClass("global-nav-fix");
+                }else{
+                    globalNav.removeClass("global-nav-fix");
+                }
+            });
+
+            $(".global-catalog").hover(function(){
+                showGlobalCat();
+            }, function(){
+                hideGlobalCat();
+            });
+            var globalCatalog = $('.global-catalog'),
+                    globalCatCon = $('.gbc-blockcon'),
+                    gbcDuration = 200;
+            function showGlobalCat(){
+                globalCatCon.stop().slideDown(gbcDuration);
+                globalCatalog.addClass('global-catalog-open');
+            }
+            function hideGlobalCat(){
+                globalCatCon.stop().slideUp(gbcDuration);
+                globalCatalog.removeClass('global-catalog-open');
+            }
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'fade',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {
+
+                }
+            });
+        });
+    </script>
+</head>
+<body class="page-index">
+<div id="topbar">
+	<div class="topbar">
+        <div class="layout">
+	        <div class="toptools"></div>
+			<div class="toplinks">
+                <p><a href="#"><img src="images/ico-account.png" alt=""/>我的帐号</a></p>
+                <p><a href="#"><img src="images/ico-mobile.png" alt=""/>手机商城</a></p>
+			</div>
+	        <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+	        </div>
+		</div>
+    </div>
+</div>
+<div id="header">
+	<div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/pic/olunpo/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+		</div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <div class="hdsearch-right">
+            搜索框右侧广告
+        </div>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus="true" x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+<div id="nav">
+    <div class="navwrap">
+        <div class="global-catalog">
+            <div class="gbc-wrap">
+                <h2 class="gbc-title"><span>全部商品分类</span></h2>
+                <div class="gbc-blockcon">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli tree-hover">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="sublayer">
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="layout">
+                <div class="textNav">
+                    <p><a href="#">首页</a></p>
+
+                    <p><a href="#">热卖区</a></p>
+
+                    <p><a href="#">新品区</a></p>
+
+                    <p><a href="#">手工拉线</a></p>
+
+                    <p><a href="#">简约休闲</a></p>
+
+                    <p><a href="#">商务正装</a></p>
+
+                    <p><a href="#">豆豆板鞋</a></p>
+
+                    <p><a href="#">集团文化</a></p>
+
+                    <p><a href="#">招商加盟</a></p>
+
+                    <p><a href="#">实体店网点</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/olunpo/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/olunpo/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/olunpo/banner_1.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">上一张</a>
+            <a id="inslide_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+
+<style>
+.header{background: #000;}
+.page-index #page{background: url("images/pic/olunpo/bg.jpg");}
+.olp-modtit{ height: 105px; position: relative; width: 1200px; margin:15px auto;}
+.olp-titmenu{ position: absolute; top: 47px; left: 332px; white-space: nowrap;}
+.olp-titmenu a{ display: inline-block; color: #8e8e8e; font-size: 18px; margin-left: 45px; padding: 0 4px; line-height: 25px;}
+.olp-titmenu .current{border: 1px solid #8e8e8e;}
+</style>
+    <table width="1200" align="center" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td><img src="images/pic/olunpo/service.png" alt=""/></td>
+        </tr>
+    </table>
+    <br/>
+    <table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/olunpo/nav_01.jpg" width="397" height="150" alt=""></td>
+            <td>
+                <img src="images/pic/olunpo/nav_02.jpg" width="406" height="150" alt=""></td>
+            <td>
+                <img src="images/pic/olunpo/nav_03.jpg" width="397" height="150" alt=""></td>
+        </tr>
+    </table>
+    <br/>
+    <table width="1200" align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td rowspan="3">
+                <img src="images/pic/olunpo/olp-top_01.jpg" width="800" height="410" alt=""></td>
+            <td width="14" height="410" rowspan="3"><td>
+                <img src="images/pic/olunpo/olp-top_03.jpg" width="386" height="200" alt=""></td>
+        </tr>
+        <tr>
+            <td width="386" height="10"></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="images/pic/olunpo/olp-top_05.jpg" width="386" height="200" alt=""></td>
+        </tr>
+    </table>
+    <br/>
+
+    <table width="1200" align="center" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td><img src="images/pic/olunpo/mod-banner1.jpg" alt=""/></td>
+        </tr>
+    </table>
+
+    <a id="floor1"></a><p><br/></p>
+    <div class="olp-modtit">
+        <img src="images/pic/olunpo/mod-title1.png" alt=""/>
+        <div class="olp-titmenu">
+            <a class="current" href="#floor1">手工拉线</a><a href="#floor2">简约休闲</a><a href="#floor3">商务正装</a><a href="#floor4">豆豆板鞋</a><a href="#floor5">时尚潮鞋</a><a href="#floor6">皮带</a>
+        </div>
+    </div>
+    <table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/olunpo/mod1_01.jpg" width="292" height="382" alt=""></td>
+            <td width="10" height="776" rowspan="3"><td>
+            <img src="images/pic/olunpo/mod1_03.jpg" width="292" height="382" alt=""></td>
+            <td width="10" height="776" rowspan="3"><td>
+            <img src="images/pic/olunpo/mod1_05.jpg" width="292" height="382" alt=""></td>
+            <td width="11" height="776" rowspan="3"><td>
+            <img src="images/pic/olunpo/mod1_07.jpg" width="293" height="382" alt=""></td>
+        </tr>
+        <tr>
+            <td width="292" height="12"></td>
+            <td width="292" height="12"></td>
+            <td width="292" height="12"></td>
+            <td width="293" height="12"></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="images/pic/olunpo/mod1_12.jpg" width="292" height="382" alt=""></td>
+            <td>
+                <img src="images/pic/olunpo/mod1_13.jpg" width="292" height="382" alt=""></td>
+            <td>
+                <img src="images/pic/olunpo/mod1_14.jpg" width="292" height="382" alt=""></td>
+            <td>
+                <img src="images/pic/olunpo/mod1_15.jpg" width="293" height="382" alt=""></td>
+        </tr>
+    </table>
+    <br/>
+    <table width="1200" align="center" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td><img src="images/pic/olunpo/mod-banner2.jpg" alt=""/></td>
+        </tr>
+    </table>
+
+    <a id="floor2"></a><p><br/></p>
+    <div class="olp-modtit">
+        <img src="images/pic/olunpo/mod-title2.png" alt=""/>
+        <div class="olp-titmenu">
+            <a href="#floor1">手工拉线</a><a class="current" href="#floor2">简约休闲</a><a href="#floor3">商务正装</a><a href="#floor4">豆豆板鞋</a><a href="#floor5">时尚潮鞋</a><a href="#floor6">皮带</a>
+        </div>
+    </div>
+    <table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/olunpo/mod1_12.jpg" width="292" height="382" alt=""></td>
+            <td width="10" height="776" rowspan="3"></td>
+            <td>
+                <img src="images/pic/olunpo/mod1_13.jpg" width="292" height="382" alt=""></td>
+            <td width="10" height="776" rowspan="3"></td>
+            <td>
+                <img src="images/pic/olunpo/mod1_14.jpg" width="292" height="382" alt=""></td>
+            <td width="11" height="776" rowspan="3"></td>
+            <td>
+                <img src="images/pic/olunpo/mod1_15.jpg" width="293" height="382" alt=""></td>
+        </tr>
+        <tr>
+            <td width="292" height="12"></td>
+            <td width="292" height="12"></td>
+            <td width="292" height="12"></td>
+            <td width="293" height="12"></td>
+        </tr>
+        <tr>
+            <td><img src="images/pic/olunpo/mod1_01.jpg" width="292" height="382" alt=""></td>
+            <td><img src="images/pic/olunpo/mod1_03.jpg" width="292" height="382" alt=""></td>
+            <td><img src="images/pic/olunpo/mod1_05.jpg" width="292" height="382" alt=""></td>
+            <td><img src="images/pic/olunpo/mod1_07.jpg" width="293" height="382" alt=""></td>
+        </tr>
+    </table>
+
+    <br/>
+    <table width="1200" align="center" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td><img src="images/pic/olunpo/store.jpg" alt=""/></td>
+        </tr>
+    </table>
+
+    <div class="layout">
+        <div class="newsblock">
+            <div class="newsbox">
+                <h3 class="title"><span>电商资讯</span></h3>
+                <div class="newscon">
+                    <ul>
+                        <li><a href="/view/9bcbe350-36b9-4a81-92d5-6b9fc4b5bd2e.html" target="_blank">闽南电商频道网站上线开通仪式<span class="ico-new"></span></a></li>
+                        <li><a href="/view/23b1c0c4-1c11-4730-a4ec-6832ac5f0499.html" target="_blank">心系云南 格男仕男装携手东南早报暖冬公益在行动<span class="ico-new"></span></a></li>
+                        <li><a href="/view/88c9d2f2-6d02-4ebf-8851-ff153204169f.html" target="_blank">淘品牌的另类企业文化</a></li>
+                        <li><a href="/view/49bbfbd3-0620-41b7-80f7-b7ef83ab2598.html" target="_blank">我是吴志超，我为wo代言</a></li>
+                        <li><a href="/view/f15f459b-74f5-48c0-a9b2-ed653bb5dd23.html" target="_blank">格男仕男装荣膺年度“最佳商业价值”奖</a></li>
+                        <li><a href="/view/35d64c11-e9fe-4950-8b69-4090d346b0a3.html" target="_blank">网络男装品牌格男仕预计年底线下店超20家 </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="newsbox">
+                <h3 class="title"><span>电商资讯</span></h3>
+                <div class="newscon">
+                    <ul>
+                        <li><a href="/view/9bcbe350-36b9-4a81-92d5-6b9fc4b5bd2e.html" target="_blank">闽南电商频道网站上线开通仪式<span class="ico-new"></span></a></li>
+                        <li><a href="/view/23b1c0c4-1c11-4730-a4ec-6832ac5f0499.html" target="_blank">心系云南 格男仕男装携手东南早报暖冬公益在行动<span class="ico-new"></span></a></li>
+                        <li><a href="/view/88c9d2f2-6d02-4ebf-8851-ff153204169f.html" target="_blank">淘品牌的另类企业文化</a></li>
+                        <li><a href="/view/49bbfbd3-0620-41b7-80f7-b7ef83ab2598.html" target="_blank">我是吴志超，我为wo代言</a></li>
+                        <li><a href="/view/f15f459b-74f5-48c0-a9b2-ed653bb5dd23.html" target="_blank">格男仕男装荣膺年度“最佳商业价值”奖</a></li>
+                        <li><a href="/view/35d64c11-e9fe-4950-8b69-4090d346b0a3.html" target="_blank">网络男装品牌格男仕预计年底线下店超20家 </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+    <div class="footer">
+        <div class="footwarranty">
+            <div class="layout">
+                <table width="100%" height="55" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td><img src="/static/images/ftw_01.png"/></td>
+                        <td class="ftw-line"></td>
+                        <td><img src="/static/images/ftw_02.png"/></td>
+                        <td class="ftw-line"></td>
+                        <td><img src="/static/images/ftw_03.png"/></td>
+                        <td class="ftw-line"></td>
+                        <td><img src="/static/images/ftw_04.png"/></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="footothers">
+            <div class="layout">
+                <div class="ftconlist">
+                    <dl>
+                        <dt><img src="/static/images/footico_1.png"/>订购与支付</dt>
+                        <dd>
+                            <p><a href="#">新手注册与登录</a></p>
+                            <p><a href="#">如何购物</a></p>
+                            <p><a href="#">优惠券使用细则</a></p>
+                            <p><a href="#">在线支付宝</a></p>
+                            <p><a href="#">验收签收</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_2.png"/>快递与配送</dt>
+                        <dd>
+                            <p><a href="#">配送方式/时间</a></p>
+                            <p><a href="#">货到付款</a></p>
+                            <p><a href="#">运费说明</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_3.png"/>售后服务</dt>
+                        <dd>
+                            <p><a href="#">联系客服</a></p>
+                            <p><a href="#">订单查询</a></p>
+                            <p><a href="#">退换保修服务</a></p>
+                            <p><a href="#">退款方式</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_4.png"/>关于欧伦堡</dt>
+                        <dd>
+                            <p><a href="#">了解欧伦堡</a></p>
+                            <p><a href="#">关注欧伦堡</a></p>
+                            <p><a href="#">品牌文化</a></p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ftqrcode">
+                    <h3><span>手机无线端</span></h3>
+                    <ul>
+                        <li>
+                            <div><img src="images/pic/olunpo/qrcode.png"/></div>
+                            <p>关注欧伦堡</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ftfriends">
+                    <h3>友情链接：</h3>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                    <p><a href="#">友情链接</a></p>
+                </div>
+                <div class="ftlinks">
+                    <p><a href="#">关于我们</a></p>
+                    <p><a href="#">网站地址</a></p>
+                    <p><a href="#">隐私条款</a></p>
+                    <p><a href="#">企业订购</a></p>
+                    <p><a href="#">加入我们</a></p>
+                    <p><a href="#">帮助中心</a></p>
+                    <p><a href="#">网站联盟</a></p>
+                    <p><a href="#">总裁邮箱</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.VideoCommentCustomMapper">
+
+    <select id="findVideoComment"  resultType="com.jf.entity.VideoCommentCustom">
+        select vc.*,if(vc.liked_count=b.likeCount,1,9999) as likeOrder
+        from bu_video_comment vc
+        left join (SELECT video_id, MAX(liked_count) AS likeCount FROM bu_video_comment WHERE video_id=#{videoId} AND STATUS="1" AND del_flag="0") b
+        on vc.video_id=b.video_id
+        where vc.video_id=#{videoId}
+        and vc.status="1"
+        and vc.del_flag="0"
+        order by vc.create_date desc
+        limit #{pageRequest.offset},#{pageRequest.pageSize}
+  	</select>
+</mapper>

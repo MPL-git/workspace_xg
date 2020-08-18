@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberControlMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberControl" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="last_sign_in_date" property="lastSignInDate" jdbcType="TIMESTAMP" />
+    <result column="sign_be_helped_date" property="signBeHelpedDate" jdbcType="TIMESTAMP" />
+    <result column="sign_be_helped_count" property="signBeHelpedCount" jdbcType="INTEGER" />
+    <result column="last_help_cut_price_date" property="lastHelpCutPriceDate" jdbcType="TIMESTAMP" />
+    <result column="help_cut_price_count" property="helpCutPriceCount" jdbcType="INTEGER" />
+    <result column="last_cut_price_date" property="lastCutPriceDate" jdbcType="TIMESTAMP" />
+    <result column="cut_price_count" property="cutPriceCount" jdbcType="INTEGER" />
+    <result column="last_invite_date" property="lastInviteDate" jdbcType="TIMESTAMP" />
+    <result column="invite_count" property="inviteCount" jdbcType="INTEGER" />
+    <result column="last_rec_svip_integral_date" property="lastRecSvipIntegralDate" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, member_id, last_sign_in_date, sign_be_helped_date, sign_be_helped_count, last_help_cut_price_date, 
+    help_cut_price_count, last_cut_price_date, cut_price_count, last_invite_date, invite_count, 
+    last_rec_svip_integral_date, create_by, create_date, update_by, update_date, remarks, 
+    del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberControlExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_control
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_member_control
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_member_control
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MemberControlExample" >
+    delete from bu_member_control
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MemberControl" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_control (member_id, last_sign_in_date, sign_be_helped_date, 
+      sign_be_helped_count, last_help_cut_price_date, 
+      help_cut_price_count, last_cut_price_date, 
+      cut_price_count, last_invite_date, invite_count, 
+      last_rec_svip_integral_date, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{memberId,jdbcType=INTEGER}, #{lastSignInDate,jdbcType=TIMESTAMP}, #{signBeHelpedDate,jdbcType=TIMESTAMP}, 
+      #{signBeHelpedCount,jdbcType=INTEGER}, #{lastHelpCutPriceDate,jdbcType=TIMESTAMP}, 
+      #{helpCutPriceCount,jdbcType=INTEGER}, #{lastCutPriceDate,jdbcType=TIMESTAMP}, 
+      #{cutPriceCount,jdbcType=INTEGER}, #{lastInviteDate,jdbcType=TIMESTAMP}, #{inviteCount,jdbcType=INTEGER}, 
+      #{lastRecSvipIntegralDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MemberControl" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_control
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="lastSignInDate != null" >
+        last_sign_in_date,
+      </if>
+      <if test="signBeHelpedDate != null" >
+        sign_be_helped_date,
+      </if>
+      <if test="signBeHelpedCount != null" >
+        sign_be_helped_count,
+      </if>
+      <if test="lastHelpCutPriceDate != null" >
+        last_help_cut_price_date,
+      </if>
+      <if test="helpCutPriceCount != null" >
+        help_cut_price_count,
+      </if>
+      <if test="lastCutPriceDate != null" >
+        last_cut_price_date,
+      </if>
+      <if test="cutPriceCount != null" >
+        cut_price_count,
+      </if>
+      <if test="lastInviteDate != null" >
+        last_invite_date,
+      </if>
+      <if test="inviteCount != null" >
+        invite_count,
+      </if>
+      <if test="lastRecSvipIntegralDate != null" >
+        last_rec_svip_integral_date,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="lastSignInDate != null" >
+        #{lastSignInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signBeHelpedDate != null" >
+        #{signBeHelpedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signBeHelpedCount != null" >
+        #{signBeHelpedCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastHelpCutPriceDate != null" >
+        #{lastHelpCutPriceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="helpCutPriceCount != null" >
+        #{helpCutPriceCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastCutPriceDate != null" >
+        #{lastCutPriceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cutPriceCount != null" >
+        #{cutPriceCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastInviteDate != null" >
+        #{lastInviteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inviteCount != null" >
+        #{inviteCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastRecSvipIntegralDate != null" >
+        #{lastRecSvipIntegralDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MemberControlExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_control
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_member_control
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastSignInDate != null" >
+        last_sign_in_date = #{record.lastSignInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signBeHelpedDate != null" >
+        sign_be_helped_date = #{record.signBeHelpedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.signBeHelpedCount != null" >
+        sign_be_helped_count = #{record.signBeHelpedCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastHelpCutPriceDate != null" >
+        last_help_cut_price_date = #{record.lastHelpCutPriceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.helpCutPriceCount != null" >
+        help_cut_price_count = #{record.helpCutPriceCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastCutPriceDate != null" >
+        last_cut_price_date = #{record.lastCutPriceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cutPriceCount != null" >
+        cut_price_count = #{record.cutPriceCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastInviteDate != null" >
+        last_invite_date = #{record.lastInviteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.inviteCount != null" >
+        invite_count = #{record.inviteCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastRecSvipIntegralDate != null" >
+        last_rec_svip_integral_date = #{record.lastRecSvipIntegralDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_member_control
+    set id = #{record.id,jdbcType=INTEGER},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      last_sign_in_date = #{record.lastSignInDate,jdbcType=TIMESTAMP},
+      sign_be_helped_date = #{record.signBeHelpedDate,jdbcType=TIMESTAMP},
+      sign_be_helped_count = #{record.signBeHelpedCount,jdbcType=INTEGER},
+      last_help_cut_price_date = #{record.lastHelpCutPriceDate,jdbcType=TIMESTAMP},
+      help_cut_price_count = #{record.helpCutPriceCount,jdbcType=INTEGER},
+      last_cut_price_date = #{record.lastCutPriceDate,jdbcType=TIMESTAMP},
+      cut_price_count = #{record.cutPriceCount,jdbcType=INTEGER},
+      last_invite_date = #{record.lastInviteDate,jdbcType=TIMESTAMP},
+      invite_count = #{record.inviteCount,jdbcType=INTEGER},
+      last_rec_svip_integral_date = #{record.lastRecSvipIntegralDate,jdbcType=TIMESTAMP},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MemberControl" >
+    update bu_member_control
+    <set >
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="lastSignInDate != null" >
+        last_sign_in_date = #{lastSignInDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signBeHelpedDate != null" >
+        sign_be_helped_date = #{signBeHelpedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="signBeHelpedCount != null" >
+        sign_be_helped_count = #{signBeHelpedCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastHelpCutPriceDate != null" >
+        last_help_cut_price_date = #{lastHelpCutPriceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="helpCutPriceCount != null" >
+        help_cut_price_count = #{helpCutPriceCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastCutPriceDate != null" >
+        last_cut_price_date = #{lastCutPriceDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cutPriceCount != null" >
+        cut_price_count = #{cutPriceCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastInviteDate != null" >
+        last_invite_date = #{lastInviteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="inviteCount != null" >
+        invite_count = #{inviteCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastRecSvipIntegralDate != null" >
+        last_rec_svip_integral_date = #{lastRecSvipIntegralDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MemberControl" >
+    update bu_member_control
+    set member_id = #{memberId,jdbcType=INTEGER},
+      last_sign_in_date = #{lastSignInDate,jdbcType=TIMESTAMP},
+      sign_be_helped_date = #{signBeHelpedDate,jdbcType=TIMESTAMP},
+      sign_be_helped_count = #{signBeHelpedCount,jdbcType=INTEGER},
+      last_help_cut_price_date = #{lastHelpCutPriceDate,jdbcType=TIMESTAMP},
+      help_cut_price_count = #{helpCutPriceCount,jdbcType=INTEGER},
+      last_cut_price_date = #{lastCutPriceDate,jdbcType=TIMESTAMP},
+      cut_price_count = #{cutPriceCount,jdbcType=INTEGER},
+      last_invite_date = #{lastInviteDate,jdbcType=TIMESTAMP},
+      invite_count = #{inviteCount,jdbcType=INTEGER},
+      last_rec_svip_integral_date = #{lastRecSvipIntegralDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		input[type=text] {
+			width: 750px;
+			padding: 0 10px;
+			margin-right: 10px;
+			border: none;
+			background: #eee;
+		}
+		form>div {
+			overflow: hidden;
+			margin-bottom: 10px;
+		}
+		form input {
+			float: left;
+			height: 26px;
+		}
+
+		.delay {
+			position: fixed;
+			top: 50%;
+			left: 0;
+			z-index: 1;
+			width: 100%;
+			height: 100px;
+			margin-top: -50px;
+			text-align: center;
+		}
+		.delay span {
+			-webkit-display: inline-flex;
+			display: inline-flex;
+			line-height: 36px;
+			border-radius: 18px;
+			background: rgba(0, 0, 0, .5);
+			padding: 0 10px;
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<form onsubmit="submitTest(event, this)">
+		<div>
+			<input type="text" name="url" required placeholder="加密前地址" autofocus="true">
+			<input type="submit" value="解密">
+		</div>
+
+		<div>
+			<input id="_escape" type="text" readonly placeholder="解密后地址">
+			<input type="button" id="_clip" data-clipboard-target="#_escape" value="复制">
+		</div>
+	</form>
+
+	<div class="delay"><span></span></div>
+ 
+	<script src="../xgbuy/static/js/jquery-3.2.1.min.js"></script>
+	<script src="../xgbuy/static/js/clipboard.min.js"></script>
+	<script>
+		var _redirect = '?redirect_url=',
+			_timer = null,
+			_delay = $('.delay');
+
+		$.prototype.serializeObject = function() {
+			var a = this.serializeArray(),
+				b = {};
+ 
+			for (var i = 0; i < a.length; i++) {
+				b[a[i].name] = a[i].value;
+			}
+ 
+			return b;
+		}
+
+		function clipHnad(elem) {
+			var _a = new Clipboard(elem);
+
+			_a.on('success', function(e) {
+				delayTip('【' + e.text + '】复制成功');
+				e.clearSelection();
+			});
+
+			_a.on('error', function(e) {
+				delayTip('该设备不支持快捷复制');
+			});
+		}
+
+		clipHnad(_clip);
+
+		function submitTest(event, _this) {
+			event.preventDefault();
+
+			var _a = $(_this).serializeObject().url.split(_redirect);
+
+			try {
+				_escape.value = _a[0] + _redirect + decodeURIComponent(escape(window.atob(_a[1].split('=')[0])));
+			} catch (e) {
+				delayTip('请输入正确的加密地址', 3e3);
+			}
+		}
+
+		function delayTip(_e, _t) {
+			if (_e == '' || _e === undefined) {
+				return;
+			}
+
+			_t = _t || 5e3;
+
+			_delay.stop().fadeIn().find('span').html(_e);
+
+			clearTimeout(_timer);
+
+			_timer = setTimeout(function () {
+				_delay.stop().fadeOut();
+			}, _t);
+		}
+	</script>
+</body>
+</html>

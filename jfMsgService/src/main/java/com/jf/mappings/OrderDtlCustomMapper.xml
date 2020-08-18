@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.OrderDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.OrderDtlCustom"  extends="com.jf.dao.OrderDtlMapper.BaseResultMap">
+    <result column="combinePayAmount" property="combinePayAmount" jdbcType="DECIMAL" />
+    <result column="subPayAmount" property="subPayAmount" jdbcType="DECIMAL" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+    <result column="payment_no" property="paymentNo" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+     <result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+     <result column="combine_order_code" property="combineOrderCode" jdbcType="VARCHAR" />
+     <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+     <result column="mcht_type" property="mchtType" jdbcType="VARCHAR" />
+     <result column="sales_volume" property="salesVolume" jdbcType="INTEGER" />
+    <result column="sales_degree" property="salesDegree" jdbcType="INTEGER" />
+    <result column="sum_quantity" property="sumQuantity" jdbcType="INTEGER" />
+    <result column="sum_amount" property="sumAmount" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  	<!-- 退款,退货AB -->
+  	<select id="getOrderInfoAB" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+		combineOrder.total_pay_amount as combinePayAmount,
+		combineOrder.payment_id,
+		combineOrder.payment_no,
+		combineOrder.combine_order_code,
+		subOrder.pay_amount as subPayAmount,
+		dtl.pay_amount,
+		dtl.id,
+		subOrder.sub_order_code,
+		cusOrder.reason,
+		cusOrder.status as customerStatus
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		left join bu_order_dtl dtl on dtl.sub_order_id = subOrder.id
+		left join bu_customer_service_order cusOrder on cusOrder.order_dtl_id = dtl.id
+		where cusOrder.id = #{serviceOrderId}
+		and combineOrder.id = #{combineOrderId}
+  	</select>
+  	<!-- 直赔退款D -->
+  	<select id="getOrderInfoD" parameterType="java.util.Map" resultType="com.jf.entity.OrderDtlCustom">
+  		select
+		combineOrder.total_pay_amount as combinePayAmount,
+		combineOrder.payment_id,
+		combineOrder.payment_no,
+		combineOrder.combine_order_code,
+		subOrder.pay_amount as subPayAmount,
+		subOrder.pay_amount,
+		subOrder.sub_order_code,
+		cusOrder.reason,
+		cusOrder.status as customerStatus
+		from bu_combine_order combineOrder
+		left join bu_sub_order subOrder on subOrder.combine_order_id = combineOrder.id
+		left join bu_customer_service_order cusOrder on cusOrder.sub_order_id = subOrder.id
+		where cusOrder.id = #{serviceOrderId}
+		and combineOrder.id = #{combineOrderId}
+  	</select>
+  	<select id="countByCombineOrderId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		SELECT count(od.id) FROM bu_order_dtl od,bu_sub_order so,bu_combine_order co WHERE od.sub_order_id = so.id AND so.combine_order_id = co.id AND od.del_flag='0' AND so.del_flag='0' AND co.del_flag='0' AND co.id=#{combineOrderId}
+  	</select>
+  	<select id="getErrorOrderDtlCount" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+  		SELECT
+			COUNT(DISTINCT t.id)
+		FROM
+			bu_order_dtl t,bu_sub_order a,bu_combine_order b
+		WHERE
+			t.create_date <![CDATA[ >= ]]> #{beginDate}
+		AND t.create_date <![CDATA[ <= ]]> #{endDate}
+		AND t.pay_amount!=0
+		AND t.del_flag='0'
+		AND t.sub_order_id=a.id
+		AND a.combine_order_id=b.id
+		AND b.`status` is not null
+		AND b.`status`='1'
+		AND (abs(t.settle_amount + t.commission_amount - t.platform_preferential - t.integral_preferential - t.pay_amount) > 0.01 OR abs(t.sale_price*t.quantity -t.mcht_preferential - t.platform_preferential - t.integral_preferential - t.pay_amount) > 0.01 OR abs(t.settle_amount + t.commission_amount - t.sale_price*t.quantity +t.mcht_preferential) > 0.01)
+  	</select>
+  	<select id="getDepositRefundOrderInfo" parameterType="java.util.Map" resultType="com.jf.entity.CombineDepositOrderCustom">
+  		select 
+		combine.combine_deposit_order_code,
+		combine.total_deposit,
+		combine.payment_id,
+		combine.payment_no,
+		sub.deposit,
+		sub.order_dtl_id as orderDtlId,
+		cusOrder.status as customerStatus,
+		cusOrder.reason,
+		cusOrder.quantity as customerQuantity
+		from bu_combine_deposit_order combine,bu_sub_deposit_order sub,bu_customer_service_order cusOrder
+		where combine.id = sub.combine_deposit_order_id
+		and sub.order_dtl_id = cusOrder.order_dtl_id
+		and combine.`status` = '2'
+		and combine.del_flag = '0'
+		and combine.id = #{combineDepositOrderId}
+		and sub.`status` = '4'
+		and sub.del_flag = '0'
+		and cusOrder.del_flag = '0'
+		and cusOrder.id = #{serviceOrderId}
+		limit 1
+  	</select>
+  	
+  	
+  	<select id="selectDistributionOrderDtlList" resultMap="com.jf.dao.OrderDtlMapper.BaseResultMap">
+      select odt.id,odt.distribution_member_id,odt.distribution_amount,odt.distribution_settle_status,odt.distribution_settle_date from bu_order_dtl odt where odt.del_flag='0' and odt.product_status='1' and odt.is_give='0' and odt.distribution_settle_status='0' and DATE_FORMAT(odt.product_status_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate,jdbcType=VARCHAR} and DATE_FORMAT(odt.product_status_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate,jdbcType=VARCHAR} 
+    </select>
+    
+    <select id="selectSalesVolume" parameterType="List" resultMap="BaseResultMap">
+  		select 
+  			product_id,
+  			count(product_id) as sales_volume,
+  			sum(pay_amount) as sales_degree
+  		from 
+  			bu_order_dtl od where od.product_status = '1' and od.del_flag ='0' and 
+  			<foreach item="item" index="index" collection="list" separator="or">
+  			<trim prefixOverrides="OR">
+  				OR (od.product_id = #{item.linkId} AND (od.product_status_date BETWEEN #{item.weightUpdateDate} AND NOW()))
+  			</trim>
+  			</foreach>  
+			group by od.product_id
+  </select>
+  
+  
+      
+    <select id="findSumMoneyAndCustomer" parameterType="List" resultMap="BaseResultMap">
+   
+		SELECT
+			mi.id as mcht_id,
+			a.sumq as sum_quantity,
+			a.sump as sum_amount
+		FROM
+			bu_mcht_info mi
+		LEFT JOIN (
+			SELECT
+				so.mcht_id AS smi,
+				IFNULL(SUM(od.quantity), 0) AS sumq,
+				IFNULL(SUM(od.pay_amount), 0) AS sump
+			FROM
+				bu_sub_order so,
+				bu_order_dtl od,
+				bu_combine_order co
+			WHERE
+				so.del_flag = '0'
+			AND od.product_status NOT IN ('2', '3')
+			AND so.combine_order_id = co.id
+			AND od.sub_order_id = so.id
+			AND co.`status` = '1'
+			AND co.pay_date BETWEEN concat(
+				DATE_SUB(CURDATE(), INTERVAL 300 DAY),
+				' 00:00:00'
+			)	
+			AND concat(CURDATE(), ' 23:59:59')
+			GROUP BY
+				so.mcht_id
+		) a ON mi.id = a.smi
+		WHERE
+			mi.id IN
+    	 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  	#{item}  
+		 </foreach> 
+			GROUP BY
+			mi.id
+  </select>
+  
+  <select id="countUnDeliveryDtl" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM bu_order_dtl od
+		WHERE od.sub_order_id = #{subOrderId} AND od.delivery_status = '0' AND od.del_flag = '0'
+		AND NOT EXISTS(SELECT id FROM bu_customer_service_order WHERE order_dtl_id = od.id AND del_flag = '0' AND STATUS = '1' )
+  </select>
+  
+</mapper>

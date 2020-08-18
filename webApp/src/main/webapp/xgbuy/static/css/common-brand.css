@@ -1,0 +1,91 @@
+.con-brand a {
+	display: block;
+}
+.con-brand dt {
+	overflow: hidden;
+	position: relative;
+	height: 3.75rem;
+}
+.con-brand dt img {
+	height: 100%;
+}
+.con-brand dt div {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: .5rem;
+	padding-left: .2rem;
+	font-size: .26rem;
+	color: #fff;
+	background: rgba(0, 0, 0, .3);
+	box-sizing: border-box;
+}
+.con-brand dd {
+	height: .8rem;
+	padding: 0 .3rem 0 .2rem;
+	background: #fff;
+}
+.con-brand dd img {
+	width: .63rem;
+	margin-right: .06rem;
+}
+.con-brand dd div p {
+	max-width: 4.5rem;
+	font-size: .3rem;
+}
+.con-brand time p {
+	font-size: .26rem;
+}
+.con-brand time:before {
+	content: '';
+	width: .28rem;
+	height: .28rem;
+	margin: .02rem .1rem 0 0;
+	background: url(../images/icon-time.png) no-repeat;
+	background-size: contain;
+}
+.con-brand .remind {
+	position: absolute;
+	bottom: .2rem;
+	right: .2rem;
+	left: auto;
+	padding: 0;
+	z-index: 1;
+	width: .7rem;
+	height: .68rem;
+	background: url(../images/advance/remind.png) no-repeat center center;
+	background-size: .68rem .68rem;
+}
+.con-brand .reminded {
+	background-image: url(../images/advance/reminded.png);
+	background-size: .68rem .68rem;
+}
+
+.con-brand2 dd {
+	height: 1.14rem;
+	padding: 0 .28rem;
+}
+.con-brand2 dd div p {
+	font-size: .3rem;
+	font-weight: bold;
+}
+.con-brand2 dd time p {
+	font-size: .26rem;
+	font-weight: normal;
+}
+.con-brand2 dd .row-1 {
+	height: .68rem;
+}
+.con-brand2 dd .row-2 {
+	color: #ff7b51;
+	font-size: .26rem;
+	line-height: .26rem;
+}
+.con-brand .madjob {
+	background: #fff;
+	height: 0.8rem;
+}
+.con-brand .madjob img {
+	width: 2.4rem;
+}

@@ -1,0 +1,35 @@
+<div class="page cup-points flex dc bgf4" data-title="积分任务" data-id="cup_points">
+	<link rel="stylesheet" href="cup/points/index.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back(false, true)"></i></div>
+		<p class="ellipsis">积分任务</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg content"></div>
+
+	<script id="cup_points_tpl" type="text/html">
+		{{each returnData value i}}
+		{{if value.id !== 1}}
+		<dl class="flex ac jb">
+			<dt>{{value.name}}</dt>
+
+			{{if value.isFinishTask}}
+			<dd class="flex ac jc ico-btn on">{{value.integral}}</dd>
+			{{else}}
+				{{if value.id == 1}}
+			<dd class="flex ac jc ico-btn" onclick="getUrl('home/index.html')">{{value.integral}}</dd>
+				{{else if value.id == 2}}
+			<dd class="flex ac jc ico-btn" onclick="cupPointsApi.getMobileInter('{{value.isMobile}}')">{{value.integral}}</dd>
+				{{else if value.id == 3}}
+			<dd class="flex ac jc ico-btn" onclick="getUrl('set/self.html', 'self')">+{{value.integral}}</dd>
+				{{/if}}
+			{{/if}}
+		</dl>
+		{{/if}}
+		{{/each}}
+	</script>
+
+	<script src="cup/points/index.js?ver=1.0" async></script>
+</div>

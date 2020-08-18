@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.DouyinSprPlanCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.DouyinSprPlanCustom" extends="com.jf.dao.DouyinSprPlanMapper.BaseResultMap" >
+    <result column="spr_chnl_name" property="sprChnlName" jdbcType="VARCHAR" />
+    <result column="spr_plan_type_desc" property="sprPlanTypeDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, spr_chnl_id, spr_plan_site, spr_plan_type, link_value, spr_url, convert_id, convert_id2, 
+    tracking_id, create_by, create_date, update_by, update_date, remarks, del_flag,
+    (select dsc.spr_chnl_name from douyin_spr_chnl dsc where dsc.del_flag = '0' and dsc.id = t.spr_chnl_id) spr_chnl_name,
+	FUN_GET_STATUS_DESC("DOUYIN_SPR_PLAN","SPR_PLAN_TYPE", t.spr_plan_type) spr_plan_type_desc	
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.DouyinSprPlanCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from douyin_spr_plan t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from douyin_spr_plan t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.DouyinSprPlanCustomExample" resultType="java.lang.Integer" >
+    select count(*) from douyin_spr_plan t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update douyin_spr_plan t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.sprChnlId != null" >
+        spr_chnl_id = #{record.sprChnlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.sprPlanSite != null" >
+        spr_plan_site = #{record.sprPlanSite,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sprPlanType != null" >
+        spr_plan_type = #{record.sprPlanType,jdbcType=CHAR},
+      </if>
+      <if test="record.linkValue != null" >
+        link_value = #{record.linkValue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+ <select id="getDouyinSprPlanList" parameterType="java.util.Map" resultType="java.util.Map" >
+    select 
+    	t.*,
+    	(select dsc.spr_chnl_name from douyin_spr_chnl dsc where dsc.del_flag = '0' and dsc.id = t.spr_chnl_id) spr_chnl_name,
+		FUN_GET_STATUS_DESC('DOUYIN_SPR_PLAN', 'SPR_PLAN_TYPE', t.spr_plan_type) spr_plan_type_desc,
+		(select convert(concat(count(distinct co.id), ',', ifnull(sum(co.total_pay_amount), 0)), char) from douyin_spr_dtl sd, bu_combine_order co where t.id = sd.spr_plan_id and sd.combine_order_id = co.id
+			and sd.del_flag = '0' and co.del_flag = '0' and co.status = '1' and co.source_client = '1' ) ios_count_amount,
+		(select convert(concat(count(distinct co.id), ',', ifnull(sum(co.total_pay_amount), 0)), char) from douyin_spr_dtl sd, bu_combine_order co where t.id = sd.spr_plan_id and sd.combine_order_id = co.id
+			and sd.del_flag = '0' and co.del_flag = '0' and co.status = '1' and co.source_client = '2' ) android_count_amount,
+		<if test="accessType == 1 " >
+			(select count(distinct dmb.member_id) from douyin_member_bind dmb, bu_member_info mi where t.id = dmb.first_spr_plan_id and dmb.member_id = mi.id and dmb.del_flag = '0' and dmb.type = '2'
+				and mi.del_flag = '0' and mi.req_imei is not null) download_member_count,
+			(select count(1) from douyin_spr_log dsl, douyin_member_bind dmb where dsl.del_flag = '0' and dmb.del_flag = '0' and dmb.type = '2'
+				<if test="beginCountDate != null and beginCountDate != ''">
+					<![CDATA[ and dsl.create_date >= #{beginCountDate } ]]> 
+				</if>
+				<if test="endCountDate != null and endCountDate != ''">
+					<![CDATA[ and dsl.create_date <= #{endCountDate } ]]>
+				</if>
+				and dmb.first_spr_plan_id = dsl.spr_plan_id and dmb.member_id = dsl.member_id and dmb.first_spr_plan_id = t.id) douyin_spr_log_count,
+			(select count(DISTINCT dsl.ip) from douyin_spr_log dsl, douyin_member_bind dmb where dsl.del_flag = '0' and dmb.del_flag = '0' and dmb.type = '2'
+				<if test="beginCountDate != null and beginCountDate != ''">
+					<![CDATA[ and dsl.create_date >= #{beginCountDate } ]]> 
+				</if>
+				<if test="endCountDate != null and endCountDate != ''">
+					<![CDATA[ and dsl.create_date <= #{endCountDate } ]]>
+				</if>
+			 	and dmb.first_spr_plan_id = dsl.spr_plan_id and dmb.member_id = dsl.member_id and dmb.first_spr_plan_id = t.id) ip_count,
+			(select count(DISTINCT dsl.member_id) from douyin_spr_log dsl, douyin_member_bind dmb where dsl.del_flag = '0' and dmb.del_flag = '0' and dmb.type = '2'
+				<if test="beginCountDate != null and beginCountDate != ''">
+					<![CDATA[ and dsl.create_date >= #{beginCountDate } ]]> 
+				</if>
+				<if test="endCountDate != null and endCountDate != ''">
+					<![CDATA[ and dsl.create_date <= #{endCountDate } ]]>
+				</if>
+				and dmb.first_spr_plan_id = dsl.spr_plan_id and dmb.member_id = dsl.member_id and dmb.first_spr_plan_id = t.id) member_count
+		</if>
+    	<if test="accessType == 2 " >
+			(select count(distinct dmb.member_id) from douyin_member_bind dmb, bu_member_info mi where t.id = dmb.last_spr_plan_id and dmb.member_id = mi.id and dmb.del_flag = '0' and dmb.type = '2'
+				and mi.del_flag = '0' and mi.req_imei is not null) download_member_count,
+    		(select count(1) from douyin_spr_log dsl, douyin_member_bind dmb where dsl.del_flag = '0' and dmb.del_flag = '0' and dmb.type = '2'
+    			<if test="beginCountDate != null and beginCountDate != ''">
+					<![CDATA[ and dsl.create_date >= #{beginCountDate } ]]> 
+				</if>
+				<if test="endCountDate != null and endCountDate != ''">
+					<![CDATA[ and dsl.create_date <= #{endCountDate } ]]>
+				</if>
+    			and dmb.first_spr_plan_id = dsl.spr_plan_id and dmb.member_id = dsl.member_id and dmb.last_spr_plan_id = t.id) douyin_spr_log_count,
+			(select count(DISTINCT dsl.ip) from douyin_spr_log dsl, douyin_member_bind dmb where dsl.del_flag = '0' and dmb.del_flag = '0' and dmb.type = '2'
+				<if test="beginCountDate != null and beginCountDate != ''">
+					<![CDATA[ and dsl.create_date >= #{beginCountDate } ]]> 
+				</if>
+				<if test="endCountDate != null and endCountDate != ''">
+					<![CDATA[ and dsl.create_date <= #{endCountDate } ]]>
+				</if> 
+				and dmb.first_spr_plan_id = dsl.spr_plan_id and dmb.member_id = dsl.member_id and dmb.last_spr_plan_id = t.id) ip_count,
+			(select count(DISTINCT dsl.member_id) from douyin_spr_log dsl, douyin_member_bind dmb where dsl.del_flag = '0' and dmb.del_flag = '0' and dmb.type = '2'
+				<if test="beginCountDate != null and beginCountDate != ''">
+					<![CDATA[ and dsl.create_date >= #{beginCountDate } ]]> 
+				</if>
+				<if test="endCountDate != null and endCountDate != ''">
+					<![CDATA[ and dsl.create_date <= #{endCountDate } ]]>
+				</if>
+				and dmb.first_spr_plan_id = dsl.spr_plan_id and dmb.member_id = dsl.member_id and dmb.last_spr_plan_id = t.id) member_count
+    	</if>
+    from douyin_spr_plan t
+    where t.del_flag = '0'
+    <if test="sprPlanId != null and sprPlanId != ''" >
+    	and t.id = #{sprPlanId }
+    </if>
+    <if test="sprChnlId != null and sprChnlId != ''" >
+    	and t.spr_chnl_id = #{sprChnlId }
+    </if>
+    <if test="sprPlanSite != null and sprPlanSite != ''">
+    	and t.spr_plan_site like concat('%', #{sprPlanSite }, '%')
+    </if>
+    <if test="sprPlanType != null and sprPlanType != ''">
+    	and t.spr_plan_type = #{sprPlanType }
+    </if>
+    <if test="linkValue != null and linkValue != ''">
+    	and t.link_value = #{linkValue }
+    </if>
+    <if test="beginCreateDate != null and beginCreateDate != ''">
+    	<![CDATA[ and t.create_date >= #{beginCreateDate } ]]>
+    </if>
+    <if test="endCreateDate != null and endCreateDate != ''">
+    	<![CDATA[ and t.create_date <= #{endCreateDate } ]]>
+    </if>
+    <if test="orderByClause != null and orderByClause != ''" >
+      	order by ${orderByClause }
+    </if>
+    <if test="limitStart != null and limitStart >= 0" >
+      	limit #{limitStart } , #{limitSize }
+    </if>
+  </select>
+  <select id="countDouyinSprPlanList" parameterType="java.util.Map" resultType="java.lang.Integer" >
+  	select count(*)
+    from douyin_spr_plan t
+    where t.del_flag = '0'
+    <if test="sprPlanId != null and sprPlanId != ''" >
+    	and t.id = #{sprPlanId }
+    </if>
+    <if test="sprChnlId != null and sprChnlId != ''" >
+    	and t.spr_chnl_id = #{sprChnlId }
+    </if>
+    <if test="sprPlanSite != null and sprPlanSite != ''">
+    	and t.spr_plan_site like concat('%', #{sprPlanSite }, '%')
+    </if>
+    <if test="sprPlanType != null and sprPlanType != ''">
+    	and t.spr_plan_type = #{sprPlanType }
+    </if>
+    <if test="linkValue != null and linkValue != ''">
+    	and t.link_value = #{linkValue }
+    </if>
+    <if test="beginCreateDate != null and beginCreateDate != ''">
+    	<![CDATA[ and t.create_date >= #{beginCreateDate } ]]>
+    </if>
+    <if test="endCreateDate != null and endCreateDate != ''">
+    	<![CDATA[ and t.create_date <= #{endCreateDate } ]]>
+    </if>
+  </select>
+  <select id="getDouyinSprPlanStatisticsList" parameterType="java.util.Map" resultType="java.util.Map" >
+	SELECT
+		t.spr_plan_id id,
+		SUM(t.new_guest_combine_order_count) new_guest_combine_order_count,
+		SUM(t.new_guest_consume_count) new_guest_consume_count,
+		SUM(t.new_guest_pay_amount) new_guest_pay_amount,
+		SUM(t.old_guest_combine_order_count) old_guest_combine_order_count,
+		SUM(t.old_guest_consume_count) old_guest_consume_count,
+		SUM(t.old_guest_pay_amount) old_guest_pay_amount,
+		(SUM(t.new_guest_pay_amount) + SUM(t.old_guest_pay_amount)) total_pay_amount
+	FROM
+		(
+			SELECT
+				sd.spr_plan_id spr_plan_id,
+				COUNT(DISTINCT co.id) new_guest_combine_order_count,
+				COUNT(DISTINCT co.member_id) new_guest_consume_count,
+				SUM(co.total_pay_amount) new_guest_pay_amount,
+				0 old_guest_combine_order_count,
+				0 old_guest_consume_count,
+				0 old_guest_pay_amount,
+				0 total_pay_amount
+			FROM
+				douyin_member_bind mb,
+				douyin_spr_dtl sd,
+				bu_combine_order co
+			WHERE
+				mb.del_flag = '0'
+				AND sd.del_flag = '0'
+				AND co.del_flag = '0'
+				AND co.status = '1'
+	  			AND mb.type = '2'
+			<if test="sprPlanIdList != null">
+		  		<if test="accessType == 1 " >
+					AND mb.first_spr_plan_id in
+		  		</if>
+		  		<if test="accessType == 2 " >
+					AND mb.last_spr_plan_id in
+		  		</if>
+				<foreach collection="sprPlanIdList" index="index" item="id" open="(" separator="," close=")">
+		            #{id}
+		        </foreach>
+			</if>
+			<if test="beginCountDate != null and beginCountDate != ''">
+		    	<![CDATA[ AND sd.create_date >= #{beginCountDate } ]]>
+	    	</if>
+			<if test="endCountDate != null and endCountDate != ''">
+		    	<![CDATA[ AND sd.create_date <= #{endCountDate } ]]>
+	    	</if>
+	    	<if test="accessType == 1 " >
+				AND mb.first_spr_plan_id = sd.spr_plan_id
+	  		</if>
+	  		<if test="accessType == 2 " >
+				AND mb.last_spr_plan_id = sd.spr_plan_id
+	  		</if>
+	  		AND mb.member_id = sd.member_id
+	    	AND sd.combine_order_id = co.id
+			AND co.is_first_order = '1'
+			GROUP BY
+				spr_plan_id
+			UNION
+				SELECT
+					sd.spr_plan_id spr_plan_id,
+					0 new_guest_combine_order_count,
+					0 new_guest_consume_count,
+					0 new_guest_pay_amount,
+					COUNT(DISTINCT co.id) old_guest_combine_order_count,
+					COUNT(DISTINCT co.member_id) old_guest_consume_count,
+					SUM(co.total_pay_amount) old_guest_pay_amount,
+					0 total_pay_amount
+				FROM
+					douyin_member_bind mb,
+					douyin_spr_dtl sd,
+					bu_combine_order co
+				WHERE
+					mb.del_flag = '0'
+					AND sd.del_flag = '0'
+					AND co.del_flag = '0'
+					AND co.status = '1'
+	  				AND mb.type = '2'
+				<if test="sprPlanIdList != null">
+			  		<if test="accessType == 1 " >
+						AND mb.first_spr_plan_id in
+			  		</if>
+			  		<if test="accessType == 2 " >
+						AND mb.last_spr_plan_id in
+			  		</if>
+					<foreach collection="sprPlanIdList" index="index" item="id" open="(" separator="," close=")">
+			            #{id}
+			        </foreach>
+				</if>
+				<if test="beginCountDate != null and beginCountDate != ''">
+			    	<![CDATA[ AND sd.create_date >= #{beginCountDate } ]]>
+		    	</if>
+				<if test="endCountDate != null and endCountDate != ''">
+			    	<![CDATA[ AND sd.create_date <= #{endCountDate } ]]>
+		    	</if>
+		    	<if test="accessType == 1 " >
+					AND mb.first_spr_plan_id = sd.spr_plan_id
+		  		</if>
+		  		<if test="accessType == 2 " >
+					AND mb.last_spr_plan_id = sd.spr_plan_id
+		  		</if>
+		  		AND mb.member_id = sd.member_id
+		    	AND sd.combine_order_id = co.id
+				AND co.is_first_order = '0'
+				GROUP BY
+					spr_plan_id
+		) t
+	GROUP BY
+		t.spr_plan_id
+  </select>
+  
+  
+</mapper>

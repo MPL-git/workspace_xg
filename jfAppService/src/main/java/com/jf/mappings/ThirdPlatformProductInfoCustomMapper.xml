@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ThirdPlatformProductInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ThirdPlatformProductInfoCustom" extends="com.jf.dao.ThirdPlatformProductInfoMapper.BaseResultMap">
+   
+  </resultMap>
+  <select id="getThirdProductInfoList" parameterType="map" resultType="com.jf.entity.ThirdPlatformProductInfoCustom">
+  		SELECT
+		T.*,
+		(
+			SELECT
+				pic.pic
+			FROM
+				bu_product_pic pic
+			WHERE
+				pic.product_id = T.productId
+			AND pic.del_flag = '0'
+			AND pic.is_default = '1'
+			LIMIT 1
+		) AS pic
+		FROM
+		(
+			SELECT
+				tp.product_id as productId,
+				tp.ref_id,
+				tp.source,
+				tp.title,
+				tp.product_id,
+				tp.volume,
+				tp.coupon_amount,
+				tp.zk_final_price,
+				tp.reserve_price,
+				tp.coupon_info<!-- ,
+				IF(tp.update_date >= #{currentDate},1,2) AS dayOrder -->
+			FROM
+				bu_third_platform_product_info tp
+			WHERE
+				tp.`status` = '1'
+			AND tp.del_flag = '0'
+			<if test="wordList != null and wordList.size() > 0">
+				<foreach collection="wordList" item="word" separator=" " >
+				   	and tp.search_fields like concat('%',#{word},'%')
+				</foreach>
+			</if>
+			<if test="productType1Id != null and productType1Id != ''">and tp.product_type1_id = #{productType1Id}</if>
+			<choose>
+			<when test="sortType == '2'.toString()">ORDER BY tp.volume DESC,id DESC</when>
+			<when test="sortType == '3'.toString()">ORDER BY tp.zk_final_price ASC</when>
+			<when test="sortType == '4'.toString()">ORDER BY tp.zk_final_price DESC</when>
+			<when test="sortType == '5'.toString()">and tp.is_coupon = '1' ORDER BY tp.id DESC</when>
+			<otherwise>ORDER BY ifnull(tp.seq_no,99999),tp.update_date desc,tp.weights desc, tp.id DESC</otherwise>
+			</choose>
+			<choose>
+				<when test="currentPage != null and pageSize != null">limit #{currentPage} , #{pageSize}</when>
+				<otherwise>limit 10</otherwise>
+			</choose>
+		) T
+
+  	</select>
+  	
+  	
+  	<select id="getChannelTaoBaoProductList" parameterType="map" resultType="com.jf.entity.ThirdPlatformProductInfoCustom">
+  		SELECT
+		T.*, (
+			SELECT
+				pic.pic
+			FROM
+				bu_product_pic pic
+			WHERE
+				pic.product_id = T.product_id
+			AND pic.del_flag = '0'
+			AND pic.is_default = '1'
+			LIMIT 1
+		) AS pic
+	FROM
+		(
+			SELECT
+				wc.channel_name as channelName,
+				tp.product_id as productId,
+				tp.ref_id,
+				tp.source,
+				tp.title,
+				tp.product_id,
+				tp.volume,
+				tp.coupon_amount,
+				tp.zk_final_price,
+				tp.reserve_price,
+				tp.coupon_info,
+				IF(tp.update_date >= #{currentDate},1,2) AS dayOrder
+			FROM
+				bu_wetao_channel wc,
+				bu_wetao_channel_product wcp,
+				bu_third_platform_product_info tp
+			WHERE
+				wc.id = #{channelId}
+			AND wc.id = wcp.channel_id
+			AND wcp.product_id = tp.product_id
+			AND wc.del_flag = '0'
+			AND wcp.del_flag = '0'
+			AND tp.del_flag = '0'
+			AND tp.`status` = '1'
+			<if test="wordList != null and wordList.size() > 0">
+				<foreach collection="wordList" item="word" separator=" " >
+				   	and tp.search_fields like concat('%',#{word},'%')
+				</foreach>
+			</if>
+			<if test="productType1Id != null and productType1Id != ''">and tp.product_type1_id = #{productType1Id}</if>
+			<choose>
+			<when test="sortType == '2'.toString()">ORDER BY tp.volume DESC,tp.id DESC</when>
+			<when test="sortType == '3'.toString()">ORDER BY tp.zk_final_price ASC</when>
+			<when test="sortType == '4'.toString()">ORDER BY tp.zk_final_price DESC</when>
+			<when test="sortType == '5'.toString()">and tp.is_coupon = '1' ORDER BY tp.id DESC</when>
+			<otherwise>ORDER BY ifnull(tp.seq_no,99999),dayOrder,tp.weights desc, tp.id DESC</otherwise>
+			</choose>
+			<choose>
+				<when test="currentPage != null and pageSize != null">limit #{currentPage} , #{pageSize}</when>
+				<otherwise>limit 10</otherwise>
+			</choose>
+		) T
+
+  	</select>
+  	
+  	
+</mapper>

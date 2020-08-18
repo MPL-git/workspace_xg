@@ -1,0 +1,21 @@
+.goods-detail2 .main-header{
+	height: 7.5rem;
+	background: #f1f1f1;
+}
+.goods-detail2 .fstw56{
+	font-size: 0.56rem;
+	font-weight: 600;
+	position: relative;
+	top: -0.05rem;
+	left: 0.05rem;
+}
+.goods-detail2 .fst30{
+	font-size: 0.3rem;
+}
+.goods-detail2 .pull-more{
+	display: none;
+}
+.goods-detail2 .con-name {
+	font-size: 0.28rem;
+	padding: 0.2rem 0.3rem;
+}

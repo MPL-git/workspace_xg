@@ -1,0 +1,45 @@
+<div class="page flex dc settled bgf4" data-title="商家入驻申请" data-id="settled">
+	<link rel="stylesheet" href="settled/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y main fg">
+		<a onclick="getUrl('settled/detail/index.html?type=1', true, null, null, '企业入驻申请')">
+			<img src="settled/resources/1.png">
+		</a>
+
+		<a onclick="alertTip('功能建设中，请敬请期待')">
+		<!-- <a onclick="getUrl('settled/detail/index.html?type=2', true, null, null, '个体工商入驻申请')"> -->
+			<img src="settled/resources/2.png">
+		</a>
+	</div>
+
+	<script async>
+		var settled = {
+			data: {
+
+			},
+
+			init: function () {
+				var _ts = this,
+					_td = _ts.data;
+
+				traffic.setPv(_td, {
+					pageType: '51'
+				});
+
+				document.activeElement.blur();
+			}
+		};
+
+		settled.init();
+
+		function onShow() {
+			traffic.setPv(settled.data);
+		}
+	</script>
+</div>

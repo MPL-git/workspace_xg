@@ -1,0 +1,23 @@
+.tab-top {
+	overflow: hidden;
+	height: .8rem;
+	font-size: .3rem;
+	background: #fff;
+	border-bottom: 1px solid #ddd;
+}
+.tab-top a {
+	height: 100%;
+	/*padding: 0 .32rem;*/
+}
+.tab-top a:after {
+	content: '';
+	width: 1.3rem;
+	height: .04rem;
+	background: transparent;
+}
+.tab-top a.active {
+	color: #ff5050;
+}
+.tab-top a.active:after {
+	background: #ff5050;
+}

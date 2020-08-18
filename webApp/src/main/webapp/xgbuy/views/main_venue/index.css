@@ -1,0 +1,100 @@
+#footer1{
+    height: 1.1rem;
+    background-repeat:no-repeat;
+    background-size:cover;
+    border-width: 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#footer1 a{
+    padding-top: 0;
+    line-height: .4rem;
+    flex: 1;
+}
+#footer1 a>img{
+    height: .7rem;
+    width: .7rem;
+    background: #eee;
+    margin: 0 auto;
+}
+#footer1 a:before{
+    display: none;
+}
+
+/* 装修底部模块 */
+#section1 .decorate-header-page.decorate-seckill .scroll-decorate{
+    height: calc(100vh - 1.1rem - 1.68rem )
+}
+.sys-app #section1 .decorate-header-page.decorate-seckill .scroll-decorate{
+    height: calc(100vh - 1.1rem - 1.68rem + .88rem)
+}
+
+.activity-decorate-download {
+    padding: 0 .3rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+.download-bg {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1.2rem;
+    background-color: #FCFCFB;
+    opacity: .9;
+    z-index: 9;
+}
+.activity-decorate-download .download-info {
+    display: flex;
+}
+.activity-decorate-download i {
+    width: .46rem;
+    height: .46rem;
+    margin-right: .3rem;
+    margin-top: .17rem;
+    background: url('../../static/images/activity/close.png') no-repeat center;
+    background-size: 100%;
+}
+.activity-decorate-download .download-logo {
+    width: .8rem;
+    height: .8rem;
+    margin-right: .2rem;
+    background: url('../../static/images/activity/logo.png') no-repeat center;
+    background-size: 100%;
+}
+.activity-decorate-download .download-text p {
+    font-size: .24rem;
+    font-family:PingFang SC;
+    font-weight: 500;
+    color: #222;
+    line-height: 1;
+}
+.activity-decorate-download .download-text p:first-child {
+    margin-top: .1rem;
+    font-size: .3rem;
+    margin-bottom: .14rem;
+    font-weight: 800;
+}
+.activity-decorate-download .download-btn {
+    width: 1.3rem;
+    height: .56rem;
+    border-radius: 0.06rem;
+    background-color: #FF4040;
+    font-size: .24rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    line-height: .56rem;
+}
+.close-download {
+    display: none;
+}

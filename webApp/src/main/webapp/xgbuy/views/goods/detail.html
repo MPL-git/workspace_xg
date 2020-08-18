@@ -1,0 +1,918 @@
+<div class="page flex dc goods-detail goods-detail2" data-title="商品详情" data-id="goods_detail">
+	<link rel="stylesheet" href="../static/css/swiper.min.css">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+	<link rel="stylesheet" href="goods/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">商品详情</p>
+		<div class="fn flex ac je">
+			<i class="fn ico-btn collection" onclick="transfer()"></i>
+			<i class="fn ico-btn share" onclick="goodsStarShare()"></i>
+		</div>
+	</header>
+
+	<div class="flex dc fg has-header content"></div>
+
+	<!-- 新星计划分享弹窗 -->
+	<div class="popup popup-start popup-detail-start" onclick="closeSelf(this)">
+		<div class="header">
+			<div class="flex ac je">
+				<img src="goods/resources/new-share.png">
+			</div>
+			<span class="flex ac jc span">点击右上角菜单分享给大家吧</span>
+
+			<div class="start"></div>
+		</div>
+	</div>
+
+	<!-- 商品劵领取 -->
+	<div class="popup popup-coupon" onclick="closeSelf(this)">
+		<div class="popup-bottom" onclick="stopSelf()">
+			<div class="popup-tops flex ac head">
+				领劵<span class="flex head-span"></span>
+				<i class="ico-btn delete stop-self coupon-close" onclick="closeSelf(this)"></i>
+			</div>
+			<div class="con-1 scroll-y">
+				<ul class="product-coupon"></ul>
+			</div>
+			<a class="btn-coupon flex ac jc" onclick="closeSelf(this)">完成</a>
+		</div>
+	</div>
+
+	<!-- 新星计划分润金额 -->
+	<script id="goods_detail_start_tpl" type="text/html">
+		{{if spreadAmountStr}}
+		<div class="main">
+			<div class="flex ac jc h4">分享赚分润</div>
+			<div class="flex ac jc h5">下级好友下单，预估赚<p class="f50">{{spreadAmountStr}}元</p>
+			</div>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="goods_detail_tpl" type="text/html">
+		{{if dataMap}}
+		<div class="scroll-y scroll-fix fg scroll-more" onscroll="goodsDetail.scroll(this)">
+			<div class="touchfix w75">
+				<div class="swiper-container">
+					<ul class="swiper-wrapper">
+						{{each productVideos value i}}
+						<li class="swiper-slide swiper-slide-video good-wrapper">
+							<video class='video-js good-wrapper' controls preload='auto' poster='{{picMapList[0].pic}}' data-setup='{}'
+							x-webkit-airplay="true" x5-playsinline="true" playsinline="true" webkit-playsinline="true" >
+								<source src='{{value.videoUrl}}' type='video/mp4' >
+								<p class='vjs-no-js'>
+									不支持H5播放
+								</p>
+							</video>
+							<!-- <video id="video" poster="{{picMapList[0].pic}}" class="video" x-webkit-airplay="true" x5-playsinline="true" playsinline="true" webkit-playsinline="true" preload="auto" onended="listEnded()" controls="false" onplay="listPlay()" onpause="listPause()"  src="{{value.videoUrl}}" type="video/mp4"></video> -->
+						</li>
+						{{/each}}
+						{{each picMapList value i}}
+						<li class="swiper-slide good-wrapper"><img class="good-wrapper" src="{{value.pic}}"></li>
+						{{/each}}
+					</ul>
+
+					<div class="pagination"></div>
+					<div class="pagination-fraction"><span>1</span>/{{picMapList.length + productVideos.length}}</div>
+
+					<div class="popup-info-color">
+						<img src="">
+					</div>
+
+					{{if productWkPic}}
+					{{if jumpType == 0}}
+					<a class="wk-pic opc0 wk-{{productWkPosition}}" onclick="getMapUrl(this)" data-type="1"
+						data-link="{{productWkLinkId}}">
+						{{else}}
+						<a class="wk-pic opc0 wk-{{productWkPosition}}">
+							{{/if}}
+							<img src="{{productWkPic}}">
+						</a>
+						{{/if}}
+
+						<i class="fn ico-btn collection-bt{{isExist ? ' reminded': ''}}" onclick="getReminds(this)"
+							data-type="2" data-id="{{dataMap.id}}"></i>
+
+						{{if activityType != 7 && activityType != 8 && activityType != 10}}
+						<i class="fn ico-btn share" onclick="goodsStarShare()"></i>
+						{{/if}}
+				</div>
+
+				<!-- 邀请立减 -->
+				{{if activityType == 10}}
+				<div class="reduction-rule flex">
+					<div class="flex fg">
+						<div class="flex ac original-price">￥{{dataMap.salePrice}}</div>
+						<div class="activity-rule">
+							<div class="activity-rule-row">每邀1人</div>
+							<div class="activity-rule-row">立减{{fixedAmount}}元</div>
+							<div class="line"></div>
+							<span></span>
+						</div>
+						<div class="flex ac min-price">
+							￥{{(1000 * dataMap.salePrice - 1000 * maxInviteTimes * fixedAmount) / 1000}}</div>
+					</div>
+					{{if cutPriceStatus == 0}}
+					<div class="flex ac">最多可减{{maxInviteTimes * fixedAmount}}</div>
+					{{else if cutPriceStatus == 1}}
+					<div class="flex ac">剩余时间：<time class="count-time" data-start="{{taskBeginDate}}"
+							data-end="{{taskEndDate}}" data-now="{{currentTime}}"></time></div>
+					{{else}}
+					<div class="flex ac">
+						已邀请{{assistanceNum}}人可{{(1000 *dataMap.salePrice - 1000 * assistanceNum * fixedAmount) / 1000}}购买
+					</div>
+					{{/if}}
+				</div>
+				{{else}}
+				{{if priceWkPic && activityType!=11}}
+				<div class="con-price flex ac jb{{priceFontColor ? ' c-self' : ''}}"
+					style="background: url({{priceWkPic}}) no-repeat; background-size: contain; color: {{priceFontColor}}">
+					{{else}}
+					<div class="con-price flex ac jb {{activityType == 11?'pay-advance':''}}">
+						{{/if}}
+						<div class="flex dc jc hahahhahaha">
+							{{if activityType == 11}}
+							<div>
+								{{if currentTime < activityBeginTime }}
+								到手价:￥<span style="font-size:.4rem" class="pre-arrival-price">{{dataMap.arrivalPrice}}</span>
+								{{else}}
+								活动价:￥<span style="font-size:.4rem">{{dataMap.salePrice}}</span>
+								{{/if}}
+							</div>
+							<div class="flex ae tagprice"><span>预付会场</span><s>{{dataMap.tagPrice}}</s></div>
+							{{else}}
+							<div style="display: flex;">
+								<strong>{{if activityType == 7 || activityType == 8}}0{{else}}<b
+										class="sale-price">{{dataMap.salePrice}}</b>{{/if}}</strong>
+								<!--<div class="flex ac">-->
+								<div class="discountPrice" style="margin-top: 0.3rem;">
+									<!--{{if activityTypeContent && !dataMap.hasNotStartActivity || dataMap.preSellAuditStatus == 2}}-->
+									<!--<em class="flex ac">{{activityTypeContent}}</em>-->
+									<!--{{/if}}-->
+									<s class="wl100">{{dataMap.tagPrice}}
+
+									</s>
+
+								</div>
+							</div>
+
+							{{/if}}
+						</div>
+
+						<div class="flex dc jc ae" style="width: 4.5rem;">
+							{{if activityType == 11}}
+							<div class="pre-sell-price flex ac">
+							{{if currentTime < activityBeginTime }}
+								<span>原售价 ¥{{dataMap.salePrice}}</span>
+								<span>定金 ¥{{dataMap.deposit}}</span>
+								<span>可抵 ¥{{dataMap.deductAmount}}</span>
+							{{else}}
+								<span>定金支付已结束</span>
+							{{/if}}
+								
+							</div>
+							<p class="pre-sell-time scroll-x" style="transform: scale(0.85);transform-origin: 100% 50%;">付尾款时间: {{preSellBeginTime}}~{{preSellEndTime}}</p>
+							{{else}}
+							{{if dataMap.hasNotStartActivity}}
+							<div class="act-brand flex ac" style="height:{{activityTypeContent=='品牌特卖'?'auto':''}}">
+								{{if activityTypeContent}}
+								<em class="flex ac">{{activityTypeContent}}</em>
+								{{/if}}
+								<span>¥{{dataMap.activityPrice}}</span>
+							</div>
+							{{/if}}
+
+							{{if activityType == '101' && !dataMap.hasNotStartActivity}}
+							{{if isOpenShop}}
+							<p class="flex ac ico-btn" onclick="getUrlShop(this)" data-id="{{dataMap.mchtId}}">{{shopName}}<i
+									class="ico-btn arrow-r goods-arrow-r"></i></p>
+							{{/if}}
+							{{else if activityType == 7 || activityType == 8}}
+							{{if cutOrderReceiveNum}}
+							<p>{{cutOrderReceiveNum}}人已0元拿</p>
+							{{/if}}
+							{{else}}
+							<p class="count-time" data-start="{{activityBeginTime}}" data-end="{{activityEndTime}}"
+								data-now="{{currentTime}}"></p>
+							{{if currentTime >= activityBeginTime && currentTime <= activityEndTime}}
+							<div class="act-time"></div>
+							{{/if}}
+							{{/if}}
+							{{/if}}
+						</div>
+					</div>
+					{{/if}}
+
+					<div class="nest-decorate-type3"></div>
+
+					<!-- svip -->
+					{{if svipSalePrice}}
+					<div class="flex ac jc svip-box">
+						<div class="flex detail-svip">
+							<div class="left flex ac jc">
+								<img src="goods/resources/detail-svip.png">SVIP
+							</div>
+							<div class="right flex ac jc">
+								<span class="flex f50 mr5 svip-money">￥{{svipSalePrice}}</span>
+								<span class="svip-content">{{svipContent}}</span>
+							</div>
+						</div>
+					</div>
+					{{/if}}
+
+					<!-- 醒购店长 -->
+					{{if dataMap.shopwnerEquityStr}}
+					<div class="con con-2 goods-shopowner flex ac jb">
+						<div class="flex ac">
+							<span class="mr20">店长专享</span>
+							<span class="sale shop-seller">{{dataMap.shopwnerEquityAmount}}</span>
+							<p class="seller-content">{{dataMap.shopwnerEquityStr}}</p>
+						</div>
+					</div>
+					{{/if}}
+
+					<!-- 商品名 -->
+					<div class="con con-name">
+						{{if manageSelf == '1'}}
+						<i class="manageSelf mr10">自营</i>
+						{{else}}
+						{{if activityType == 0}}
+						<img class="img" style="display: inline;width: 1.2rem; vertical-align:text-top;" src="goods/resources/brandIcon/brandIcon.png" alt="">
+						{{/if}}{{if activityType == 4 || activityType == 1}}
+						<img class="img" style="display: inline;width: 1.2rem; vertical-align:text-top;" src="goods/resources/brandIcon/newIcon.png" alt="">
+						{{/if}}{{if activityType == 3}}
+						<img class="img" style="display: inline;width: 1.2rem; vertical-align:text-top;" src="goods/resources/brandIcon/timeLimitIcon.png" alt="">
+						{{/if}}{{if activityType == 5}}
+						<img class="img" style="display: inline;width: 1.2rem; vertical-align:text-top;" src="goods/resources/brandIcon/integralIcon.png" alt="">
+						{{/if}}{{if activityType == 6}}
+						<img class="img" style="display: inline;width: 1.2rem; vertical-align:text-top;" src="goods/resources/brandIcon/emptyIcon.png" alt="">
+						{{/if}}
+						{{/if}}
+
+						<span class="spa">{{dataMap.name}}</span>
+					</div>
+
+					{{if preferentialInfoMap.preferentialInfo}}
+					<div class="con con-2 coupons flex ac jb" onclick="tapByPreferential()">
+						<div class="flex ac">
+							<mark class="btn-f50 mr20 fn">优惠活动</mark>
+							<p class="c6">{{preferentialInfoMap.preferentialInfo}}</p>
+						</div>
+						<i class="ico-btn arrow-r"></i>
+					</div>
+					{{/if}}
+
+					<!-- 积分 -->
+					<!-- {{if deductibleAmount}}
+				<div class="con con-2 integral flex ac">
+					<mark class="btn-f50 mr20 fn">积分抵扣</mark>
+					<p>{{deductibleAmount}}</p>
+				</div>
+				{{/if}} -->
+
+					{{if standardMap.length}}
+					<!-- 规格 -->
+					<div class="con con-info info bt">
+						{{include 'goods_detail_info2_tpl'}}
+					</div>
+					{{/if}}
+
+					<!-- {{if brandContent}}
+				<div class="con bt flex ac jb">
+					<h3>{{brandContent}}</h3>
+				</div>
+				{{/if}}
+				
+				{{if productArtNo}}
+				<div class="con bt flex ac jb">
+					<h3>{{productArtNo}}</h3>
+				</div>
+				{{/if}}
+				
+				{{if productCode}}
+				<div class="con bt flex ac jb">
+					<h3>商品ID：{{productCode}}</h3>
+				</div>
+				{{/if}}
+				
+				{{if shelfLife}}
+				<div class="con bt flex ac jb">
+					<h3>{{shelfLife}}</h3>
+				</div>
+				{{/if}}
+				
+				{{if cccNo}}
+				<div class="con bt flex ac jb">
+					<h3>{{cccNo}}</h3>
+				</div>
+				{{/if}}
+				
+				<div class="con parameter bt flex ac jb cursor" onclick="popupShow('.popup-parameter')">
+					<h3>查看商品详细规格</h3>
+					<i class="ico-btn more"></i>
+				</div> -->
+
+					{{if serviceDec}}
+					<!-- 服务 -->
+					<div class="con server bt flex ac cursor" onclick="popupShow('.popup-server')">
+						<div class="flex fw fg">
+							{{serviceDec}}
+						</div>
+						<i class="ico-btn more fn"></i>
+					</div>
+					{{/if}}
+
+					<!-- 运费 -->
+					<div class="con-freight"></div>
+
+					{{if commentInfoList}}
+					<div class="con-evalua mt20">
+						<div class="flex jb ac evalua-head">
+							<h3>评价{{commentCount}}</h3>
+							<h3>销量{{productSaleQuantity}}</h3>
+							<h3>好评率{{goodProductScore}}</h3>
+						</div>
+						<div class="con bt">
+							{{if commentInfoList.length}}
+							<div class="evalua-con pos-r">
+								<h4 class="flex">
+									<div class="img-cover">
+										<img
+											src="{{commentInfoList[0].memberPic ? commentInfoList[0].memberPic : '../static/images/def-head.png'}}">
+									</div>
+									<span>{{commentInfoList[0].memberNick}}</span>
+								</h4>
+								<div class="clampself">{{commentInfoList[0].content}}</div>
+								<p class="flex ac c9">{{commentInfoList[0].productPropDesc}}</p>
+								<div class="score star-{{commentInfoList[0].productScore}}">
+									<i></i>
+									<i></i>
+									<i></i>
+									<i></i>
+									<i></i>
+								</div>
+							</div>
+							<div class="evalua-bot flex jc">
+								<a class="flex ac jc" onclick="getEvaluaProduct('{{dataMap.id}}')">查看全部评价</a>
+							</div>
+							{{else}}
+							<h3>暂无评价</h3>
+							{{/if}}
+						</div>
+					</div>
+					{{/if}}
+
+					{{if isOpenShop}}
+					<!-- 店铺 -->
+					<div class="con con-shop mt20">
+						<dl class="flex ac fg">
+							<dt class="fn">
+								<img src="{{shopLogo ? shopLogo : '../static/images/seller.png'}}">
+							</dt>
+							<dd class="fg flex ac jb">
+								<div class="fg">
+									<h3 class="elps">{{shopName}}
+										{{if manageSelf == '1'}}
+											<i class="manageSelf ml10">自营</i>
+										{{/if}}
+									</h3>
+
+									<p>
+										<span>类型：{{mchtSettledType == 1 ? '企业' : '个人'}}</span>
+										<span>数量：{{shopProductSum}}</span>
+									</p>
+								</div>
+								<a class="flex ac ico-btn fn" onclick="getUrlShop(this)" data-id="{{dataMap.mchtId}}">进去逛逛</a>
+							</dd>
+						</dl>
+						<div class="shop-bot flex ac jb">
+							<span>商品描述：<em class="f50">{{productAvgScore}}</em></span>
+							<span>卖家服务：<em class="f50">{{mchtAvgScore}}</em></span>
+							<span>物流服务：<em class="f50">{{wuliuAvgScore}}</em></span>
+						</div>
+					</div>
+					{{/if}}
+
+					{{if storeRecommendMapList && storeRecommendMapList.length}}
+					<!-- 店铺推荐 -->
+					<div class="con rec-shop mt20">
+						<h3 class="brand-title flex ac jc">
+							{{storeRecommend}}
+						</h3>
+						<div class="flex ac jc rec-shop-con">
+							{{include 'goods_detail_shop_tpl'}}
+						</div>
+					</div>
+					{{/if}}
+
+					{{if brandRecommendMapList && brandRecommendMapList.length}}
+					<!-- 品牌推荐 -->
+					<div class="con-brand con-brand2 mt20">
+						<h3 class="brand-title flex ac jc">
+							{{brandRecommend}}
+						</h3>
+						<div>
+							{{include 'goods_detail_brand_tpl'}}
+						</div>
+					</div>
+					{{/if}}
+
+					{{if bulletinBoardPic}}
+					<div class="mt20">
+						<img src="{{bulletinBoardPic}}">
+					</div>
+					{{/if}}
+
+					<!-- 详细规格 -->
+					<div class="mt20 product-param">
+						<h3 class="flex ac p30 bold">商品详情</h3>
+
+						<ul>
+							{{each productParamList item}}
+							<li class="flex ac">
+								<span>{{item.title}}</span>{{item.content}}
+							</li>
+							{{/each}}
+						</ul>
+
+						{{if productParams}}
+						<div class="con parameter flex ac jb cursor" onclick="popupShow('.popup-parameter')">
+							查看商品详细规格
+							<i class="ico-btn more"></i>
+						</div>
+						{{/if}}
+					</div>
+
+					<div class="pull-more flex ac jc" onclick="goodsDetail.detail(this)">
+						<i class="arrow-t"></i>
+						点击或拖动，查看图文详情
+					</div>
+					<div class="mt20 con detail clearfix"></div>
+				</div>
+			</div>
+
+			<!-- 店铺红包 -->
+			{{if productCouponMap.isHasProductCoupon}}
+			<div class="red-envelopes">
+				<img src="goods/resources/redchange.gif">
+			</div>
+			{{/if}}
+
+			<div class="footer flex fn">
+				{{if activityType == 7}}
+				{{if cutPriceStatus == 1}}
+				<a onclick="getUrl('activity/cutprice/index.html?tab=0', 'self')" class="btn-other flex ac jc fn">其他砍价商品</a>
+				<a class="btn-addr flex ac jc fg dc" onclick="goodsDetailShare(true)">
+					<p>距离砍价结束还剩<time class="count-time" data-start="{{activityBeginTime}}" data-end="{{activityEndTime}}"
+							data-now="{{currentTime}}"></time></p>
+					<b>继续砍价</b>
+				</a>
+				{{else}}
+				<a onclick="goodsDetailAddCart()" class="btn-addr flex ac jc fg">砍价0元拿</a>
+				{{/if}}
+				{{else if activityType == 8}}
+				{{if cutPriceStatus == 1}}
+				<a onclick="getUrl('activity/freeprice/index.html?tab=0', 'self')" class="btn-other flex ac jc fn">其他免单商品</a>
+				<a class="btn-addr flex ac jc fg dc" onclick="goodsDetailShare(true)">
+					<p>距离免单结束还剩<time class="count-time" data-start="{{activityBeginTime}}" data-end="{{activityEndTime}}"
+							data-now="{{currentTime}}"></time></p>
+					<b>继续邀请</b>
+				</a>
+				{{else}}
+				<a onclick="goodsDetailAddCart()" class="btn-addr flex ac jc fg">立即邀请免费拿</a>
+				{{/if}}
+				{{else if activityType == 10}}
+				{{if cutPriceStatus == 0}}
+				<a class="btn-addr flex ac jc fg" onclick="joinActivity('{{dataMap.id}}', '{{activityType}}', '1')">减价拿</a>
+				{{else if cutPriceStatus == 1}}
+				<a class="reduction-btn flex ac jc fg" onclick="nextJoinActivity()">继续邀请</a>
+				<a class="reduction-btn flex ac jc fg"
+					onclick="jumpPurchase('{{id}}', '{{cutProductItemId}}', '{{dataMap.salePrice - assistanceNum * fixedAmount}}', '{{cutOrderId}}')">立即购买</a>
+				{{else if cutPriceStatus == 2 || cutPriceStatus == 3}}
+				<a class="btn-addr flex ac jc fg"
+					onclick="jumpPurchase('{{id}}', '{{cutProductItemId}}', '{{dataMap.salePrice - assistanceNum * fixedAmount}}', '{{cutOrderId}}')">邀请完成立即下单</a>
+				{{else if cutPriceStatus == 4}}
+				<a class="btn-addr flex ac jc fg">超时未下单</a>
+				{{else if cutPriceStatus == 5}}
+				<a class="btn-addr flex ac jc fg" onclick="getUrl('order/index.html','self')">付款成功前往查看</a>
+				{{/if}}
+				{{else}}
+
+				<a onclick="getUrlServer('{{xiaoNengId}}', '{{dataMap.id || dataMap.productCode}}', undefined, undefined, '')"
+					class="customer fn flex dc ac jc zhiCustomBtn">客服</a>
+
+				<a class="shop flex dc fn ac jc" onclick="getUrlShop(this)" data-id="{{dataMap.mchtId}}">店铺</a>
+
+				{{if activityType != 1 && activityType != 3 && activityType != 4 && activityType != 5}}
+				<a onclick="getQuickCart()" class="cart fn flex dc ac jc" id="goods_detail_piece">购物车</a>
+				{{/if}}
+
+				{{if dataMap.stock > 0}}
+				{{if activityType == 11 && currentTime < activityBeginTime}}
+					{{if currentTime < preheatTime}}
+					<a class="btn-reds flex fg ac pre-sell-foot" style="background:#cccccc;">
+						<div class="flex dc ac jc">
+							<p>{{preSellBeginTimeShort}}</p>
+							开始支付定金
+						</div>
+						<span class="fg">¥{{dataMap.deposit}}</span>
+					</a>
+					{{else}}
+					<a class="btn-reds flex fg ac pre-sell-foot" onclick="goodsDetailAddNow()">
+						<div class="flex dc ac jc">
+							<p>{{preSellBeginTimeShort}}结束</p>
+							立即支付定金
+						</div>
+						<span class="fg">¥{{dataMap.deposit}}</span>
+					</a>
+					{{/if}}
+				{{else if activityType == 101 || (currentTime >= activityBeginTime && currentTime <= activityEndTime)}}
+				{{if activityType == 1 || activityType == 3 || activityType == 4 || activityType == 5}}
+				<a class="btn-reds flex fg ac jc" onclick="popupShow('.popup-add-cart')">&nbsp; 立即抢购 &nbsp;</a>
+				{{else if activityType == 0 || activityType == 2 || activityType == 6 || activityType == 101 || (activityType == 11 && currentTime > activityBeginTime)}}
+				<a class="btn-reds yellow flex fg ac jc" onclick="popupShow('.popup-add-cart')">加入购物车</a>
+				<a class="btn-reds flex fg ac jc" onclick="goodsDetailAddNow()">&nbsp; 立即购买 &nbsp;</a>
+				{{/if}}
+				{{else if currentTime < activityBeginTime}}
+				{{if activityType == 0 || activityType == 2 || activityType == 6 || activityType == 101}}
+				<a class="yellow flex fg ac jc">即将开售</a>
+				{{else}}
+				<a class="yellow btn-reds flex fg ac jc">即将开抢</a>
+				{{/if}}
+				{{else if currentTime > activityEndTime}}
+				<a class="gray btn-reds flex fg ac jc">已结束</a>
+				{{/if}}
+				{{else}}
+				<a class="gray btn-reds flex fg ac jc">已{{if activityType == 3}}抢光{{else}}售罄{{/if}}</a>
+				{{/if}}
+				{{/if}}
+			</div>
+			{{/if}}
+
+			<!-- 加入购物车 -->
+			<div class="popup popup-add-cart" onclick="closeSelf(this)">
+				<div class="popup-bottom" onclick="stopSelf()">
+					<div class="popup-top flex jb">
+						<dl class="flex fg">
+							<dt onclick="popupShow('.popup-add-pic')" class="fn">
+								<img src="{{dataMap.skuPic_S}}">
+							</dt>
+							<dd>
+								<strong>¥{{if activityType == 7 || activityType == 8}}0{{else}}<b
+										class="sale-price">{{dataMap.salePrice}}</b>{{/if}}</strong>
+								{{if dataMap.discount}}
+								{{if activityType != 11}}
+								<mark  class="btn-f50">{{dataMap.discount}}折</mark>
+								{{/if}}
+								{{/if}}
+								<p class="hide">
+									选择<span></span>
+								</p>
+							</dd>
+						</dl>
+						<a class="fn ico-btn close" onclick="closeSelf(this)"></a>
+					</div>
+					<div class="popup-con">
+						<div class="info scroll-y">
+							{{include 'goods_detail_info_tpl'}}
+						</div>
+						{{if activityType != 10}}
+						<div class="buy-num">
+							<h3 class="flex ac">
+								购买数量
+								{{if dataMap.limitBuy > 0 && activityType != 7 && activityType != 8}}
+								<span>（每人限购<b>{{dataMap.limitBuy}}</b>件）</span>
+								{{/if}}
+							</h3>
+
+							<span class="input-number flex">
+								{{if activityType == 7 || activityType == 8}}
+								<b class="flex ac jc ico-btn stop-self btn-gray p-e-n">-</b>
+								<input class="stop-self" type="tel" min="1" max="1" vul="1" value="1" readonly>
+								<b class="flex ac jc ico-btn stop-self btn-gray p-e-n">+</b>
+								{{else}}
+								<b class="flex ac jc ico-btn stop-self">-</b>
+								{{if dataMap.limitBuy == 0}}
+								<input class="stop-self" type="tel" min="1" vul="1" value="1" readonly>
+								{{else}}
+								<input class="stop-self" type="tel" min="1" data-buy="{{dataMap.productBuyNum}}"
+									max="{{dataMap.limitBuy}}" vul="1" value="1" readonly>
+								{{/if}}
+								<b class="flex ac jc ico-btn stop-self">+</b>
+								{{/if}}
+							</span>
+						</div>
+						{{/if}}
+					</div>
+
+					{{if activityType == 7 || activityType == 8}}
+					<a class="btn-red flex ac jc" onclick="goodsDetailSubmit(this, true)">确定</a>
+					{{else if activityType == 10}}
+					<a class="btn-red flex ac jc"
+						onclick="joinActivitySubmit(this, '{{dataMap.id}}', '{{activityType}}')">确定</a>
+					{{else}}
+					{{if dataMap.stock > 0}}
+					{{if dataMap.preSellAuditStatus == 2}}
+					<a class="btn-red flex ac jc" onclick="goodsDetailSubmit(this)" data-act="{{activityId}}"
+						data-typ="{{activityType}}" data-id="{{singleProductActivityId}}">立即提交</a>
+					{{else if activityType == 101 || (currentTime >= activityBeginTime && currentTime <= activityEndTime)}}
+					
+					<a class="btn-red flex ac jc" onclick="goodsDetailSubmit(this)" data-act="{{activityId}}" data-begintime="{{true}}"
+						data-typ="{{activityType}}" data-id="{{singleProductActivityId}}">确定</a>
+					{{else if currentTime < activityBeginTime}}
+					<a class="btn-yellow btn-red flex ac jc">即将开抢</a>
+					{{else if currentTime > activityEndTime}}
+					<a class="btn-gray btn-red flex ac jc">已结束</a>
+					{{/if}}
+					{{else}}
+					<a class="btn-gray btn-red flex ac jc">已{{if activityType == 3}}开抢{{else}}售罄{{/if}}</a>
+					{{/if}}
+					{{/if}}
+				</div>
+			</div>
+
+
+
+			<!-- 放大图片 -->
+			<div class="popup popup-add-pic" onclick="closeSelf(this)">
+				<div class="popup-img flex jc ac">
+					<img src="{{dataMap.skuPic}}">
+				</div>
+			</div>
+
+			<!-- 服务 -->
+			<div class="popup popup-server" onclick="closeSelf(this)">
+				<div class="popup-bottom" onclick="stopSelf()">
+					<div class="popup-header">
+						<p class="flex ac jc">服务说明</p>
+						<a class="ico-btn close" onclick="closeSelf(this)"></a>
+					</div>
+					<ul class="scroll-y popup-ul">
+						{{each productServiceList value}}
+						<li class="flex-col">
+							<h4 class="flex ac">{{value.title}}</h4>
+							<p class="flex ac c6">{{value.content}}</p>
+						</li>
+						{{/each}}
+					</ul>
+				</div>
+			</div>
+
+			<!-- 优惠券 -->
+			<div class="popup popup-coupons" onclick="closeSelf(this)">
+				<div class="popup-bottom" onclick="stopSelf()">
+					<div class="popup-header">
+						<p class="flex ac jc">优惠券</p>
+						<a class="ico-btn close" onclick="closeSelf(this)"></a>
+					</div>
+					<ul class="scroll-y popup-ul coupon-list"></ul>
+				</div>
+			</div>
+
+			<!-- 产品参数 -->
+			<div class="popup popup-parameter" onclick="closeSelf(this)">
+				<div class="popup-bottom" onclick="stopSelf()">
+					<div class="popup-tops flex ae jc">
+						商品详细规格
+					</div>
+					<div class="con-1 scroll-y">
+						<ul class="product-params"></ul>
+					</div>
+					<a class="btn-reds flex ac jc" onclick="closeSelf(this)">关闭</a>
+				</div>
+			</div>
+
+			<!-- 收货地址 -->
+			<div class="popup popup-addr" onclick="closeSelf(this)">
+				<div class="popup-bottom flex dc" onclick="stopSelf()">
+					<div class="popup-header fn">
+						<p class="flex ac jc">请选择收货地址</p>
+						<a class="ico-btn close-x" onclick="closeSelf(this)"></a>
+					</div>
+
+					<ul class="scroll-y fg"></ul>
+
+					<div class="flex ac fn add-addr" onclick="goodsDetailAddAddr()">
+						<div class="fg">
+							<h3 class="flex ac">去添加收货地址</h3>
+						</div>
+						<i class="fn ico-btn arrow-r"></i>
+					</div>
+				</div>
+			</div>
+
+			<!-- 确认收货地址 -->
+			<div class="popup popup-addr-check">
+				<div class="popup-center popup-tip">
+					<div>
+						<h3 class="flex ac jc">请确认您的收货地址</h3>
+						<p class="flex ac jc txt c6"></p>
+					</div>
+					<div class="flex">
+						<a class="flex fg ac jc c6 bdr" onclick="closeSelf(this)">取消</a>
+						<a class="flex fg ac jc popup-click f50"
+							onclick="goodsDetailCutOrder('{{dataMap.id}}', '{{activityType}}')">确认</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- 运费选择 -->
+			<div class="popup popup-freight">
+				<div class="popup-bottom">
+					<h3 class="flex ac jc">
+						配送至
+						<a class="ico-btn close-x" onclick="closeSelf(this)"></a>
+					</h3>
+					<ul class="scroll-y fg"></ul>
+				</div>
+			</div>
+	</script>
+
+	<script id="goods_detail_addr_tpl" type="text/html">
+		{{each returnData value i}}
+		<li class="flex ac" onclick="goodsDetailAddrCheck(this)">
+			<div class="fg" data-id="{{value.id}}">
+				<h3 class="flex ac">
+					<span>{{value.recipient}}</span>
+					<span>{{value.phone}}</span>
+				</h3>
+				<p>{{value.provinceName}} {{value.cityName}} {{value.countyName}} {{value.address}}</p>
+			</div>
+			<i class="fn ico-btn arrow-r"></i>
+		</li>
+		{{/each}}
+	</script>
+
+	<script id="goods_detail_info_tpl" type="text/html">
+		{{each standardMap value i}}
+		<div class="info-list" data-id="{{value.propId}}">
+			<h3>{{value.propName}}</h3>
+			<ul class="clearfix">
+				{{each value.propValueMapList val i}}
+				<li class="{{value.propName == '颜色' || value.propName == '颜色分类' ? 'fn' : ''}}"
+					data-propvalid="{{val.propValId}}" data-status="{{val.status}}">{{val.propValue}}</li>
+				{{/each}}
+			</ul>
+		</div>
+		{{/each}}
+	</script>
+
+	<script id="goods_detail_info2_tpl" type="text/html">
+		{{each standardMap value i}}
+		{{if value.propName == '颜色' || value.propName == '颜色分类'}}
+		{{if standardMap.length == 1}}
+		<div class="info-list info-color info-color-only flex dc" data-id="{{value.propId}}">
+			{{else}}
+			<div class="info-list info-color flex dc" data-id="{{value.propId}}">
+				{{/if}}
+				<h3>{{value.propName}} <span class="f50 info-color-choice"></span></h3>
+
+				<ul class="clearfix flex fw fg colorClass">
+					{{each value.propValueMapList val i}}
+					<li class="fn" data-propvalid="{{val.propValId}}" data-status="{{val.status}}">
+						<img src="{{val.specPic}}" alt="{{val.propValue}}">
+						<p class="ellipsis">{{val.propValue}}</p>
+					</li>
+					{{/each}}
+					<li class="fns"> </li>
+					<li class="fns"> </li>
+					<li class="fns"> </li>
+					<li class="fns"> </li>
+					<li class="fns"> </li>
+				</ul>
+				{{else}}
+				<div class="info-list" data-id="{{value.propId}}">
+					<h3>{{value.propName}}</h3>
+					<ul class="clearfix">
+						{{each value.propValueMapList val i}}
+						<li data-propvalid="{{val.propValId}}" data-status="{{val.status}}">{{val.propValue}}</li>
+						{{/each}}
+					</ul>
+					{{/if}}
+				</div>
+				{{/each}}
+	</script>
+
+	<script id="goods_detail_infos_tpl" type="text/html">
+		<div class="info-list fg">
+			选择
+			{{each standardMap value i}}{{if i}}/{{/if}}{{value.propName}}{{/each}}
+		</div>
+		<div class="info-lists fg"></div>
+	</script>
+
+	<script id="goods_detail_shop_tpl" type="text/html">
+		{{each storeRecommendMapList value i}}
+		<a onclick="getUrlGoods(this)" data-productid="{{value.productId}}">
+			<img src="{{value.productPic}}">
+			<div>
+				<p class="ellipsis">{{value.productName}}</p>
+				<span class="f50">{{value.productPrice}}</span>
+			</div>
+		</a>
+		{{/each}}
+	</script>
+
+	<script id="goods_detail_brand_tpl" type="text/html">
+		{{each brandRecommendMapList value i}}
+		<a class="mb20" onclick="getUrlActive(this)" data-name="{{value.activityName}}" data-url="{{value.areaUrl}}"
+			data-activityid="{{value.activityId}}" data-activityareaid="{{value.activityAreaId}}"
+			data-source="{{value.source}}" data-type="{{value.type}}">
+			<dl>
+				<dt>
+					<img src="{{value.entryPic}}">
+				</dt>
+
+				<dd>
+					<div class="row-1 flex ac jb">
+						<div class="flex ac">
+							<p class="ellipsis" title="{{value.activityName}}">{{value.activityName}}</p>
+						</div>
+						<time class="flex ac">
+							<p class="ellipsis f50">{{value.activityTime}}</p>
+						</time>
+					</div>
+					<div class="row-2">{{value.benefitPoint}}</div>
+				</dd>
+			</dl>
+		</a>
+		{{/each}}
+	</script>
+
+	<!-- 停用 -->
+	<script id="goods_detail_coupon_tpl" type="text/html">
+		{{each returnData value i}}
+		<li class="flex ac jb" data-id="{{value.couponId}}" data-money="{{value.money}}" data-minimum="{{value.minimum}}"
+			title="{{value.couponName}}">
+			<dl class="flex ac jb">
+				<dt>
+					¥{{value.money}}
+				</dt>
+				<dd class="flex dc jc">
+					<p>满{{value.minimum}}可用</p>
+					<p>仅本场次可用</p>
+				</dd>
+			</dl>
+			{{if value.isReceive}}
+			<span class="btn-red ico-btn flex ac jc" onclick="getCoupons(this)" data-id="{{value.couponId}}">领取</span>
+			{{else}}
+			<span class="btn-red ico-btn flex ac jc c9">已领取</span>
+			{{/if}}
+			</div>
+			{{/each}}
+	</script>
+
+	<script id="goods_detail_freight_tpl" type="text/html">
+		<div class="con server bt flex ac" onclick="showFreight()">
+			<div class="flex fg">
+				<span><b class="c6">送至</b> {{provinceName}}</span>
+				<span><b class="c6">运费</b> {{freight}}</span>
+			</div>
+			<i class="ico-btn more fn"></i>
+		</div>
+	</script>
+
+	<script id="goods_detail_freight_con_tpl" type="text/html">
+		<li class="flex active">
+			<span class="flex ac">请选择</span>
+		</li>
+		{{each returnData value i}}
+		<li class="flex" data-id="{{value.areaId}}" data-name="{{value.areaName}}" onclick="tapFreight(this)">
+			<span class="flex ac">{{value.areaName}}</span>
+		</li>
+		{{/each}}
+	</script>
+
+	<script id="goods_detail_tpl_closed" type="text/html">
+		<div class="closed fg flex ac">
+			<div>
+				<p>{{auditMsg}}</p>
+			</div>
+		</div>
+	</script>
+
+	<script id="goods_detail_coupon_con_tpl" type="text/html">
+		{{each productCouponList value i}}
+		{{if value.msgType == 2}}
+		<li class="flex ac jb coupon c9">
+			{{else}}
+		<li class="flex ac jb coupon">
+			{{/if}}
+			{{value.money}}元商品券
+			{{if value.msgType == 0}}
+			<div class="get-coupon flex ac jc" onclick="goodsDetail.getCoupon('{{value.couponId}}', this)">领券</div>
+			{{else if value.msgType == 1}}
+			<div class="get-coupon flex ac jc coupon-gray">已领取</div>
+			{{else if value.msgType == 2}}
+			<div class="get-coupon flex ac jc coupon-gray">已领光</div>
+			{{else}}
+			<div class="get-coupon flex ac jc coupon-gray">不可领取</div>
+			{{/if}}
+		</li>
+		{{/each}}
+	</script>
+
+	<script src="goods/index.js?var=1.0" async></script>
+</div>

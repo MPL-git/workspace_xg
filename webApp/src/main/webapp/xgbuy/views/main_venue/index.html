@@ -1,0 +1,55 @@
+<div class="page main_venue flex dc bgf4" data-title="主会场" data-id="main_venue">
+	<link rel="stylesheet" href="main_venue/index.css?var=1.0">
+
+	<div id="mainTop"></div>
+	<script id="mainVenueHeader" type="text/html">
+		<header class="flex ac jb fn">
+			<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+			<p class="ellipsis">主会场</p>
+			<div class="fn"></div>
+		</header>
+	</script>
+	<script id="mainVenueDownload" type="text/html">
+		<div class="download-bg activity-download"></div>
+		<div class="activity-decorate-download activity-download">
+			<div class="download-info">
+				<i onclick="closeDownload()"></i>
+				<div class="download-logo"></div>
+				<div class="download-text">
+					<p>新人领500元大红包</p>
+					<p>唤醒潮流   开心购物</p>
+				</div>
+			</div>
+			<div class="download-btn" onclick="downloadAppp()">下载领取</div>
+		</div>
+	</script>
+
+
+	<div class="fg flex dc">
+		<section class="fg" id="section1"></section>
+
+		<footer class="flex fn" id="footer1">
+
+		</footer>
+	</div>
+	<script id="footer_tpl" type="text/html">
+		{{each moduleList item}}
+		<a class="box-frame fg" onclick="main_venueApi.getUrl(this)" data-linkType="{{item.linkType}}"
+			data-linkValue="{{item.linkValue}}" data-title="{{item.moduleName}}"
+			data-activityAreaModuleId="{{item.activityAreaModuleId}}" 
+			data-templetType="{{item.templetType}}" data-type="{{item.type}}">
+			<img data-selectedModulePic="{{item.selectedModulePic}}" data-defaultModulePic="{{item.defaultModulePic}}"
+				src="{{(item.linkType == linkType && item.linkValue == linkValue) ? item.selectedModulePic : item.defaultModulePic}}"
+				alt="">
+			{{item.moduleName}}
+		</a>
+		{{/each}}
+	</script>
+	<script id="tpl_empty" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>活动尚未开始~</p>
+		</div>
+	</script>
+	<script src="main_venue/index.js?var=1.0" async></script>
+</div>

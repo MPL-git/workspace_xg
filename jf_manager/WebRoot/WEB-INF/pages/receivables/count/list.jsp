@@ -1,0 +1,341 @@
+<%@ page language="java" pageEncoding="UTF-8"%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<%@include file="/common/common-tag.jsp"%>
+<link href="${pageContext.request.contextPath}/css/search_form.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/common/js/dateUtil.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/common/js/listModel/toolBar.js"></script>
+<style type="text/css">
+.color-s0,.color-fs1{color: #0000FF;}
+.color-s1,.color-fs2{color: #008000;}
+.color-s4{color: #333333;}
+.color-fs0{color: #000000;}
+</style>
+<script type="text/javascript">
+var totalCount = "";
+var combineAmount = "";
+var wxAmount = "";
+var zfbAmount = "";
+var gzhAmount = "";
+var wxCount = "";
+var zfbCount = "";
+var gzhCount = "";
+
+function formatMoney(s, n)
+{
+   n = n > 0 && n <= 20 ? n : 2;
+   s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+   var l = s.split(".")[0].split("").reverse(),
+   r = s.split(".")[1];
+   t = "";
+   for(i = 0; i < l.length; i ++ )
+   {
+      t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "" : "");
+   }
+   return t.split("").reverse().join("") + "." + r;
+}
+$(function(){
+	$("#export").bind('click',function(){
+		var pay_date_begin = $("#pay_date_begin").val();
+		var pay_date_end = $("#pay_date_end").val();
+		location.href="${pageContext.request.contextPath}/receivables/count/export.shtml?pay_date_begin="+pay_date_begin+"&pay_date_end="+pay_date_end;
+	});
+	$(".dateEditor").ligerDateEditor( {
+		showTime : false,
+		labelAlign : 'left'
+	});
+	
+});
+
+function combineList(payDate,paymentId) {
+	$.ligerDialog.open({
+ 		height: $(window).height()-100,
+		width: $(window).width()-100,
+		title: "收款母订单列表",
+		name: "INSERT_WINDOW",
+		url: "${pageContext.request.contextPath}/receivables/combine/list.shtml?paymentId=" + paymentId+"&payDate="+payDate,
+		showMax: true,
+		showToggle: false,
+		showMin: false,
+		isResize: true,
+		slide: false,
+		data: null
+	});
+}
+
+function toLockDate(lockDate) {
+	$.ligerDialog.open({
+ 		height: $(window).height()*0.45,
+		width: $(window).width()*0.30,
+		title: "锁住收款日期操作",
+		name: "INSERT_WINDOW",
+		url: "${pageContext.request.contextPath}/receivables/count/toLockDate.shtml?lockDate="+lockDate,
+		showMax: true,
+		showToggle: false,
+		showMin: false,
+		isResize: true,
+		slide: false,
+		data: null
+	});
+}
+
+function checkSearchCondition(){
+	totalCount = "";
+	combineAmount = "";
+	wxAmount = "";
+	zfbAmount = "";
+	gzhAmount = "";
+	wxCount = "";
+	zfbCount = "";
+	gzhCount = "";
+    return true;
+ }
+
+  var listConfig={
+		  
+	  url:"/receivables/count/data.shtml",
+      
+      listGrid:{ columns: [{ display: "付款日期", name:'eachDay'},
+ 		                { display: '笔数', render: function (rowdata, rowindex) {
+ 		                	var html = [];
+ 		                	var count = Number(rowdata.wxCount) + Number(rowdata.zfbCount) + Number(rowdata.gzhCount);
+			            	if(count != rowdata.totalCount){
+			            		html.push(rowdata.totalCount+"<span style='color:red;'>[异常]</span>");	                		
+		                	}else if(totalCount != ''){
+		                		if(Number(totalCount) > Number(rowdata.totalCount) ) {
+			            			html.push("<span style='color:green;'>"+ rowdata.totalCount +"</span>");
+			            		}else if(Number(totalCount) < Number(rowdata.totalCount) ) {
+			            			html.push("<span style='color:red;'>"+ rowdata.totalCount +"</span>");
+			            		}else {
+			            			html.push(rowdata.totalCount);
+			            		}
+		                	}else {
+		                		html.push(rowdata.totalCount);
+		                	}
+			            	return html.join("");
+		                }},
+		                { display: '母订单金额', render: function (rowdata, rowindex) {
+		                	var html = [];
+		                	var amount = Number(rowdata.wxAmount) + Number(rowdata.zfbAmount) + Number(rowdata.gzhAmount);
+		                	if(parseFloat(amount).toFixed(2) != rowdata.combineAmount){
+			            		html.push(formatMoney(rowdata.combineAmount, 2)+"<span style='color:red;'>[异常]</span>");	                		
+		                	}else if(combineAmount != ''){
+		                		if(Number(combineAmount) > Number(formatMoney(rowdata.combineAmount, 2)) ) {
+			            			html.push("<span style='color:green;'>"+ formatMoney(rowdata.combineAmount, 2) +"</span>");
+			            		}else if(Number(combineAmount) < Number(formatMoney(rowdata.combineAmount, 2)) ) {
+			            			html.push("<span style='color:red;'>"+ formatMoney(rowdata.combineAmount, 2) +"</span>");
+			            		}else {
+			            			html.push(formatMoney(rowdata.combineAmount, 2));
+			            		}
+		                	}else {
+		                		html.push(formatMoney(rowdata.combineAmount, 2));
+		                	}
+			            	return html.join("");
+		                }},
+		                { display: '微信APP/H5金额', render: function (rowdata, rowindex) {
+		                	var html = [];
+		                	if(wxAmount != ''){
+		                		if(Number(wxAmount) > Number(formatMoney(rowdata.wxAmount, 2)) ) {
+		                			html.push("<a href='javascript:;' style='color:green;' onclick='combineList(\""+ rowdata.eachDay +"\",1);'>"+ formatMoney(rowdata.wxAmount, 2) +"</a>");
+			            		}else if(Number(wxAmount) < Number(formatMoney(rowdata.wxAmount, 2)) ) {
+			            			html.push("<a href='javascript:;' style='color:red;' onclick='combineList(\""+ rowdata.eachDay +"\",1);'>"+ formatMoney(rowdata.wxAmount, 2) +"</a>");
+			            		}else {
+			            			html.push("<a href='javascript:;' onclick='combineList(\""+ rowdata.eachDay +"\",1);'>"+ formatMoney(rowdata.wxAmount, 2) +"</a>");
+			            		}
+		                	}else {
+		                		html.push("<a href='javascript:;' onclick='combineList(\""+ rowdata.eachDay +"\",1);'>"+ formatMoney(rowdata.wxAmount, 2) +"</a>");
+		                	}
+			            	return html.join("");
+		                }},
+		                { display: '支付宝金额',render: function (rowdata, rowindex) {
+		                	var html = [];
+		                	if(zfbAmount != ''){
+		                		if(Number(zfbAmount) > Number(formatMoney(rowdata.zfbAmount, 2)) ) {
+		                			html.push("<a href='javascript:;' style='color:green;' onclick='combineList(\""+ rowdata.eachDay +"\", 2);'>"+ formatMoney(rowdata.zfbAmount, 2) +"</a>");
+			            		}else if(Number(zfbAmount) < Number(formatMoney(rowdata.zfbAmount, 2)) ) {
+			            			html.push("<a href='javascript:;' style='color:red;' onclick='combineList(\""+ rowdata.eachDay +"\", 2);'>"+ formatMoney(rowdata.zfbAmount, 2) +"</a>");
+			            		}else {
+			            			html.push("<a href='javascript:;' onclick='combineList(\""+ rowdata.eachDay +"\", 2);'>"+ formatMoney(rowdata.zfbAmount, 2) +"</a>");
+			            		}
+		                	}else {
+		                		html.push("<a href='javascript:;' onclick='combineList(\""+ rowdata.eachDay +"\", 2);'>"+ formatMoney(rowdata.zfbAmount, 2) +"</a>");
+		                	}
+			            	return html.join("");
+		                }},
+		                { display: '微信公众号/小程序金额', render: function (rowdata, rowindex) {
+		                	var html = [];
+		                	if(gzhAmount != ''){
+		                		if(Number(gzhAmount) > Number(formatMoney(rowdata.gzhAmount, 2)) ) {
+		                			html.push("<a href='javascript:;' style='color:green;' onclick='combineList(\""+ rowdata.eachDay +"\",3);'>"+ formatMoney(rowdata.gzhAmount, 2) +"</a>");
+			            		}else if(Number(gzhAmount) < Number(formatMoney(rowdata.gzhAmount, 2)) ) {
+			            			html.push("<a href='javascript:;' style='color:red;' onclick='combineList(\""+ rowdata.eachDay +"\",3);'>"+ formatMoney(rowdata.gzhAmount, 2) +"</a>");
+			            		}else {
+			            			html.push("<a href='javascript:;' onclick='combineList(\""+ rowdata.eachDay +"\",3);'>"+ formatMoney(rowdata.gzhAmount, 2) +"</a>");
+			            		}
+		                	}else {
+		                		html.push("<a href='javascript:;' onclick='combineList(\""+ rowdata.eachDay +"\",3);'>"+ formatMoney(rowdata.gzhAmount, 2) +"</a>");
+		                	}
+			            	return html.join("");
+		                }},
+		                { display: '微信APP/H5笔数', name:'', render: function (rowdata, rowindex) {
+		                	var html = [];
+		                	if(wxCount != ''){
+		                		if(Number(wxCount) > Number(rowdata.wxCount) ) {
+		                			html.push("<span style='color:green;'>"+ rowdata.wxCount +"</span>");
+			            		}else if(Number(wxCount) < Number(rowdata.wxCount) ) {
+			            			html.push("<span style='color:red;'>"+ rowdata.wxCount +"</span>");
+			            		}else {
+			            			html.push(rowdata.wxCount);
+			            		}
+		                	}else {
+		                		html.push(rowdata.wxCount);
+		                	}
+			            	return html.join("");
+		                }},
+		                { display: '支付宝笔数',name:'', render: function (rowdata, rowindex) {
+		                	var html = [];
+		                	if(zfbCount != ''){
+		                		if(Number(zfbCount) > Number(rowdata.zfbCount) ) {
+		                			html.push("<span style='color:green;'>"+ rowdata.zfbCount +"</span>");
+			            		}else if(Number(zfbCount) < Number(rowdata.zfbCount) ) {
+			            			html.push("<span style='color:red;'>"+ rowdata.zfbCount +"</span>");
+			            		}else {
+			            			html.push(rowdata.zfbCount);
+			            		}
+		                	}else {
+		                		html.push(rowdata.zfbCount);
+		                	}
+			            	return html.join("");
+		                }},
+		                { display: '微信公众号/小程序笔数',name:'gzhCount', render: function (rowdata, rowindex) {
+		                	var html = [];
+		                	if(gzhCount != ''){
+		                		if(Number(gzhCount) > Number(rowdata.gzhCount) ) {
+		                			html.push("<span style='color:green;'>"+ rowdata.gzhCount +"</span>");
+			            		}else if(Number(gzhCount) < Number(rowdata.gzhCount) ) {
+			            			html.push("<span style='color:red;'>"+ rowdata.gzhCount +"</span>");
+			            		}else {
+			            			html.push(rowdata.gzhCount);
+			            		}
+		                	}else {
+		                		html.push(rowdata.gzhCount);
+		                	}
+		                	totalCount = rowdata.totalCount+"";
+		                	combineAmount = rowdata.combineAmount+"";
+		                	wxAmount = rowdata.wxAmount+"";
+		                	zfbAmount = rowdata.zfbAmount+"";
+		                	gzhAmount = rowdata.gzhAmount+"";
+		                	wxCount = rowdata.wxCount+"";
+		                	zfbCount = rowdata.zfbCount+"";
+		                	gzhCount = rowdata.gzhCount+"";
+			            	return html.join("");
+		                }}
+		                /* ,
+		                { display: '已确认金额',render: function (rowdata, rowindex) {
+			            	if(rowdata.confirmAmount){
+								return formatMoney(rowdata.confirmAmount,2);	                		
+		                	}
+		                }},
+		                { display: '锁住日期', render: function (rowdata, rowindex) {
+		                	if(rowdata.totalCount){
+				            	if(rowdata.lockDate){
+									return "已锁";	                		
+			                	}else{
+			                		return '<a href="javascript:;" onclick="toLockDate('+"'"+rowdata.eachDay+"'"+');">未锁[锁定]</a>';
+			                	}
+		                	}else{
+		                		return "";
+		                	}
+		                }},
+		                { display: '已登记金额', render: function (rowdata, rowindex) {
+			            	if(rowdata.registerAmount){
+								return formatMoney(rowdata.registerAmount,2);	                		
+		                	}
+		                }},
+		                { display: '未处理金额',render: function (rowdata, rowindex) {
+			            	if(rowdata.noDealAmount){
+								return formatMoney(rowdata.noDealAmount,2);	                		
+		                	}
+		                }},
+		                { display: '按登记日期金额',render: function (rowdata, rowindex) {
+			            	if(rowdata.registerDateAmount){
+								return formatMoney(rowdata.registerDateAmount,2);	                		
+		                	}
+		                }} */
+		                ],
+                 showCheckbox : false,  //不设置默认为 true
+                 showRownumber:true, //不设置默认为 true
+                 beforeSearch: checkSearchCondition
+      } , 							
+     container:{
+        // toolBarName:"toptoolbar",
+        searchBtnName:"searchbtn",
+        fromName:"dataForm",
+        listGridName:"maingrid"
+      }        
+}
+</script>
+
+<body style="padding: 0px; overflow: hidden;">
+	<div class="l-loading" style="display: block" id="pageloading"></div>
+	<div id="toptoolbar"></div>
+	<form id="dataForm" runat="server">
+		<div class="search-pannel">
+		<div class="search-tr"  >
+			<div class="search-td">
+			<div class="search-td-label" style="float: left;width: 20%;margin-top:2px;">日期：</div>
+			<div class="l-panel-search-item" >
+				<input type="text" id="pay_date_begin" name="pay_date_begin" value="${pay_date_begin}"/>
+				<script type="text/javascript">
+					$(function() {
+						$("#pay_date_begin").ligerDateEditor( {
+							showTime : false,
+							labelWidth : 150,
+							width:150,
+							labelAlign : 'left'
+						});
+					});
+				</script>
+			</div>
+			<div class="l-panel-search-item" >&nbsp;&nbsp;至：</div>
+			</div>
+
+			<div class="search-td">
+			<div class="l-panel-search-item">
+				<input type="text" id="pay_date_end" name="pay_date_end" value="${pay_date_end}"/>
+				<script type="text/javascript">
+					$(function() {
+						$("#pay_date_end").ligerDateEditor( {
+							showTime : false,
+							labelWidth : 150,
+							width:150,
+							labelAlign : 'left'
+						});
+					});
+				</script>
+			</div>
+			</div>
+
+			<div style="display: inline-flex;">
+				<div id="searchbtn" style="height: 28px;line-height: 28px;">
+					搜索
+				</div>
+				<div style="padding-left: 10px;">
+					<input type="button" style="width: 50px;height: 30px;cursor: pointer;" value="导出" id="export">
+				</div>
+			</div>
+		</div>
+
+		</div>
+		<div id="maingrid" style="margin: 0; padding: 0"></div>
+	</form>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/common/js/listModel/listModel.js"></script>
+	<script type="text/javascript">
+	$(function() {
+		// 禁止分页
+		 $("#maingrid").ligerGrid({
+            usePager:false
+        });
+	});
+</script>
+</body>

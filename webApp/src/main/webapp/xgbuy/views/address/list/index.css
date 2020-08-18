@@ -1,0 +1,35 @@
+.address-list li {
+	height: 1.84rem;
+	border-top: 1px solid #ddd;
+	background: #fff;
+}
+.address-list .con-2 {
+	width: .98rem;
+}
+.address-list .con-1 h3 {
+	height: .8rem;
+	padding-top: .05rem;
+	font-size: .3rem;
+}
+.address-list .con-1 h3 span {
+	margin-right: .4rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 2rem;
+}
+.address-list .con-1 p {
+	line-height: .4rem;
+	font-size: .28rem;
+	color: #666;
+	padding-right: .2rem;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+.address-list .btn-f50 {
+	margin-left: .2rem;
+	font-weight: bold;
+}

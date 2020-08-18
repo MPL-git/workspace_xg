@@ -1,0 +1,163 @@
+<div class="page order flex dc bgf4" data-title="全部订单" data-id="order">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="order/order.css?var=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('', true)"></i></div>
+		<p class="ellipsis">全部订单</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="tab-top flex fn">
+		<a class="brand flex fg dc ac" onclick="orderApi.main('')"><span class="fg flex ac">全部</span></a>
+		<a class="brand flex fg dc ac" onclick="orderApi.main('0')"><span class="fg flex ac">待付款</span></a>
+		<a class="brand flex fg dc ac" onclick="orderApi.main('1')"><span class="fg flex ac">待发货</span></a>
+		<a class="brand flex fg dc ac" onclick="orderApi.main('2')"><span class="fg flex ac">待收货</span></a>
+		<a class="brand flex fg dc ac" onclick="orderApi.main('3')"><span class="fg flex ac">待评价</span></a>
+	</div>
+
+	<div class="tab-body fg">
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+	</div>
+
+	<script id="order_tpl" type="text/html">
+		{{if dataList.length}}
+		<ul class="order-all">
+			{{each dataList value i}}
+			<li>
+				<div class="padd con-1 flex ac jb">
+					<p class="ellipsis">
+						订单编号：
+						{{if value.subOrderStatus == 0 || value.subOrderStatus == 4}}
+							{{value.combineOrderCode}}
+						{{else}}
+							{{value.subOrderCode}}
+						{{/if}}
+						{{if value.subOrderStatus == 1}}
+							<span style="color:#ff5050">{{value.auditStatusDesc}}</span>
+						{{/if}}
+					</p>
+					<em>{{value.subOrderStatusName}}</em>
+				</div>
+
+				<div class="padd con-2 scroll-x flex">
+					<dl class="flex fg" onclick="orderApi.detail('{{value.combineOrderId}}', '{{value.subOrderStatus == 0 || value.subOrderStatus == 4 ? '' : value.subOrderId}}')">
+						{{each value.data val i}}
+						<dt class="fn">
+							<img src="{{val.skuPic}}">
+						</dt>
+
+						{{if value.data.length == 1}}
+						<dd class="fg">
+							<div>{{val.productName}}</div>
+							<p class="flex jb">
+								<span>{{val.productPropDesc}}</span>
+								<b>X{{val.quantity}}</b>
+							</p>
+						</dd>
+						{{/if}}
+						{{/each}}
+					</dl>
+				</div>
+
+				<div class="padd con-3 flex ac je">
+					<span>共{{value.productNum}}件商品</span>
+					合计：<strong>¥{{value.payAmount}}</strong>
+				</div>
+
+				{{if value.subOrderStatus == 0}}
+				<div class="padd con-4 flex ac je">
+				{{if value.collegeStudentStatus }}
+					<a class="btn-red" onclick="getUrl('activity/certification/index.html')">去付款：<b class="count-time" data-order-id="{{value.combineOrderId}}" data-cur="{{value.currentTime}}" data-end="{{value.unpaidEndTime}}"></b></a>
+				{{else}}
+					<a class="btn-red" onclick="orderPayType('{{value.combineOrderId}}', '{{value.payAmount}}')">去付款：<b class="count-time" data-order-id="{{value.combineOrderId}}" data-cur="{{value.currentTime}}" data-end="{{value.unpaidEndTime}}"></b></a>
+				{{/if}}
+				</div>
+				{{else}}
+				<div class="padd con-3 con-31 flex ac je">
+					{{if value.remindDeliveryButton}}
+					<a class="btn-666" onclick="orderApi.remindDelivery('{{value.subOrderId}}')">提醒发货</a>
+					{{/if}}
+					{{if value.delButton}}
+					<a class="btn-666" onclick="orderApi.deleteSelf(this,'{{value.subOrderId}}', '{{value.combineOrderId}}')">删除订单</a>
+					{{/if}}
+					{{if value.seeLogisticsButton}}
+					<a class="btn-666" onclick="orderExpress('{{value.subOrderId}}', '{{value.expressId}}', '{{value.expressNo}}', '{{value.data[0].skuPic}}')">查看物流</a>
+					{{/if}}
+					{{if value.receiptMark}}
+					<a class="btn-666" onclick="orderApi.orderConfirm('{{value.subOrderId}}')">确认收货</a>
+					{{/if}}
+					{{if value.seeEvaluateButton}}
+					<a class="btn-666" onclick="getUrl('evalua/list/index.html?subOrderId={{value.subOrderId}}', 'self')">查看评价</a>
+					{{/if}}
+					{{if value.evaluateButton}}
+					<a class="btn-666" onclick="getUrl('evalua/index.html?subOrderId={{value.subOrderId}}', 'self')">评价</a>
+					{{/if}}
+				</div>
+				{{/if}}
+			</li>
+			{{/each}}
+		</ul>
+		{{else}}
+			{{include 'order_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="order_tpl_empty" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>当前订单为空</p>
+		</div>
+	</script>
+
+	<div class="popup popup-paymethod" onclick="closeSelf(this)">
+		<div class="popup-pay popup-bottom" onclick="stopSelf()">
+			<div class="bot bot-1 flex ac">支付方式</div>
+
+			<div class="bot bot-2 scroll-y"></div>
+
+			<div class="order-detail-footer">
+				<div class="con-2 flex ac jb fn">
+					<div>
+						应付金额：<strong></strong>
+					</div>
+					<span class="flex ac jc btn-red" onclick="orderPay(this)">确认支付</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 规则 -->
+	<div class="popup popup-order popup-order-msg"  onclick="closeSelf(this)">
+		<div class="popup-order-con" onclick="stopSelf()">
+			<div class="tab-order"></div>
+		</div>
+	</div>
+
+	<script  id="order_tab_order" type="text/html">
+		<h1 class="flex ac jc order-msg">温馨提示</h1>
+		<div class="order-main">
+			您已成功确认收货，前往评价可获得积分哦~
+		</div>
+		<div class="order-footer flex">
+			<a class="footer-div f50 flex ac jc" onclick="orderApi.click_draw()">去评价</a>
+			<a class="footer-div flex ac jc" onclick="orderApi.click_currentpage()">订单详情</a>
+		</div>
+	</script>
+
+	<script src="order/order.js?var=1.5" async></script>
+</div>

@@ -1,0 +1,1055 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var globalNav = $("#nav .navwrap");
+            var navheight = globalNav.height(),navtop = globalNav.offset().top;
+            $(window).on("scroll",function(){
+                var scrolltop = $(this).scrollTop();
+                globalNav.removeAttr("style");
+                if(scrolltop > navtop){
+                    globalNav.addClass("global-nav-fix");
+                }else{
+                    globalNav.removeClass("global-nav-fix");
+                }
+            });
+
+            $(".global-catalog").hover(function(){
+                showGlobalCat();
+            }, function(){
+                hideGlobalCat();
+            });
+            var globalCatalog = $('.global-catalog'),
+                    globalCatCon = $('.gbc-blockcon'),
+                    gbcDuration = 200;
+            function showGlobalCat(){
+                globalCatCon.stop().slideDown(gbcDuration);
+                globalCatalog.addClass('global-catalog-open');
+            }
+            function hideGlobalCat(){
+                globalCatCon.stop().slideUp(gbcDuration);
+                globalCatalog.removeClass('global-catalog-open');
+            }
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'fade',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {
+
+                }
+            });
+        });
+    </script>
+</head>
+<body class="page-index">
+<div id="topbar">
+	<div class="topbar">
+        <div class="layout">
+	        <div class="toptools"></div>
+			<div class="toplinks">
+                <p><a href="#"><img src="images/ico-follow.png" alt=""/>关注</a></p>
+                <p><a href="#"><img src="images/ico-share.png" alt=""/>分享</a></p>
+                <p><a href="#"><img src="images/ico-mobile.png" alt=""/>二维码</a></p>
+			</div>
+	        <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+	        </div>
+		</div>
+    </div>
+</div>
+<div id="header">
+	<div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+		</div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <div class="hdsearch-right">
+            搜索框右侧广告
+        </div>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus="true" x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+<div id="nav">
+    <div class="navwrap">
+        <div class="global-catalog">
+            <div class="gbc-wrap">
+                <h2 class="gbc-title"><span>全部商品分类</span></h2>
+                <div class="gbc-blockcon">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli tree-hover">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="sublayer">
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="layout">
+                <div class="textNav">
+                    <p><a class="current" href="http://www.genanx.com/">首页</a></p>
+                    <p><a href="http://www.genanx.com/products/0.html">新品上架</a></p>
+                    <p><a href="http://www.genanx.com/products/3-10.html">T恤</a></p>
+                    <p><a href="http://www.genanx.com/products/3-12.html">POLO衫</a></p>
+                    <p><a href="http://www.genanx.com/products/3-22.html">衬衫</a></p>
+                    <p><a href="http://www.genanx.com/products/0-26.html">夹克</a></p>
+                    <p><a href="http://www.genanx.com/products/3-28.html">皮衣</a></p>
+                    <p><a href="http://www.genanx.com/products/4-18.html">五分裤</a></p>
+                    <p><a href="http://www.genanx.com/products/0-19.html">休闲裤</a></p>
+                    <p><a href="http://www.genanx.com/products/0-20.html">牛仔裤</a></p>
+                    <p><a href="http://www.genanx.com/Login.html">会员中心</a></p>
+                    <p><a href="http://fx.genanx.com/fenxiao/CustomPage.aspx?pageid=1">代理加盟</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">上一张</a>
+            <a id="inslide_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+<style>
+    .kp_brands{ position: relative; width:1200px; margin: auto; height: 216px; background: #d2d2d2;}
+    .kp_switchable_slides{ position: absolute; width: 1130px; height: 224px; top: -4px; left: 50%; margin-left: -565px; overflow: hidden; z-index: 100;}
+    .kp_switchable_slides li{ float: left; height: 224px; width: 224px; margin: 0 1px;}
+    .kp_brandbox{ display: block; height: 216px; padding: 4px 0; background: url("images/pic/brandbg.png") no-repeat; text-align: center;}
+    .kp_switchable_nav a{ position: absolute; top: 0; left: 5px; width: 30px; height: 216px; text-indent: -9999px; background: url("images/pic/kp_brandnav.png") no-repeat 0 50%;}
+    a.kp_brand_next{ background-position: 100% 50%; right: 5px; left: auto;}
+    .kp_layout{width: 1200px; margin: auto;}
+    .kp_tb{ width: 100%; margin: 10px 0;}
+    .kp_floor{ width: 1262px; margin-left: -62px;}
+    .kp_shoe_list{ overflow: hidden; *zoom:1; padding-left: 10px;}
+    .kp_shoe_list li{border: 1px solid #d8d8e0; width: 285px; height: 285px; background: #fff; float: left; _display:inline; margin: 4px;}
+    .kp_shoe_list a{ position: relative; display: block; height: 100%; background: #fff;}
+    .kp_shoe_list a:hover .kp_shoeinfo{ display: block;}
+    .kp_shoeinfo{ display: none; position: absolute; left: 0; height: 174px; padding: 10px; top: 46px; width: 265px; background: rgba(0,0,0,.5); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000); zoom: 1;}
+    .kp_name{ display: block; line-height: 22px; color: #fff; height: 44px; overflow: hidden; font-size: 14px;}
+    .kp_price_o{ font-size: 18px; color: #fff; display: block; text-decoration: line-through; margin-top: 5px;}
+    .kp_price{ font-size: 25px; color: #f33333; margin-top: 10px; display: block;}
+    .kp_buy{ position: absolute; bottom: 10px; right: 10px; font-size: 18px; background: #f76363; line-height: 30px; padding: 0 10px; color: #fff;}
+</style>
+    <div class="kp_brands">
+        <div class="kp_switchable_slides">
+            <ul>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_1.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_2.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_3.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_4.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_5.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_1.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_2.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_3.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_4.jpg" alt=""/></a></li>
+                <li><a class="kp_brandbox" href="#"><img src="images/pic/brand_5.jpg" alt=""/></a></li>
+            </ul>
+        </div>
+        <div class="kp_switchable_nav">
+            <a class="kp_brand_prev" href="javascript:void(0)">上一张</a>
+            <a class="kp_brand_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+    <script>
+        $('.kp_brands').switchable({
+            triggers: false,
+            panels: 'li',
+            easing: 'ease-in-out',
+            prev: '.kp_brand_prev',
+            next: '.kp_brand_next',
+            effect: 'scrollLeft',
+            steps: 5,
+            visible: 5, // important
+            end2end: true,
+            autoplay: true
+        });
+    </script>
+    <div class="kp_layout">
+        <table class="kp_tb" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/koppu_01.jpg" alt=""/></td>
+                <td align="right"><img src="images/pic/koppu_02.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <table class="kp_tb kp_floor" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/floor_1.jpg" alt=""/></td>
+                <td valign="bottom" align="right"><img src="images/pic/floor_1_pic.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <div class="kp_shoe_list">
+            <ul>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_man_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">奥康新品男鞋日常休闲鞋英伦街头潮鞋真皮手工缝线透气皮鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <table class="kp_tb" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/koppu_03.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <table class="kp_tb kp_floor" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/floor_2.jpg" alt=""/></td>
+                <td valign="bottom" align="right"><img src="images/pic/floor_2_pic.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <div class="kp_shoe_list">
+            <ul>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_woman_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <table class="kp_tb" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/koppu_04.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <table class="kp_tb kp_floor" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/floor_3.jpg" alt=""/></td>
+                <td valign="bottom" align="right"><img src="images/pic/floor_3_pic.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <div class="kp_shoe_list">
+            <ul>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_sports_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <table class="kp_tb" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/koppu_05.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <table class="kp_tb kp_floor" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/floor_4.jpg" alt=""/></td>
+                <td valign="bottom" align="right"><img src="images/pic/floor_4_pic.jpg" alt=""/></td>
+            </tr>
+        </table>
+        <div class="kp_shoe_list">
+            <ul>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="images/pic/shoe_kids_01.jpg" alt=""/>
+                        <span class="kp_shoeinfo">
+                            <span class="kp_name">贵人鸟新品女鞋日常淑女真皮休闲鞋</span>
+                            <span class="kp_price_o">¥889</span>
+                            <span class="kp_price">¥699</span>
+                            <span class="kp_buy">BUY</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <table class="kp_tb" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td><img src="images/pic/koppu_06.jpg" alt=""/></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="footer">
+    <div class="footer">
+        <div class="layout" style="text-align: center; padding: 30px 0;">
+            <img src="images/footer.png" alt=""/>
+        </div>
+    </div>
+</div>
+<style>
+.kpsd_qq,.kpsd_gotop{ display: block; margin-bottom: 1px; width: 55px; height: 55px; text-indent: -9999px; overflow: hidden;}
+.kpsd_qq:hover,.kpsd_gotop:hover{ background-position: 0 -55px;}
+.kpsd_qq{ background-image: url(images/pic/qq.png);}
+.kpsd_gotop{ background-image: url(images/pic/gotop.png);}
+</style>
+<div id="gotop">
+    <a class="kpsd_qq" href="http://wpa.qq.com/msgrd?v=3&uin=613139789&site=qq&menu=yes" target="_blank">QQ客服</a>
+    <a class="kpsd_gotop" href="#top">返回顶部</a>
+</div>
+</body>
+</html>

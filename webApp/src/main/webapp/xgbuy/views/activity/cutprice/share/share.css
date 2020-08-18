@@ -1,0 +1,245 @@
+.cut-share {
+	background: -webkit-linear-gradient(top, #ffb45c, #ff5353);
+	background: -moz-linear-gradient(top, #ffb45c, #ff5353);
+	background: -ms-linear-gradient(top, #ffb45c, #ff5353);
+}
+.cut-share .scroll-y {
+	position: relative;
+}
+.cut-share .con-main {
+	margin: 0 .2rem .3rem;
+	border-radius: .04rem;
+	box-shadow: 0px .05rem .2rem rgba(0, 0, 0, 0.2);
+}
+.cut-share .con-main:before,
+.cut-share .con-main:after {
+	display: block;
+	height: 0;
+	content: '\200B';
+}
+.cut-share strong {
+	font-size: .36rem;
+	font-weight: bold;
+}
+
+.cut-share .row-1 {
+	min-height: 4.08rem;
+	padding-top: 2.5rem;
+	background: url(resources/bg-share.png) no-repeat 0 -1rem;
+	background-size: contain;
+}
+.cut-share .row-1 .con-main {
+	position: relative;
+	padding-bottom: .12rem;
+	background: #fff;
+}
+.cut-share .r-head {
+	position: absolute;
+	top: -.45rem;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	width: 1.1rem;
+	height: 1.1rem;
+	margin: 0 auto;
+	border: .03rem solid #fff;
+	border-radius: 100%;
+	background: #fff;
+}
+.cut-share .r-title {
+	height: .76rem;
+	margin-top: .62rem;
+	font-size: .32rem;
+}
+.cut-share .row-1 dl {
+	padding: .2rem;
+	border-bottom: 1px solid #eee;
+}
+.cut-share .row-1 dt {
+	width: 1.8rem;
+	height: 1.8rem;
+	margin-right: .2rem;
+}
+.cut-share .row-1 dd {
+	padding-top: .06rem;
+	font-size: .3rem;
+}
+.cut-share .row-1 dd h3 {
+	overflow: hidden;
+	height: .72rem;
+	line-height: .36rem;
+}
+.cut-share .row-1 dd div {
+	height: .69rem;
+	margin-top: .33rem;
+}
+.cut-share .row-1 dd .c9 {
+	font-size: .26rem;
+}
+
+.cut-share .r-price {
+	height: 1.25rem;
+	font-size: .44rem;
+}
+.cut-share .row-1 .btn-red {
+	width: 5.6rem;
+	height: .8rem;
+	margin: 0 auto;
+	font-size: .32rem;
+	color: #fff;
+}
+.cut-share .r-tip {
+	height: .63rem;
+	font-size: .24rem;
+}
+.cut-share .r-empty {
+	height: .33rem;
+}
+
+.cut-share .row-2 .con-main {
+	background: #ff8772;
+}
+.cut-share .row-2 .con-record {
+	max-height: 8.72rem;
+}
+.cut-share .row-2 .show2 {
+	height: 2.2rem;
+}
+.cut-share .row-2 .show2>div:nth-child(n+3) {
+	display: none;
+}
+.cut-share .row-2 h2 {
+	height: .3rem;
+	margin: .29rem 0 .2rem;
+	font-size: .3rem;
+	color: #b93211;
+}
+.cut-share .row-2 h2:after,
+.cut-share .row-2 h2:before {
+	width: .3rem;
+	height: .02rem;
+	margin: 0 .1rem;
+	content: '';
+	background: #b93211;
+}
+.cut-share .row-2 .con-record>div {
+	margin-bottom: .2rem;
+	padding: 0 .3rem;
+	color: #fff;
+	font-size: .3rem;
+}
+.cut-share .row-2 .con-record>div div {
+	font-size: 
+	width: 1.8rem;
+}
+.cut-share .row-2 dt {
+	width: .9rem;
+	height: .9rem;
+	border: .03rem solid #fff;
+	border-radius: 100%;
+	margin-right: .2rem;
+}
+.cut-share .row-2 dd {
+	overflow: hidden;
+}
+.cut-share .row-2 h3 {
+	margin: .06rem 0;
+}
+.cut-share .row-2 p {
+	font-size: .24rem;
+}
+
+.popup-cut-share>div {
+	overflow: hidden;
+	position: relative;
+	width: 5.8rem;
+	padding: .4rem;
+	border-radius: .04rem;
+	background: #fff;
+}
+.popup-cut-share p {
+	height: .47rem;
+	font-size: .36rem;
+}
+.popup-cut-share strong {
+	height: .97rem;
+	font-size: .5rem;
+	font-weight: bold;
+}
+.popup-cut-share .btn-red {
+	width: 5rem;
+	height: .8rem;
+	margin: .32rem auto 0;
+	font-size: .3rem;
+}
+.popup-cut-share h3 {
+	height: .96rem;
+	margin-top: .88rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+
+.cut-share .share-mask-tip {
+	z-index: 13;
+	background: none;
+	bottom: auto;
+	top: 0;
+	height: calc(100% - 3.04rem);
+}
+.cut-share .share-mask-tip p {
+	position: absolute;
+	left: 0;
+	bottom: .5rem;
+	width: 100%;
+	height: .4rem;
+	line-height: .4rem;
+	font-size: .4rem;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+}
+.sys-ios .cut-share .share-mask-tip p {
+	bottom: calc(1.4rem);
+}
+.sys-ios .cut-share .share-mask-tip p {
+	bottom: calc(1.4rem + 64px);
+}
+.sys-iosx .cut-share .share-mask-tip p {
+	bottom: calc(1.4rem + 88px);
+}
+
+.cut-share .cut-share-rule {
+	position: absolute;
+	top: .2rem;
+	right: .2rem;
+	z-index: 1;
+	width: .74rem;
+	height: .4rem;
+	background: url(resources/rule.png) no-repeat;
+	background-size: contain;
+}
+
+.more-record {
+	height: .52rem;
+	margin: .09rem 0 .3rem;
+	background: url(resources/more.png) no-repeat center;
+	background-size: contain;
+}
+
+.cut-share .tab-con h2 {
+	height: 1.1rem;
+	font-size: .36rem;
+	font-weight: bold;
+	background: #fff;
+}
+.cut-share .tab-con h2:after,
+.cut-share .tab-con h2:before {
+	content: '';
+	width: .38rem;
+	height: .04rem;
+	background: #000;
+	margin: 0 .3rem;
+}
+.cut-share .ico-back-top {
+	bottom: .5rem;
+}

@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.TaskMarketingMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.TaskMarketing" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="ios_context" property="iosContext" jdbcType="CHAR" />
+    <result column="ios_title" property="iosTitle" jdbcType="VARCHAR" />
+    <result column="android_context" property="androidContext" jdbcType="CHAR" />
+    <result column="android_title" property="androidTitle" jdbcType="VARCHAR" />
+    <result column="big_push_duration" property="bigPushDuration" jdbcType="INTEGER" />
+    <result column="link_type" property="linkType" jdbcType="CHAR" />
+    <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+    <result column="send_member_count" property="sendMemberCount" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, task_id, ios_context, ios_title, android_context, android_title, big_push_duration, 
+    link_type, link_url, send_member_count, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.TaskMarketingExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_task_marketing
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_task_marketing
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_task_marketing
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.TaskMarketingExample" >
+    delete from bu_task_marketing
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.TaskMarketing" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_task_marketing (task_id, ios_context, ios_title, 
+      android_context, android_title, big_push_duration, 
+      link_type, link_url, send_member_count, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{taskId,jdbcType=INTEGER}, #{iosContext,jdbcType=CHAR}, #{iosTitle,jdbcType=VARCHAR}, 
+      #{androidContext,jdbcType=CHAR}, #{androidTitle,jdbcType=VARCHAR}, #{bigPushDuration,jdbcType=INTEGER}, 
+      #{linkType,jdbcType=CHAR}, #{linkUrl,jdbcType=VARCHAR}, #{sendMemberCount,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.TaskMarketing" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_task_marketing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="iosContext != null" >
+        ios_context,
+      </if>
+      <if test="iosTitle != null" >
+        ios_title,
+      </if>
+      <if test="androidContext != null" >
+        android_context,
+      </if>
+      <if test="androidTitle != null" >
+        android_title,
+      </if>
+      <if test="bigPushDuration != null" >
+        big_push_duration,
+      </if>
+      <if test="linkType != null" >
+        link_type,
+      </if>
+      <if test="linkUrl != null" >
+        link_url,
+      </if>
+      <if test="sendMemberCount != null" >
+        send_member_count,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="iosContext != null" >
+        #{iosContext,jdbcType=CHAR},
+      </if>
+      <if test="iosTitle != null" >
+        #{iosTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="androidContext != null" >
+        #{androidContext,jdbcType=CHAR},
+      </if>
+      <if test="androidTitle != null" >
+        #{androidTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="bigPushDuration != null" >
+        #{bigPushDuration,jdbcType=INTEGER},
+      </if>
+      <if test="linkType != null" >
+        #{linkType,jdbcType=CHAR},
+      </if>
+      <if test="linkUrl != null" >
+        #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sendMemberCount != null" >
+        #{sendMemberCount,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.TaskMarketingExample" resultType="java.lang.Integer" >
+    select count(*) from bu_task_marketing
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_task_marketing
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.taskId != null" >
+        task_id = #{record.taskId,jdbcType=INTEGER},
+      </if>
+      <if test="record.iosContext != null" >
+        ios_context = #{record.iosContext,jdbcType=CHAR},
+      </if>
+      <if test="record.iosTitle != null" >
+        ios_title = #{record.iosTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.androidContext != null" >
+        android_context = #{record.androidContext,jdbcType=CHAR},
+      </if>
+      <if test="record.androidTitle != null" >
+        android_title = #{record.androidTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bigPushDuration != null" >
+        big_push_duration = #{record.bigPushDuration,jdbcType=INTEGER},
+      </if>
+      <if test="record.linkType != null" >
+        link_type = #{record.linkType,jdbcType=CHAR},
+      </if>
+      <if test="record.linkUrl != null" >
+        link_url = #{record.linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sendMemberCount != null" >
+        send_member_count = #{record.sendMemberCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_task_marketing
+    set id = #{record.id,jdbcType=INTEGER},
+      task_id = #{record.taskId,jdbcType=INTEGER},
+      ios_context = #{record.iosContext,jdbcType=CHAR},
+      ios_title = #{record.iosTitle,jdbcType=VARCHAR},
+      android_context = #{record.androidContext,jdbcType=CHAR},
+      android_title = #{record.androidTitle,jdbcType=VARCHAR},
+      big_push_duration = #{record.bigPushDuration,jdbcType=INTEGER},
+      link_type = #{record.linkType,jdbcType=CHAR},
+      link_url = #{record.linkUrl,jdbcType=VARCHAR},
+      send_member_count = #{record.sendMemberCount,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.TaskMarketing" >
+    update bu_task_marketing
+    <set >
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="iosContext != null" >
+        ios_context = #{iosContext,jdbcType=CHAR},
+      </if>
+      <if test="iosTitle != null" >
+        ios_title = #{iosTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="androidContext != null" >
+        android_context = #{androidContext,jdbcType=CHAR},
+      </if>
+      <if test="androidTitle != null" >
+        android_title = #{androidTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="bigPushDuration != null" >
+        big_push_duration = #{bigPushDuration,jdbcType=INTEGER},
+      </if>
+      <if test="linkType != null" >
+        link_type = #{linkType,jdbcType=CHAR},
+      </if>
+      <if test="linkUrl != null" >
+        link_url = #{linkUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sendMemberCount != null" >
+        send_member_count = #{sendMemberCount,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.TaskMarketing" >
+    update bu_task_marketing
+    set task_id = #{taskId,jdbcType=INTEGER},
+      ios_context = #{iosContext,jdbcType=CHAR},
+      ios_title = #{iosTitle,jdbcType=VARCHAR},
+      android_context = #{androidContext,jdbcType=CHAR},
+      android_title = #{androidTitle,jdbcType=VARCHAR},
+      big_push_duration = #{bigPushDuration,jdbcType=INTEGER},
+      link_type = #{linkType,jdbcType=CHAR},
+      link_url = #{linkUrl,jdbcType=VARCHAR},
+      send_member_count = #{sendMemberCount,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

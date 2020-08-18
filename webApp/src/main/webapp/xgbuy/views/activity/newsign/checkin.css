@@ -1,0 +1,823 @@
+.newsign .scroll-decorately {
+	position: relative;
+	background-image: -webkit-linear-gradient(#ffc35a, #f73232);
+	background-image: -o-linear-gradient(#ffc35a, #f73232);
+	background-image: -moz-linear-gradient(#ffc35a, #f73232);
+	background-image: linear-gradient(#ffc35a, #f73232);
+}
+.newsign .fff {
+	color: #ffffff;
+}
+.newsign .touchfix-main {
+	background: url(resources/banner.png) no-repeat;
+	width: 100%;
+	height: 15.6rem;
+	background-size: 100% auto;
+
+}
+.newsign .pt50 {
+	padding-bottom: 0.5rem;
+}
+.newsign .row-title {
+	background: url(resources/sign-now.png) no-repeat;
+	width: 2.43rem;
+	height: 1.55rem;
+	position: relative;
+	top: 0.41rem;
+	left: calc(50% - 1.21rem);
+	background-size: 100% auto;
+}
+.newsign .row-title1 {
+	background: url(resources/sign-last.png) no-repeat;
+	width: 2.43rem;
+	height: 1.55rem;
+	position: relative;
+	top: 0.41rem;
+	left: calc(50% - 1.21rem);
+	background-size: 100% auto;
+}
+.newsign .row-data {
+	background: url(resources/timer.png) no-repeat;
+	width: 3.6rem;
+	height: 2.75rem;
+	position: relative;
+	top: 0.8rem;
+	left: calc(50% - 1.8rem);
+	background-size: 100% auto;
+}
+.newsign .tab-1 {
+	width: 100%;
+	height: 5.9rem;
+	background-size: 100% auto;
+}
+.newsign .span-data {
+	position: relative;
+	top: 0.05rem;
+	height: 1.4rem;
+	font-size: 0.5rem;
+	color: #ff6c35;
+	font-weight: bold;
+}
+.newsign .span-fff {
+	width: 4rem;
+	height: 1.2rem;
+	font-size: 0.46rem;
+	font-weight: bold;
+	color: #ffffff;
+}
+.newsign .span-qiandao {
+	position: relative;
+	left: calc(50% - 1.36rem);
+	width: 2.8rem;
+	height: 0.65rem;
+	top: -0.75rem;
+	font-size: 0.3rem;
+	font-weight: bolder;
+	background: #ffffff;
+	border-radius: 0.4rem;
+	border: 0.4rem rgb(255, 255, 255, 0.5);
+	color: #ff4040;
+}
+.newsign .border-qiandao {
+	position: relative;
+	left: calc(50% - 1.4rem);
+	top: -0.04rem;
+	width: 2.9rem;
+	height: 0.76rem;
+	font-size: 0.3rem;
+	font-weight: bolder;
+	border-radius: 0.4rem;
+	background: #ffffff;
+	opacity: 0.5;
+	color: #ffffff;
+}
+.newsign .tab-2 .btn {
+	width: 1.6rem;
+	height: 0.8rem;
+	margin: 0 0.1rem;
+	background-color: #ff4040;
+	box-shadow: 0px 0.5rem 0.5rem 0 rgba(157, 4, 0, 0.35);
+	border-radius: 4px;
+	border: solid 2px #fff7c4;
+	color: #fff7c4;
+	font-size: 0.3rem;
+}
+.newsign .tab-3x {
+	background: url(resources/bg-beijing.png) no-repeat;
+	width: 94%;
+	margin: 0.2rem;
+	height: 8.5rem;
+	background-size: 100% 10rem;
+}
+.newsign .tab-3f {
+	background: url(resources/bg-beijing.png) no-repeat;
+	width: 100%;
+	margin: 0.2rem 0;
+	height: 8.5rem;
+	background-size: 100% 10rem;
+}
+.newsign .tab-time {
+	padding: 0.36rem 0 0.15rem;
+	font-size: 0.3rem;
+	color: #ff6c35;
+}
+.newsign .tab-time2 {
+	color: #ff6c35;
+}
+.newsign .tab-time2 {
+	color: #999999;
+}
+.newsign .tab-time b {
+	cursor: pointer;
+	width: 1rem;
+}
+.newsign .time-show {
+	margin: 0.2rem;
+}
+.newsign .tab-box {
+	position: relative;
+}
+.newsign .tab-box3 {
+	width: 6.78rem;
+	margin-left: 0.16rem; 
+}
+.newsign .tab-box2 {
+	width: 6.78rem;
+	position: absolute;
+	left: calc(50% - 3.29rem);
+}
+.newsign .td-title {
+	font-size: 0.26rem;
+}
+.newsign .tb-type {
+	height: 0.34rem;
+	font-size: 0.2rem;
+	text-align: center;
+	line-height: 0.34rem;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/*无法签到  */
+.newsign .tab-td0 {
+	display: inline-block;
+	margin: 0.05rem 0.02rem;
+	width: 0.86rem;
+	height: 1.26rem;
+	background-color: #cccccc;
+	border-radius: 0.06rem;
+}
+
+/* 不可签到积分 */
+.newsign .bgc-img0 {
+	display: inline-block;
+	background: url(resources/sign-err.png) no-repeat;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 100% auto;
+}
+
+/* 补签 */
+.newsign .tab-td1 {
+	display: inline-block;
+	margin: 0.05rem 0.02rem;
+	width: 0.86rem;
+	height: 1.26rem;
+	background-color: #46e5c5;
+	border-radius: 0.06rem;
+}
+
+/* 补签卡 */
+.newsign .bgc-img1 {
+	background: url(resources/sign-bu.png) no-repeat;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 100% auto;
+}
+
+/* 正常签到 */
+.newsign .tab-td2 {
+	display: inline-block;
+	margin: 0.05rem 0.02rem;
+	width: 0.86rem;
+	height: 1.26rem;
+	background-color: #ff8557;
+	border-radius: 0.06rem;
+}
+.newsign .tab-td6 {
+	display: inline-block;
+	margin: 0.05rem 0.02rem;
+	width: 0.86rem;
+	height: 1.26rem;
+	background-color: #ffb849;
+	border-radius: 0.06rem;
+}
+
+/* 签到成功 */
+.newsign .bgc-img2 {
+	background: url(resources/sign-sucess.png) no-repeat;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 100% auto;
+}
+
+/* 未签到*/
+.newsign .bgc-img3 {
+	background: url(resources/jifen.png) no-repeat;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 100% auto;
+}
+
+/* 不可签的优惠券 */
+.newsign .bgc-img4 {
+	background: url(resources/err-youhui.png) no-repeat;
+	position: relative;
+	top: 0.06rem;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 0.45rem 0.34rem;
+}
+
+/* 不可签的红包 */
+.newsign .bgc-img5 {
+	background: url(resources/err-red.png) no-repeat;
+	position: relative;
+	left: 0.06rem;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 0.35rem 0.44rem;
+}
+
+/* 未签的红包 */
+.newsign .bgc-img6 {
+	background: url(resources/red-2.png) no-repeat;
+	position: relative;
+	left: 0.06rem;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 0.35rem 0.44rem;
+}
+
+/* 未签的优惠券 */
+.newsign .bgc-img7 {
+	background: url(resources/sign-youhui.png) no-repeat;
+	position: relative;
+	top: 0.06rem;
+	width: 0.46rem;
+	height: 0.46rem;
+	margin: 0.05rem;
+	background-size: 0.45rem 0.34rem;
+}
+.newsign .tab-xiangzi {
+	position: absolute;
+	right: 0.1rem;
+	top: 0rem;
+}
+.newsign .sign-xiangzi {
+	margin-top: 0.45rem;
+	height: 0.56rem;
+	background-color: #ffee8b;
+	color: #ea4400;
+	font-size: 0.24rem;
+	border-radius: 1rem;
+	border: solid 0.03rem #fff7c4;
+}
+.newsign .show-xiangzi1 {
+	position: relative;
+	right: 0.1rem;
+	width: 0.7rem;
+	height: 0.7rem;
+	border-radius: 50%;
+	background-color: #ffee8b;
+	border: solid 0.03rem #fff7c4;
+}
+.newsign .show-xiangzi2 {
+	position: relative;
+	right: 0.1rem;
+	width: 0.7rem;
+	height: 0.7rem;
+	border-radius: 50%;
+	background-color: #ffee8b;
+	border: solid 0.03rem #fff7c4;
+}
+.newsign .show-xiangzi3 {
+	position: relative;
+	right: 0.1rem;
+	width: 0.7rem;
+	height: 0.7rem;
+	border-radius: 50%;
+	background-color: #ffee8b;
+	border: solid 0.03rem #fff7c4;
+}
+.newsign .xiangzi {
+	width: 0.8rem;
+	height: 0.9rem;
+	position: relative;
+	left: -0.05rem;
+	top: -0.1rem;
+}
+.newsign .red-title {
+	position: absolute;
+	top: -0.1rem;
+	right: -0.4rem;
+	width: 0.6rem;
+	height: 0.26rem;
+	font-size: 0.22rem;
+	border-radius: 0.2rem;
+	color: #fff;
+	background-color: #f31b1b;
+}
+.newsign .show-title {
+	position: relative;
+	right: 0.1rem;
+}
+
+/*签到领现金红包*/
+.newsign .popup-checkin-con {
+	position: relative;
+	top: -1rem;
+	width: 5.6rem;
+	height: 2.7rem;
+	background: #ffffff;
+	border-radius: 0.1rem;
+}
+.newsign .popup-checkin-tab {
+	position: relative;
+	width: 5.6rem;
+	border-radius: 0.1rem;
+	background: #ffffff;
+}
+.newsign .popup-checkin-bgcon {
+	position: relative;
+	border-radius: 0.1rem;
+}
+.newsign .close-qiandao {
+	position: absolute;
+	top: -1.5rem;
+	right: -0.5rem;
+}
+.newsign .close-qiandaos {
+	position: absolute;
+	top: -0.5rem;
+	right: 0;
+}
+.newsign .sign-span {
+	margin-top: 0.7rem;
+	font-size: 0.36rem;
+}
+.newsign .sign-btn {
+	position: relative;
+	margin: 0.7rem auto;
+	width: 2.2rem;
+	height: 0.8rem;
+	background-color: #ffe362;
+	border-radius: 0.04rem;
+	border: solid 0.01rem #ff5050;
+	color: #973809;
+	font-size: 0.3rem;
+	text-align: center;
+}
+.newsign .sign-btn p {
+	margin: 0 auto;
+}
+.newsign .sign-btns {
+	position: relative;
+	top: 0.4rem;
+	margin: 0.7rem auto;
+	width: 2.2rem;
+	height: 0.8rem;
+	background-color: #ffe362;
+	border-radius: 0.04rem;
+	border: solid 0.01rem #ff5050;
+	color: #973809;
+	font-size: 0.3rem;
+	text-align: center;
+}
+.newsign .popup-style-sign h4 {
+	height: .6rem;
+	font-size: .5rem;
+	font-weight: bold;
+	color: #ff5050;
+}
+.newsign .popup-style-sign p {
+	line-height: .32rem;
+	font-size: .26rem;
+}
+.newsign .popup-style-sign .popup-checkin-con {
+	padding: 0 .4rem .4rem;
+}
+.newsign .popup-sign .bg-sign {
+	height: 2.8rem;
+	background: url(resources/bg-sign.png) no-repeat 1.78rem .1rem;
+	background-size: 2.5rem auto;
+}
+
+/*签到箱子 */
+.newsign .dingwei {
+	height: 0.5rem;
+}
+.newsign .m20 {
+	margin: 0.2rem;
+}
+.newsign .popup-xiangzi-con {
+	position: relative;
+	width: 6rem;
+}
+.newsign .close-right {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.newsign .xiangzi-container {
+	width: 6rem;
+	min-height: 3.3rem;
+	max-height: 8rem;
+	background-image: linear-gradient(-50deg, #ff3a3a 0%, #ff5c41 100%),
+		linear-gradient(#ffffff, #ffffff);
+	border-radius: 0.1rem;
+	color: #ffffff;
+}
+.newsign .xianzi-title {
+	font-size: 0.36rem;
+	padding-top: 0.38rem;
+}
+.newsign .xiangzi-shuju {
+	max-height: 5.5rem;
+	margin: 0.2rem;
+}
+.newsign .show-gift {
+	width: 1.4rem;
+	height: 1.4rem;
+	margin-top: 0.3rem;
+	background-color: #ffffff;
+	border-radius: 0.04rem;
+	border: solid 0.01rem #c72f2e;
+}
+.newsign .gift-youhuijuan {
+	width: 0.84rem;
+	height: 0.57rem;
+	margin: auto;
+	position: relative;
+	top: 0.43rem;
+	background: url(resources/sign-youhui.png) no-repeat;
+	background-size: 0.84rem 0.57rem;
+}
+
+.newsign .gift-shangpin {
+	width: 0.81rem;
+	height: 0.81rem;
+	margin: auto;
+	position: relative;
+}
+.newsign .xiangxi-btn {
+	width: 2.6rem;
+	height: 0.7rem;
+	margin: 0 auto;
+	text-align: center;
+	font-size: 0.3rem;
+	border-radius: 0.04rem;
+	background-color: #ffea59;
+	color: black;
+}
+.newsign .h155 {
+	height: 2.5rem;
+	width: 1.4rem;
+	padding-right: 0.4rem;
+}
+.newsign .show-button {
+	width: 1.5rem;
+}
+.newsign .product-span {
+	width: 1.4rem;
+	font-size: 0.24rem !important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.newsign .left-span {
+	font-size: 0.22rem !important;
+}
+.newsign .tab-msg {
+	height: 2.5rem;
+}
+.newsign .gift-jifen {
+	width: 0.7rem;
+	height: 0.7rem;
+	margin: auto;
+	position: relative;
+	background: url(resources/jifen.png) no-repeat;
+	background-size: 0.7rem 0.7rem;
+}
+.newsign .img-span {
+	font-size: 0.3rem;
+	margin-bottom: 0.2rem;
+}
+
+.newsign .popup-bottom {
+	background-color: #fff;
+	padding: 0 0.3rem;
+}
+.newsign .img-pic {
+	position: relative;
+	top: -0.3rem;
+	overflow: hidden;
+	width: 2rem;
+	height: 2rem;
+	margin: -.3rem .2rem 0 0;
+	border-radius: .05rem;
+	border: 1px solid #eee;
+	box-sizing: border-box;
+	box-shadow: 0 0 0.05rem #eee;
+}
+
+.newsign .popup-bottom .info-list .clearfix {
+	font-size: .3rem;
+	width: 7rem;
+	text-align: center;
+}
+.newsign .popup-bottom .info-list li {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	float: left;
+	min-width: 1.2rem;
+	height: .56rem;
+	line-height: .54rem;
+	margin: 0 .3rem .3rem 0;
+	padding: 0 .1rem;
+	border-radius: .03rem;
+	box-sizing: border-box;
+	cursor: pointer;
+	border: 1px solid #eee;
+	-webkit-user-select: none;
+}
+.newsign .popup-bottom .closeover {
+	right: 0.8rem;
+}
+
+.newsign .btns-reds {
+	position: relative;
+	left: -0.4rem;
+	width: 102%;
+	margin: 0;
+	height: .9rem;
+	padding: 0;
+	border-radius: 0;
+	font-size: .32rem;
+}
+.newsign .cur {
+	background-color: #ff5050;
+	color: white;
+}
+.newsign .chose-flex {
+	font-size: 0.24rem;
+}
+.newsign .closeover,
+.newsign .close-qiandao,
+.newsign .close-qiandaos,
+.newsign .close-right {
+	background-size: 0.38rem auto;
+}
+
+.newsign .checkin-buqian {
+	font-size: 0.34rem;
+	margin: 0.6rem auto;
+	line-height: 100%;
+}
+
+.newsign .sign-buqian {
+	margin: 0.1rem auto;
+	width: 2.2rem;
+	height: 0.8rem;
+	background-color: #ff5050;
+	border-radius: 0.04rem;
+	border: solid 0.01rem #ff5050;
+	color: #ffffff;
+	font-size: 0.3rem;
+}
+
+.newsign .youhui-beijing {
+	position: absolute;
+	left: 0rem;
+	top: -1rem;
+	width: 6.4rem;
+	margin: auto;
+	border-top-left-radius: 0.1rem;
+	border-top-right-radius: 0.1rem;
+	background-image: linear-gradient(-50deg,
+		#ff3a3a 0%,
+		#ff5c41 100%),
+		linear-gradient(#ffd06c,
+		#ffd06c);
+}
+
+.newsign .youhui-header {
+	background: url(resources/youhuijuan-span.png) no-repeat;
+	width: 5.5rem;
+	height: 0.74rem;
+	margin: 0rem auto;
+	position: relative;
+	top: 0.4rem;
+	background-size: 100% auto;
+}
+
+.newsign .youhui-content {
+	position: relative;
+	top: 0.8rem;
+}
+
+.newsign .youhui-content .left {
+	width: 1.58rem;
+	height: 1.42rem;
+	font-size: 0.6rem;
+	color: #ffbf50;
+}
+
+.newsign .youhui-content .left-1 {
+	font-size: 0.36rem;
+	position: relative;
+	top: 0.1rem;
+}
+.newsign .youhui-content .right {
+	padding-left: 0.3rem;
+	font-size: 0.24rem;
+}
+.newsign .youhui-content .right-title {
+	font-size: 0.2rem;
+}
+
+.newsign .youhui-kongbai {
+	background: url(resources/youhuijuan-beijing.png) no-repeat;
+	width: 5.6rem;
+	height: 1.5rem;
+	margin: 0.1rem auto;
+	background-size: 100% auto;
+}
+.newsign .youhuijuan-btn {
+	background: url(resources/youhuijuan-btn.png) no-repeat;
+	position: relative;
+	top: -0.65rem;
+	width: 6.4rem;
+	height: 1.4rem;
+	border-bottom-left-radius: 0.1rem;
+	border-bottom-right-radius: 0.1rem;
+	background-size: 100% auto;
+}
+.newsign .no {
+	background: #fafafa;
+	color: #eee;
+}
+.newsign .role-texts {
+	position: fixed !important;
+	top: 1rem;
+	left: .2rem;
+	width: 2.7rem;
+	height: .44rem;
+	line-height: .44rem;
+	font-size: .24rem;
+	border-radius: .22rem;
+	background-color: rgba(255,63,59,0.5);
+	overflow: hidden;
+	white-space: nowrap;
+}
+.newsign .t10 {
+	top: .1rem;
+}
+
+/* 新增轮播 2弹窗 */
+.newsign .role-texts ul {
+	left: .1rem;
+}
+.newsign .role-texts li {
+	width: 2.6rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: #fff;
+}
+.newsign .msg-send {
+	position: absolute;
+	bottom: -.4rem;
+	left: -1.7rem;
+	width: 0.76rem;
+	height: 0.4rem;
+	background: #fff;
+	border-radius: .3rem;
+}
+.newsign .msg-f {
+	position: absolute;
+	bottom: 0.05rem;
+	left: 1rem;
+	color: #fff;
+	width: 1rem;
+	font-size: .2rem;
+}
+.newsign .send-cycle {
+	width: .36rem;
+	height: .36rem;
+	margin: .02rem;
+	border-radius: 0.36rem;
+	background-color: #ff4b34;
+	transition: width 0.3s;
+	-moz-transition: width 0.3s; /* Firefox 4 */
+	-webkit-transition: width 0.3s; /* Safari and Chrome */
+	-o-transition: width 0.3s; /* Opera */
+}
+.newsign .send-right {
+	position: relative;
+	left: .33rem;
+	width: .36rem;
+	height: .36rem;
+	border-radius: 0.36rem;
+	background-color: #fff;
+}
+.newsign .send-cycles {
+	width: 0.7rem;
+	height: 0.36rem;
+	margin: .02rem;
+	border-radius: .36rem;
+	background-color: #ff4b34 ;
+	transition: width 0.3s;
+	-moz-transition: width 0.3s; /* Firefox 4 */
+	-webkit-transition: width 0.3s; /* Safari and Chrome */
+	-o-transition: width 0.3s; /* Opera */
+}
+.newsign .popup-clear-con {
+	position: relative;
+	width: 6rem;
+	background-color: #fff;
+	border-radius: .16rem;
+	font-size: .32rem;
+}
+.newsign .tab-body {
+	width: auto;
+	min-height: 1.4rem;
+	line-height: 1.4rem;
+	padding: .2rem;
+	color: #666;
+	word-break: break-all;
+	text-align: center;
+}
+.newsign .clear-btn {
+	width: 100%;
+	border-top: 1px solid #ddd;
+}
+.newsign .clear-btn a {
+	width: 50%;
+	height: .8rem;
+}
+.newsign .clear-btn a:nth-child(1) {
+	border-right: 1px solid #ddd;
+}
+
+/* 改版签到 */
+.newsign .xiangzi-shuju .tab-box {
+	width: 5.6rem;
+	height: 1.4rem;
+	margin: .2rem 0;
+	background: #fff;
+	color: black;
+	border-radius: .05rem;
+}
+.newsign .xiangzi-shuju .tab-youhui {
+	width: 5.6rem;
+	height: 1.4rem;
+	background: url(resources/bgprice.png) no-repeat;
+	background-size: 100% 100%;
+}
+.newsign .xiangzi-shuju .tab-box .left {
+	width: 1.5rem;
+	margin: 0 .1rem;
+}
+.newsign .xiangzi-shuju .tab-box .right {
+	padding: 0 .2rem;
+	width: 4rem;
+	font-size: .24rem;
+}
+.newsign .xiangzi-shuju .youhui-tab {
+	color: #ffbf50;
+	font-size: .36rem
+}
+.newsign .fs60 {
+	font-size: .6rem;
+}
+.newsign .fs20 {
+	font-size: .2rem;
+}
+.newsign .pb20 {
+	padding-bottom: .2rem;
+}
+.newsign .mbt5 {
+	margin: .05rem 0;
+}
+.newsign .pb10 {
+	position: relative;
+	top: 0.1rem;
+}

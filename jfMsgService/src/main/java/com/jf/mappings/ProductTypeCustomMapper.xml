@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductTypeCustomMapper">
+	<resultMap id="BaseResultCustomMap" type="com.jf.entity.ProductTypeCustom" extends="com.jf.dao.ProductTypeMapper.BaseResultMap">
+		<result column="number" property="number" jdbcType="INTEGER" />
+	</resultMap>
+
+	
+      <select id="getNumberOfProductType" resultMap="BaseResultCustomMap">
+      <![CDATA[
+			SELECT
+			id,
+			name,
+			CONCAT(
+			IF (
+				t_level = '1',
+				CONCAT(
+					(
+						SELECT
+							COUNT(1)
+						FROM
+							bu_product t,
+							bu_mcht_info mi,
+							bu_mcht_product_brand mpb,
+							bu_product_brand pb,
+bu_product_type pt,
+						bu_product_type fpt
+						WHERE
+							t.product_type1_id = a.id
+						AND mi.id = t.mcht_id
+						AND pb.id = t.brand_id
+						AND mpb.mcht_id = t.mcht_id
+						AND mpb.product_brand_id = t.brand_id
+						AND t. STATUS = '1'
+						AND t.audit_status = '2'
+						AND sale_type = '1'
+						AND t.del_flag = '0'
+						AND mpb.audit_status = '3'
+						AND mpb. STATUS = '1'
+						AND mi. STATUS = '1'
+						AND pb. STATUS = '1'
+					AND mi.del_flag='0'
+					AND t.product_type_id = pt.id
+					AND pt.parent_id = fpt.id
+					AND fpt.parent_id = a.id
+					)
+			)
+			,''
+			),
+			IF (
+				t_level = '2',
+				CONCAT(
+					(
+						SELECT
+							COUNT(1)
+						FROM
+							bu_product t,
+							bu_mcht_info mi,
+							bu_mcht_product_brand mpb,
+							bu_product_brand pb,
+							bu_product_type pt
+						WHERE
+							t.product_type2_id = a.id
+						AND mi.id = t.mcht_id
+						AND pb.id = t.brand_id
+						AND mpb.mcht_id = t.mcht_id
+						AND mpb.product_brand_id = t.brand_id
+						AND t. STATUS = '1'
+						AND t.audit_status = '2'
+						AND sale_type = '1'
+						AND t.del_flag = '0'
+						AND mpb.audit_status = '3'
+						AND mpb. STATUS = '1'
+						AND mi. STATUS = '1'
+						AND pb. STATUS = '1'
+				AND t.product_type_id = pt.id
+				AND pt.parent_id = a.id
+					)
+			)
+			,''
+			),
+
+			IF (
+				t_level = '3',
+				CONCAT(
+					(
+						SELECT
+							COUNT(1)
+						FROM
+							bu_product t,
+							bu_mcht_info mi,
+							bu_mcht_product_brand mpb,
+							bu_product_brand pb
+						WHERE
+							t.product_type_id = a.id
+						AND mi.id = t.mcht_id
+						AND pb.id = t.brand_id
+						AND mpb.mcht_id = t.mcht_id
+						AND mpb.product_brand_id = t.brand_id
+						AND t. STATUS = '1'
+						AND t.audit_status = '2'
+						AND sale_type = '1'
+						AND t.del_flag = '0'
+						AND mpb.audit_status = '3'
+						AND mpb. STATUS = '1'
+						AND mi. STATUS = '1'
+						AND pb. STATUS = '1'
+					)
+			)
+			,''
+			)
+						) AS number
+					FROM
+						bu_product_type a
+					WHERE
+						a.del_flag = '0'
+					ORDER BY
+						id
+
+	 ]]>	 
+     </select>
+    
+    
+
+
+</mapper>

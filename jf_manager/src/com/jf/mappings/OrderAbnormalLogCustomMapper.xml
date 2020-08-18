@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.OrderAbnormalLogCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.OrderAbnormalLogCustom" extends="com.jf.dao.OrderAbnormalLogMapper.BaseResultMap" >
+    <result column="follow_status_desc" property="followStatusDesc" jdbcType="VARCHAR" />
+    <result column="follow_by_name" property="followByName" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="delivery_date" property="deliveryDate" jdbcType="TIMESTAMP" />    
+    <result column="delivery_last_date" property="deliveryLastDate" jdbcType="TIMESTAMP" />
+    <result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+    <result column="brand_code" property="brandCode" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="service_order_code" property="serviceOrderCode" jdbcType="VARCHAR" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="order_code" property="ordercode" jdbcType="VARCHAR" />
+    <result column="log_remarks" property="logRemarks" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sub_order_id, abnormal_type, abnormal_desc, follow_by, follow_status, create_by, 
+    create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_ORDER_ABNORMAL_LOG", "FOLLOW_STATUS", follow_status) follow_status_desc,
+    (select ssi.staff_name from sys_staff_info ssi where ssi.staff_id = follow_by) follow_by_name,
+    (select co.pay_date from bu_sub_order so,bu_combine_order co where t.sub_order_id = so.id and so.combine_order_id = co.id)pay_date,
+    (select so.delivery_date from bu_sub_order so where t.sub_order_id = so.id)delivery_date,
+    (select so.delivery_last_date from bu_sub_order so where t.sub_order_id = so.id)delivery_last_date,
+    (select so.sub_order_code from bu_sub_order so where t.sub_order_id = so.id)sub_order_code,
+    FUN_GET_STATUS_DESC("BU_SUB_ORDER", "STATUS", (select so.status from bu_sub_order so where t.sub_order_id = so.id)) status_desc,
+    (select group_concat(distinct CONCAT('【',b.brand_name,'】 ',p.code)) from bu_order_dtl b,bu_product p where b.sub_order_id=t.sub_order_id and b.product_id = p.id) brand_code,
+    (select mi.mcht_code from bu_sub_order so,bu_mcht_info mi where t.sub_order_id = so.id and mi.id=so.mcht_id) mcht_code,
+    (select mi.shop_name from bu_sub_order so,bu_mcht_info mi where t.sub_order_id = so.id and mi.id=so.mcht_id) shop_name,
+    (select mi.company_name from bu_sub_order so,bu_mcht_info mi where t.sub_order_id = so.id and mi.id=so.mcht_id) company_name,
+    (select group_concat(b.order_code SEPARATOR '<![CDATA[ <br> ]]>') from bu_customer_service_order b where t.sub_order_id=b.sub_order_id and b.del_flag='0') service_order_code,
+    (select b.receiver_name from bu_sub_order so,bu_combine_order b where so.id = t.sub_order_id and b.id=so.combine_order_id) receiver_name,
+    (select group_concat(b.order_code SEPARATOR '<![CDATA[ <br> ]]>') from bu_violate_order b where t.sub_order_id=b.sub_order_id and b.del_flag='0' and b.audit_status!='2') order_code,
+    (select b.remarks from bu_remarks_log b where b.sub_order_id=t.sub_order_id and b.del_flag='0' order by b.id desc limit 1) log_remarks
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.OrderAbnormalLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_order_abnormal_log t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.OrderAbnormalLogExample" resultType="java.lang.Integer" >
+    select count(*) from bu_order_abnormal_log
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="getFollowByList" resultType="java.util.HashMap">
+  	select 
+  		distinct oal.follow_by,ssi.STAFF_NAME 
+  	from 
+  		bu_order_abnormal_log oal,sys_staff_info ssi 
+  	where 
+  		oal.follow_by = ssi.STAFF_ID 
+  		and oal.abnormal_type = #{abnormalType} 
+  		and oal.del_flag='0'
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.OrderAbnormalLogCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_order_abnormal_log t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.OrderAbnormalLogCustomExample">
+  	select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_order_abnormal_log t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,245 @@
+@CHARSET "UTF-8";
+.fs_12{
+	font-size:12px;
+}
+.fs_14{
+	font-size:14px;
+}
+.bc_eff9ff{
+	background-color: #eff9ff;
+}
+.bc_ffffef{
+	background-color: #ffffef;
+}
+.bc_3c9eff{
+	background-color: #3c9eff;
+}
+.bc_ff5555{
+	background-color: #ff5555;
+}
+.ff_yahei{
+	font-family: "Microsoft YaHei";
+}
+.color_000000{
+	color: #000000;
+}
+.color_999999{
+	color: #999999;
+}
+.color_24b386{
+	color: #24b386;
+}
+.color_ff5555{
+	color: #ff5555;
+}
+.b_r_2{
+	border-radius: 2px;
+}
+.br{
+	border-right: 1px solid #dddddd;
+}
+.pl_10 {
+	padding-left:10px;
+}
+
+.p_l_12{
+	padding-left: 12px;
+}
+.pl_20 {
+	padding-left:20px;
+}
+.pt_24 {
+	padding-top:24px;
+}
+.w_h_340_90{
+	width: 340px;
+	height: 90px;
+}
+.w_h_80_90{
+	width: 80px;
+	height: 90px;
+}
+.w_h_90_90{
+	width: 90px;
+	height: 90px;
+}
+.w_h_100_90{
+	width: 100px;
+	height: 90px;
+}
+.w_h_166_90{
+	width: 166px;
+	height: 90px;
+}
+.w_h_940_36{
+	width: 940px;
+	height: 36px;
+}
+.pt_6{
+	padding-top: 6px;
+}
+.pt_10{
+	padding-top: 10px;
+}
+.w_h_188_36{
+	width: 188px;
+	height: 36px;
+}
+.w_h_190_36{
+	width: 190px;
+	height: 36px;
+}
+.w_h_340_110{
+	width: 340px;
+	height: 110px;
+}
+.w_h_80_36{
+	width: 80px;
+	height: 36px;
+}
+.w_h_80_110{
+	width: 80px;
+	height: 110px;
+}
+.w_h_90_110{
+	width: 90px;
+	height: 110px;
+}
+.w_h_117_110{
+	width: 117px;
+	height: 110px;
+}
+.w_h_60_60{
+	width: 60px;
+	height: 60px;
+}
+.w_h_80_80{
+	width: 80px;
+	height: 80px;
+}
+.w_h_340_36{
+	width: 340px;
+	height: 36px;
+}
+.w_h_100_36{
+	width: 100px;
+	height: 36px;
+}
+.w_h_110_36{
+	width: 110px;
+	height: 36px;
+}
+.w_h_117_36{
+	width: 117px;
+	height: 36px;
+}
+.w_h_280_36{
+	width: 280px;
+	height: 36px;
+}
+.w_h_90_36{
+	width: 90px;
+	height: 36px;
+}
+.w_h_200_36{
+	width: 200px;
+	height: 36px;
+}
+.w_h_374_36{
+	width: 374px;
+	height: 36px;
+}
+.w_h_380_36{
+	width: 380px;
+	height: 36px;
+}
+.w_h_326_177{
+	width: 326px;
+	height: 177px;
+}
+.w_h_130_36{
+	width: 130px;
+	height: 36px;
+	color: #fff;
+}
+.w_h_740_36{
+	width: 740px;
+	height: 36px;
+}
+.h_110{
+	height: 110px;
+}
+.t_a_p_l{
+	text-align:left;
+	padding:5px 15px;
+}
+.bb{
+	border-bottom: 1px solid #dddddd;
+}
+.lh_32{
+	line-height: 3.2;
+}
+.bbbb{
+	border-style: solid;
+  	border-width: 1px;
+  	border-color: #DDDDDD;
+  	background-color: rgb(239, 249, 255);
+}
+
+
+.order{
+	text-align:left;
+	padding:5px 0;
+	background-color: #eff9ff;
+	border-bottom: 1px solid #dddddd;
+}
+.f_f_c_l{
+  font-size: 12px;
+  font-family: "Microsoft YaHei";
+  color: #333333;
+  line-height: 1.2;
+}
+.amount{
+  font-size: 14px;
+  font-family: "Microsoft YaHei";
+  color: #333333;
+  line-height: 1.2;
+}
+.preferential{
+  font-size: 12px;
+  font-family: "Microsoft YaHei";
+  color: #999999;
+  line-height: 1.2;
+}
+.money{
+  font-size: 14px;
+  font-family: "Microsoft YaHei";
+  color: #333333;
+  line-height: 1.2;
+}
+.complete{
+	border-style: solid;
+  	border-width: 1px;
+	background-color: #3c9eff;
+	border-color: rgb(221, 221, 221);
+	color:white;
+}
+.progress{
+	border-style: solid;
+  	border-width: 1px;
+	background-color: #ff5555;
+	border-color: rgb(221, 221, 221);
+	color:white;
+}
+.button_agree{
+	border-radius: 2px;
+    background-color: #3c9eff;
+    width: 130px;
+ 	height: 36px;
+}
+.button_disagree{
+	border-radius: 2px;
+    background-color: #ff5555;
+    width: 130px;
+ 	height: 36px;
+}

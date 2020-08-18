@@ -1,0 +1,220 @@
+<div class="page cut-price free-price flex dc bgf4" data-title="邀请享免单" data-id="activity_freeprice">
+	<link rel="stylesheet" href="activity/cutprice/cutprice.css?ver=1.0">
+	<link rel="stylesheet" href="activity/freeprice/freeprice.css?ver=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">邀请享免单</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg tab-body">
+		<div class="con-1 tab-con scroll-y scroll-fix hide">
+			<div class="touchfix">
+				<div class="con-top top1 w75">
+					<p class="flex ac"><span class="ico-btn ico-rule" onclick="popupShow('.popup-rule-free')"></span></p>
+					<img src="activity/freeprice/resources/top1.png">
+				</div>
+
+				<div class="con-list w75"></div>
+			</div>
+		</div>
+
+		<div class="con-2 tab-con scroll-y scroll-fix hide">
+			<div class="touchfix">
+				<div class="con-top top2 w75">
+					<p></p>
+					<img src="activity/freeprice/resources/top2.png">
+				</div>
+
+				<div class="con-list w75"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="fn tab-btn flex ac">
+		<a class="flex ac jc fg ico-tab1" onclick="freePrice.post(0)">邀请享免单</a>
+		<a class="flex ac jc fg ico-tab2" onclick="freePrice.post(1)">我的邀请</a>
+	</div>
+
+	<div class="popup popup-free-help" onclick="closeSelf(this)">
+		<div class="popup-main" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+			<h3>只有新用户才能<br>帮助好友完成任务哦</h3>
+		</div>
+	</div>
+
+	<div class="popup popup-rule popup-rule-free" onclick="closeSelf(this)">
+		<div class="popup-rule-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">
+				邀请享免单规则
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</div>
+
+			<div class="con scroll-y">
+				<div class="touchfix">
+					<p class="mb20">1、每个新用户可助力一次，同一个设备、微信号、视为同一个用户。</p>
+					<p class="mb20">2、若发现用户存在刷单、虚假用户助力等违规行为，平台有权利判定助力失败。</p>
+					<p class="mb20">3、免单成功后，平台审核后生成对应订单，24小时內审核下单。</p>
+					<p class="mb20">4、每个用户每天只能发起一次邀请享免单，发起后只能隔天在发起新的邀请享免单。</p>
+					<p>5、本活动成功下单的商品不支持退换。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup popup-free-detail" onclick="closeSelf(this)">
+		<div class="popup-main" onclick="stopSelf()">
+			<h3 class="flex ac jc">
+				邀请详情
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</h3>
+			<div class="popup-con scroll-y"></div>
+			<a class="btn-red flex ac jc" onclick="closeSelf(this)">知道了</a>
+		</div>
+	</div>
+
+	<script id="free_price_tpl_con1" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+				{{if value.status == 1}}
+		<dl class="flex fg bb1 corsor" onclick="getUrl('goods/detail?id={{value.productId}}', 'self')">
+				{{else}}
+		<dl class="flex fg bb1">
+				{{/if}}
+			<dt class="fn">
+				<img src="{{value.productPic}}">
+			</dt>
+			<dd class="fg">
+				<h3>{{value.productName}}</h3>
+
+				<p class="c9 flex jb mb20">
+					<span>需邀请{{value.needInviteNum}}人</span>
+					<span>已领{{value.memberReceiveNum}}件</span>
+				</p>
+
+				<div class="flex ac jb">
+					<span class="f50">
+						<strong>{{value.tagPrice}}</strong>
+					</span>
+					
+					{{if value.status == 1}}
+					<a class="btn-red flex ac jc">
+					免费领取
+					{{else if value.status == 2}}
+					<a class="btn-red flex ac jc btn-gray">
+					名额已满
+					{{else}}
+					<a class="btn-red flex ac jc btn-gray">
+					已抢光
+					{{/if}}
+					</a>
+				</div>
+			</dd>
+		</dl>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="free_price_tpl_con2" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+		<dl class="flex fg">
+			<dt class="fn" onclick="getUrl('activity/freeprice/share/index.html?cutOrderId={{value.cutOrderId}}&sourceMemberId={{sourceMemberId}}', 'self')">
+				<img src="{{value.skuPic}}">
+				{{if value.status == 1 && value.timer > 0}}
+				<div class="flex ac jc">
+					剩余<time data-timer="{{value.timer}}"></time>
+				</div>
+				{{/if}}
+			</dt>
+			<dd class="fg">
+				<div onclick="getUrl('activity/freeprice/share/index.html?cutOrderId={{value.cutOrderId}}&sourceMemberId={{sourceMemberId}}', 'self')">
+					<h3>{{value.productName}}</h3>
+
+					<p class="flex ac jb c9">
+						<span>
+							{{if value.status == 1 && value.timer > 0}}
+								{{if value.exitCount > 0}}
+							需邀请{{value.needInviteCount}}人，还差{{value.exitCount}}人
+								{{else}}
+							邀请完成
+								{{/if}}
+							{{else if value.status == 2}}
+							商品助力成功，等待下单
+							{{else if value.status == 4}}
+							邀请完成
+							{{else}}
+							超时未完成、免单失败
+							{{/if}}
+						</span>
+						<span>已领{{value.memberReceiveNum}}件</span>
+					</p>
+				</div>
+
+				<div class="flex ac jb">
+					<strong class="f50">{{value.tagPrice}}</strong>
+					<div class="flex">
+						<a class="btn-red btn-l flex ac jc" data-id="{{value.cutOrderId}}" onclick="freePrice.detail(this)">邀请详情</a>
+						{{if value.status == 1 && value.timer > 0}}
+							{{if value.exitCount > 0}}
+						<a class="btn-red flex ac jc" onclick="getUrl('activity/freeprice/share/index.html?cutOrderId={{value.cutOrderId}}&sourceMemberId={{sourceMemberId}}', 'self')">继续分享</a>
+							{{else}}
+						<a onclick="myOrder('')" class="btn-red flex ac jc">查看订单</a>
+							{{/if}}
+						{{else if value.status == 2}}
+						<a class="btn-red flex ac jc" onclick="delayTip('等待审核')">助力成功</a>
+						{{else if value.status == 4}}
+						<a onclick="myOrder('')" class="btn-red flex ac jc">查看订单</a>
+						{{else}}
+						<a class="btn-red flex ac jc" onclick="getUrl('goods/detail?id={{value.productId}}', 'self')">重新抢</a>
+						{{/if}}
+					</div>
+				</div>
+			</dd>
+		</dl>
+			{{/each}}
+		{{else}}
+			{{include 'freeprice_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="free_price_tpl_detail" type="text/html">
+		{{if returnData.length}}
+			{{each returnData value i}}
+		<dl class="flex ac">
+			<dt class="fn img-cover">
+				<img src="{{value.weixinHead}}">
+			</dt>
+			<dd class="fg flex">
+				<div class="fg">{{value.memberNick}}</div>
+				<div>{{value.content}}</div>
+			</dd>
+		</dl>
+			{{/each}}
+		{{else}}
+		<h4 class="flex ac jc">当前还没有成功邀请好友助力</h4>
+		{{/if}}
+	</script>
+
+
+	<script id="free_price_tpl_role" type="text/html">
+		{{if memberReceiveInfoList.length}}
+		<ul>
+			{{each memberReceiveInfoList value i}}
+			<li>{{value}}</li>
+			{{/each}}
+		</ul>
+		{{/if}}
+	</script>
+
+	<script id="freeprice_tpl_empty" type="text/html">
+		<div class="page-empty flex dc ac jc fg">
+			<i></i>
+			<h4>一个订单都没有哦~</h4>
+			<p>给自己定个小目标，先下一单~</p>
+		</div>
+	</script>
+
+	<script src="activity/freeprice/freeprice.js?ver=1.2" async></script>
+</div>

@@ -1,0 +1,81 @@
+.a-invite .clearfix {
+	overflow: auto;
+	zoom: 1;
+}
+.a-invite .f24 {
+	font-size: .24rem;
+}
+
+.a-invite .bg {
+	width: 100%;
+	background: url('images/bg.png');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+.a-invite .code {
+	width: 5.4rem;
+	height: 7.26rem;
+	text-align: center;
+	padding: .42rem 0 0;
+	margin: .5rem auto .3rem;
+	background: url('images/code-bg.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	box-sizing: border-box;
+}
+.a-invite .code .title {
+	line-height: .28rem;
+	font-size: .3rem;
+	font-weight: bold;
+	margin-bottom: .29rem;
+}
+.a-invite .code .number {
+	color: #ff573b;
+	font-size: .6rem;
+	line-height: .45rem;
+	margin-bottom: .3rem;
+}
+.a-invite .code .copy-sty {
+	width: 1.48rem;
+	height: .4rem;
+	color: #fff;
+	font-size: .22rem;
+	line-height: .4rem;
+	margin: 0 auto;
+	background: #ff5050;
+	border-radius: .2rem;
+}
+.a-invite .code .code-img {
+	width: 3.6rem;
+	height: 3.6rem;
+	margin: 1.6rem auto 0;
+}
+.a-invite .code .code-img img {
+	width: 100%;
+	height: 100%;
+}
+
+.a-invite .rule {
+	padding: 0 .3rem;
+	color: #fff;
+	line-height: .36rem;
+}
+
+.a-invite .bt-list {
+	padding: 0 .25rem;
+	margin-top: .46rem;
+}
+.a-invite .bt-list .bt-1 {
+	width: 3.4rem;
+	height: .97rem;
+	background: url('images/bt-1.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.a-invite .bt-list .bt-2 {
+	width: 3.4rem;
+	height: .97rem;
+	background: url('images/bt-2.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}

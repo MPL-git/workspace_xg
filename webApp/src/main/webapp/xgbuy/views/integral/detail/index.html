@@ -1,0 +1,127 @@
+<div class="page integral-detail flex dc bgf4" data-id="integral_detail">
+	<link rel="stylesheet" href="integral/detail/index.css?var=2.0">
+
+	<header class="flex ac jb fn header">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"><a onclick="getUrl('activity/newsign/index.html')">签到</a></div>
+	</header>
+
+	<div class="scroll-moreData scroll-y">
+        <div class="fg flex dc scroll-more"></div>
+        <div class="fg flex dc moreListTab">
+			<div class="scroll-moreListe-tab"></div>
+			<div class="scroll-moreListe-tabs"></div>
+			<div class="scroll-moreList"></div>
+			<div class="hintInfo"></div>
+		</div>
+    </div>
+
+	<script id="integral_detail_tpl" type="text/html">
+		{{if data.length}}
+		{{include 'integral_detail_dtl_tpl'}}
+		{{else}}
+		{{include 'integral_detail_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="integral_detail_dtl_tpl" type="text/html">
+		<!-- 幻灯片 -->
+		{{if topPic.length && !_cur}}
+		<div class="swiper-container fn">
+			<ul class="swiper-wrapper">
+				{{each topPic value i}}
+				<li class="swiper-slide swiperHeight"
+					onclick="getBrandDef(this, {pos: '{{i}}', data: integralDetail.data})"
+					data-name="{{value.activityAreaName}}"
+					data-type="{{value.linkType}}"
+					data-url="{{value.areaUrl}}"
+					data-link="{{value.linkUrl}}"
+					data-id="{{value.id}}"
+					data-productid="{{value.id}}"
+				>
+					<img src="{{value.pic}}">
+				</li>
+				{{/each}}
+			</ul>
+			<div class="pagination"></div>
+		</div>
+		{{/if}}
+		{{include 'integral_detail_menus_tpl_list'}}
+    </script>
+
+
+	<script id="integral_detail_list_tpl" type="text/html">
+        <div class="flexBox">
+            {{each data value i}}
+            <dl class="commodityList" onclick="getUrlGoods('{{value.productId}}')">
+                <dt class="fn">
+                    <img src="{{value.productPic}}">
+                    {{if value.stockSum <= 0}}
+                    <div class="flex jc ac">已售罄</div>
+                    {{/if}}
+                </dt>
+                <dd class="fg">
+                    <p class="clampself">{{value.productName}}</p>
+                    <div class="flex ac flexPrice">
+                        <b>¥{{value.salePrice}}</b>
+                        <span class="flexPriceR">原售价￥{{value.tagPrice}}</span>
+                    </div>
+                    <p class="stateDetails">{{value.deductibleAmountContext}}</p>
+                </dd>
+            </dl>
+            {{/each}}
+        </div>
+	</script>
+
+	<script id="integral_detail_menu_tpl" type="text/html">
+		<div class="menuListBar">
+			<div class="coverInfo">
+				{{include 'integral_details_menu_tpl'}}
+			</div>
+		</div>
+	</script>
+
+	<script id="integral_detail_menus_tpl_list" cla type="text/html">
+		<div class="menuLists" onclick="HideImgClick()">
+			<div class="menuListDetails">
+				<div class="menuListDetailsBar">
+					<span>全部类目</span>
+					<img class="img" src="../views/integral/resources/reverseMenu.png" alt="">
+				</div>
+				<div class="detailsLists">
+					{{each productTypeList value i}}
+					{{if i==0}}
+					<span class="borderBg" onclick="menuOptions('{{value.productTypeId}}','{{i+1}}',this)">{{value.name}}</span>
+					{{else}}
+					<span class="" onclick="menuOptions('{{value.productTypeId}}','{{i+1}}',this)">{{value.name}}</span>
+					{{/if}}
+
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="integral_details_menu_tpl" type="text/html">
+		{{each productTypeList value i}}
+		{{if i==0}}
+		<span class='menuOption borders' onclick="menuOptions('{{value.productTypeId}}','{{i+1}}',this)">{{value.name}}</span>
+		{{else}}
+		<span class='menuOption' onclick="menuOptions('{{value.productTypeId}}','{{i+1}}',this)">{{value.name}}</span>
+		{{/if}}
+		{{/each}}
+		<img onclick="imgClick()" class="img" src="../views/integral/resources/menu.png" alt="">
+	</script>
+
+
+
+	<script id="integral_detail_tpl_empty" type="text/html">
+		<div class="page-empty empty-integral flex dc ac jc fg">
+			<i></i>
+			<p>当前积分为空</p>
+		</div>
+	</script>
+
+	<script src="integral/detail/index.js?var=1.0" async></script>
+</div>

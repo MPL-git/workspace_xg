@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CombineOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CombineOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="combine_order_code" property="combineOrderCode" jdbcType="VARCHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="member_nick" property="memberNick" jdbcType="VARCHAR" />
+    <result column="address_id" property="addressId" jdbcType="INTEGER" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="DECIMAL" />
+    <result column="total_pay_amount" property="totalPayAmount" jdbcType="DECIMAL" />
+    <result column="total_platform_preferential" property="totalPlatformPreferential" jdbcType="DECIMAL" />
+    <result column="total_mcht_preferential" property="totalMchtPreferential" jdbcType="DECIMAL" />
+    <result column="total_integral_preferential" property="totalIntegralPreferential" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="cancel_type" property="cancelType" jdbcType="CHAR" />
+    <result column="cancel_reason" property="cancelReason" jdbcType="VARCHAR" />
+    <result column="cancel_date" property="cancelDate" jdbcType="TIMESTAMP" />
+    <result column="status_date" property="statusDate" jdbcType="TIMESTAMP" />
+    <result column="is_user_del" property="isUserDel" jdbcType="CHAR" />
+    <result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+    <result column="payment_no" property="paymentNo" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="pay_status" property="payStatus" jdbcType="CHAR" />
+    <result column="financial_status" property="financialStatus" jdbcType="CHAR" />
+    <result column="financial_no" property="financialNo" jdbcType="VARCHAR" />
+    <result column="collection_register_date" property="collectionRegisterDate" jdbcType="TIMESTAMP" />
+    <result column="financial_staff" property="financialStaff" jdbcType="INTEGER" />
+    <result column="financial_update_date" property="financialUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="source_client" property="sourceClient" jdbcType="CHAR" />
+    <result column="order_type" property="orderType" jdbcType="CHAR" />
+    <result column="pay_extra_info" property="payExtraInfo" jdbcType="VARCHAR" />
+    <result column="order_extra_info" property="orderExtraInfo" jdbcType="VARCHAR" />
+    <result column="freight" property="freight" jdbcType="DECIMAL" />
+    <result column="is_first_order" property="isFirstOrder" jdbcType="CHAR" />
+    <result column="promotion_type" property="promotionType" jdbcType="CHAR" />
+    <result column="distribution_amount" property="distributionAmount" jdbcType="DECIMAL" />
+    <result column="svip_order_id" property="svipOrderId" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, combine_order_code, member_id, member_nick, address_id, receiver_name, receiver_phone, 
+    receiver_address, total_amount, total_pay_amount, total_platform_preferential, total_mcht_preferential, 
+    total_integral_preferential, status, cancel_type, cancel_reason, cancel_date, status_date, 
+    is_user_del, payment_id, payment_no, pay_date, pay_status, financial_status, financial_no, 
+    collection_register_date, financial_staff, financial_update_date, source_client, 
+    order_type, pay_extra_info, order_extra_info, freight, is_first_order, promotion_type, 
+    distribution_amount, svip_order_id, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CombineOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_combine_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_combine_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_combine_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.CombineOrderExample" >
+    delete from bu_combine_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.CombineOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_combine_order (combine_order_code, member_id, member_nick, 
+      address_id, receiver_name, receiver_phone, 
+      receiver_address, total_amount, total_pay_amount, 
+      total_platform_preferential, total_mcht_preferential, 
+      total_integral_preferential, status, cancel_type, 
+      cancel_reason, cancel_date, status_date, 
+      is_user_del, payment_id, payment_no, 
+      pay_date, pay_status, financial_status, 
+      financial_no, collection_register_date, 
+      financial_staff, financial_update_date, 
+      source_client, order_type, pay_extra_info, 
+      order_extra_info, freight, is_first_order, 
+      promotion_type, distribution_amount, svip_order_id, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{combineOrderCode,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, #{memberNick,jdbcType=VARCHAR}, 
+      #{addressId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, 
+      #{receiverAddress,jdbcType=VARCHAR}, #{totalAmount,jdbcType=DECIMAL}, #{totalPayAmount,jdbcType=DECIMAL}, 
+      #{totalPlatformPreferential,jdbcType=DECIMAL}, #{totalMchtPreferential,jdbcType=DECIMAL}, 
+      #{totalIntegralPreferential,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, #{cancelType,jdbcType=CHAR}, 
+      #{cancelReason,jdbcType=VARCHAR}, #{cancelDate,jdbcType=TIMESTAMP}, #{statusDate,jdbcType=TIMESTAMP}, 
+      #{isUserDel,jdbcType=CHAR}, #{paymentId,jdbcType=INTEGER}, #{paymentNo,jdbcType=VARCHAR}, 
+      #{payDate,jdbcType=TIMESTAMP}, #{payStatus,jdbcType=CHAR}, #{financialStatus,jdbcType=CHAR}, 
+      #{financialNo,jdbcType=VARCHAR}, #{collectionRegisterDate,jdbcType=TIMESTAMP}, 
+      #{financialStaff,jdbcType=INTEGER}, #{financialUpdateDate,jdbcType=TIMESTAMP}, 
+      #{sourceClient,jdbcType=CHAR}, #{orderType,jdbcType=CHAR}, #{payExtraInfo,jdbcType=VARCHAR}, 
+      #{orderExtraInfo,jdbcType=VARCHAR}, #{freight,jdbcType=DECIMAL}, #{isFirstOrder,jdbcType=CHAR}, 
+      #{promotionType,jdbcType=CHAR}, #{distributionAmount,jdbcType=DECIMAL}, #{svipOrderId,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.CombineOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_combine_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="combineOrderCode != null" >
+        combine_order_code,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="memberNick != null" >
+        member_nick,
+      </if>
+      <if test="addressId != null" >
+        address_id,
+      </if>
+      <if test="receiverName != null" >
+        receiver_name,
+      </if>
+      <if test="receiverPhone != null" >
+        receiver_phone,
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="totalPayAmount != null" >
+        total_pay_amount,
+      </if>
+      <if test="totalPlatformPreferential != null" >
+        total_platform_preferential,
+      </if>
+      <if test="totalMchtPreferential != null" >
+        total_mcht_preferential,
+      </if>
+      <if test="totalIntegralPreferential != null" >
+        total_integral_preferential,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="cancelType != null" >
+        cancel_type,
+      </if>
+      <if test="cancelReason != null" >
+        cancel_reason,
+      </if>
+      <if test="cancelDate != null" >
+        cancel_date,
+      </if>
+      <if test="statusDate != null" >
+        status_date,
+      </if>
+      <if test="isUserDel != null" >
+        is_user_del,
+      </if>
+      <if test="paymentId != null" >
+        payment_id,
+      </if>
+      <if test="paymentNo != null" >
+        payment_no,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="financialStatus != null" >
+        financial_status,
+      </if>
+      <if test="financialNo != null" >
+        financial_no,
+      </if>
+      <if test="collectionRegisterDate != null" >
+        collection_register_date,
+      </if>
+      <if test="financialStaff != null" >
+        financial_staff,
+      </if>
+      <if test="financialUpdateDate != null" >
+        financial_update_date,
+      </if>
+      <if test="sourceClient != null" >
+        source_client,
+      </if>
+      <if test="orderType != null" >
+        order_type,
+      </if>
+      <if test="payExtraInfo != null" >
+        pay_extra_info,
+      </if>
+      <if test="orderExtraInfo != null" >
+        order_extra_info,
+      </if>
+      <if test="freight != null" >
+        freight,
+      </if>
+      <if test="isFirstOrder != null" >
+        is_first_order,
+      </if>
+      <if test="promotionType != null" >
+        promotion_type,
+      </if>
+      <if test="distributionAmount != null" >
+        distribution_amount,
+      </if>
+      <if test="svipOrderId != null" >
+        svip_order_id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="combineOrderCode != null" >
+        #{combineOrderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberNick != null" >
+        #{memberNick,jdbcType=VARCHAR},
+      </if>
+      <if test="addressId != null" >
+        #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPayAmount != null" >
+        #{totalPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPlatformPreferential != null" >
+        #{totalPlatformPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMchtPreferential != null" >
+        #{totalMchtPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="totalIntegralPreferential != null" >
+        #{totalIntegralPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="cancelType != null" >
+        #{cancelType,jdbcType=CHAR},
+      </if>
+      <if test="cancelReason != null" >
+        #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelDate != null" >
+        #{cancelDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null" >
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isUserDel != null" >
+        #{isUserDel,jdbcType=CHAR},
+      </if>
+      <if test="paymentId != null" >
+        #{paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="paymentNo != null" >
+        #{paymentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="financialStatus != null" >
+        #{financialStatus,jdbcType=CHAR},
+      </if>
+      <if test="financialNo != null" >
+        #{financialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionRegisterDate != null" >
+        #{collectionRegisterDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="financialStaff != null" >
+        #{financialStaff,jdbcType=INTEGER},
+      </if>
+      <if test="financialUpdateDate != null" >
+        #{financialUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceClient != null" >
+        #{sourceClient,jdbcType=CHAR},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=CHAR},
+      </if>
+      <if test="payExtraInfo != null" >
+        #{payExtraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderExtraInfo != null" >
+        #{orderExtraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="freight != null" >
+        #{freight,jdbcType=DECIMAL},
+      </if>
+      <if test="isFirstOrder != null" >
+        #{isFirstOrder,jdbcType=CHAR},
+      </if>
+      <if test="promotionType != null" >
+        #{promotionType,jdbcType=CHAR},
+      </if>
+      <if test="distributionAmount != null" >
+        #{distributionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="svipOrderId != null" >
+        #{svipOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.CombineOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_combine_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_combine_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.combineOrderCode != null" >
+        combine_order_code = #{record.combineOrderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberNick != null" >
+        member_nick = #{record.memberNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressId != null" >
+        address_id = #{record.addressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverName != null" >
+        receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverPhone != null" >
+        receiver_phone = #{record.receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverAddress != null" >
+        receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalAmount != null" >
+        total_amount = #{record.totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalPayAmount != null" >
+        total_pay_amount = #{record.totalPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalPlatformPreferential != null" >
+        total_platform_preferential = #{record.totalPlatformPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalMchtPreferential != null" >
+        total_mcht_preferential = #{record.totalMchtPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="record.totalIntegralPreferential != null" >
+        total_integral_preferential = #{record.totalIntegralPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.cancelType != null" >
+        cancel_type = #{record.cancelType,jdbcType=CHAR},
+      </if>
+      <if test="record.cancelReason != null" >
+        cancel_reason = #{record.cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cancelDate != null" >
+        cancel_date = #{record.cancelDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.statusDate != null" >
+        status_date = #{record.statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isUserDel != null" >
+        is_user_del = #{record.isUserDel,jdbcType=CHAR},
+      </if>
+      <if test="record.paymentId != null" >
+        payment_id = #{record.paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.paymentNo != null" >
+        payment_no = #{record.paymentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payStatus != null" >
+        pay_status = #{record.payStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.financialStatus != null" >
+        financial_status = #{record.financialStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.financialNo != null" >
+        financial_no = #{record.financialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collectionRegisterDate != null" >
+        collection_register_date = #{record.collectionRegisterDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.financialStaff != null" >
+        financial_staff = #{record.financialStaff,jdbcType=INTEGER},
+      </if>
+      <if test="record.financialUpdateDate != null" >
+        financial_update_date = #{record.financialUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.sourceClient != null" >
+        source_client = #{record.sourceClient,jdbcType=CHAR},
+      </if>
+      <if test="record.orderType != null" >
+        order_type = #{record.orderType,jdbcType=CHAR},
+      </if>
+      <if test="record.payExtraInfo != null" >
+        pay_extra_info = #{record.payExtraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderExtraInfo != null" >
+        order_extra_info = #{record.orderExtraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.freight != null" >
+        freight = #{record.freight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isFirstOrder != null" >
+        is_first_order = #{record.isFirstOrder,jdbcType=CHAR},
+      </if>
+      <if test="record.promotionType != null" >
+        promotion_type = #{record.promotionType,jdbcType=CHAR},
+      </if>
+      <if test="record.distributionAmount != null" >
+        distribution_amount = #{record.distributionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.svipOrderId != null" >
+        svip_order_id = #{record.svipOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_combine_order
+    set id = #{record.id,jdbcType=INTEGER},
+      combine_order_code = #{record.combineOrderCode,jdbcType=VARCHAR},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      member_nick = #{record.memberNick,jdbcType=VARCHAR},
+      address_id = #{record.addressId,jdbcType=INTEGER},
+      receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{record.receiverPhone,jdbcType=VARCHAR},
+      receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
+      total_amount = #{record.totalAmount,jdbcType=DECIMAL},
+      total_pay_amount = #{record.totalPayAmount,jdbcType=DECIMAL},
+      total_platform_preferential = #{record.totalPlatformPreferential,jdbcType=DECIMAL},
+      total_mcht_preferential = #{record.totalMchtPreferential,jdbcType=DECIMAL},
+      total_integral_preferential = #{record.totalIntegralPreferential,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=CHAR},
+      cancel_type = #{record.cancelType,jdbcType=CHAR},
+      cancel_reason = #{record.cancelReason,jdbcType=VARCHAR},
+      cancel_date = #{record.cancelDate,jdbcType=TIMESTAMP},
+      status_date = #{record.statusDate,jdbcType=TIMESTAMP},
+      is_user_del = #{record.isUserDel,jdbcType=CHAR},
+      payment_id = #{record.paymentId,jdbcType=INTEGER},
+      payment_no = #{record.paymentNo,jdbcType=VARCHAR},
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      pay_status = #{record.payStatus,jdbcType=CHAR},
+      financial_status = #{record.financialStatus,jdbcType=CHAR},
+      financial_no = #{record.financialNo,jdbcType=VARCHAR},
+      collection_register_date = #{record.collectionRegisterDate,jdbcType=TIMESTAMP},
+      financial_staff = #{record.financialStaff,jdbcType=INTEGER},
+      financial_update_date = #{record.financialUpdateDate,jdbcType=TIMESTAMP},
+      source_client = #{record.sourceClient,jdbcType=CHAR},
+      order_type = #{record.orderType,jdbcType=CHAR},
+      pay_extra_info = #{record.payExtraInfo,jdbcType=VARCHAR},
+      order_extra_info = #{record.orderExtraInfo,jdbcType=VARCHAR},
+      freight = #{record.freight,jdbcType=DECIMAL},
+      is_first_order = #{record.isFirstOrder,jdbcType=CHAR},
+      promotion_type = #{record.promotionType,jdbcType=CHAR},
+      distribution_amount = #{record.distributionAmount,jdbcType=DECIMAL},
+      svip_order_id = #{record.svipOrderId,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.CombineOrder" >
+    update bu_combine_order
+    <set >
+      <if test="combineOrderCode != null" >
+        combine_order_code = #{combineOrderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberNick != null" >
+        member_nick = #{memberNick,jdbcType=VARCHAR},
+      </if>
+      <if test="addressId != null" >
+        address_id = #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null" >
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPayAmount != null" >
+        total_pay_amount = #{totalPayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalPlatformPreferential != null" >
+        total_platform_preferential = #{totalPlatformPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="totalMchtPreferential != null" >
+        total_mcht_preferential = #{totalMchtPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="totalIntegralPreferential != null" >
+        total_integral_preferential = #{totalIntegralPreferential,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="cancelType != null" >
+        cancel_type = #{cancelType,jdbcType=CHAR},
+      </if>
+      <if test="cancelReason != null" >
+        cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelDate != null" >
+        cancel_date = #{cancelDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="statusDate != null" >
+        status_date = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isUserDel != null" >
+        is_user_del = #{isUserDel,jdbcType=CHAR},
+      </if>
+      <if test="paymentId != null" >
+        payment_id = #{paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="paymentNo != null" >
+        payment_no = #{paymentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="financialStatus != null" >
+        financial_status = #{financialStatus,jdbcType=CHAR},
+      </if>
+      <if test="financialNo != null" >
+        financial_no = #{financialNo,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionRegisterDate != null" >
+        collection_register_date = #{collectionRegisterDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="financialStaff != null" >
+        financial_staff = #{financialStaff,jdbcType=INTEGER},
+      </if>
+      <if test="financialUpdateDate != null" >
+        financial_update_date = #{financialUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sourceClient != null" >
+        source_client = #{sourceClient,jdbcType=CHAR},
+      </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=CHAR},
+      </if>
+      <if test="payExtraInfo != null" >
+        pay_extra_info = #{payExtraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderExtraInfo != null" >
+        order_extra_info = #{orderExtraInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="freight != null" >
+        freight = #{freight,jdbcType=DECIMAL},
+      </if>
+      <if test="isFirstOrder != null" >
+        is_first_order = #{isFirstOrder,jdbcType=CHAR},
+      </if>
+      <if test="promotionType != null" >
+        promotion_type = #{promotionType,jdbcType=CHAR},
+      </if>
+      <if test="distributionAmount != null" >
+        distribution_amount = #{distributionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="svipOrderId != null" >
+        svip_order_id = #{svipOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.CombineOrder" >
+    update bu_combine_order
+    set combine_order_code = #{combineOrderCode,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      member_nick = #{memberNick,jdbcType=VARCHAR},
+      address_id = #{addressId,jdbcType=INTEGER},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      total_pay_amount = #{totalPayAmount,jdbcType=DECIMAL},
+      total_platform_preferential = #{totalPlatformPreferential,jdbcType=DECIMAL},
+      total_mcht_preferential = #{totalMchtPreferential,jdbcType=DECIMAL},
+      total_integral_preferential = #{totalIntegralPreferential,jdbcType=DECIMAL},
+      status = #{status,jdbcType=CHAR},
+      cancel_type = #{cancelType,jdbcType=CHAR},
+      cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+      cancel_date = #{cancelDate,jdbcType=TIMESTAMP},
+      status_date = #{statusDate,jdbcType=TIMESTAMP},
+      is_user_del = #{isUserDel,jdbcType=CHAR},
+      payment_id = #{paymentId,jdbcType=INTEGER},
+      payment_no = #{paymentNo,jdbcType=VARCHAR},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      pay_status = #{payStatus,jdbcType=CHAR},
+      financial_status = #{financialStatus,jdbcType=CHAR},
+      financial_no = #{financialNo,jdbcType=VARCHAR},
+      collection_register_date = #{collectionRegisterDate,jdbcType=TIMESTAMP},
+      financial_staff = #{financialStaff,jdbcType=INTEGER},
+      financial_update_date = #{financialUpdateDate,jdbcType=TIMESTAMP},
+      source_client = #{sourceClient,jdbcType=CHAR},
+      order_type = #{orderType,jdbcType=CHAR},
+      pay_extra_info = #{payExtraInfo,jdbcType=VARCHAR},
+      order_extra_info = #{orderExtraInfo,jdbcType=VARCHAR},
+      freight = #{freight,jdbcType=DECIMAL},
+      is_first_order = #{isFirstOrder,jdbcType=CHAR},
+      promotion_type = #{promotionType,jdbcType=CHAR},
+      distribution_amount = #{distributionAmount,jdbcType=DECIMAL},
+      svip_order_id = #{svipOrderId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

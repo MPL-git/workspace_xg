@@ -1,0 +1,76 @@
+<div class="page novaplan flex dc" data-title="任务进度" data-id="activity_shopowner_pages_task">
+	<link rel="stylesheet" href="activity/novaplan/index.css?ver=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">任务进度</p>
+		<div class="fn"></div>
+	</header>
+
+	<article class="mt20 scroll-y scroll-more"></article>
+
+	<script id="novaplan_task_tpl" type="text/html">
+		{{if renewalTaskList.length}}
+		<figure>
+			{{each renewalTaskList item}}
+				{{if item.taskType === '1'}}
+			<dl class="cursor flex ac" onclick="getUrl('activity/shopowner/pages/invite/index.html')">
+				<dt class="ico-hy fn"></dt>
+
+				<dd class="fg flex jb">
+					<div class="fg">
+						<h3 class="h3 flex ac">{{item.title}}</h3>
+						<p class="c9">{{item.content}}</p>
+					</div>
+					<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+				</dd>
+			</dl>
+				{{else if item.taskType === '2'}}
+			<dl class="cursor flex ac" onclick="getUrl('activity/newsign/index.html')">
+				<dt class="ico-qd fn"></dt>
+
+				<dd class="fg flex jb">
+					<div class="fg">
+						<h3 class="h3 flex ac">{{item.title}}</h3>
+						<p class="c9">{{item.content}}</p>
+					</div>
+					<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+				</dd>
+			</dl>
+				{{else if item.taskType === '3'}}
+			<dl class="cursor flex ac" onclick="setStorage('novaplan_for_dynamic'), getUrl('my', 'self')">
+				<dt class="ico-dt fn"></dt>
+
+				<dd class="fg flex jb">
+					<div class="fg">
+						<h3 class="h3 flex ac">{{item.title}}</h3>
+						<p class="c9">{{item.content}}</p>
+					</div>
+					<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+				</dd>
+			</dl>
+				{{else if item.taskType === '4'}}
+			<dl class="cursor flex ac" onclick="getUrl('activity/shopowner/pages/goods/index.html', 'self')">
+				<dt class="ico-xj fn"></dt>
+
+				<dd class="fg flex jb">
+					<div class="fg">
+						<h3 class="h3 flex ac">{{item.title}}</h3>
+						<p class="c9">{{item.content}}</p>
+					</div>
+					<button class="{{item.status == 1 ? 'gray' : ''}}">{{item.statusText}}</button>
+				</dd>
+			</dl>
+				{{/if}}
+			{{/each}}
+		</figure>
+		{{else}}
+		<div class="page-empty empty-coupon flex dc ac jc fg">
+			<i></i>
+			<p>您当前还没有优惠券</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="activity/shopowner/pages/task/index.js?var=1.0" async></script>
+</div>

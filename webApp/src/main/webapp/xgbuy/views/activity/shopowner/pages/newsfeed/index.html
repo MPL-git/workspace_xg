@@ -1,0 +1,200 @@
+<div class="page bgf4 mall-list newsfeed product-3 flex dc" data-title="店铺动态" data-id="activity_shopowner_newsfeed">
+	<link rel="stylesheet" href="activity/novaplan/pages/newsfeed/index.css?var=1.0">
+	<link rel="stylesheet" href="mall/list/list.css?var=1.0">
+	<link rel="stylesheet" href="../static/css/product-3.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">店铺动态</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="content scroll-y scroll-more">
+		<div class="row-1"></div>
+
+		<div class="row-2 product">
+			<div class="left"></div>
+			<div class="right"></div>
+		</div>
+		
+		<div class="row-3"></div>
+	</div>
+
+	<!-- 数据信息 商家-->
+	<script id="newsfeed_tpl_msg" type="text/html">
+		{{if topCover}}
+		<div class="feed-header">
+			<img src="{{topCover}}" >
+		</div>
+		{{/if}}
+		<div class="header-shop fff flex ac">
+			<div class="shop-name flex ac jc">
+				<img src="{{shopLogo}}">
+			</div>
+			<span class="fs28 elis w5">{{shopName}}</span>
+			<div class="shop-share flex ac jc btf5 f50" onclick="novaplanNewsfeedApi.getShare()">转发</div>
+		</div>
+		<div class="flex show-msg fff">
+			<div class="flex jc c9">{{readCount}}阅读</div>
+		</div>
+		<div class="ptxt fff">{{content}}</div>
+	</script>
+
+	<!-- 个人 -->
+	<script id="newsfeed_tpl_person_msg" type="text/html">
+		{{if topCover}}
+		<div class="feed-header">
+			<img src="{{topCover}}" >
+		</div>
+		{{/if}}
+		<div class="header-shop fff flex ac">
+			<div class="shop-name flex ac jc">
+				<img src="{{pic ? pic : '../static/images/def-head.png'}}">
+			</div>
+			<span class="fs28 elis w5">{{nick}}</span>
+			<div class="shop-share flex ac jc btf5 f50" onclick="novaplanNewsfeedApi.getShare()">转发</div>
+		</div>
+		<div class="flex show-msg fff">
+			<div class="flex jc c9">{{readCount}}阅读</div>
+			<a onclick="getUrl('seller/index.html?mchtId={{mchtId}}', 'self')" class="flex je shop-share ">转发自<span class="f50 elis">{{shopName}}</span></a>
+		</div>
+		<div class="ptxt fff">{{content}}</div>
+	</script>
+
+	<!-- 商品 -->
+	<script id="newsfeed_list_tpl_product" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+		<a onclick="getUrlGoods('{{value.productId}}')">
+			<div class="con-1 h370">
+				<img src="{{value.productPic}}">
+
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+			</div>
+
+			<div class="con-2">
+				<p title="{{value.productName}}">{{value.productName}}</p>
+
+				<div class="flex ac jb scroll-x">
+					<span>
+						<strong class="f50">{{value.salePrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</span>
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+
+					{{if value.activityTypeContent}}
+					<em class="btn-f50">{{value.activityTypeContent}}</em>
+					{{/if}}
+				</div>
+
+				{{if value.commentCountStr}}
+				<div class="c9">
+					<span class="mr20">{{value.commentCountStr}}</span>
+					<span>{{value.goodProductScoreCountStr}}</span>
+				</div>
+				{{/if}}
+
+				{{if value.shopPreferentialInfo}}
+				<dl class="flex jb">
+					<dt>{{value.shopPreferentialInfo}}</dt>
+					<dd class="flex ac jc fn" onclick="getUrlShop(this)" data-id="{{value.mchtId}}">去看看</dd>
+				</dl>
+				{{/if}}
+			</div>
+		</a>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="newsfeed_list_tpl_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>暂无商品</p>
+		</div>
+	</script>
+
+	<!-- 个人 -->
+	<script id="newsfeed_tpl_person" type="text/html">
+		<dl class="footer fff">
+			<dt class="fn img-cover flex ac jc mtb10">
+				<img src="{{pic ? pic : '../static/images/def-head.png'}}">
+			</dt>
+			<dt class="fs36 p20 elis w5 mtauo">{{nick}}</dt>
+			<dt class="flex ac jc">
+				<a class="flex ac jc btn bgr" onclick="getUrl('activity/shopowner/pages/friend/home/index.html?frientMenberId={{friendMemberId}}', 'self');">主页</a>
+				{{if attentionButton == 1}}
+					{{if attentionStatus == 1}}
+				<a class="flex ac jc btn bgy" onclick="novaplanNewsfeedApi.attention(this)">已关注</a>
+					{{else}}
+				<a class="flex ac jc btn bgr" onclick="novaplanNewsfeedApi.attention(this)">关注</a>
+					{{/if}}
+				{{/if}}
+				
+			</dt>
+		</dl>
+		{{if memberDynamicList.length > 1}}
+		<div class="relate-msg">
+			<div class="flex ac jc msg fs30">— <span class="fw">相关推荐</span> —</div>
+			{{each memberDynamicList value i}}
+			<div class="flex p20 bbe" onclick="getUrl('activity/shopowner/pages/newsfeed/index.html?type=1&id={{value.mdId}}', 'self')">
+				<div class="left flex">
+					<img src="{{value.msdPic}}">
+				</div>
+				<div class="right flex">
+					<div class="p clampself fs30">{{value.msdContent}}</div>
+					<p class="c9 read fs24">{{value.msdReadCount}}阅读</p>
+					<div class="img">
+						<img src="../static/images/arrow-r.png">
+					</div>
+				</div>
+			</div>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+		
+	<!-- 商家 -->
+	<script id="newsfeed_tpl_shop" type="text/html">
+		<dl class="footer fff">
+			<dt class="fn img-cover flex ac jc mtb10">
+				<img src="{{shopLogo ? shopLogo : '../static/images/def-head.png'}}">
+			</dt>
+			<dt class="fs36 p20 elis w5 mtauo">{{shopName}}</dt>
+			<dt class="flex ac jc">
+				<a class="flex ac jc btn bgr" onclick="getUrl('seller/index.html?mchtId={{mchtId}}', 'self');">主页</a>
+				{{if isCollectuonShop}}
+				<a class="flex ac jc btn bgy" onclick="novaplanNewsfeedApi.collect(this)">已收藏</a>
+				{{else}}
+				<a class="flex ac jc btn bgr" onclick="novaplanNewsfeedApi.collect(this)">收藏</a>
+				{{/if}}
+			</dt>
+		</dl>
+		{{if mchtShopDynamicList.length > 1}}
+		<div class="relate-msg">
+			<div class="flex ac jc msg fs30">— <span class="fw">相关推荐</span> —</div>
+			{{each mchtShopDynamicList value i}}
+			<div class="flex p20 bbe" onclick="getUrl('activity/shopowner/pages/newsfeed/index.html?type=0&id={{value.msdId}}', 'self')">
+				<div class="left flex">
+					<img src="{{value.msdPic}}">
+				</div>
+				<div class="right flex">
+					<div class="p clampself fs30">{{value.msdContent}}</div>
+					<p class="c9 read fs24">{{value.msdReadCount}}阅读</p>
+					<div class="img">
+						<img src="../static/images/arrow-r.png">
+					</div>
+				</div>
+			</div>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+	
+
+	<script src="activity/shopowner/pages/newsfeed/index.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CustomerServiceStatusLogCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CustomerServiceStatusLogCustom" extends="com.jf.dao.CustomerServiceStatusLogMapper.BaseResultMap">
+    <result column="statusName" property="statusName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getRefundDetailLog" parameterType="java.util.Map" resultType="com.jf.entity.CustomerServiceStatusLogCustom">
+  		select
+		cssl.id,
+		cssl.service_order_id,
+		cssl.pro_status,
+		cssl.create_date,
+		cssl.remarks,
+		sys.REMARK AS statusName 
+		from bu_customer_service_status_log cssl
+		left join sys_status sys on cssl.pro_status = sys.STATUS_VALUE
+		where sys.TABLE_NAME = 'BU_CUSTOMER_SERVICE_ORDER'
+		and sys.COL_NAME = 'PRO_STATUS'
+		and cssl.del_flag = '0'
+		and cssl.service_order_id = #{serviceOrderId}
+		order by cssl.create_date desc
+  </select>
+</mapper>

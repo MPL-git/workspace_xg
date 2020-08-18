@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSettleOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtSettleOrderCustom"  extends="com.jf.dao.MchtSettleOrderMapper.BaseResultMap">
+  	<result column="confirm_status_desc" property="confirmStatusDesc" jdbcType="VARCHAR" />
+  	<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+  	<result column="short_name" property="shortName" jdbcType="VARCHAR" />
+  	<result column="platform_invoice_status_desc" property="platformInvoiceStatusDesc" jdbcType="VARCHAR" />
+  	<result column="platform_collect_status_desc" property="platformCollectStatusDesc" jdbcType="VARCHAR" />
+  	<result column="pay_status_desc" property="payStatusDesc" jdbcType="VARCHAR" />
+  	<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  	<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+  	<result column="open_product_type" property="openProductType" jdbcType="VARCHAR" />
+  	<result column="open_product_brand" property="openProductBrand" jdbcType="VARCHAR" />
+  	<result column="need_settle_amount" property="needSettleAmount" jdbcType="DECIMAL" />
+  	<result column="mcht_collect_type_name" property="mchtCollectTypeName" jdbcType="VARCHAR" />
+  	<result column="platform_preferential" property="platformPreferential" jdbcType="DECIMAL" />
+  	<result column="integral_preferential" property="integralPreferential" jdbcType="DECIMAL" />
+  	<result column="gross_rate" property="grossRate" jdbcType="VARCHAR" />
+  	<result column="exceed_amount" property="exceedAmount" jdbcType="DECIMAL" />
+  	
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, begin_date, end_date, mcht_id, mcht_type, product_num, settle_price_total, mcht_preferential_total, 
+    order_amount, refund_amount, commission_amount, settle_amount, deposit_amount, need_pay_amount, 
+    pay_amount, earnest_money, confirm_status, mcht_confirm_date, platform_confirm_date, 
+    mcht_collect_type, mcht_receiver_name, mcht_receiver_phone, mcht_receiver_address, 
+    mcht_invoice_status, mcht_invoice_date, mcht_invoice_express_id, mcht_invoice_express_no, 
+    platform_collect_status, platform_invoice_status, platform_invoice_date, platform_invoice_express_id, 
+    platform_invoice_express_no, pay_status, pay_ready_date, pay_date, pay_code, pay_staff_id, 
+    create_by, create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","CONFIRM_STATUS", confirm_status)confirm_status_desc,
+    (select a.mcht_code from bu_mcht_info a where a.id = t.mcht_id)mcht_code,
+    (select a.short_name from bu_mcht_info a where a.id = t.mcht_id)short_name,
+    FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","PLATFORM_INVOICE_STATUS", platform_invoice_status)platform_invoice_status_desc,
+    FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","PLATFORM_COLLECT_STATUS", platform_collect_status)platform_collect_status_desc,
+    FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","PAY_STATUS", pay_status)pay_status_desc,
+    (select a.company_name from bu_mcht_info a where a.id = t.mcht_id)company_name,
+    (select a.shop_name from bu_mcht_info a where a.id = t.mcht_id)shop_name,
+    (select GROUP_CONCAT(b.`name` separator  '，') from bu_mcht_product_type a,bu_product_type b where a.mcht_id = t.mcht_id and a.del_flag='0' and a.`status`='1' and a.product_type_id=b.id and b.`status`='1' order by b.t_level,b.seq_no)open_product_type,
+    (select GROUP_CONCAT(CONCAT(b.`name`,'（',CAST((IFNULL(a.pop_commission_rate, 0)*100) AS DECIMAL(9,2)),'%）') separator  '，') from bu_mcht_product_brand a,bu_product_brand b where a.mcht_id = t.mcht_id and a.del_flag='0' and a.`status`='1' and a.product_brand_id=b.id and b.`status`='1' order by b.id)open_product_brand,
+    (settle_amount-deposit_amount)need_settle_amount,
+    FUN_GET_STATUS_DESC("BU_MCHT_SETTLE_ORDER","MCHT_COLLECT_TYPE", mcht_collect_type)mcht_collect_type_name,
+    (select sum(od.platform_preferential) from bu_order_dtl od where od.mcht_settle_order_id = t.id and od.del_flag='0' and od.is_give='0')platform_preferential,
+    (select sum(od.integral_preferential) from bu_order_dtl od where od.mcht_settle_order_id = t.id and od.del_flag='0' and od.is_give='0')integral_preferential,
+    CONCAT(ROUND((1-t.settle_amount/(ifnull(t.order_amount,0)+ifnull(t.earnest_money,0)))*100,2),'%')gross_rate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtSettleOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_settle_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.MchtSettleOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_settle_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="countCompleteSubOrder" resultType="com.jf.entity.MchtSettleOrderCustom" parameterType="java.lang.Integer" >
+	SELECT
+		SUM(od.quantity) as quantity,sum(od.sale_price*od.quantity) as amount,
+		sum(od.mcht_preferential) as mchtPreferential,sum(od.freight) as freight,sum(od.platform_preferential) as platformPreferential,sum(od.integral_preferential) as integralPreferential,
+        sum(od.pay_amount) as payAmount,SUM(od.settle_amount) as productSettleAmount,
+        (select sum(sdo.deposit) from bu_sub_deposit_order sdo where sdo.order_dtl_id = od.id and sdo.del_flag='0')deposit,
+        so.mcht_type mchtType,
+	    so.is_manage_self isManageSelf,
+	    (select ode.manage_self_freight from bu_order_dtl_extend ode where ode.order_dtl_id = od.id and ode.del_flag = '0')manageSelfFreight
+	FROM
+		bu_order_dtl od,
+		bu_sub_order so
+	WHERE
+		so.id = od.sub_order_id
+		AND so.del_flag = '0'
+		AND od.del_flag = '0'	
+		AND so.status = '3'
+		AND od.mcht_settle_order_id =#{id}
+  </select>
+  
+  <select id="countCustomerServiceOrder" resultType="java.math.BigDecimal" parameterType="java.lang.Integer" >
+SELECT
+	SUM(t.amount)
+FROM
+	(
+		SELECT
+			cso.amount
+		FROM
+			bu_customer_service_order cso,
+			bu_sub_order so
+		WHERE
+			cso.sub_order_id = so.id
+		AND so.`status` = '3'
+		AND cso.service_type = 'D'
+		AND cso.mcht_settle_order_id = #{id}
+		AND cso.del_flag='0'
+		AND so.del_flag='0'
+	) t
+  </select>
+  		  
+  <select id="selectNoSituationCustomOrderDtlList" resultMap="com.jf.dao.OrderDtlCustomMapper.BaseResultMap">
+ 	select so.mcht_id,mi.mcht_type,od.* from bu_sub_order so,bu_order_dtl od,bu_mcht_info mi where so.id=od.sub_order_id and so.mcht_id=mi.id and so.del_flag='0' and od.del_flag='0' and so.`status`='3' and mi.mcht_type=#{mchtType} <if test="mchtCode!=null">and mi.mcht_code=#{mchtCode}</if> <if test="name!=null">and EXISTS(select mi.id from bu_mcht_info mi where mi.short_name like CONCAT('%','${name}','%' )  or mi.shop_name like CONCAT('%','${name}','%' ) or mi.company_name like CONCAT('%','${name}','%' )) </if>and not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=so.mcht_id)   and od.is_give='0' and  DATE_FORMAT(so.complete_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectNoSituationCustomOrderList" resultMap="com.jf.dao.CustomerServiceOrderCustomMapper.BaseResultMap">
+ 	select cso.*,so.mcht_id ,mi.mcht_type from bu_customer_service_order cso,bu_customer_service_status_log cssl,bu_sub_order so,bu_mcht_info mi where mi.id=so.mcht_id and cso.id=cssl.service_order_id and cso.sub_order_id=so.id  and  cso.service_type='D' and cssl.pro_status='D2' <if test="mchtCode!=null">and mi.mcht_code=#{mchtCode}</if> and not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=so.mcht_id) and cso.del_flag='0' and cssl.del_flag='0' and  DATE_FORMAT(cssl.create_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectNoSituationPayLogList" resultMap="com.jf.dao.PayToMchtLogMapper.BaseResultMap">
+ 	select ptml.* from bu_pay_to_mcht_log ptml, bu_mcht_info mi where ptml.mcht_id = mi.id and ptml.del_flag='0' and  ptml.type in ('1','2') <if test="mchtCode!=null">and mi.mcht_code=#{mchtCode}</if>  and not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=ptml.mcht_id)  and DATE_FORMAT(ptml.pay_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectSituationDepositTotal" resultType="map">
+ 	select t.mcht_id mchtId,sum(t.pay_amount) totalPayAmount from bu_pay_to_mcht_log t, bu_mcht_info mi where t.mcht_id = mi.id and t.del_flag='0' <if test="mchtCode!=null">and mi.mcht_code=#{mchtCode}</if> and t.type in ('3','4') and  DATE_FORMAT(t.pay_date,'%Y-%m')=#{payDate,jdbcType=VARCHAR}  group by t.mcht_id
+  </select>
+  
+  <select id="selectSituationByMchtIdAndDate" resultMap="com.jf.dao.MchtSettleSituationMapper.BaseResultMap">
+ 	select mss.* from bu_mcht_settle_situation mss where mss.del_flag='0' and mss.mcht_id=#{mchtId,jdbcType=INTEGER} and mss.settle_date=#{settleDate,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="batchConfirmConfirmStatus">
+  	update bu_mcht_settle_order mso set mso.confirm_status='3' where mso.confirm_status='2' and mso.del_flag='0' and mso.id in 
+  	<foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
+    	#{item} 
+	</foreach>
+  </select>
+  
+  <select id="batchPayStatus" parameterType="map">
+  	update bu_mcht_settle_order mso set mso.pay_status='2',mso.pay_ready_date=#{payReadyDate} where mso.pay_status='1' and mso.del_flag='0' and mso.id in 
+  	<foreach item="item" index="index" collection="idsList" open="(" separator="," close=")"> 
+    	#{item} 
+	</foreach>
+  </select>
+  
+  <select id="getNeedPayAmountByIds" resultType="java.math.BigDecimal">
+  	select sum(mso.need_pay_amount) from bu_mcht_settle_order mso where mso.id in 
+  	<foreach item="item" index="index" collection="list" open="(" separator="," close=")"> 
+    	#{item} 
+	</foreach>
+  </select>
+  
+  <sql id="Base_Column_List1" >
+    id, mcht_id,sum(settle_amount-deposit_amount) as exceed_amount
+  </sql>
+  
+   <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtSettleOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List1" />
+    from bu_mcht_settle_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+    group by mcht_id
+  </select>
+  
+</mapper>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.IntellectualPropertyRightAppealCustomMapper">
+    <resultMap id="BaseResultMap" type="com.jf.entity.IntellectualPropertyRightAppealCustom"
+               extends="com.jf.dao.IntellectualPropertyRightAppealMapper.BaseResultMap">
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="complain_id" property="complainId" jdbcType="INTEGER"/>
+        <result column="complain_status" property="complainStatus" jdbcType="VARCHAR"/>
+        <result column="appeal_type_desc" property="appealTypeDesc" jdbcType="VARCHAR"/>
+        <result column="appeal_reason_desc" property="appealReasonDesc" jdbcType="VARCHAR"/>
+        <result column="status_desc" property="statusDesc" jdbcType="VARCHAR"/>
+        <result column="complain_status_desc" property="complainStatusDesc" jdbcType="VARCHAR"/>
+        <result column="complain_reason" property="complainReason" jdbcType="VARCHAR"/>
+        <result column="allow_show_mobile" property="allowShowMobile" jdbcType="VARCHAR"/>
+        <result column="complain_remarks" property="complainRemarks" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and a.${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and a.${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and a.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and a.${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        a.id, a.obligee_id, a.intellectual_property_right_id, a.mcht_id, a.appeal_reason, a.appeal_type, a.relevant_value,
+        a.reason_desc, a.accept_status, a.remarks_to_obligee, a.remarks_to_mcht, a.inner_remarks, a.commit_date,
+        a.status, a.status_date, a.complain_end_date, a.staff_id, a.create_by, a.create_date, a.update_by,
+        a.update_date, a.remarks, a.del_flag
+    </sql>
+
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.jf.entity.IntellectualPropertyRightAppealCustomExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>,
+        t1.mobile,
+        t1.allow_show_mobile,
+        t2.complain_id,
+        t2.complain_status,
+        t2.complain_remarks,
+        FUN_GET_STATUS_DESC("PROPERTY_RIGHT_APPEAL", "APPEAL_TYPE", a.appeal_type) appeal_type_desc,
+        FUN_GET_STATUS_DESC("PROPERTY_RIGHT_APPEAL", "STATUS", a.status) status_desc,
+        FUN_GET_STATUS_DESC("PROPERTY_RIGHT_COMPLAIN", "STATUS", t2.complain_status) complain_status_desc
+        FROM
+        bu_intellectual_property_right_appeal a
+        LEFT JOIN bu_obligee t1 ON t1.id = a.obligee_id
+        LEFT JOIN (
+            SELECT p.id AS complain_id,
+            p.intellectual_property_right_appeal_id,
+            p.status AS complain_status,
+            p.remarks_to_mcht AS complain_remarks
+            FROM bu_property_right_complain p WHERE p.del_flag = '0'
+        ) t2 ON t2.intellectual_property_right_appeal_id = a.id
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="complainStatus != null and complainStatus != ''" >
+            and a.accept_status = '1'
+            <choose>
+                <when test="complainStatus == -1">
+                    and t2.complain_id is null and a.complain_end_date &gt; #{presentTime}
+                </when>
+                <when test="complainStatus == 99">
+                    and ((t2.complain_id is null or t2.complain_status = '2') and a.complain_end_date &lt; #{presentTime})
+                </when>
+                <otherwise>
+                    and t2.complain_status = #{complainStatus}
+                    <if test="complainStatus == 2 " >
+                        and a.complain_end_date &gt; #{presentTime}
+                    </if>
+                </otherwise>
+            </choose>
+        </if>
+
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart != null and limitStart>=0">
+            limit #{limitStart} , #{limitSize}
+        </if>
+    </select>
+
+    <select id="countByExample" parameterType="com.jf.entity.IntellectualPropertyRightAppealCustomExample"
+            resultType="java.lang.Integer">
+        select count(*)
+        FROM
+        bu_intellectual_property_right_appeal a
+        LEFT JOIN bu_obligee t1 ON t1.id = a.obligee_id
+        LEFT JOIN (
+            SELECT p.id AS complain_id,
+            p.intellectual_property_right_appeal_id,
+            p.status AS complain_status
+            FROM bu_property_right_complain p WHERE p.del_flag = '0'
+        ) t2 ON t2.intellectual_property_right_appeal_id = a.id
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="complainStatus != null and complainStatus != '' and complainStatus != -1 and complainStatus != 99" >
+            and t2.complain_status = #{complainStatus}
+        </if>
+        <if test="complainStatus != null and complainStatus != '' and complainStatus == 2 " >
+            and a.complain_end_date &gt; #{presentTime}
+        </if>
+        <if test="complainStatus != null and complainStatus != '' and complainStatus == -1" >
+            and t2.complain_id is null and a.complain_end_date &gt; #{presentTime}
+        </if>
+        <if test="complainStatus != null and complainStatus != '' and complainStatus == 99" >
+            and (t2.complain_id is null or t2.complain_status = '2' and a.complain_end_date &lt; #{presentTime})
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>,
+        t2.complain_id,
+        t2.complain_status,
+        t2.complain_reason,
+        FUN_GET_STATUS_DESC("PROPERTY_RIGHT_APPEAL", "APPEAL_REASON", a.appeal_reason) appeal_reason_desc,
+        FUN_GET_STATUS_DESC("PROPERTY_RIGHT_APPEAL", "APPEAL_TYPE", a.appeal_type) appeal_type_desc
+        from bu_intellectual_property_right_appeal a
+        left join bu_mcht_info t4 on t4.id = a.mcht_id
+        LEFT JOIN (
+            SELECT p.id AS complain_id,
+            p.intellectual_property_right_appeal_id,
+            p.status AS complain_status,
+            p.complain_reason
+            FROM bu_property_right_complain p WHERE p.del_flag = '0'
+        ) t2 ON t2.intellectual_property_right_appeal_id = a.id
+        where a.id = #{id,jdbcType=INTEGER}
+    </select>
+
+</mapper>

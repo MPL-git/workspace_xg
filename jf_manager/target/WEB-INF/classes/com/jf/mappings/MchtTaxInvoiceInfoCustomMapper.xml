@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtTaxInvoiceInfoCustomMapper">
+  <resultMap id="BaseResultCustomMap" type="com.jf.entity.MchtTaxInvoiceInfoCustom" extends="com.jf.dao.MchtTaxInvoiceInfoMapper.BaseResultMap" >
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="tax_type_desc" property="taxTypeDesc" jdbcType="VARCHAR" />
+    <result column="audit_status_desc" property="auditStatusDesc" jdbcType="VARCHAR" />
+  </resultMap>
+    
+    <sql id="selectMchtTaxInvoiceInfoCustomSql">
+		 select 
+		        a.*,
+		        (select b.company_name from bu_mcht_info b where b.id=a.mcht_id) company_name,
+		        FUN_GET_STATUS_DESC("BU_MCHT_TAX_INVOICE_INFO","TAX_TYPE", a.tax_type) tax_type_desc,
+		        FUN_GET_STATUS_DESC("BU_MCHT_TAX_INVOICE_INFO","AUDIT_STATUS", a.audit_status) audit_status_desc
+		 from bu_mcht_tax_invoice_info a
+		 where a.del_flag = '0'
+		 	<if test="id !=null and id != ''">
+				and a.id =#{id}
+			</if>
+		 	<if test="mchtId !=null and mchtId != ''">
+				and a.mcht_id =#{mchtId}
+			</if>
+			<if test="taxType !=null and taxType != ''">
+				and a.tax_type =#{taxType}
+			</if>
+			<choose>
+			<when test="auditStatus !=null and auditStatus != ''">
+				and a.audit_status =#{auditStatus}
+			</when>
+            <otherwise>
+				and a.audit_status!='0'
+			</otherwise>
+			</choose>
+			<if test="companyName !=null and companyName != ''">
+				and a.mcht_id in (select b.id from bu_mcht_info b where b.id=a.mcht_id and b.company_name like CONCAT('%', '${companyName}', '%'))
+			</if>
+    </sql>
+    
+    <select id="mchtTaxInvoiceInfoCustomList"  parameterType="java.util.HashMap" resultMap="BaseResultCustomMap">
+       SELECT TAB.* FROM (
+		<include refid="selectMchtTaxInvoiceInfoCustomSql" />
+		)TAB
+		order by TAB.id desc
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+    </select>
+    
+    <select id="mchtTaxInvoiceInfoCustomListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectMchtTaxInvoiceInfoCustomSql" /> 
+		  ) TAB	 
+	</select>
+	
+</mapper>

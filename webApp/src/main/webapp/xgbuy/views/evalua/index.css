@@ -1,0 +1,264 @@
+.evalua form {
+	height: calc(100% - .88rem);
+}
+.evalua h3 {
+	font-size: .28rem;
+}
+.evalua .bb1 {
+	border-bottom: 1px solid #eee;
+}
+.evalua .pd20 {
+	padding: .2rem;
+}
+.evalua .main,
+.evalua-shop {
+	background: #fff;
+}
+
+/*评分*/
+.evalua-star i {
+	width: .6rem;
+	height: .6rem;
+	margin-right: .11rem;
+	background: url(resource/star-0.png) no-repeat;
+	background-size: contain;
+}
+.evalua-star.star-1 i:nth-child(-n+1),
+.evalua-star.star-2 i:nth-child(-n+2),
+.evalua-star.star-3 i:nth-child(-n+3),
+.evalua-star.star-4 i:nth-child(-n+4),
+.evalua-star.star-5 i:nth-child(-n+5) {
+	background-image: url(resource/star-1.png);
+}
+.evalua-text {
+	font-size: .28rem;
+	color: #999;
+	margin-left: .2rem;
+}
+
+/*商品描述与评分*/
+.evalua-goods {
+	padding: .15rem .2rem;
+}
+.evalua-goods dt {
+	width: .8rem;
+	height: .8rem;
+	margin-right: .2rem;
+}
+.evalua-goods h3 {
+	padding-right: .15rem;
+}
+
+/*店铺评分*/
+.evalua-shop h3 {
+	height: .5rem;
+}
+.evalua-shop h3:before {
+	content: '';
+	width: .58rem;
+	height: .5rem;
+	margin-right: .1rem;
+	background: url(../images/seller.png) no-repeat center;
+	background-size: .38rem auto;
+}
+.evalua-shop>div {
+	height: .6rem;
+	margin-top: .1rem;
+	color: #999;
+	font-size: .28rem;
+}
+.evalua-shop>div span {
+	padding: 0 .03rem;
+	margin-right: .1rem;
+}
+.evalua .list-pic {
+	overflow: hidden;
+	padding-top: .17rem;
+}
+.evalua .list-pic>div {
+	float: left;
+	width: 2.3rem;
+	height: 2.3rem;
+	margin: 0 0 .1rem .1rem;
+}
+.evalua .list-pic>div:nth-child(3n+1) {
+	margin-left: 0;
+}
+
+/************************* 以上通用 *************************/
+
+/*提交*/
+.evalua .btn-red {
+	height: .9rem;
+	font-size: .32rem;
+	padding: 0;
+	border-radius: 0;
+	outline: none;
+}
+
+/*规格*/
+.evalua .spec p {
+	height: .42rem;
+	margin-top: .1rem;
+	font-size: .24rem;
+}
+.evalua .spec div {
+	line-height: .44rem;
+	font-size: .26rem;
+}
+
+/*评价*/
+.evalua .text {
+	font-size: .26rem;
+}
+.evalua .text em {
+	line-height: .24rem;
+}
+.evalua .text textarea {
+	display: block;
+	width: 100%;
+	min-height: 2rem;
+	resize: vertical;
+	border: none;
+}
+.evalua .text textarea::-webkit-input-placeholder {
+	color: #999;
+}
+.evalua .image {
+	overflow: hidden;
+	padding: 0 .2rem .3rem;
+}
+.evalua .img-add,
+.evalua .img-box div {
+	position: relative;
+	float: left;
+	width: 1.2rem;
+	height: 1.2rem;
+	margin: .2rem .1rem 0;
+	border-radius: .02rem;
+}
+.evalua .img-box a {
+	position: absolute;
+	top: -.14rem;
+	right: -.14rem;
+	z-index: 1;
+	width: .28rem;
+	height: .28rem;
+	border-radius: 100%;
+	background: rgba(0, 0, 0, .6);
+}
+.evalua .img-box a:before,
+.evalua .img-box a:after {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	content: '';
+	width: .16rem;
+	height: .02rem;
+	margin: -.01rem 0 0 -.08rem;
+	background: #fff;
+	border-radius: .01rem;
+
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.evalua .img-box a:after {
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+.evalua .img-add {
+	background: url(resource/img.png) no-repeat;
+	background-size: contain;
+}
+.evalua .img-add p {
+	position: absolute;
+	top: .76rem;
+	left: 0;
+	width: 100%;
+	color: #999;
+	font-size: .2rem;
+	text-align: center;
+}
+.evalua .img-add input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	border: none;
+	outline: none;
+}
+
+.evalua .img-box span {
+	overflow: hidden;
+	height: 100%;
+}
+.evalua .click-show {
+	position: relative;
+	left: -0.6rem;
+}
+.evalua .tab-body {
+	width: 5.8rem;
+	background: #ffffff;
+	border-radius: 0.04rem;
+}
+.evalua .tab-header {
+	height: 0.8rem;
+	padding: 0.3rem;
+	font-size: 0.3rem;
+	color: #333;
+}
+.evalua .tab-header img {
+	width: 0.35rem;
+	height: 0.4rem;
+	margin-right: 0.17rem;
+}
+.evalua .main-msg {
+	padding-bottom: 0.28rem;
+}
+.evalua .black {
+	position: relative;
+	top: 0.04rem;
+	left: -0.17rem;
+	width: 0.36rem;
+	height: 0.36rem;
+	font-size: 0.28rem;
+	color: white;
+	background: #333;
+	border-radius: 50%;
+}
+.evalua .main-text {
+	width: 4.52rem;
+	font-size: 0.26rem;
+	color: #666;
+}
+.evalua .main-text p {
+	display: block;
+}
+.evalua .tab-integral {
+	position: relative;
+	width: 6rem;
+	height: 2.4rem;
+	background-color: #fff;
+	border-radius: 0.1rem;
+	font-size: 0.36rem;
+	color: #333;
+}
+.evalua .tab-title {
+	height: 1.14rem;
+	font-weight: 600;
+}
+
+.evalua .tab-content {
+	font-size: 0.4rem;
+	margin: 0.1rem;
+}
+
+.evalua .img-integral {
+	position: relative;
+    top: -0.15rem;
+    font-size: 0.28rem;
+    margin-left: 0.3rem;
+}

@@ -1,0 +1,15 @@
+<div class="activity-single-day decorate bgfa">
+	<link rel="stylesheet" href="activity/templet/css/single-day.css?var=1.0">
+	<link rel="stylesheet" href="activity/templet/css/brand-decorate.css?var=1.0">
+
+	<div class="nest-theme no-padding"></div>
+
+	<script src="activity/nest/home/common.js?var=1.0"></script>
+	<script>
+		(function () {
+			postNestHome(getStorage('nest_home_theme'), function (e) {
+				$('.nest-theme').append(e);
+			});
+		})();
+	</script>
+</div>

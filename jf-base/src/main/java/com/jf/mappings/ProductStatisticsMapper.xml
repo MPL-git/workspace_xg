@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductStatisticsMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductStatistics" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="sold_count_7_days" property="soldCount7Days" jdbcType="INTEGER" />
+    <result column="sold_amount_7_days" property="soldAmount7Days" jdbcType="DECIMAL" />
+    <result column="refund_count_7_days" property="refundCount7Days" jdbcType="INTEGER" />
+    <result column="refund_amount_7_days" property="refundAmount7Days" jdbcType="DECIMAL" />
+    <result column="sub_order_count_7_days" property="subOrderCount7Days" jdbcType="INTEGER" />
+    <result column="sold_count_30_days" property="soldCount30Days" jdbcType="INTEGER" />
+    <result column="sold_amount_30_days" property="soldAmount30Days" jdbcType="DECIMAL" />
+    <result column="refund_count_30_days" property="refundCount30Days" jdbcType="INTEGER" />
+    <result column="refund_amount_30_days" property="refundAmount30Days" jdbcType="DECIMAL" />
+    <result column="sub_order_count_30_days" property="subOrderCount30Days" jdbcType="INTEGER" />
+    <result column="sold_count_90_days" property="soldCount90Days" jdbcType="INTEGER" />
+    <result column="sold_amount_90_days" property="soldAmount90Days" jdbcType="DECIMAL" />
+    <result column="refund_count_90_days" property="refundCount90Days" jdbcType="INTEGER" />
+    <result column="refund_amount_90_days" property="refundAmount90Days" jdbcType="DECIMAL" />
+    <result column="sub_order_count_90_days" property="subOrderCount90Days" jdbcType="INTEGER" />
+    <result column="applause_rate" property="applauseRate" jdbcType="DECIMAL" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, product_id, sold_count_7_days, sold_amount_7_days, refund_count_7_days, refund_amount_7_days, 
+    sub_order_count_7_days, sold_count_30_days, sold_amount_30_days, refund_count_30_days, 
+    refund_amount_30_days, sub_order_count_30_days, sold_count_90_days, sold_amount_90_days, 
+    refund_count_90_days, refund_amount_90_days, sub_order_count_90_days, applause_rate, 
+    create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ProductStatisticsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_product_statistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_product_statistics
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_product_statistics
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.ProductStatisticsExample" >
+    delete from bu_product_statistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.ProductStatistics" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_product_statistics (product_id, sold_count_7_days, sold_amount_7_days, 
+      refund_count_7_days, refund_amount_7_days, sub_order_count_7_days, 
+      sold_count_30_days, sold_amount_30_days, refund_count_30_days, 
+      refund_amount_30_days, sub_order_count_30_days, 
+      sold_count_90_days, sold_amount_90_days, refund_count_90_days, 
+      refund_amount_90_days, sub_order_count_90_days, 
+      applause_rate, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{productId,jdbcType=INTEGER}, #{soldCount7Days,jdbcType=INTEGER}, #{soldAmount7Days,jdbcType=DECIMAL}, 
+      #{refundCount7Days,jdbcType=INTEGER}, #{refundAmount7Days,jdbcType=DECIMAL}, #{subOrderCount7Days,jdbcType=INTEGER}, 
+      #{soldCount30Days,jdbcType=INTEGER}, #{soldAmount30Days,jdbcType=DECIMAL}, #{refundCount30Days,jdbcType=INTEGER}, 
+      #{refundAmount30Days,jdbcType=DECIMAL}, #{subOrderCount30Days,jdbcType=INTEGER}, 
+      #{soldCount90Days,jdbcType=INTEGER}, #{soldAmount90Days,jdbcType=DECIMAL}, #{refundCount90Days,jdbcType=INTEGER}, 
+      #{refundAmount90Days,jdbcType=DECIMAL}, #{subOrderCount90Days,jdbcType=INTEGER}, 
+      #{applauseRate,jdbcType=DECIMAL}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.ProductStatistics" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_product_statistics
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="soldCount7Days != null" >
+        sold_count_7_days,
+      </if>
+      <if test="soldAmount7Days != null" >
+        sold_amount_7_days,
+      </if>
+      <if test="refundCount7Days != null" >
+        refund_count_7_days,
+      </if>
+      <if test="refundAmount7Days != null" >
+        refund_amount_7_days,
+      </if>
+      <if test="subOrderCount7Days != null" >
+        sub_order_count_7_days,
+      </if>
+      <if test="soldCount30Days != null" >
+        sold_count_30_days,
+      </if>
+      <if test="soldAmount30Days != null" >
+        sold_amount_30_days,
+      </if>
+      <if test="refundCount30Days != null" >
+        refund_count_30_days,
+      </if>
+      <if test="refundAmount30Days != null" >
+        refund_amount_30_days,
+      </if>
+      <if test="subOrderCount30Days != null" >
+        sub_order_count_30_days,
+      </if>
+      <if test="soldCount90Days != null" >
+        sold_count_90_days,
+      </if>
+      <if test="soldAmount90Days != null" >
+        sold_amount_90_days,
+      </if>
+      <if test="refundCount90Days != null" >
+        refund_count_90_days,
+      </if>
+      <if test="refundAmount90Days != null" >
+        refund_amount_90_days,
+      </if>
+      <if test="subOrderCount90Days != null" >
+        sub_order_count_90_days,
+      </if>
+      <if test="applauseRate != null" >
+        applause_rate,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="soldCount7Days != null" >
+        #{soldCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldAmount7Days != null" >
+        #{soldAmount7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="refundCount7Days != null" >
+        #{refundCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount7Days != null" >
+        #{refundAmount7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount7Days != null" >
+        #{subOrderCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldCount30Days != null" >
+        #{soldCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldAmount30Days != null" >
+        #{soldAmount30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="refundCount30Days != null" >
+        #{refundCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount30Days != null" >
+        #{refundAmount30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount30Days != null" >
+        #{subOrderCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldCount90Days != null" >
+        #{soldCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldAmount90Days != null" >
+        #{soldAmount90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="refundCount90Days != null" >
+        #{refundCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount90Days != null" >
+        #{refundAmount90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount90Days != null" >
+        #{subOrderCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="applauseRate != null" >
+        #{applauseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.ProductStatisticsExample" resultType="java.lang.Integer" >
+    select count(*) from bu_product_statistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_product_statistics
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.soldCount7Days != null" >
+        sold_count_7_days = #{record.soldCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.soldAmount7Days != null" >
+        sold_amount_7_days = #{record.soldAmount7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundCount7Days != null" >
+        refund_count_7_days = #{record.refundCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.refundAmount7Days != null" >
+        refund_amount_7_days = #{record.refundAmount7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.subOrderCount7Days != null" >
+        sub_order_count_7_days = #{record.subOrderCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.soldCount30Days != null" >
+        sold_count_30_days = #{record.soldCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.soldAmount30Days != null" >
+        sold_amount_30_days = #{record.soldAmount30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundCount30Days != null" >
+        refund_count_30_days = #{record.refundCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.refundAmount30Days != null" >
+        refund_amount_30_days = #{record.refundAmount30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.subOrderCount30Days != null" >
+        sub_order_count_30_days = #{record.subOrderCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.soldCount90Days != null" >
+        sold_count_90_days = #{record.soldCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.soldAmount90Days != null" >
+        sold_amount_90_days = #{record.soldAmount90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.refundCount90Days != null" >
+        refund_count_90_days = #{record.refundCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.refundAmount90Days != null" >
+        refund_amount_90_days = #{record.refundAmount90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="record.subOrderCount90Days != null" >
+        sub_order_count_90_days = #{record.subOrderCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="record.applauseRate != null" >
+        applause_rate = #{record.applauseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_product_statistics
+    set id = #{record.id,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      sold_count_7_days = #{record.soldCount7Days,jdbcType=INTEGER},
+      sold_amount_7_days = #{record.soldAmount7Days,jdbcType=DECIMAL},
+      refund_count_7_days = #{record.refundCount7Days,jdbcType=INTEGER},
+      refund_amount_7_days = #{record.refundAmount7Days,jdbcType=DECIMAL},
+      sub_order_count_7_days = #{record.subOrderCount7Days,jdbcType=INTEGER},
+      sold_count_30_days = #{record.soldCount30Days,jdbcType=INTEGER},
+      sold_amount_30_days = #{record.soldAmount30Days,jdbcType=DECIMAL},
+      refund_count_30_days = #{record.refundCount30Days,jdbcType=INTEGER},
+      refund_amount_30_days = #{record.refundAmount30Days,jdbcType=DECIMAL},
+      sub_order_count_30_days = #{record.subOrderCount30Days,jdbcType=INTEGER},
+      sold_count_90_days = #{record.soldCount90Days,jdbcType=INTEGER},
+      sold_amount_90_days = #{record.soldAmount90Days,jdbcType=DECIMAL},
+      refund_count_90_days = #{record.refundCount90Days,jdbcType=INTEGER},
+      refund_amount_90_days = #{record.refundAmount90Days,jdbcType=DECIMAL},
+      sub_order_count_90_days = #{record.subOrderCount90Days,jdbcType=INTEGER},
+      applause_rate = #{record.applauseRate,jdbcType=DECIMAL},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.ProductStatistics" >
+    update bu_product_statistics
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="soldCount7Days != null" >
+        sold_count_7_days = #{soldCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldAmount7Days != null" >
+        sold_amount_7_days = #{soldAmount7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="refundCount7Days != null" >
+        refund_count_7_days = #{refundCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount7Days != null" >
+        refund_amount_7_days = #{refundAmount7Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount7Days != null" >
+        sub_order_count_7_days = #{subOrderCount7Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldCount30Days != null" >
+        sold_count_30_days = #{soldCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldAmount30Days != null" >
+        sold_amount_30_days = #{soldAmount30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="refundCount30Days != null" >
+        refund_count_30_days = #{refundCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount30Days != null" >
+        refund_amount_30_days = #{refundAmount30Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount30Days != null" >
+        sub_order_count_30_days = #{subOrderCount30Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldCount90Days != null" >
+        sold_count_90_days = #{soldCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="soldAmount90Days != null" >
+        sold_amount_90_days = #{soldAmount90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="refundCount90Days != null" >
+        refund_count_90_days = #{refundCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount90Days != null" >
+        refund_amount_90_days = #{refundAmount90Days,jdbcType=DECIMAL},
+      </if>
+      <if test="subOrderCount90Days != null" >
+        sub_order_count_90_days = #{subOrderCount90Days,jdbcType=INTEGER},
+      </if>
+      <if test="applauseRate != null" >
+        applause_rate = #{applauseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.ProductStatistics" >
+    update bu_product_statistics
+    set product_id = #{productId,jdbcType=INTEGER},
+      sold_count_7_days = #{soldCount7Days,jdbcType=INTEGER},
+      sold_amount_7_days = #{soldAmount7Days,jdbcType=DECIMAL},
+      refund_count_7_days = #{refundCount7Days,jdbcType=INTEGER},
+      refund_amount_7_days = #{refundAmount7Days,jdbcType=DECIMAL},
+      sub_order_count_7_days = #{subOrderCount7Days,jdbcType=INTEGER},
+      sold_count_30_days = #{soldCount30Days,jdbcType=INTEGER},
+      sold_amount_30_days = #{soldAmount30Days,jdbcType=DECIMAL},
+      refund_count_30_days = #{refundCount30Days,jdbcType=INTEGER},
+      refund_amount_30_days = #{refundAmount30Days,jdbcType=DECIMAL},
+      sub_order_count_30_days = #{subOrderCount30Days,jdbcType=INTEGER},
+      sold_count_90_days = #{soldCount90Days,jdbcType=INTEGER},
+      sold_amount_90_days = #{soldAmount90Days,jdbcType=DECIMAL},
+      refund_count_90_days = #{refundCount90Days,jdbcType=INTEGER},
+      refund_amount_90_days = #{refundAmount90Days,jdbcType=DECIMAL},
+      sub_order_count_90_days = #{subOrderCount90Days,jdbcType=INTEGER},
+      applause_rate = #{applauseRate,jdbcType=DECIMAL},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.PropertyRightComplainCustomMapper">
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and a.${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and a.${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and a.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and a.${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    id, intellectual_property_right_appeal_id, status, complain_reason, remarks_to_mcht, 
+    remarks_to_obligee, inner_remarks, prosecution_end_date, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+
+    <select id="selectOverDueByExample" resultType="com.jf.entity.PropertyRightComplain"
+            parameterType="com.jf.entity.PropertyRightComplainExample">
+        SELECT
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>,
+        t1.prosecution_id,
+        t1.prosecution_status
+        FROM
+        bu_property_right_complain a
+        LEFT JOIN (
+            SELECT
+                p1.id AS prosecution_id,
+                p1.property_right_complain_id,
+                p1.status as prosecution_status
+            FROM
+            bu_property_right_prosecution p1
+        ) t1 ON t1.property_right_complain_id = a.id
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        and (t1.prosecution_id IS NULL OR t1.prosecution_status IN (1, 2))
+    </select>
+
+</mapper>

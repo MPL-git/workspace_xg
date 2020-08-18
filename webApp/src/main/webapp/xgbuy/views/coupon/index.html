@@ -1,0 +1,124 @@
+<div class="page coupon bgf4" data-title="优惠券" data-id="coupon">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="coupon/index.css?var=1.0">
+
+	<header class="flex ac jb">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('my')"></i></div>
+		<p class="ellipsis">我的优惠券</p>
+		<div class="fn">
+			<a class="ico-btn" onclick="popupShow('.popup-set-coupon')">兑换</a>
+		</div>
+	</header>
+
+	<div class="tab-top flex"></div>
+
+	<div class="tab-body">
+		<div class="scroll-y scroll-fix tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+		<div class="scroll-y scroll-fix tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+		<div class="scroll-y scroll-fix tab-con bgf4">
+			<div class="touchfix flex dc"></div>
+		</div>
+	</div>
+
+	<script id="coupon_tpl_top" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+		<a class="flex fg dc ac" onclick="couponApi.getPagingList('{{value.type}}')">
+			<span class="fg flex ac">
+				{{value.name}}({{value.couponCount ? (value.couponCount > 99 ? '99+' : value.couponCount) : 0}})
+			</span>
+		</a>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="coupon_tpl" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+				{{if value.linkType == 5 || !value.linkType}}
+			<dl class="corsor" onclick="getUrl('mall/index.html')"
+			data-type="{{value.linkType}}"
+			data-linkvalue="{{value.linkValue}}"
+			data-link="{{value.linkValue}}"
+			data-activityid="{{value.id}}"
+			data-id="{{value.id}}"
+			>
+				{{else}}
+			<dl class="corsor" onclick="getBrandDef(this)"
+			data-type="{{value.linkType}}"
+			data-linkvalue="{{value.linkValue}}"
+			data-link="{{value.linkValue}}"
+			data-productid="{{value.linkValue}}"
+			data-activityid="{{value.id}}"
+			data-id="{{value.id}}"
+			>
+				{{/if}}
+				<dt class="flex ac coupon-name">
+					<span class="flex ac type">{{value.couponTypeName}}</span>
+					<span class="flex ac detail">{{value.useDescription}}</span>
+				</dt>
+				{{if tab == 1 || tab == 2}}
+				<dt class="coupon-main red">
+				{{else}}
+				<dt class="coupon-main gray">
+				{{/if}}
+					<div class="flex discount">
+					{{if value.couponPreferentialType == 1}}
+						{{if tab == 3}}
+						<span class="c9">￥<span class="fs60 mr20">{{value.money}}</span></span>
+						{{else}}
+						<span class="f50">￥<span class="fs60 mr20">{{value.money}}</span></span>
+						{{/if}}
+					{{else}}
+						{{if tab == 3}}
+						<span class="c9 mr20"><span class="fs60">{{value.discount}}</span>折</span>
+						{{else}}
+						<span class="f50 mr20"><span class="fs60">{{value.discount}}</span>折</span>
+						{{/if}}						
+					{{/if}}
+						<span class="flex ae jc">{{value.preferentialInfo}}</span>
+					</div>
+					<div class="text">{{value.describeContent}}</div>
+					<div class="text times">{{value.begDate}} - {{value.endDate}}</div>
+					<div class="button">
+					{{if tab == 1}}
+						<button class="flex ac jc">去使用</button>
+					{{else if tab == 2}}
+						<button class="flex ac jc gray">已使用</button>
+					{{else}}
+						<button class="flex ac jc gray">已过期</button>
+					{{/if}}
+					{{if value.isCanGive}}
+						<button onclick="stopSelf();couponApi.send('{{value.preferentialInfo}}','{{value.id}}')" class="flex ac jc send"><img src="goods/resources/detail-svip.png"> 赠送</button>
+					{{/if}}
+					</div>
+				</dt>
+			</dl>
+			{{/each}}
+		{{else}}
+			{{include 'coupon_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="coupon_tpl_empty" type="text/html">
+		<div class="page-empty empty-coupon flex dc ac jc fg">
+			<i></i>
+			<p>您当前还没有优惠券</p>
+		</div>
+	</script>
+
+	<div class="popup popup-rule popup-set-coupon" onclick="closeSelf(this)">
+		<div class="popup-center flex dc" onclick="stopSelf()">
+			<span class="close corsor" onclick="closeSelf(this)"></span>
+			<h3 class="flex ac jc">兑换优惠券</h3>
+			<input class="flex ac jc" type="text">
+			<a class="flex ac jc btn-red" onclick="couponApi.exc(this)">兑换</a>
+		</div>
+	</div>
+
+	<script src="coupon/index.js?var=1.0" async></script>
+</div>

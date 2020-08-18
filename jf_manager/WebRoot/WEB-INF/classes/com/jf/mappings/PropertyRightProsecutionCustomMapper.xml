@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.PropertyRightProsecutionCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.PropertyRightProsecutionCustom"  extends="com.jf.dao.PropertyRightProsecutionMapper.BaseResultMap">
+  	<result column="right_appeal_id" property="rightAppealId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="identity_type" property="identityType" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="accept_status" property="acceptStatus" jdbcType="VARCHAR" />
+    <result column="identity_type_desc" property="identityTypeDesc" jdbcType="VARCHAR" />
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+    <result column="prosecution_end_date" property="prosecutionEndDate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and a.${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and a.${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and a.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and a.${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    a.id, a.intellectual_property_right_appeal_id, a.property_right_complain_id, a.status, a.remarks_to_obligee, 
+    a.remarks_to_mcht, a.win_type, a.result_to_obligee, a.result_to_mcht, a.inner_remarks, a.create_by, 
+    a.create_date, a.update_by, a.update_date, a.remarks, a.del_flag,
+	FUN_GET_STATUS_DESC ( "BU_PROPERTY_RIGHT_PROSECUTION", "STATUS", a.status ) status_desc 
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.PropertyRightProsecutionCustomExample" >
+    SELECT
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+		t1.right_appeal_id,
+		t1.staff_id,
+		t1.mobile,
+		t1.accept_status,
+		t1.identity_type,
+		t1.STAFF_NAME,
+		t1.prosecution_end_date,
+		FUN_GET_STATUS_DESC ( "BU_OBLIGEE", "IDENTITY_TYPE", t1.identity_type ) identity_type_desc
+	FROM
+		bu_property_right_prosecution a
+	LEFT JOIN (
+		SELECT
+			p1.id AS right_appeal_id,
+			p1.staff_id,
+			p1.accept_status,
+			p2.mobile,
+			p2.identity_type,
+			p3.STAFF_NAME,
+			p4.prosecution_end_date 
+		FROM
+			bu_intellectual_property_right_appeal p1
+		LEFT JOIN bu_obligee p2 ON p2.id = p1.obligee_id
+		LEFT JOIN sys_staff_info p3 ON p3.STAFF_ID = p1.staff_id
+		LEFT JOIN bu_property_right_complain p4 ON p4.intellectual_property_right_appeal_id = p1.id
+	) t1 ON t1.right_appeal_id = a.intellectual_property_right_appeal_id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="mobile != null and mobile != ''" >
+      and t1.mobile like CONCAT('%',#{mobile},'%')
+    </if>
+    <if test="staffId != null and staffId != ''" >
+      and t1.staff_id = #{staffId}
+    </if>
+    <if test="listFlag != null and listFlag == 1 and prosecutionEndDate != null" >
+      and (
+      	a.status = '1' and t1.prosecution_end_date &lt;= #{prosecutionEndDate}
+      	or a.status = '2'
+   		)
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />,
+    	t1.right_appeal_id,
+		t1.staff_id,
+		t1.accept_status,
+		t1.mobile,
+		t1.identity_type,
+		t1.STAFF_NAME,
+		t1.prosecution_end_date,
+		FUN_GET_STATUS_DESC ( "BU_OBLIGEE", "IDENTITY_TYPE", t1.identity_type ) identity_type_desc
+	FROM
+		bu_property_right_prosecution a
+	LEFT JOIN (
+		SELECT
+			p1.id AS right_appeal_id,
+			p1.staff_id,
+			p1.accept_status,
+			p2.mobile,
+			p2.identity_type,
+			p3.STAFF_NAME,
+			p4.prosecution_end_date 
+		FROM
+			bu_intellectual_property_right_appeal p1
+		LEFT JOIN bu_obligee p2 ON p2.id = p1.obligee_id
+		LEFT JOIN sys_staff_info p3 ON p3.STAFF_ID = p1.staff_id
+		LEFT JOIN bu_property_right_complain p4 ON p4.intellectual_property_right_appeal_id = p1.id
+	) t1 ON t1.right_appeal_id = a.intellectual_property_right_appeal_id
+    where a.id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.PropertyRightProsecutionCustomExample" resultType="java.lang.Integer" >
+    select count(*) 
+    FROM
+		bu_property_right_prosecution a
+	LEFT JOIN (
+		SELECT
+			p1.id AS right_appeal_id,
+			p1.staff_id,
+			p1.accept_status,
+			p2.mobile,
+			p2.identity_type,
+			p3.STAFF_NAME 
+		FROM
+			bu_intellectual_property_right_appeal p1
+		LEFT JOIN bu_obligee p2 ON p2.id = p1.obligee_id
+		LEFT JOIN sys_staff_info p3 ON p3.STAFF_ID = p1.staff_id 
+	) t1 ON t1.right_appeal_id = a.intellectual_property_right_appeal_id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="mobile != null and mobile != ''" >
+      and t1.mobile like CONCAT('%',#{mobile},'%')
+    </if>
+    <if test="staffId != null and staffId != ''" >
+      and t1.staff_id = #{staffId}
+    </if>
+  </select>
+  
+</mapper>

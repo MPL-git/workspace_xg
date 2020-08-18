@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberActivityFootprintCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberActivityFootprintCustom" extends="com.jf.dao.MemberActivityFootprintMapper.BaseResultMap">
+   
+  </resultMap>
+  
+  <select id="getMemberActivityFootprintList" parameterType="java.util.Map" resultType="com.jf.entity.MemberActivityFootprintCustom">
+		select
+		t.activity_id,
+		ac.entry_pic as entryPic,
+		ac.name as activityName,
+		acArea.entry_pic as areaEntryPic,
+		acArea.activity_end_time as activityEndTime,
+		acArea.activity_begin_time as activityBeginTime,
+		acArea.name as activityAreaName,
+		acArea.source,
+		acArea.id as activityAreaId,
+		acArea.benefit_point as benefitPoint
+		from bu_member_activity_footprint t,bu_activity ac,bu_activity_area acArea
+		where t.activity_id = ac.id and ac.activity_area_id = acArea.id
+		and t.del_flag = '0'
+		and ac.del_flag = '0'
+		and ac.status = '6'
+		and acArea.del_flag = '0'
+		and acArea.status = '1'
+		and acArea.activity_end_time >= NOW()
+		and t.member_id = #{memberId}
+		order by t.update_date desc
+		<choose>
+			<when test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</when>
+			<otherwise>limit 10</otherwise>
+		</choose>
+  	</select>
+
+	<select id="getMemberActivityFootprintCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1)
+		from bu_member_activity_footprint t,bu_activity ac,bu_activity_area acArea
+		where t.activity_id = ac.id and ac.activity_area_id = acArea.id
+		and t.del_flag = '0'
+		and ac.del_flag = '0'
+		and ac.status = '6'
+		and acArea.del_flag = '0'
+		and acArea.status = '1'
+		and acArea.activity_end_time >= NOW()
+		and t.member_id = #{memberId}
+  	</select>
+
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ShopProductCustomTypeCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ShopProductCustomTypeCustom"  extends="com.jf.dao.ShopProductCustomTypeMapper.BaseResultMap">
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="product_count" property="productCount" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, name, status, seq_no, create_by, create_date, update_by, update_date, 
+    remarks, del_flag,
+    (select count(1) from bu_product p where FIND_IN_SET(t.id,p.shop_product_custom_type_id_group) and p.del_flag='0')product_count,
+    FUN_GET_STATUS_DESC("BU_SHOP_PRODUCT_CUSTOM_TYPE", "STATUS", status)status_desc
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ShopProductCustomTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_shop_product_custom_type t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.ShopProductCustomTypeExample" resultType="java.lang.Integer" >
+    select count(*) from bu_shop_product_custom_type t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getMaxSeqNo" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	SELECT MAX(t.seq_no) FROM bu_shop_product_custom_type t WHERE t.del_flag='0' and t.mcht_id = #{mchtId}
+  </select>
+  
+  <select id="batchExecute" parameterType="java.util.HashMap">
+  	update bu_shop_product_custom_type t set t.seq_no=t.seq_no-1 where t.del_flag='0' and t.mcht_id=#{mchtId} and t.seq_no <![CDATA[ > ]]> #{oldSeqNo} and t.seq_no<![CDATA[ <= ]]>#{seqNo}
+  </select>
+  
+  <select id="batchExecute2" parameterType="java.util.HashMap">
+ 	update bu_shop_product_custom_type t set t.seq_no=t.seq_no+1 where t.del_flag='0' and t.mcht_id=#{mchtId} and t.seq_no <![CDATA[ >= ]]> #{seqNo} and t.seq_no<![CDATA[ < ]]>#{oldSeqNo}
+  </select>
+  
+  <select id="batchExecute3" parameterType="java.util.HashMap">
+  	update bu_shop_product_custom_type t set t.seq_no=t.seq_no-1 where t.del_flag='0' and t.mcht_id=#{mchtId} and t.seq_no <![CDATA[ > ]]> #{oldSeqNo}
+  </select>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SysStaffRoleCustomMapper" >
+  <resultMap id="BaseResultCustomMap" type="com.jf.entity.SysStaffRoleCustom" extends="com.jf.dao.SysStaffRoleMapper.BaseResultMap" >
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+  
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    STAFF_ROLE_ID, STAFF_ID, ROLE_ID, CREATE_DATE, STATUS, STATUS_DATE, CREATE_STAFF_ID, 
+    MODIFY_STAFF_ID,
+    (SELECT SSI.STAFF_NAME FROM SYS_STAFF_INFO SSI WHERE SSI.STATUS = 'A' AND SSI.STAFF_ID = ssr.STAFF_ID LIMIT 1 ) STAFF_NAME 
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultCustomMap" parameterType="com.jf.entity.SysStaffRoleCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_staff_role ssr
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKeyCustom" resultMap="BaseResultCustomMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_staff_role ssr
+    where STAFF_ROLE_ID = #{staffRoleId,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.SysStaffRoleCustomExample" resultType="java.lang.Integer" >
+    select count(*) from sys_staff_role ssr
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectStaffRoleList" resultMap="BaseResultCustomMap" parameterType="java.lang.Integer" >
+	    SELECT
+			a.STAFF_ROLE_ID,
+			a.STAFF_ID,
+			a.ROLE_ID,
+			a.CREATE_DATE,
+			a.STATUS,
+			a.STATUS_DATE,
+			a.CREATE_STAFF_ID,
+			a.MODIFY_STAFF_ID,
+			t1.STAFF_NAME
+		FROM
+			sys_staff_role a 
+		LEFT JOIN sys_staff_info t1 ON t1.STAFF_ID = a.STAFF_ID
+		WHERE
+			a.STATUS = "A" 
+			AND a.ROLE_ID = #{0} 
+		GROUP BY
+			a.STAFF_ID,
+			a.ROLE_ID
+  </select>
+</mapper>

@@ -1,0 +1,861 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberPvCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberPvCustom" extends="com.jf.dao.MemberPvMapper.BaseResultMap" >
+
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pv_id, member_id, device_number, column_type, column_id, page_classify, page_type,
+    mcht_id, value_id, client_source, from_page_type, from_pv_id, stay_time, create_by,
+    create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberPvCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_pv t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_member_pv t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.MemberPvCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_pv t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_member_pv t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pvId != null" >
+        pv_id = #{record.pvId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pageType != null" >
+        page_type = #{record.pageType,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.valueId != null" >
+        value_id = #{record.valueId,jdbcType=INTEGER},
+      </if>
+      <if test="record.clientSource != null" >
+        client_source = #{record.clientSource,jdbcType=CHAR},
+      </if>
+      <if test="record.fromPageType != null" >
+        from_page_type = #{record.fromPageType,jdbcType=CHAR},
+      </if>
+      <if test="record.fromPvId != null" >
+        from_pv_id = #{record.fromPvId,jdbcType=INTEGER},
+      </if>
+      <if test="record.stayTime != null" >
+        stay_time = #{record.stayTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+	<insert id="insertMemberPvList" parameterType="java.util.List" >
+		insert into bu_member_pv (pv_id,member_id,device_number,column_type,column_id,
+			page_classify,page_type,mcht_id,value_id,client_source,from_page_type,
+			from_pv_id,stay_time,create_date)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.pvId},#{item.memberId},#{item.deviceNumber},#{item.columnType},#{item.columnId},
+			#{item.pageClassify},#{item.pageType},#{item.mchtId},#{item.valueId},#{item.clientSource},
+			#{item.fromPageType},#{item.fromPvId},#{item.stayTime},#{item.createDate})
+		</foreach>
+	</insert>
+
+	<insert id="insertMemberPvDtlList" parameterType="java.util.List" >
+		<![CDATA[
+		insert into bu_member_pv_dtl (client_source,member_id,device_number,member_pv_id,dtl_item_type,
+			dtl_item_id,position,click_count,create_date)
+		values
+		]]>
+		<foreach collection="list" item="item" separator=",">
+			(#{item.clientSource},#{item.memberId},#{item.deviceNumber},#{item.memberPvId},#{item.dtlItemType},
+			#{item.dtlItemId},#{item.position},#{item.clickCount},#{item.createDate})
+		</foreach>
+	</insert>
+
+	<insert id="insertMemberActionList" parameterType="java.util.List" >
+		insert into bu_member_action (client_source,member_id,column_id,column_type,device_number,member_pv_id,action_type,
+			action_item_id,create_date)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.clientSource},#{item.memberId},#{item.columnId},#{item.columnType},#{item.deviceNumber},#{item.memberPvId},#{item.actionType},
+			#{item.actionItemId},#{item.createDate})
+		</foreach>
+	</insert>
+
+
+	<!-- 商家流量统计 -->
+	<select id="getMchtPvStatisticalList" resultType="java.util.Map" parameterType="java.util.Map" >
+		SELECT
+			A.mcht_id,
+			A.statistical_date,
+			A.total_visitor_count,
+			A.total_pv_count,
+			A.total_visitor_count_tourist,
+			A.total_pv_count_tourist,
+			(
+				SELECT
+					CONVERT(CONCAT(IFNULL(SUM(od.pay_amount), 0), ',', COUNT(DISTINCT so.id), ',', COUNT(DISTINCT co.member_id), ',', COUNT(DISTINCT co.id), ',', IFNULL(SUM(od.quantity), 0)), CHAR)
+				FROM
+					bu_combine_order co,
+					bu_sub_order so,
+					bu_order_dtl od
+				WHERE
+					co.id = so.combine_order_id
+				AND so.id = od.sub_order_id
+				AND co.del_flag = '0'
+				AND co.status = '1'
+				AND co.pay_date BETWEEN CONCAT(A.statistical_date, ' 00:00:00')
+				AND CONCAT(A.statistical_date, ' 23:59:59')
+				AND so.del_flag = '0'
+				AND so.mcht_id = A.mcht_id
+				AND od.del_flag = '0'
+			) pay_amount
+		FROM
+			(
+				SELECT
+					mp.mcht_id,
+					DATE_FORMAT(mp.create_date, '%Y-%m-%d') statistical_date,
+					COUNT(DISTINCT mp.member_id) total_visitor_count,
+					COUNT(mp.member_id) total_pv_count,
+					COUNT(DISTINCT IF(mp.member_id IS NOT NULL,NULL,mp.device_number)) total_visitor_count_tourist,
+					COUNT(1)-COUNT(mp.member_id) total_pv_count_tourist
+				FROM
+					bu_member_pv mp
+				WHERE
+					mp.del_flag = '0'
+				AND mp.mcht_id IS NOT NULL
+				AND mp.page_classify IN (9, 10, 16)
+				AND mp.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				GROUP BY
+					statistical_date,
+					mcht_id
+			) A
+	</select>
+
+	<!-- 平台流量统计 -->
+	<select id="getPlatformPvStatisticalList" resultType="java.util.Map" parameterType="java.util.Map" >
+		SELECT
+			mp.client_source,
+			DATE_FORMAT(mp.create_date, '%Y-%m-%d') statistical_date,
+			COUNT(DISTINCT mp.member_id) total_visitor_count,
+			COUNT(mp.member_id) total_pv_count,
+			COUNT(DISTINCT IF(mp.member_id IS NOT NULL,NULL,mp.device_number)) total_visitor_count_tourist,
+			COUNT(1)-COUNT(mp.member_id) total_pv_count_tourist
+		FROM
+			bu_member_pv mp
+		WHERE
+			mp.del_flag = '0'
+		AND mp.client_source IS NOT NULL
+		AND mp.create_date BETWEEN #{beginDate}
+		AND #{endDate}
+		GROUP BY
+			statistical_date,
+			client_source
+	</select>
+	<!-- 支付金额   支付买家数  支付子订单数  支付商品数 -->
+	<select id="getPlatformPvStatisticalOrder" resultType="java.util.Map" parameterType="java.util.Map" >
+		SELECT
+			IFNULL(SUM(od.pay_amount), 0) pay_amount,
+			COUNT(DISTINCT co.id) pay_combine_order_count,
+			COUNT(DISTINCT so.id) pay_sub_order_count,
+			IFNULL(SUM(od.quantity), 0) pay_product_count,
+			COUNT(DISTINCT co.member_id) pay_member_count
+		FROM
+			bu_combine_order co,
+			bu_sub_order so,
+			bu_order_dtl od
+		WHERE
+			co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		AND co.del_flag = '0'
+		AND co. STATUS = '1'
+		AND co.pay_date BETWEEN CONCAT(#{payDate}, ' 00:00:00')
+		AND CONCAT(#{payDate}, ' 23:59:59')
+		AND co.source_client = #{sourceClient}
+		AND so.del_flag = '0'
+		AND od.del_flag = '0'
+	</select>
+
+	<!-- 每日特卖统计 -->
+	<select id="getActivityPvStatisticalList" resultType="java.util.Map" parameterType="java.util.Map" >
+		SELECT
+			A.statistical_date,
+			A.activity_id,
+			A.total_visitor_count,
+			A.total_pv_count,
+			A.total_visitor_count_tourist,
+			A.total_pv_count_tourist,
+			(
+				SELECT
+					CONVERT(CONCAT(IFNULL(SUM(od.pay_amount), 0), ',', COUNT(DISTINCT so.id), ',', COUNT(DISTINCT co.id)), CHAR)
+				FROM
+					bu_combine_order co,
+					bu_sub_order so,
+					bu_order_dtl od
+				WHERE
+					co.id = so.combine_order_id
+				AND so.id = od.sub_order_id
+				AND co.del_flag = '0'
+				AND co.status = '1'
+				AND co.pay_date BETWEEN CONCAT(A.statistical_date, ' 00:00:00')
+				AND CONCAT(A.statistical_date, ' 23:59:59')
+				AND so.del_flag = '0'
+				AND od.del_flag = '0'
+				AND od.activity_id = A.activity_id
+			) pay_amount
+		FROM
+			(
+				SELECT
+					pv.value_id activity_id,
+					DATE_FORMAT(pv.create_date, '%Y-%m-%d') statistical_date,
+					COUNT(DISTINCT pv.member_id) total_visitor_count,
+					COUNT(pv.member_id) total_pv_count,
+					COUNT(DISTINCT IF(pv.member_id IS NOT NULL,NULL,pv.device_number)) total_visitor_count_tourist,
+					COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist
+				FROM
+					bu_member_pv pv
+				WHERE
+					pv.del_flag = '0'
+				AND pv.page_classify = '9'
+				AND pv.page_type = '27'
+				AND pv.value_id IS NOT NULL
+				AND pv.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				GROUP BY
+					statistical_date,
+					activity_id
+			) A
+	</select>
+	<select id="getHomePagePosition" resultType="java.lang.String" parameterType="java.util.Map" >
+		SELECT
+			(
+				SELECT
+					ai.seq_no
+				FROM
+					bu_ad_info ai
+				WHERE
+					ai.del_flag = '0'
+				AND ai.type = '2'
+				AND ai.position = '9'
+				AND ai.link_id = mpd.dtl_item_id
+				ORDER BY ai.id DESC
+				LIMIT 1
+			)
+		FROM
+			bu_member_pv mp,
+			bu_member_pv_dtl mpd
+		WHERE
+			mp.pv_id = mpd.member_pv_id
+		AND mp.del_flag = '0'
+		AND mp.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+		AND mp.page_classify = '13'
+		AND mp.page_type = '34'
+		AND mpd.del_flag = '0'
+		AND mpd.dtl_item_type = '2'
+		AND mpd.dtl_item_id = #{activityId }
+		AND mpd.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+		LIMIT 1
+	</select>
+	<select id="getClassifyPagePosition" resultType="java.lang.String" parameterType="java.util.Map" >
+		SELECT
+			(
+				SELECT
+					a.seq_no
+				FROM
+					bu_activity a
+				WHERE
+					a.del_flag = '0'
+				AND a.id = mpd.dtl_item_id
+			)
+		FROM
+			bu_member_pv mp,
+			bu_member_pv_dtl mpd
+		WHERE
+			mp.pv_id = mpd.member_pv_id
+		AND mp.del_flag = '0'
+		AND mp.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+		AND mp.page_classify = '17'
+		AND mpd.del_flag = '0'
+		AND mpd.dtl_item_type = '2'
+		AND mpd.dtl_item_id = #{activityId }
+		AND mpd.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+		LIMIT 1
+	</select>
+	<select id="getHomePageExposureCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		SELECT
+			COUNT(1)
+		FROM
+			bu_member_pv mp,
+			bu_member_pv_dtl mpd
+		WHERE
+			mp.pv_id = mpd.member_pv_id
+		AND mp.del_flag = '0'
+		AND mp.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+		AND mp.page_classify = '13'
+		AND mp.page_type = '34'
+		AND mpd.del_flag = '0'
+		AND mpd.dtl_item_type = '2'
+		AND mpd.dtl_item_id = #{activityId }
+		AND mpd.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+	</select>
+	<select id="getClassifyPageExposureCount" resultType="java.lang.Integer" parameterType="java.util.Map" >
+		SELECT
+			COUNT(1)
+		FROM
+			bu_member_pv mp,
+			bu_member_pv_dtl mpd
+		WHERE
+			mp.pv_id = mpd.member_pv_id
+		AND mp.del_flag = '0'
+		AND mp.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+		AND mp.page_classify = '17'
+		AND mpd.del_flag = '0'
+		AND mpd.dtl_item_type = '2'
+		AND mpd.dtl_item_id = #{activityId }
+		AND mpd.create_date BETWEEN CONCAT(#{statisticalDate }, ' 00:00:00')
+		AND CONCAT(#{statisticalDate }, ' 23:59:59')
+	</select>
+  
+	<!-- 每日会场统计 -->
+	<select id="getActivityAreaPvStatisticalList" resultType="java.util.Map" parameterType="java.util.Map" >
+		SELECT
+			A.statistical_date,
+			A.activity_area_id,
+			A.total_visitor_count,
+			A.total_pv_count,
+			A.total_visitor_count_tourist,
+			A.total_pv_count_tourist,
+			(
+				SELECT
+					mpd.position
+				FROM
+					bu_member_pv mp,
+					bu_member_pv_dtl mpd
+				WHERE
+					mp.pv_id = mpd.member_pv_id
+				AND mp.del_flag = '0'
+				AND mp.create_date BETWEEN CONCAT(A.statistical_date, ' 00:00:00')
+				AND CONCAT(A.statistical_date, ' 23:59:59')
+				AND mp.page_classify = '13'
+				AND mp.page_type = '34'
+				AND mpd.del_flag = '0'
+				AND mpd.dtl_item_type = '1'
+				AND mpd.dtl_item_id = A.activity_area_id
+				AND mpd.create_date BETWEEN CONCAT(A.statistical_date, ' 00:00:00')
+				AND CONCAT(A.statistical_date, ' 23:59:59')
+				LIMIT 1
+			) home_page_position,
+			0 classify_page_position,
+			(
+				SELECT
+					COUNT(1)
+				FROM
+					bu_member_pv_dtl mpd
+				WHERE
+					mpd.del_flag = '0'
+				AND mpd.create_date BETWEEN CONCAT(A.statistical_date, ' 00:00:00')
+				AND CONCAT(A.statistical_date, ' 23:59:59')
+				AND mpd.dtl_item_type = '1'
+				AND mpd.dtl_item_id = A.activity_area_id
+				AND mpd.create_date BETWEEN CONCAT(A.statistical_date, ' 00:00:00')
+				AND CONCAT(A.statistical_date, ' 23:59:59')
+			) home_page_exposure_count,
+			0 classify_page_exposure_count,
+			(
+				SELECT
+					CONVERT(CONCAT(IFNULL(SUM(od.pay_amount), 0), ',', COUNT(DISTINCT so.id), ',', COUNT(DISTINCT co.id)), CHAR)
+				FROM
+					bu_combine_order co,
+					bu_sub_order so,
+					bu_order_dtl od
+				WHERE
+					co.id = so.combine_order_id
+				AND so.id = od.sub_order_id
+				AND co.del_flag = '0'
+				AND co.status = '1'
+				AND co.pay_date BETWEEN CONCAT(A.statistical_date, ' 00:00:00')
+				AND CONCAT(A.statistical_date, ' 23:59:59')
+				AND so.del_flag = '0'
+				AND od.del_flag = '0'
+				AND od.activity_area_id = A.activity_area_id
+			) pay_amount
+		FROM
+			(
+				SELECT
+					pv.value_id activity_area_id,
+					DATE_FORMAT(pv.create_date, '%Y-%m-%d') statistical_date,
+					COUNT(DISTINCT pv.member_id) total_visitor_count,
+					COUNT(pv.member_id) total_pv_count,
+					COUNT(DISTINCT IF(pv.member_id IS NOT NULL,NULL,pv.device_number)) total_visitor_count_tourist,
+					COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist
+				FROM
+					bu_member_pv pv
+				WHERE
+					pv.del_flag = '0'
+				AND pv.page_classify = '11'
+				AND pv.page_type = '30'
+				AND pv.value_id IS NOT NULL
+				AND pv.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				GROUP BY
+					statistical_date,
+					activity_area_id
+			) A
+	</select>
+
+	<!-- 每日广告位统计 -->
+	<select id="getAdPvStatisticalList" resultType="java.util.Map" parameterType="java.util.Map" >
+		SELECT
+			DATE_FORMAT(mpd.create_date, '%Y-%m-%d') statistical_date,
+			mpd.dtl_item_id ad_id,
+			COUNT(1) exposure_count,
+			COUNT(DISTINCT IF(mpd.click_count = 0, NULL, mpd.member_id)) click_member_count,
+			IFNULL(SUM(IF(mpd.member_id IS NOT NULL, mpd.click_count, 0)), 0) click_count,
+			COUNT(DISTINCT IF(mpd.member_id IS NULL AND mpd.click_count > 0, mpd.device_number, NULL)) click_member_count_tourist,
+			IFNULL(SUM(IF(mpd.member_id IS NOT NULL, 0, mpd.click_count)), 0) click_count_tourist
+		FROM
+			bu_member_pv_dtl mpd
+		WHERE
+			mpd.del_flag = '0'
+		AND mpd.dtl_item_type = #{dtlItemType}
+		AND mpd.dtl_item_id IS NOT NULL
+		AND mpd.create_date BETWEEN #{beginDate}
+		AND #{endDate}
+		GROUP BY
+			statistical_date,
+			ad_id
+	</select>
+	<!-- 品牌团广告 -->
+	<select id="getBrandTeamTypeAd" resultType="java.util.Map" parameterType="java.lang.Integer" >
+		SELECT
+			btt.product_type_id,
+			btt.name,
+			btta.pic
+		FROM
+			bu_brand_team_type btt,
+			bu_brand_team_type_ad_info btta
+		WHERE
+			btt.id = btta.brand_team_type_id
+		AND btt.del_flag = '0'
+		AND btta.del_flag = '0'
+		AND	btta.id = #{id }
+	</select>
+	<!-- 淘宝优选广告 -->
+	<select id="getWetaoTeamTypeAd" resultType="java.util.Map" parameterType="java.lang.Integer" >
+		SELECT
+			wp.product_type_id,
+			wp.name,
+			pa.pic
+		FROM
+			bu_wetao_page wp,
+			bu_wetao_page_ad_info pa
+		WHERE
+			wp.id = pa.wetao_page_id
+		AND pa.del_flag = '0'
+		AND pa.del_flag = '0'
+		AND	pa.id = #{id }
+	</select>
+
+	<!-- 每日栏目统计 -->
+	<select id="getColumnPvStatisticalList" resultType="java.util.Map" parameterType="java.util.Map" >
+		SELECT
+			A.column_type column_type,
+			A.statistical_date,
+			A.column_id column_id,
+			A.total_visitor_count,
+			A.total_pv_count,
+			A.total_visitor_count_tourist,
+			A.total_pv_count_tourist,
+			(
+				SELECT
+					IFNULL(SUM(sc.quantity), 0)
+				FROM
+					bu_member_action ma,
+					bu_shopping_cart sc
+				WHERE
+					ma.action_item_id = sc.id
+				AND ma.column_type = A.column_type
+				<if test="columnId != null">
+					AND ma.column_id = A.column_id
+				</if>
+				AND ma.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				AND ma.action_type = '14'
+				AND ma.action_item_id IS NOT NULL
+			) shopping_cart_count,
+			(
+				SELECT
+					IFNULL(SUM(sc.quantity), 0)
+				FROM
+					bu_member_action ma,
+					bu_shopping_cart sc
+				WHERE
+					ma.action_item_id = sc.id
+				AND ma.column_type = A.column_type
+				<if test="columnId != null">
+					AND ma.column_id = A.column_id
+				</if>
+				AND ma.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				AND ma.action_type in('14', '15')
+				AND ma.action_item_id IS NOT NULL
+				AND sc.order_dtl_id IS NOT NULL
+			) sub_product_count,
+			(
+				SELECT
+					CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0)), CHAR)
+				FROM
+					bu_member_action ma,
+					bu_shopping_cart sc,
+					bu_order_dtl od,
+					bu_sub_order so,
+					bu_combine_order co
+				WHERE
+					ma.action_item_id = sc.id
+				AND sc.order_dtl_id = od.id
+				AND od.sub_order_id = so.id
+				AND so.combine_order_id = co.id
+				AND ma.column_type = A.column_type
+				<if test="columnId != null">
+					AND ma.column_id = A.column_id
+				</if>
+				AND ma.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				AND ma.action_type in('14', '15')
+				AND ma.action_item_id IS NOT NULL
+				AND sc.order_dtl_id IS NOT NULL
+				AND co.status = '1'
+			) pay_product_count,
+			(
+				SELECT
+					COUNT(DISTINCT ma.action_item_id)
+				FROM
+					bu_member_action ma,
+					bu_member_info mi
+				WHERE
+					ma.action_item_id = mi.id
+				AND ma.column_type = A.column_type
+				<if test="columnId != null">
+					AND ma.column_id = A.column_id
+				</if>
+				AND ma.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				AND mi.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				AND ma.action_type in('9', '10', '11', '12', '13')
+				AND ma.action_item_id IS NOT NULL
+			) new_member_count
+		FROM
+			(
+				SELECT
+					pv.column_type column_type,
+					DATE_FORMAT(pv.create_date, '%Y-%m-%d') statistical_date,
+					pv.column_id column_id,
+					COUNT(DISTINCT pv.member_id) total_visitor_count,
+					COUNT(pv.member_id) total_pv_count,
+					COUNT(DISTINCT IF(pv.member_id IS NOT NULL,NULL,pv.device_number)) total_visitor_count_tourist,
+					COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist
+				FROM
+					bu_member_pv pv
+				WHERE
+					pv.del_flag = '0'
+				AND pv.column_type IS NOT NULL
+				<if test="columnId != null">
+					AND pv.column_id IS NOT NULL
+				</if>
+				<if test="columnId == null">
+					AND pv.column_id IS NULL
+				</if>
+				AND pv.create_date BETWEEN #{beginDate}
+				AND #{endDate}
+				GROUP BY
+					statistical_date,
+					<if test="columnId != null">
+						column_id,
+					</if>
+					column_type
+			)A
+	</select>
+
+  <!-- 有关流量统计清除表数据 -->
+  <!-- 用户浏览记录中间表 -->
+  <delete id="deleteMemberPvMiddle" >  
+	DELETE FROM bu_member_pv_middle  
+  </delete> 
+  <!-- 用户浏览记录中间表 -->
+  <delete id="deleteMemberPv" >  
+	DELETE FROM bu_member_pv  
+  </delete> 
+  <!-- 用户浏览明细 -->
+  <delete id="deleteMemberPvDtl" >  
+	DELETE FROM bu_member_pv_dtl  
+  </delete> 
+  <!-- 用户行为明细 -->
+  <delete id="deleteMemberAction" >  
+	DELETE FROM bu_member_action  
+  </delete> 
+  <!-- 商家流量统计 -->
+  <delete id="deleteMchtPvStatistical" >  
+	DELETE FROM bu_mcht_pv_statistical  
+  </delete> 
+  <!-- 平台流量统计 -->
+  <delete id="deletePlatformPvStatistical" >  
+	DELETE FROM bu_platform_pv_statistical   
+  </delete> 
+  <!-- 每日特卖统计 -->
+  <delete id="deleteActivityPvStatistical" >  
+	DELETE FROM bu_activity_pv_statistical
+  </delete> 
+  <!-- 每日会场统计 -->
+  <delete id="deleteActivityAreaPvStatistical" >  
+	DELETE FROM bu_activity_area_pv_statistical
+  </delete> 
+  <!-- 每日广告位统计 -->
+  <delete id="deleteAdPvStatistical" >  
+	DELETE FROM bu_ad_pv_statistical  
+  </delete>
+
+
+	<!-- 每日特卖(新品牌团)根据类目统计 -->
+	<select id="getActivityPvStatisticalByColumn" resultType="com.jf.entity.TypeColumnPvStatistical" parameterType="java.util.Map" >
+		SELECT
+		t.id AS valueId,
+		t.statistical_date AS statisticalDate,
+		IFNULL( SUM( t.member_visitors_amount ), 0 ) AS totalVisitorCount,
+		IFNULL( SUM( t.unmember_visitors_amount ), 0 ) AS totalVisitorCountTourist,
+		IFNULL( SUM( t.member_page_view ), 0 ) AS totalPvCount,
+		IFNULL( SUM( t.unmember_page_view ), 0 ) AS totalPvCountTourist,
+		IFNULL( SUM( t.add_product_amount ), 0 ) AS shoppingCartCount,
+		IFNULL( SUM( t.submit_order_amount ), 0 ) AS subProductCount,
+		IFNULL( SUM( t.payment_amount ), 0 ) AS payProductCount
+		FROM
+		(
+		SELECT
+		bmp.value_id AS id,
+		DATE_FORMAT(bmp.create_date, '%Y-%m-%d') statistical_date,
+		COUNT( DISTINCT ( bmp.member_id ) ) AS member_visitors_amount,
+		COUNT( DISTINCT IF(bmp.member_id IS NOT NULL,NULL,bmp.device_number)) AS unmember_visitors_amount,
+		COUNT( bmp.member_id ) AS member_page_view,
+		COUNT(1)-COUNT(bmp.member_id) AS unmember_page_view,
+		0 AS add_product_amount,
+		0 AS submit_order_amount,
+		0 AS payment_amount
+		FROM
+		bu_member_pv bmp
+		WHERE
+		bmp.column_type = '17'
+		AND bmp.value_id IS NOT NULL
+		AND bmp.create_date BETWEEN #{beginDate} AND #{endDate}
+		AND bmp.del_flag = '0'
+		GROUP BY
+		bmp.value_id
+		UNION
+		SELECT
+		bmp.value_id AS id,
+		DATE_FORMAT(bmp.create_date, '%Y-%m-%d') statistical_date,
+		0 AS member_visitors_amount,
+		0 AS unmember_visitors_amount,
+		0 AS member_page_view,
+		0 AS unmember_page_view,
+		SUM( bsc.quantity ) AS add_product_amount,
+		0 AS submit_order_amount,
+		0 AS payment_amount
+		FROM
+		bu_member_pv bmp,
+		bu_member_action bma,
+		bu_shopping_cart bsc
+		WHERE
+		bmp.pv_id = bma.member_pv_id
+		AND bma.action_item_id = bsc.id
+		AND bmp.column_type = '17'
+		AND bma.action_type = '14'
+		AND bmp.value_id IS NOT NULL
+		AND bmp.create_date BETWEEN #{beginDate} AND #{endDate}
+		AND bmp.del_flag = '0'
+		AND bma.del_flag = '0'
+		GROUP BY
+		bmp.value_id
+		UNION
+		SELECT
+		bmp.value_id AS id,
+		DATE_FORMAT(bmp.create_date, '%Y-%m-%d') statistical_date,
+		0 AS member_visitors_amount,
+		0 AS unmember_visitors_amount,
+		0 AS member_page_view,
+		0 AS unmember_page_view,
+		0 AS add_product_amount,
+		SUM( bod.quantity ) AS submit_order_amount,
+		0 AS payment_amount
+		FROM
+		bu_member_pv bmp,
+		bu_member_action bma,
+		bu_order_dtl bod,
+		bu_shopping_cart bsc
+		WHERE
+		bmp.pv_id = bma.member_pv_id
+		AND bma.action_item_id = bsc.id
+		AND bsc.order_dtl_id = bod.id
+		AND bmp.column_type = '17'
+		AND bma.action_type IN ( '14', '15' )
+		AND bmp.value_id IS NOT NULL
+		AND bmp.create_date BETWEEN #{beginDate} AND #{endDate}
+		AND bmp.del_flag = '0'
+		AND bma.del_flag = '0'
+		AND bod.del_flag = '0'
+		GROUP BY
+		bmp.value_id
+		UNION
+		SELECT
+		bmp.value_id AS id,
+		DATE_FORMAT(bmp.create_date, '%Y-%m-%d') statistical_date,
+		0 AS member_visitors_amount,
+		0 AS unmember_visitors_amount,
+		0 AS member_page_view,
+		0 AS unmember_page_view,
+		0 AS add_product_amount,
+		0 AS submit_order_amount,
+		SUM( bod.quantity ) AS payment_amount
+		FROM
+		bu_member_pv bmp,
+		bu_member_action bma,
+		bu_shopping_cart bsc,
+		bu_combine_order bco,
+		bu_sub_order bso,
+		bu_order_dtl bod
+		WHERE
+		bmp.pv_id = bma.member_pv_id
+		AND bma.action_item_id = bsc.id
+		AND bsc.order_dtl_id = bod.id
+		AND bso.id = bod.sub_order_id
+		AND bco.id = bso.combine_order_id
+		AND bmp.column_type = '17'
+		AND bma.action_type IN ( '14', '15' )
+		AND bmp.value_id IS NOT NULL
+		AND bmp.create_date BETWEEN #{beginDate} AND #{endDate}
+		AND bco.STATUS = '1'
+		AND bmp.del_flag = '0'
+		AND bma.del_flag = '0'
+		AND bco.del_flag = '0'
+		AND bso.del_flag = '0'
+		AND bod.del_flag = '0'
+		GROUP BY
+		bmp.value_id
+		) t
+		GROUP BY
+		id
+	</select>
+
+</mapper>

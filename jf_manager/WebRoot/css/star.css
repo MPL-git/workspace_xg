@@ -1,0 +1,12 @@
+@charset "utf-8";/* 转载请保留版权信息：懒人图库 www.lanrentuku.com */
+.starBox{position:relative;width:120px;float:left}
+/**/
+.star{height:20px;width:120px;position:relative;background:url(../images/star.png) repeat-x;cursor:pointer}
+.star li{float:left;padding:0px;margin:0px}
+.star li a{display:block;width:24px;height:20px;overflow:hidden;text-indent:-9999px;position:absolute;z-index:5}
+.star a.one-star{left:0}
+.star a.two-stars{left:24px}
+.star a.three-stars{left:48px}
+.star a.four-stars{left:72px}
+.star a.five-stars{left:96px}
+.current-rating{background:url(../images/star.png) 0 -25px repeat-x;position:absolute;height:20px;z-index:1;top:0;left:0}

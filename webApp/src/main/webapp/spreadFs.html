@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>醒购商城 - 唤醒潮流，开心购物</title>
+	<style>
+		html, body {
+			margin: 0 auto;
+		}
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 750px) {
+			html {
+				width: 750px;
+			}
+		}
+		body {
+			width: 7.5rem;
+			font-size: .28rem;
+			font-family: "YouYuan685f43d6815e37", Verdana, Arial, Helvetica, sans-serif;
+			color: #555;
+			background: #fff;
+			text-rendering: optimizeLegibility;
+
+			-webkit-font-smoothing: antialiased;
+			-webkit-tap-highlight-color: transparent;
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html'),
+			psd = {
+				w: 750,
+				h: false,
+				f: 100,
+				v: 1
+			};
+
+		function fontFix() {
+			var	a = html.offsetWidth,
+				b = psd.h ? html.offsetHeight * psd.w / a / psd.h : 0;
+
+			psd.v = a / psd.w * (b > 1 || !b ? 1 : b);
+			html.style.fontSize = psd.f * psd.v + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+	<link rel="stylesheet" href="css/swiper.min.css">
+	<link rel="stylesheet" href="css/spread.css">
+</head>
+
+<body>
+	<div class="section">
+		<!-- 头部 -->
+		<div class="con con-top">
+			<dl class="clearfix">
+				<dt>
+					<img src="images/spread/logo.png">
+				</dt>
+				<dd>
+					<h2>醒购</h2>
+					<p>厦门聚买网络科技有限公司</p>
+					<div class="star clearfix">
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+						<span></span>
+					</div>
+					<p>1500万+ 下载</p>
+					<div class="offi clearfix">
+						<span>官方</span>
+						<span>安全</span>
+						<span>无广告</span>
+						<span>MTC认证</span>
+					</div>
+				</dd>
+			</dl>
+			<a class="download flex jc ac" onclick="spreadDownload('http://lf1-ttcdn-tos.pstatp.com/obj/ad-advertiser-package/adapk_adv_64871192539_ts_1505730129796.apk')">立即下载</a>
+		</div>
+
+		<div class="con con-rec">
+			<h2>小编推荐</h2>
+			<div class="article">
+				<p>新用户注册立享500元红包，全场3折封顶！耐克、阿迪达斯99元起，vans 399元2双，更有一折专区尽享大牌，一次帮你省到底！</p>
+			</div>
+		</div>
+
+		<div class="con con-pic">
+			<h2>应用截图</h2>
+
+			<!-- 幻灯片 -->
+			<div class="figure">
+				<div class="swiper-container">
+					<ul class="swiper-wrapper">
+ 						<li class="swiper-slide"><img src="images/spread/swiper/1.jpg"></li>
+						<li class="swiper-slide"><img src="images/spread/swiper/2.jpg"></li>
+						<li class="swiper-slide"><img src="images/spread/swiper/3.jpg"></li>
+						<li class="swiper-slide"><img src="images/spread/swiper/5.jpg"></li>
+					</ul>
+					<div class="pagination"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="con con-info">
+			<h2>应用信息</h2>
+			<div class="article sp1">
+				<p>新人有礼：新人500元购物优惠券，限量秒杀大牌。</p>
+				<p>精选特卖：每日精选潮流大牌，疯狂降价限量特卖。</p>
+				<p>好货优选：严选特价实惠好货，品质有保障，让您放心购。</p>
+				<p>单品爆款：打造高人气口碑单品，让您低折扣享大牌。</p>
+				<p>断码清仓：断码商品一降到底，意想不到的便宜价，超高性价比。</p>
+				<p>好友砍价：邀请好友砍价，购物更划算，赢取免单机会。</p>
+				<p>积分抵现：签到、购物有积分，积分可抵现，购物更省钱。</p>
+			</div>
+			<a class="download flex jc ac" onclick="spreadDownload('http://lf1-ttcdn-tos.pstatp.com/obj/ad-advertiser-package/adapk_adv_64871192539_ts_1505730129796.apk')">立即下载</a>
+		</div>
+
+		<!-- 底部 -->
+		<p class="footer">厦门聚买网络科技有限公司&nbsp; &nbsp;闽ICP备17003368号</p>
+	</div>
+
+	<script src="js/swiper.min.js"></script>
+	<script src="js/spread.js" defer></script>
+</body>
+</html>

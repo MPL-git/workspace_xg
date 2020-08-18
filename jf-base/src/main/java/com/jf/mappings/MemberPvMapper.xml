@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberPvMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberPv" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="pv_id" property="pvId" jdbcType="VARCHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="device_number" property="deviceNumber" jdbcType="VARCHAR" />
+    <result column="column_type" property="columnType" jdbcType="CHAR" />
+    <result column="column_id" property="columnId" jdbcType="INTEGER" />
+    <result column="page_classify" property="pageClassify" jdbcType="CHAR" />
+    <result column="page_type" property="pageType" jdbcType="CHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="value_id" property="valueId" jdbcType="INTEGER" />
+    <result column="client_source" property="clientSource" jdbcType="CHAR" />
+    <result column="from_page_type" property="fromPageType" jdbcType="CHAR" />
+    <result column="from_pv_id" property="fromPvId" jdbcType="VARCHAR" />
+    <result column="stay_time" property="stayTime" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pv_id, member_id, device_number, column_type, column_id, page_classify, page_type, 
+    mcht_id, value_id, client_source, from_page_type, from_pv_id, stay_time, create_by, 
+    create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberPvExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_pv
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_member_pv
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from bu_member_pv
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MemberPvExample" >
+    delete from bu_member_pv
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MemberPv" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_pv (pv_id, member_id, device_number, 
+      column_type, column_id, page_classify, 
+      page_type, mcht_id, value_id, 
+      client_source, from_page_type, from_pv_id, 
+      stay_time, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{pvId,jdbcType=VARCHAR}, #{memberId,jdbcType=INTEGER}, #{deviceNumber,jdbcType=VARCHAR}, 
+      #{columnType,jdbcType=CHAR}, #{columnId,jdbcType=INTEGER}, #{pageClassify,jdbcType=CHAR}, 
+      #{pageType,jdbcType=CHAR}, #{mchtId,jdbcType=INTEGER}, #{valueId,jdbcType=INTEGER}, 
+      #{clientSource,jdbcType=CHAR}, #{fromPageType,jdbcType=CHAR}, #{fromPvId,jdbcType=VARCHAR}, 
+      #{stayTime,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MemberPv" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_member_pv
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pvId != null" >
+        pv_id,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="deviceNumber != null" >
+        device_number,
+      </if>
+      <if test="columnType != null" >
+        column_type,
+      </if>
+      <if test="columnId != null" >
+        column_id,
+      </if>
+      <if test="pageClassify != null" >
+        page_classify,
+      </if>
+      <if test="pageType != null" >
+        page_type,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="valueId != null" >
+        value_id,
+      </if>
+      <if test="clientSource != null" >
+        client_source,
+      </if>
+      <if test="fromPageType != null" >
+        from_page_type,
+      </if>
+      <if test="fromPvId != null" >
+        from_pv_id,
+      </if>
+      <if test="stayTime != null" >
+        stay_time,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pvId != null" >
+        #{pvId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="deviceNumber != null" >
+        #{deviceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="columnType != null" >
+        #{columnType,jdbcType=CHAR},
+      </if>
+      <if test="columnId != null" >
+        #{columnId,jdbcType=INTEGER},
+      </if>
+      <if test="pageClassify != null" >
+        #{pageClassify,jdbcType=CHAR},
+      </if>
+      <if test="pageType != null" >
+        #{pageType,jdbcType=CHAR},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="valueId != null" >
+        #{valueId,jdbcType=INTEGER},
+      </if>
+      <if test="clientSource != null" >
+        #{clientSource,jdbcType=CHAR},
+      </if>
+      <if test="fromPageType != null" >
+        #{fromPageType,jdbcType=CHAR},
+      </if>
+      <if test="fromPvId != null" >
+        #{fromPvId,jdbcType=VARCHAR},
+      </if>
+      <if test="stayTime != null" >
+        #{stayTime,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MemberPvExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_pv
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_member_pv
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.pvId != null" >
+        pv_id = #{record.pvId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.deviceNumber != null" >
+        device_number = #{record.deviceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.columnType != null" >
+        column_type = #{record.columnType,jdbcType=CHAR},
+      </if>
+      <if test="record.columnId != null" >
+        column_id = #{record.columnId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pageClassify != null" >
+        page_classify = #{record.pageClassify,jdbcType=CHAR},
+      </if>
+      <if test="record.pageType != null" >
+        page_type = #{record.pageType,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.valueId != null" >
+        value_id = #{record.valueId,jdbcType=INTEGER},
+      </if>
+      <if test="record.clientSource != null" >
+        client_source = #{record.clientSource,jdbcType=CHAR},
+      </if>
+      <if test="record.fromPageType != null" >
+        from_page_type = #{record.fromPageType,jdbcType=CHAR},
+      </if>
+      <if test="record.fromPvId != null" >
+        from_pv_id = #{record.fromPvId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stayTime != null" >
+        stay_time = #{record.stayTime,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_member_pv
+    set id = #{record.id,jdbcType=BIGINT},
+      pv_id = #{record.pvId,jdbcType=VARCHAR},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      device_number = #{record.deviceNumber,jdbcType=VARCHAR},
+      column_type = #{record.columnType,jdbcType=CHAR},
+      column_id = #{record.columnId,jdbcType=INTEGER},
+      page_classify = #{record.pageClassify,jdbcType=CHAR},
+      page_type = #{record.pageType,jdbcType=CHAR},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      value_id = #{record.valueId,jdbcType=INTEGER},
+      client_source = #{record.clientSource,jdbcType=CHAR},
+      from_page_type = #{record.fromPageType,jdbcType=CHAR},
+      from_pv_id = #{record.fromPvId,jdbcType=VARCHAR},
+      stay_time = #{record.stayTime,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MemberPv" >
+    update bu_member_pv
+    <set >
+      <if test="pvId != null" >
+        pv_id = #{pvId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="deviceNumber != null" >
+        device_number = #{deviceNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="columnType != null" >
+        column_type = #{columnType,jdbcType=CHAR},
+      </if>
+      <if test="columnId != null" >
+        column_id = #{columnId,jdbcType=INTEGER},
+      </if>
+      <if test="pageClassify != null" >
+        page_classify = #{pageClassify,jdbcType=CHAR},
+      </if>
+      <if test="pageType != null" >
+        page_type = #{pageType,jdbcType=CHAR},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="valueId != null" >
+        value_id = #{valueId,jdbcType=INTEGER},
+      </if>
+      <if test="clientSource != null" >
+        client_source = #{clientSource,jdbcType=CHAR},
+      </if>
+      <if test="fromPageType != null" >
+        from_page_type = #{fromPageType,jdbcType=CHAR},
+      </if>
+      <if test="fromPvId != null" >
+        from_pv_id = #{fromPvId,jdbcType=VARCHAR},
+      </if>
+      <if test="stayTime != null" >
+        stay_time = #{stayTime,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MemberPv" >
+    update bu_member_pv
+    set pv_id = #{pvId,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      device_number = #{deviceNumber,jdbcType=VARCHAR},
+      column_type = #{columnType,jdbcType=CHAR},
+      column_id = #{columnId,jdbcType=INTEGER},
+      page_classify = #{pageClassify,jdbcType=CHAR},
+      page_type = #{pageType,jdbcType=CHAR},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      value_id = #{valueId,jdbcType=INTEGER},
+      client_source = #{clientSource,jdbcType=CHAR},
+      from_page_type = #{fromPageType,jdbcType=CHAR},
+      from_pv_id = #{fromPvId,jdbcType=VARCHAR},
+      stay_time = #{stayTime,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

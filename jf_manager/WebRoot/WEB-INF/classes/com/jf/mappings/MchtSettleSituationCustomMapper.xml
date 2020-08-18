@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSettleSituationCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtSettleSituationCustom"  extends="com.jf.dao.MchtSettleSituationMapper.BaseResultMap">
+  	<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+  	<result column="short_name" property="shortName" jdbcType="VARCHAR" />
+  	<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  	<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+  	<result column="current_not_out_account" property="currentNotOutAccount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, settle_date, mcht_id, begin_unpay, product_num, order_amount, commission_amount, 
+    settle_price_total, mcht_preferential_total, settle_amount, refund_amount, need_pay_amount, 
+    pay_amount, unpay_amount, end_unpay, deposit_total, deduction_deposit_total, product_amount, 
+    platform_preferential, integral_preferential, return_product_num, return_product_amount, 
+    return_mcht_preferential, return_platform_preferential, return_integral_preferential, 
+    return_commission_amount, discount, discount_remarks, discount_end_unpay, return_amount, 
+    return_order_amount, current_month_settle_amount, across_month_settle_amount, across_month_return_amount, 
+    begin_settle_amout, end_settle_amount, begin_not_out_account, end_not_out_account, 
+    create_by, create_date, update_by, update_date, remarks, del_flag,
+    (select a.mcht_code from bu_mcht_info a where a.id = t.mcht_id and a.del_flag='0')mcht_code,
+    (select a.short_name from bu_mcht_info a where a.id = t.mcht_id and a.del_flag='0')short_name,
+    (select a.company_name from bu_mcht_info a where a.id = t.mcht_id and a.del_flag='0')company_name,
+    (select a.shop_name from bu_mcht_info a where a.id = t.mcht_id and a.del_flag='0')shop_name
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtSettleSituationCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_settle_situation t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.MchtSettleSituationCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_settle_situation t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="currentSituationData" parameterType="map" resultMap="BaseResultMap" >
+    SELECT t.*,(t.begin_settle_amout+t.begin_not_out_account+ t.current_month_settle_amount+t.current_not_out_account- t.refund_amount-t.pay_amount-t.deduction_deposit_total-t.discount- t.end_not_out_account) end_settle_amount FROM 
+			(SELECT tmp.* ,(tmp.begin_settle_amout-tmp.across_month_settle_amount+ tmp.current_not_out_account) end_not_out_account FROM 
+					(SELECT mi.mcht_code,mi.company_name,mi.shop_name,mss.begin_settle_amout,mss.begin_not_out_account,mss.mcht_id,
+							(SELECT SUM(od.settle_amount) FROM bu_sub_order so,bu_order_dtl od ,bu_combine_order co where so.mcht_id = mi.id AND so.id = od.sub_order_id AND co.id = so.combine_order_id AND DATE_FORMAT(so.complete_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(so.complete_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate} AND DATE_FORMAT(co.pay_date,'%Y-%m-%d')<![CDATA[ < ]]>#{beginDate}) across_month_settle_amount,
+							(SELECT SUM(od.settle_amount) FROM bu_sub_order so,bu_order_dtl od ,bu_combine_order co where so.mcht_id = mi.id AND so.id = od.sub_order_id AND co.id = so.combine_order_id AND DATE_FORMAT(od.refund_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(od.refund_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate} AND DATE_FORMAT(co.pay_date,'%Y-%m-%d')<![CDATA[ < ]]>#{beginDate}) across_month_return_amount,
+							(SELECT SUM(od.settle_amount) FROM bu_sub_order so,bu_order_dtl od ,bu_combine_order co where so.mcht_id = mi.id AND so.id = od.sub_order_id AND co.id = so.combine_order_id AND DATE_FORMAT(so.complete_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(so.complete_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate} AND DATE_FORMAT(co.pay_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(co.pay_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate}) current_month_settle_amount,
+							(SELECT SUM(od.settle_amount) FROM bu_sub_order so,bu_order_dtl od ,bu_combine_order co where so.mcht_id = mi.id AND so.id = od.sub_order_id AND co.id = so.combine_order_id AND DATE_FORMAT(co.pay_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(co.pay_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate} AND od.product_status IS NULL) current_not_out_account,
+							(SELECT SUM(cso.amount) FROM bu_customer_service_order cso,bu_sub_order so,bu_order_dtl od WHERE so.id = od.sub_order_id AND so.id = cso.sub_order_id  AND so.mcht_id = mi.id AND cso.service_type = 'D' AND DATE_FORMAT(od.refund_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(od.refund_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate}) refund_amount,
+							(SELECT SUM(ptml.pay_amount) FROM bu_pay_to_mcht_log ptml WHERE ptml.mcht_id = mi.id AND ptml.type = '1' AND DATE_FORMAT(ptml.pay_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(ptml.pay_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate})pay_amount,
+							(SELECT SUM(ptml.deposit_amount) FROM bu_pay_to_mcht_log ptml WHERE ptml.mcht_id = mi.id AND ptml.type = '1' AND DATE_FORMAT(ptml.pay_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate} AND DATE_FORMAT(ptml.pay_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate})deduction_deposit_total,
+							0 discount
+					FROM bu_mcht_info mi,bu_mcht_settle_situation mss
+					WHERE mi.id = mss.mcht_id 
+					AND mss.del_flag='0' AND mss.settle_date=#{settleDate}
+					<if test="searchName!=null">
+					AND (mi.company_name LIKE concat('%',#{searchName},'%') OR mi.shop_name LIKE concat('%',#{searchName},'%')) 
+					</if>
+					AND mi.mcht_type='2'
+					<if test="mchtCode!=null">
+					AND mi.mcht_code=#{mchtCode}
+					</if>
+					<if test="productTypeId!=null and productTypeId != ''">
+		            AND mss.mcht_id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mss.mcht_id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+		            </if> 
+		            <if test="productBrandName !=null and productBrandName != ''">
+		            AND mss.mcht_id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mss.mcht_id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		            </if>
+		            
+					GROUP BY mi.id)tmp)t
+  </select>
+</mapper>

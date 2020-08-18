@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.AllowanceSettingCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.AllowanceSettingCustom"  extends="com.jf.dao.AllowanceSettingMapper.BaseResultMap">
+
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+
+  <select id="countAllowanceSettingList" parameterType="java.util.HashMap" resultType="java.lang.Integer" >
+    SELECT
+        COUNT(t.`id`)
+    FROM
+        bu_allowance_setting  t
+    WHERE
+        t.`del_flag`='0'
+  </select>
+
+  <select id="selectAllowanceSettingList" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+    SELECT
+    t.id,t.`name`,GROUP_CONCAT(ba.`integral`) AS integral,GROUP_CONCAT(ba.`exchange_amount_min`) AS exchangeAmountMin,GROUP_CONCAT(ba.`exchange_amount_max`) AS exchangeAmountMax,
+    t.`popup_count`,t.`day`,t.`pic`,t.`status`,t.exchange_begin_date,t.exchange_end_date
+    FROM
+    bu_allowance_setting  t
+    LEFT JOIN
+    bu_allowance_setting_integral_exchange  ba
+    ON
+    t.`id`=ba.`allowance_id`
+    WHERE
+    t.`del_flag`='0' AND ba.`del_flag`='0'
+    group by
+    t.id
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+
+
+
+</mapper>

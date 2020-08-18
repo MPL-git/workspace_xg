@@ -1,0 +1,162 @@
+.novaplan .top {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+.novaplan .bg-none {
+	background: none;
+}
+.novaplan .top>div {
+	width: 2rem;
+}
+.novaplan .header {
+	height: 3.28rem;
+	padding-top: .88rem;
+	color: #fff;
+	background: url(images/bg-top.png) no-repeat 0 bottom;
+	background-size: 7.5rem 3.68rem;
+	box-sizing: border-box;
+}
+.novaplan .row-1 {
+	font-size: .3rem; 
+}
+.novaplan .row-2 {
+	height: .9rem;
+	color: #FFFCF0;
+	font-size: .24rem;
+}
+.novaplan .row-3 {
+	line-height: .3rem;
+	font-size: .3rem;
+}
+.novaplan .row-3 span {
+	margin-right: .1rem;
+	line-height: .66rem;
+	font-size: .8rem;
+}
+
+.novaplan nav {
+	height: 1.84rem;
+	background: #fff;
+	font-size: .24rem;
+	color: #666;
+}
+.novaplan nav a {
+	width: 2.5rem;
+	height: 100%;
+	padding-top: .31rem;
+}
+.novaplan nav a:before {
+	content: '';
+	width: .8rem;
+	height: .8rem;
+	margin: 0 auto;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+.novaplan nav a.ico-tx:before {
+	background-image: url(images/ico-tx.png);
+}
+.novaplan nav a.ico-tg:before {
+	background-image: url(images/ico-tg.png);
+}
+.novaplan nav a.ico-fr:before {
+	background-image: url(images/ico-fr.png);
+}
+.novaplan nav span {
+	height: .64rem;
+}
+.novaplan .xy {
+	position: relative;
+	top: .1rem;
+	color: #ff5050;
+	font-size: .22rem;
+	font-weight: bold;
+}
+
+.novaplan article {
+	background: #fff;
+}
+.novaplan figure {
+	border-top: 1px solid #eee;
+}
+.novaplan figure:first-child {
+	border: none;
+}
+.novaplan h2 {
+	height: .9rem;
+	padding: .26rem .3rem 0;
+	font-size: .3rem;
+	font-weight: bold;
+}
+.novaplan dl {
+	padding: .2rem 0 0 .2rem;
+	font-size: .24rem;
+}
+.novaplan dt {
+	width: .5rem;
+	height: .5rem;
+	margin-right: .2rem;
+	background-size: contain;
+	background-repeat: no-repeat;
+
+	-webkit-align-self: flex-start;
+	align-self: flex-start;
+}
+.novaplan dt.ico-xy {
+	background-image: url(images/ico-xy.png);
+}
+.novaplan dt.ico-jd {
+	background-image: url(images/ico-jd.png);
+}
+.novaplan dt.ico-rw {
+	background-image: url(images/ico-rw.png);
+}
+.novaplan dt.ico-hy {
+	background-image: url(images/ico-hy.png);
+}
+.novaplan dt.ico-yq {
+	background-image: url(images/ico-yq.png);
+}
+.novaplan dt.ico-qd {
+	background-image: url(images/ico-qd.png);
+}
+.novaplan dt.ico-dt {
+	background-image: url(images/ico-dt.png);
+}
+.novaplan dt.ico-gl {
+	background-image: url(images/ico-gl.png);
+}
+.novaplan dt.ico-hh {
+	background-image: url(images/ico-hh.png);
+}
+.novaplan dt.ico-xj {
+	background-image: url(images/ico-xj.png);
+}
+
+.novaplan dd {
+	padding: 0 .3rem .3rem 0;
+	border-bottom: 1px solid #eee;
+}
+.novaplan dl:last-child dd {
+	border: none;
+}
+.novaplan h3 {
+	height: .5rem;
+	line-height: .28rem;
+	font-size: .28rem;
+}
+.novaplan button {
+	min-width: 1.32rem;
+	height: .58rem;
+	padding: 0 .1rem;
+	border: 1px solid #ff5050;
+	border-radius: .29rem;
+	color: #ff5050;
+	word-break: keep-all;
+}
+.novaplan .gray {
+	color: #999;
+	border-color: #999;
+}

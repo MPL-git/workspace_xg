@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.DesignTaskOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.DesignTaskOrderCustom" extends="com.jf.dao.DesignTaskOrderMapper.BaseResultMap">
+  <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+  <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  <result column="payment_name" property="paymentName" jdbcType="VARCHAR" />
+    <result column="task_type" property="taskType" jdbcType="VARCHAR" />
+    <result column="task_name" property="taskName" jdbcType="VARCHAR" />
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="payment_no" property="paymentNo" jdbcType="VARCHAR" />
+  <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+  <result column="total_payment" property="totalPayment" jdbcType="DECIMAL" />
+  <result column="pay_status_desc" property="payStatusDesc" jdbcType="CHAR" />
+    
+    <result column="designer_staff_name" property="designerStaffName" jdbcType="VARCHAR" />
+    <result column="refund_create_date" property="refundCreateDate" jdbcType="TIMESTAMP" />
+    <result column="refund_create_by" property="refundCreateBy" jdbcType="VARCHAR" />
+    <result column="pay_status_desc1" property="payStatusDesc1" jdbcType="VARCHAR" />
+    <result column="design_status_desc" property="designStatusDesc" jdbcType="VARCHAR" />
+    <result column="design_task_refund_order_status" property="designTaskRefundOrderStatus" jdbcType="VARCHAR" />
+    <result column="each_Day" property="eachDay" jdbcType="VARCHAR" />
+    <result column="zfb_count" property="zfbCount" jdbcType="INTEGER" />
+    <result column="zfb_amount" property="zfbAmount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    d.id, d.mcht_id, d.order_code, d.task_name, d.requirement, d.file_path, d.pay_amount,
+    d.contact_way, d.qq, d.status, d.pay_status, d.design_status, d.pay_date, d.payment_id, d.payment_no,
+    d.comment_type, d.comment, d.comment_date, d.designer, d.receive_date, d.create_by, d.create_date,
+    d.update_by, d.update_date, d.remarks,
+    d.task_type,
+    d.del_flag,
+    mcht_code,
+    company_name,
+    shop_name,
+    (select sp.remarks from sys_payment sp where sp.del_flag='0' and sp.id = d.payment_id) payment_name,
+    (select dtro.status from bu_design_task_refund_order dtro where dtro.del_flag='0' and dtro.design_task_order_id = d.id) pay_status_desc
+   </sql>
+
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.DesignTaskOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_design_task_order d
+    left join
+    bu_mcht_info mi
+    on d.mcht_id = mi.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_design_task_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="countByCustomExample" parameterType="com.jf.entity.DesignTaskOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_design_task_order d left join bu_mcht_info mi on d.mcht_id = mi.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <select id="totalPaymentByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.DesignTaskOrderCustomExample" >
+     select sum(d.pay_amount) as total_payment from bu_design_task_order d left join bu_mcht_info mi on d.mcht_id = mi.id
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_design_task_order d
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderCode != null" >
+        order_code = #{record.orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taskType != null" >
+        task_type = #{record.taskType,jdbcType=CHAR},
+      </if>
+      <if test="record.taskName != null" >
+        task_name = #{record.taskName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.requirement != null" >
+        requirement = #{record.requirement,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.contactWay != null" >
+        contact_way = #{record.contactWay,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.payStatus != null" >
+        pay_status = #{record.payStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.designStatus != null" >
+        design_status = #{record.designStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paymentId != null" >
+        payment_id = #{record.paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.paymentNo != null" >
+        payment_no = #{record.paymentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentType != null" >
+        comment_type = #{record.commentType,jdbcType=CHAR},
+      </if>
+      <if test="record.comment != null" >
+        comment = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentDate != null" >
+        comment_date = #{record.commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.designer != null" >
+        designer = #{record.designer,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiveDate != null" >
+        receive_date = #{record.receiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+
+ <sql id="Base_Column_Listt" >
+    id, mcht_id, order_code, task_type, task_name, requirement, file_path, pay_amount, 
+    contact_way, qq, status, pay_status, design_status, pay_date, payment_id, payment_no, 
+    comment_type, comment, comment_date, designer,upload_count, receive_date, create_by, create_date, 
+    update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_DESIGN_TASK_ORDER","PAY_STATUS", pay_status) pay_status_desc1,
+    (select s.STAFF_NAME from sys_staff_info s where s.STAFF_ID=dto.designer and s.STATUS='A') designer_staff_name,
+    (select s.STAFF_NAME from bu_design_task_refund_order dtr,sys_staff_info s where dtr.del_flag='0' and dtr.design_task_order_id=dto.id and s.STAFF_ID=dtr.create_by and s.STATUS='A') refund_create_by,
+    (select dtr.create_date from bu_design_task_refund_order dtr where dtr.del_flag='0' and dtr.design_task_order_id=dto.id) refund_create_date,
+    (select dtr.status from bu_design_task_refund_order dtr where dtr.del_flag = '0' and dtr.design_task_order_id = dto.id) design_task_refund_order_status
+  </sql>
+  <select id="designTaskOrderSelectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.DesignTaskOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_Listt" />
+    from bu_design_task_order dto
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+  <select id="designTaskOrderCountByExample" parameterType="com.jf.entity.DesignTaskOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_design_task_order dto
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getDesignerList" resultType="java.util.Map">
+  	SELECT DISTINCT
+		dto.designer,
+		(
+			SELECT
+				s.staff_name
+			FROM
+				sys_staff_info s
+			WHERE
+				s.staff_id = dto.designer
+		) staff_name
+	FROM
+		bu_design_task_order dto
+	WHERE
+		dto.del_flag = '0'
+	AND dto.receive_date IS NOT NULL
+	AND dto.designer IS NOT NULL
+  </select>
+
+  <select id="designRefundOrderStatistics" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+      SELECT
+      DATE_FORMAT(d.pay_date,'%Y-%m-%d') each_day,IFNULL(COUNT(d.`id`),0)zfb_count,IFNULL(SUM(d.`pay_amount`),0.00)zfb_amount
+      FROM bu_design_task_order d  WHERE d.`del_flag`='0'
+      AND EXISTS(SELECT id  FROM bu_design_task_refund_order  dtro
+      WHERE dtro.`status`='2' AND dtro.`design_task_order_id` =d.`id` AND dtro.`del_flag`='0'
+      AND dtro.`success_date` <![CDATA[ >= ]]> #{payDateBegin,jdbcType=VARCHAR} AND   dtro.`success_date` <![CDATA[ <= ]]> #{payDateEnd,jdbcType=VARCHAR})
+      GROUP BY each_day
+
+  </select>
+
+  <select id="designReceivablesStatistics" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+      SELECT
+      DATE_FORMAT(d.pay_date,'%Y-%m-%d') each_day,IFNULL(COUNT(d.`id`),0)zfb_count,IFNULL(SUM(d.`pay_amount`),0.00)zfb_amount
+      FROM bu_design_task_order d  WHERE d.`del_flag`='0' AND d.pay_status = '1'
+      <if test="payDateBegin != null">
+        AND d.pay_date <![CDATA[ >= ]]> #{payDateBegin,jdbcType=VARCHAR}
+      </if>
+      <if test="payDateEnd != null">
+        AND   d.pay_date <![CDATA[ <= ]]> #{payDateEnd,jdbcType=VARCHAR}
+      </if>
+      AND NOT EXISTS(SELECT id  FROM bu_design_task_refund_order  dtro
+      WHERE dtro.`status`='2' AND dtro.`design_task_order_id` =d.`id` AND dtro.`del_flag`='0'
+      <if test="payDateBegin != null">
+        AND dtro.`success_date` <![CDATA[ >= ]]> #{payDateBegin,jdbcType=VARCHAR}
+      </if>
+      <if test="payDateEnd != null">
+        AND   dtro.`success_date` <![CDATA[ <= ]]> #{payDateEnd,jdbcType=VARCHAR}
+      </if>
+        )
+      GROUP BY each_day
+  </select>
+
+</mapper>

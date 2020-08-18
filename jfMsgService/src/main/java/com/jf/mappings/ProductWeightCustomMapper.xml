@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductWeightCustomMapper" >
+  <insert id="insertProductWeights">
+  INSERT INTO `bu_product_weight` (`product_id`, `season_weight`, `sale_weight`, `pv_weight`, `mcht_grade_weight`, `brand_grade_weight`,`manual_weight`, `create_by`, `create_date`, `update_by`, `update_date`, `remarks`, `del_flag`) SELECT t.id, 0, 0, 0, 0, 0,0, NULL, NOW(), NULL, NOW(), NULL, '0' from bu_product t where t.del_flag='0' and not EXISTS(SELECT a.id from bu_product_weight a where a.product_id=t.id)
+  </insert>
+  <update id="updateProductSeasonWeights" parameterType="int" >
+  <![CDATA[ update bu_product_weight t set t.season_weight=IFNULL((SELECT cnf.weight from bu_season_weight_cnf cnf where cnf.product_season=(SELECT p.season from bu_product p where p.id=t.product_id) and cnf.begin_month<=#{currentMonth,jdbcType=INTEGER} and cnf.end_month>=#{currentMonth,jdbcType=INTEGER}),0)]]>
+  </update> 
+  <update id="updateProductMchtGradeWeights">
+  <![CDATA[ update bu_product_weight t set t.mcht_grade_weight= IFNULL((SELECT cnf.weight from bu_grade_weight_cnf cnf where cnf.del_flag='0' and cnf.grade_type='1' and cnf.grade=(SELECT m.grade from bu_mcht_info m where m.id=(SELECT  p.mcht_id from bu_product p where p.id=t.product_id ))),0)]]>
+  </update> 
+  <update id="updateProductBrandGradeWeights">
+  <![CDATA[ update bu_product_weight t set t.brand_grade_weight= IFNULL((SELECT cnf.weight from bu_grade_weight_cnf cnf where cnf.del_flag='0' and cnf.grade_type='2' and cnf.grade=(SELECT pb.grade from bu_product_brand pb where pb.id=(SELECT p.brand_id from bu_product p where p.id=t.product_id))),0)]]>
+  </update> 
+
+  <select id="selectProductPvCount" parameterType="map" resultType="map">
+  <![CDATA[ SELECT t.product_id productId from bu_member_footprint t where t.del_flag='0' and t.update_date >=#{beginDate,jdbcType=TIMESTAMP} and t.update_date<=#{endDate,jdbcType=TIMESTAMP} group by t.product_id having count(1)>#{pv,jdbcType=INTEGER}]]>
+  </select>
+  
+  <!--   查询一段时间内的商品销量,只查品牌款，按倒序排序 -->
+  <select id="selectProductSaleCount" parameterType="map" resultType="map">
+  <![CDATA[ 
+  
+			SELECT
+				*
+			FROM
+				(
+					SELECT
+						tmp_1.product_id productId,
+						cast(count(1) as DECIMAL) totalQuantity
+					FROM
+						(
+							SELECT
+								dtl.product_id product_id,
+								bco.member_id
+							FROM
+								bu_order_dtl dtl,
+								bu_sub_order bso,
+								bu_combine_order bco,
+								bu_product p
+							WHERE
+								dtl.product_id = p.id
+							AND dtl.sub_order_id = bso.id
+							AND bso.combine_order_id = bco.id
+							AND dtl.del_flag = '0'
+							AND bso.del_flag = '0'
+							AND bco.del_flag = '0'
+							AND (
+								dtl.product_status = '1'
+								OR dtl.product_status IS NULL
+							)
+							AND bco.pay_status = '1'
+							AND bco. STATUS = '1'
+							AND bco.pay_date >= #{beginDate,jdbcType=TIMESTAMP}
+							AND bco.pay_date <= #{endDate,jdbcType=TIMESTAMP}
+							AND p.sale_type = '1'
+							GROUP BY
+								dtl.product_id,
+								bco.member_id
+						) tmp_1
+					GROUP BY
+						tmp_1.product_id
+				) T1
+			ORDER BY
+				T1.totalQuantity DESC
+  
+   ]]>
+  </select>
+  
+  
+   <!--   查询一段时间内的商品销售额,只查品牌款，按倒序排序 -->
+  <select id="selectProductSaleAmount" parameterType="map" resultType="map">
+  <![CDATA[ 
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					dtl.product_id productId,
+					sum(dtl.pay_amount) totalAmount
+				FROM
+					bu_order_dtl dtl,
+					bu_sub_order bso,
+					bu_combine_order bco,
+			        bu_product p
+				WHERE
+				dtl.product_id = p.id
+				AND	dtl.sub_order_id = bso.id
+				AND bso.combine_order_id = bco.id
+				AND dtl.del_flag = '0'
+				AND bso.del_flag = '0'
+				AND bco.del_flag = '0'
+				AND (
+					dtl.product_status = '1'
+					OR dtl.product_status IS NULL
+				)
+				AND bco.pay_status = '1'
+				AND bco. STATUS = '1'
+				AND bco.pay_date >= #{beginDate,jdbcType=TIMESTAMP}
+				AND bco.pay_date <= #{endDate,jdbcType=TIMESTAMP}
+				AND p.sale_type = '1'
+				GROUP BY
+					dtl.product_id
+			) T1
+		ORDER BY
+			T1.totalAmount DESC
+  
+   ]]>
+  </select>
+
+	<!-- 更新商品评价权重 -->
+	<update id="updateProductCommentWeight">
+  	<![CDATA[ update bu_product_weight t set t.comment_weight=FLOOR(((SELECT IFNULL(sum(a.product_score)/count(1),4) from bu_comment a where a.product_id=t.product_id  and a.is_append_comment='0')-2)*10),t.comment_weight=if(t.comment_weight<0,0,t.comment_weight) where t.del_flag='0' ]]>
+	</update>
+
+
+	<update id="updateProductWeightsTotal">
+	<![CDATA[ update  bu_product t set t.weights=(SELECT IFNULL(pw.season_weight,0)+IFNULL(pw.sale_weight,0)+IFNULL(pw.pv_weight,0)+IFNULL(pw.mcht_grade_weight,0)+IFNULL(pw.brand_grade_weight,0)+IFNULL(pw.sale_amount_weight,0)+IFNULL(pw.comment_weight,0)+IFNULL(pw.manual_weight,0)  from bu_product_weight pw where pw.product_id=t.id),t.sale_weight=(SELECT IFNULL(pw.sale_weight,0) from bu_product_weight pw where pw.product_id=t.id) where t.del_flag='0' and t.source = '0' ]]>
+	</update>
+   
+</mapper>
+
+  

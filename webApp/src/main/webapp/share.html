@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>商品详情</title>
+	<style>
+		html, body {
+			margin: 0 auto;
+		}
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 750px) {
+			html {
+				width: 750px;
+			}
+		}
+		body {
+			width: 7.5rem;
+			font-size: .28rem;
+			line-height: .28rem;
+			color: #333;
+			background: #f4f4f4;
+			text-rendering: optimizeLegibility;
+
+			-webkit-font-smoothing: antialiased;
+			-webkit-tap-highlight-color: transparent;
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html'),
+			psd = {
+				w: 750,
+				h: false,
+				f: 100,
+				v: 1
+			};
+
+		function fontFix() {
+			var	a = html.offsetWidth,
+				b = psd.h ? html.offsetHeight * psd.w / a / psd.h : 0;
+
+			psd.v = a / psd.w * (b > 1 || !b ? 1 : b);
+			html.style.fontSize = psd.f * psd.v + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+	<link rel="stylesheet" href="css/swiper.min.css">
+	<link rel="stylesheet" href="css/share.css">
+</head>
+
+<body>
+	<!-- 幻灯片 -->
+	<div class="swiper-container">
+		<ul class="swiper-wrapper"></ul>
+		<div class="pagination"></div>
+	</div>
+
+	<!-- 简要描述 -->
+	<div class="con title">
+		<h2>
+			<strong id="b_salePrice"></strong>
+			<s id="b_tagPrice"></s>
+			<em id="b_discount" class="hide">
+				<span></span>
+			</em>
+		</h2>
+		<p id="b_name"></p>
+	</div>
+
+	<!-- 尺寸/颜色 -->
+	<div class="con mt info" id="share_info"></div>
+
+	<!-- 退货/运费 -->
+	<div class="con mt server clearfix" id="a_serviceList"></div>
+
+	<!-- 详细描述 -->
+	<div class="mt con detail clearfix" id="a_htmlDesc"></div>
+
+	<!-- <a href="" class="buy">去购买</a> -->
+
+	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/swiper.min.js"></script>
+	<script src="js/jquery.mobile-events.min.js"></script>
+	<script src="js/share.js" defer></script>
+</body>
+</html>

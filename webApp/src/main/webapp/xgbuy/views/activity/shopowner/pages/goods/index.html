@@ -1,0 +1,89 @@
+<div class="page novaplan-goods flex dc" data-title="好货推荐" data-id="activity_shopowner_pages_goods">
+	<link rel="stylesheet" href="activity/novaplan/pages/goods/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">好货推荐</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="nav fn"></div>
+
+	<div class="scroll-y scroll-fix fg scroll-more">
+		<div class="touchfix w75">
+			<div class="banner"></div>
+			<ul class="goods"></ul>
+		</div>
+	</div>
+
+	<!-- 导航 -->
+	<script id="novaplan_goods_nav_tpl" type="text/html">
+		{{if returnData.length}}
+		<div class="flex ac scroll-x{{returnData.length > 5 ? '' : ' divide jc'}}">
+			{{each returnData item i}}
+			<a onclick="novaplanGoods.changeNav(this)"
+				class="flex dc ac jc{{i ? '' : ' active'}}"
+				data-id="{{item.sourceProductTypeId}}"
+			>
+				{{item.sourceProductTypeName}}
+			</a>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 幻灯片 -->
+	<script id="novaplan_goods_swiper_tpl" type="text/html">
+		{{if adList.length}}
+		<div class="swiper-container">
+			<ul class="swiper-wrapper">
+				{{each adList item i}}
+				<li onclick="getBrandDef(this, {pos: '{{i}}'})"
+					data-id="{{item.id}}"
+					data-productid="{{item.linkId}}"
+					data-url="{{item.areaUrl}}"
+					data-type="{{item.linkType}}"
+					data-name="{{item.activityAreaName}}"
+					data-link="{{item.linkUrl}}"
+					class="swiper-slide">
+					<img src="{{item.pic}}">
+				</li>
+				{{/each}}
+			</ul>
+			<div class="pagination"></div>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="novaplan_goods_tpl_goods" type="text/html">
+		{{if dataList.length}}
+			{{each dataList item i}}
+		<li class="flex cursor" onclick="getUrlGoods('{{item.productId}}')">
+			<dt class="dt fn">
+				<img src="{{item.productPic}}">
+			</dt>
+			<dd class="dd fg flex dc jb">
+				<div>
+					<h2 class="flex ac"><span class="elps">{{item.productName}}</span></h2>
+					<p class="c9 clamp">{{item.recommendRemarks}}</p>
+				</div>
+				<div class="row-2 flex ac jb">
+					<div class="flex ac">
+						<strong>{{item.salePrice}}</strong>
+						<s class="c9">{{item.tagPrice}}</s>
+					</div>
+					<div class="f50">{{item.spreadAmountStr}}</div>
+				</div>
+			</dd>
+		</li>
+			{{/each}}
+		{{else}}
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前商品为空</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="activity/shopowner/pages/goods/index.js?var=1.1" async></script>
+</div>

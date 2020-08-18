@@ -1,0 +1,171 @@
+<div class="page common-activity activity-single flex dc" data-id="activity_templet_single_hot">
+	<link rel="stylesheet" href="../static/css/common-activity.css?var=1.0">
+	<link rel="stylesheet" href="activity/templet/css/single.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn sc flex je"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more">
+		<div class="swiper-container">
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide">
+					<img>
+
+					<div class="flex ac">
+						<p class="ellipsis"></p>
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="content"></div>
+	</div>
+
+	<div class="activity-cart" onclick="getQuickCart()"></div>
+
+	<div class="dialog dialog-filter flex dc fg hide">
+		<div class="filter-section fg scroll-y"></div>
+		<div class="filter-footer flex fn">
+			<div class="fg flex ac jc" onclick="singleHot.filterReset()">重置</div>
+			<div class="fg flex ac jc" onclick="singleHot.filterConfirm()">确定</div>
+		</div>
+	</div>
+
+	<script id="activity_single_hot_tpl" type="text/html">
+		<div class="con-ticket"></div>
+
+		<div class="tag-box">
+			<div class="tag flex">
+				<a class="fg flex ac jc stock" onclick="singleHot.getPagingList(this)">有货</a>
+				<a class="fg flex ac jc sale" onclick="singleHot.getPagingList(this)">价格<b class="flex dc ac jb"><i class="arrow-t t"></i><i class="arrow-t b"></i></b></a>
+				<a class="fg flex ac jc disc" onclick="singleHot.getPagingList(this)">折扣<b class="flex dc ac jb"><i class="arrow-t t"></i><i class="arrow-t b"></i></b></a>
+				<a class="fg flex ac jc filter" onclick="singleHot.filterDialog()">分类</a>
+			</div>
+		</div>
+
+		<div class="filter-succ flex jb ac hide">
+			<p class="ellipsis filter-succ-con"></p>
+			<a class="clear" onclick="singleHot.filterClear()"></a>
+		</div>
+
+		<div class="section">
+			<div class="time flex ac jc dc">
+				<p>离活动结束仅剩</p>
+				<div class="flex ac count-time">
+					<span>0</span>天
+					<span>0</span>时
+					<span>0</span>分
+					<span>0</span>秒
+				</div>
+			</div>
+
+			<div class="activity-single-con clearfix w75">
+				{{include 'activity_single_hot_list_tpl'}}
+			</div>
+		</div>
+	</script>
+
+	<script id="activity_single_hot_list_tpl" type="text/html">
+		{{if productInfoList.length}}
+			{{each productInfoList value i}}
+		<a class="mb20 {{value.deposit == 0 || value.deductAmount == 0?'':'arrival-a'}}" onclick="getUrlGoods(this, {pos: '{{page + i}}', data: singleHot.data})"
+			data-activityareaid="{{value.activityAreaId}}"
+			data-productid="{{value.productId}}">
+			<div class="con-1 h345">
+				<img src="{{value.pic}}">
+				{{if value.stock <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+
+				{{if productWkPicM}}
+				<b class="wk-pic wk-{{productWkPosition}}">
+					<img src="{{productWkPicM}}">
+				</b>
+				{{/if}}
+			</div>
+			<div class="con-2">
+				{{if value.deposit == 0 || value.deductAmount == 0 || !value.deposit || !value.deductAmount}}
+				<p title="{{value.productName}}">{{value.productName}}</p>
+<!--				<div class="flex ac jb scroll-x">-->
+				<div class=" scroll-x">
+					<span>
+						<strong class="f50">{{value.salePrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+
+					</span>
+
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+					{{if value.manageSelf == '1'}}
+					<i class="manageSelf ml10">自营</i>
+					{{/if}}
+				</div>
+				{{if value.svipSalePrice > 0}}
+				<div class="flex ac decorate-svip" onclick="getSvip(event)">
+					<img src="activity/templet/images/svip.png">
+					<span>¥{{value.svipSalePrice}}</span>
+				</div>
+				{{/if}}
+				{{else}}
+				<p class="arrival-p" title="{{value.productName}}">{{value.productName}}</p>
+				<div class="flex ac jb">
+					<span class="arrival-span">到手价:<strong class="f50">{{value.arrivalPrice}}</strong>{{value.hasDifferentPrice}}</span>
+					<s class="c9">{{value.salePrice}}</s>
+				</div>
+				<button class="arrival-btn">定金{{value.deposit}}抵{{value.deductAmount}}</button>
+
+				{{/if}}
+			</div>
+		</a>
+			{{/each}}
+		{{else}}
+			{{include 'activity_single_hot_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="activity_single_hot_coupon_tpl" type="text/html">
+		{{if couponList.length}}
+		<div class="ticket ellipsis">
+			<ul class="coupon-list">
+				{{each couponList value i}}
+				<li class="flex jb ac">
+					<div class="flex ac">
+						<i class="ticket f0"></i>
+						<p>满{{value.minimum}}-{{value.money}}元优惠券</p>
+					</div>
+
+					{{if value.memberIsHasCouponType == '0'}}
+					<a class="f50" onclick="getCoupon(this, '{{value.isSvip}}', '{{value.recType}}')" data-id="{{value.couponId}}">领取</a>
+					{{else if value.memberIsHasCouponType == '1'}}
+					<a class="c9">已领取</a>
+					{{else}}
+					<a class="c9">已抢光</a>
+					{{/if}}
+				</li>
+				{{/each}}
+			</ul>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="activity_single_hot_empty" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>暂无商品</p>
+		</div>
+	</script>
+
+	<script id="activity_single_hot_msg" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>{{returnMsg}}</p>
+		</div>
+	</script>
+
+	<script src="activity/templet/js/single-hot.js?var=1.1" async></script>
+</div>

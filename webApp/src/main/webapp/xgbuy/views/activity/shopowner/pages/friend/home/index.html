@@ -1,0 +1,82 @@
+<div class="page bgf4 friend-home flex dc" data-title="好友主页" data-id="activity_shopowner_pages_friend_home">
+	<link rel="stylesheet" href="activity/novaplan/pages/friend/home/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">好友主页</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-more main">
+		<div class="user"></div>
+		<div class="list"></div>
+	</div>
+
+	<script id="friend_home_user" type="text/html">
+		<div class="head pos-r">
+			<div class="head-img">
+				<img src="{{memberPic}}" onerror="this.src='../static/images/bg-head.png'"/>
+			</div>
+			{{if isSvip == 1}}
+			<img class="svip" src="activity/novaplan/pages/friend/images/svip.png"/>
+			{{/if}}
+		</div>
+		<div class="flex ac jc mt20 name">
+			<span>{{memberNick}}</span>
+			{{if sexType == '1'}}
+			<img class="gender" src="activity/novaplan/pages/friend/images/man.png"/>
+			{{else if sexType == '0' || sexType == '2'}}
+			<img class="gender" src="activity/novaplan/pages/friend/images/woman.png"/>
+			{{/if}}
+		</div>
+		<div class="flex ac jc mt20 relevant">
+			<div onclick="friendHomeApi.getOffriends('4')">关注  {{attentionCount}}</div>
+			<div class="fans" onclick="friendHomeApi.getOffriends('5')">粉丝  {{fansCount}}</div>
+		</div>
+		{{if attentionButton == 1 && attentionStatus == 0}}
+		<div class="flex ac jc follow-bt follow" onclick="friendHomeApi.getFollow(this)"></div>
+		{{else if  attentionButton == 1 && attentionStatus == 1}}
+		<div class="flex ac jc follow-bt" onclick="friendHomeApi.getFollow(this)">取消关注</div>
+		{{/if}}
+	</script>
+
+	<script id="friend_home_list" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value}}
+			<div class="li">
+				<div class="flex ac head" onclick="friendHomeApi.getDetails('{{value.id}}')">
+					<img class="img mr20" src="{{value.pic}}" onerror="this.src='../static/images/bg-head.png'"/>
+					<div class="fg">
+						<div class="name elps">{{value.nick}}</div>
+						<div class="flex ac jb time-row">
+							<div class="c9">{{value.publishDate}}</div>
+							<div class="source elps" onclick="friendHomeApi.getShop(event,'{{value.mchtId}}')">转发自<span class="f50">{{value.shopName}}</span></div>
+						</div>
+					</div>
+				</div>
+				<div class="body">
+					<div onclick="friendHomeApi.getDetails('{{value.id}}')">{{value.content}}</div>
+					{{if value.productList.length}}
+					<div class="img-box">
+						{{each value.productList val}}
+							<img src="{{val.productPic}}" onclick="friendHomeApi.getCommodity('{{val.productId}}')"/>
+						{{/each}}
+					</div>
+					{{/if}}
+				</div>
+				<div class="flex tail">
+					<div class="flex ac jc share" onclick="friendHomeApi.getShare(this,'{{value.id}}','{{value.mchtShopDynamicId}}')">{{value.forwardCount}}</div>
+					<div class="flex ac jc fabulous{{value.likeStatus == 1 ? ' fabulous-1' : ''}}" onclick="friendHomeApi.getFabulous(this,'{{value.id}}','{{value.mchtShopDynamicId}}')">{{value.likeCount}}</div>
+				</div>
+			</div>
+			{{/each}}
+		{{else}}
+		<div class="empty-page flex dc ac jc">
+			<img src="../static/images/empty/text.png"/>
+			<p class="c9">对不起, 好友暂时没有动态</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="activity/shopowner/pages/friend/home/index.js?var=1.0" async></script>
+</div>

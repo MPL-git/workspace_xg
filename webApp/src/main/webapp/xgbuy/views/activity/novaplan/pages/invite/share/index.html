@@ -1,0 +1,81 @@
+<div class="page a-invite-share flex dc" data-title="醒购商城" data-id="activity_novaplan_pages_invite_share">
+	<link rel="stylesheet" href="activity/novaplan/pages/invite/share/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"></div>
+		<p class="ellipsis">醒购商城</p>
+		<div class="fn"></div>
+	</header>
+
+	<script>
+		if (isWeiXin) {
+			$('.a-invite-share').addClass('wxHide');
+			getUrl('home', true);
+		}
+	</script>
+
+	<div class="scroll-y fg">
+		<div class="bg w75">
+			<div class="box bind">
+				<div class="title"></div>
+				<div class="flex row">
+					<input class="fg inp phone-inp" placeholder="请输入手机号码" maxlength="11" onfocus="aInviteShareApi.pageScroll()"/>
+				</div>
+				<div class="flex ac row">
+					<input class="fg inp inp2 vcode-inp" placeholder="您的图形验证码" onfocus="aInviteShareApi.pageScroll()"/>
+					<img class="fn vcode-img" src="" onclick="aInviteShareApi.getImgCode()"></img>
+				</div>
+				<div class="flex ac row">
+					<input class="fg inp inp2 code-inp" placeholder="您的短信验证码" onfocus="aInviteShareApi.pageScroll()"/>
+					<button class="fn code-bt" onclick="aInviteShareApi.getCode()">获取验证码</button>
+				</div>
+				<div class="flex jc">
+					<button class="sub-bt" onclick="aInviteShareApi.submit()">注册并领取福利</button>
+				</div>
+			</div>
+		
+			<div class="box welfare-1">
+				<div class="flex ac">
+					<div class="flex ac jc mr20 ico">01福利</div>
+					<div class="welfare-text">注册可得500元新人大礼包</div>
+				</div>
+			</div>
+		
+			<div class="box welfare-2">
+				<div class="flex ac">
+					<div class="flex ac jc mr20 ico">02福利</div>
+					<div class="welfare-text">签到赚现金/优惠券/积分</div>
+				</div>
+				<div class="flex jb main">
+					<div>
+						<div class="label-1"></div>
+						<div class="text">下载醒购</div>
+					</div>
+					<div>
+						<div class="label-2"></div>
+					</div>
+					<div>
+						<div class="label-3"></div>
+						<div class="text">签到</div>
+					</div>
+					<div>
+						<div class="label-2"></div>
+					</div>
+					<div>
+						<div class="label-4"></div>
+						<div class="text">提现</div>
+					</div>
+				</div>
+			</div>
+		
+			<div class="box welfare-1">
+				<div class="flex ac">
+					<div class="flex ac jc mr20 ico">03福利</div>
+					<div class="welfare-text">爆款商品，新人秒杀低价</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script src="activity/novaplan/pages/invite/share/index.js?var=1.1" async></script>
+</div>

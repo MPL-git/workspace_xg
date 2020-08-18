@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SingleProductActivityCustomMapper" >
+
+  <update id="offlineClosedSingleProduct" >
+	  UPDATE bu_product
+	  SET status = '0',off_reason='3'
+	  WHERE id IN(
+	  	SELECT t.* FROM(
+	  		SELECT p.id
+	  		FROM bu_single_product_activity spa
+	  		LEFT JOIN bu_product p ON spa.product_id = p.id
+	  		WHERE p.sale_type = '2' AND p.status= '1' AND spa.end_time &lt; NOW() AND spa.id IN(
+	  			SELECT MAX(id)
+	  			FROM bu_single_product_activity
+	  			GROUP BY product_id
+	  		)
+	  		ORDER BY p.id
+	  	) t
+	  )
+   </update>
+
+</mapper>

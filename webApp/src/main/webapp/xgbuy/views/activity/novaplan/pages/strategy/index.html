@@ -1,0 +1,35 @@
+<div class="page novaplan-strategy flex dc" data-title="新星攻略" data-id="activity_novaplan_pages_strategy">
+	<link rel="stylesheet" href="activity/novaplan/pages/strategy/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">新星攻略</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more"></div>
+
+	<script id="novaplan_strategy_tpl" type="text/html">
+		{{if dataList.length}}
+		<ul class="touchfix">
+			{{each dataList item}}
+			<li>
+				<h3>{{item.title}}</h3>
+				<pre>{{item.content}}</pre>
+			</li>
+			{{/each}}
+		</ul>
+		{{else}}
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<div class="fn footer hide">
+		<button class="btn-red" onclick="novaplanStrategy.getReward()">领取(<b></b>s)</button>
+	</div>
+
+	<script src="activity/novaplan/pages/strategy/index.js?var=1.1" async></script>
+</div>

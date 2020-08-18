@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CutPriceOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CutPriceOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="single_product_activity_id" property="singleProductActivityId" jdbcType="INTEGER" />
+    <result column="activity_type" property="activityType" jdbcType="CHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="product_item_id" property="productItemId" jdbcType="INTEGER" />
+    <result column="sku_pic" property="skuPic" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="art_no" property="artNo" jdbcType="VARCHAR" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="product_prop_desc" property="productPropDesc" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="tag_price" property="tagPrice" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="audit_status" property="auditStatus" jdbcType="CHAR" />
+    <result column="audit_remarks" property="auditRemarks" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="can_order" property="canOrder" jdbcType="CHAR" />
+    <result column="combine_order_id" property="combineOrderId" jdbcType="INTEGER" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="member_nick" property="memberNick" jdbcType="VARCHAR" />
+    <result column="address_id" property="addressId" jdbcType="INTEGER" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="source_client" property="sourceClient" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_code, single_product_activity_id, activity_type, member_id, product_id, 
+    product_item_id, sku_pic, product_name, art_no, brand_name, product_prop_desc, quantity, 
+    tag_price, sale_price, audit_status, audit_remarks, status, can_order, combine_order_id, 
+    pay_amount, member_nick, address_id, receiver_name, receiver_phone, receiver_address, 
+    source_client, create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CutPriceOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_cut_price_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_cut_price_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_cut_price_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.CutPriceOrderExample" >
+    delete from bu_cut_price_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.CutPriceOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_cut_price_order (order_code, single_product_activity_id, 
+      activity_type, member_id, product_id, 
+      product_item_id, sku_pic, product_name, 
+      art_no, brand_name, product_prop_desc, 
+      quantity, tag_price, sale_price, 
+      audit_status, audit_remarks, status, 
+      can_order, combine_order_id, pay_amount, 
+      member_nick, address_id, receiver_name, 
+      receiver_phone, receiver_address, source_client, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{orderCode,jdbcType=VARCHAR}, #{singleProductActivityId,jdbcType=INTEGER}, 
+      #{activityType,jdbcType=CHAR}, #{memberId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
+      #{productItemId,jdbcType=INTEGER}, #{skuPic,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+      #{artNo,jdbcType=VARCHAR}, #{brandName,jdbcType=VARCHAR}, #{productPropDesc,jdbcType=VARCHAR}, 
+      #{quantity,jdbcType=INTEGER}, #{tagPrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, 
+      #{auditStatus,jdbcType=CHAR}, #{auditRemarks,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{canOrder,jdbcType=CHAR}, #{combineOrderId,jdbcType=INTEGER}, #{payAmount,jdbcType=DECIMAL}, 
+      #{memberNick,jdbcType=VARCHAR}, #{addressId,jdbcType=INTEGER}, #{receiverName,jdbcType=VARCHAR}, 
+      #{receiverPhone,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{sourceClient,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.CutPriceOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_cut_price_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        order_code,
+      </if>
+      <if test="singleProductActivityId != null" >
+        single_product_activity_id,
+      </if>
+      <if test="activityType != null" >
+        activity_type,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productItemId != null" >
+        product_item_id,
+      </if>
+      <if test="skuPic != null" >
+        sku_pic,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="artNo != null" >
+        art_no,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="productPropDesc != null" >
+        product_prop_desc,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="tagPrice != null" >
+        tag_price,
+      </if>
+      <if test="salePrice != null" >
+        sale_price,
+      </if>
+      <if test="auditStatus != null" >
+        audit_status,
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="canOrder != null" >
+        can_order,
+      </if>
+      <if test="combineOrderId != null" >
+        combine_order_id,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="memberNick != null" >
+        member_nick,
+      </if>
+      <if test="addressId != null" >
+        address_id,
+      </if>
+      <if test="receiverName != null" >
+        receiver_name,
+      </if>
+      <if test="receiverPhone != null" >
+        receiver_phone,
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address,
+      </if>
+      <if test="sourceClient != null" >
+        source_client,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="singleProductActivityId != null" >
+        #{singleProductActivityId,jdbcType=INTEGER},
+      </if>
+      <if test="activityType != null" >
+        #{activityType,jdbcType=CHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productItemId != null" >
+        #{productItemId,jdbcType=INTEGER},
+      </if>
+      <if test="skuPic != null" >
+        #{skuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="artNo != null" >
+        #{artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPropDesc != null" >
+        #{productPropDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="tagPrice != null" >
+        #{tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="canOrder != null" >
+        #{canOrder,jdbcType=CHAR},
+      </if>
+      <if test="combineOrderId != null" >
+        #{combineOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="memberNick != null" >
+        #{memberNick,jdbcType=VARCHAR},
+      </if>
+      <if test="addressId != null" >
+        #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null" >
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceClient != null" >
+        #{sourceClient,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.CutPriceOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_cut_price_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_cut_price_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderCode != null" >
+        order_code = #{record.orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.singleProductActivityId != null" >
+        single_product_activity_id = #{record.singleProductActivityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityType != null" >
+        activity_type = #{record.activityType,jdbcType=CHAR},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productItemId != null" >
+        product_item_id = #{record.productItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.skuPic != null" >
+        sku_pic = #{record.skuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.artNo != null" >
+        art_no = #{record.artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brandName != null" >
+        brand_name = #{record.brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productPropDesc != null" >
+        product_prop_desc = #{record.productPropDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.tagPrice != null" >
+        tag_price = #{record.tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.auditStatus != null" >
+        audit_status = #{record.auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.auditRemarks != null" >
+        audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.canOrder != null" >
+        can_order = #{record.canOrder,jdbcType=CHAR},
+      </if>
+      <if test="record.combineOrderId != null" >
+        combine_order_id = #{record.combineOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.memberNick != null" >
+        member_nick = #{record.memberNick,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressId != null" >
+        address_id = #{record.addressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.receiverName != null" >
+        receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverPhone != null" >
+        receiver_phone = #{record.receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.receiverAddress != null" >
+        receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceClient != null" >
+        source_client = #{record.sourceClient,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_cut_price_order
+    set id = #{record.id,jdbcType=INTEGER},
+      order_code = #{record.orderCode,jdbcType=VARCHAR},
+      single_product_activity_id = #{record.singleProductActivityId,jdbcType=INTEGER},
+      activity_type = #{record.activityType,jdbcType=CHAR},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      product_item_id = #{record.productItemId,jdbcType=INTEGER},
+      sku_pic = #{record.skuPic,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      art_no = #{record.artNo,jdbcType=VARCHAR},
+      brand_name = #{record.brandName,jdbcType=VARCHAR},
+      product_prop_desc = #{record.productPropDesc,jdbcType=VARCHAR},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      tag_price = #{record.tagPrice,jdbcType=DECIMAL},
+      sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      audit_status = #{record.auditStatus,jdbcType=CHAR},
+      audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=CHAR},
+      can_order = #{record.canOrder,jdbcType=CHAR},
+      combine_order_id = #{record.combineOrderId,jdbcType=INTEGER},
+      pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      member_nick = #{record.memberNick,jdbcType=VARCHAR},
+      address_id = #{record.addressId,jdbcType=INTEGER},
+      receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{record.receiverPhone,jdbcType=VARCHAR},
+      receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
+      source_client = #{record.sourceClient,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.CutPriceOrder" >
+    update bu_cut_price_order
+    <set >
+      <if test="orderCode != null" >
+        order_code = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="singleProductActivityId != null" >
+        single_product_activity_id = #{singleProductActivityId,jdbcType=INTEGER},
+      </if>
+      <if test="activityType != null" >
+        activity_type = #{activityType,jdbcType=CHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productItemId != null" >
+        product_item_id = #{productItemId,jdbcType=INTEGER},
+      </if>
+      <if test="skuPic != null" >
+        sku_pic = #{skuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="artNo != null" >
+        art_no = #{artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPropDesc != null" >
+        product_prop_desc = #{productPropDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="tagPrice != null" >
+        tag_price = #{tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="auditStatus != null" >
+        audit_status = #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="canOrder != null" >
+        can_order = #{canOrder,jdbcType=CHAR},
+      </if>
+      <if test="combineOrderId != null" >
+        combine_order_id = #{combineOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="memberNick != null" >
+        member_nick = #{memberNick,jdbcType=VARCHAR},
+      </if>
+      <if test="addressId != null" >
+        address_id = #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null" >
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceClient != null" >
+        source_client = #{sourceClient,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.CutPriceOrder" >
+    update bu_cut_price_order
+    set order_code = #{orderCode,jdbcType=VARCHAR},
+      single_product_activity_id = #{singleProductActivityId,jdbcType=INTEGER},
+      activity_type = #{activityType,jdbcType=CHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_item_id = #{productItemId,jdbcType=INTEGER},
+      sku_pic = #{skuPic,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      art_no = #{artNo,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      product_prop_desc = #{productPropDesc,jdbcType=VARCHAR},
+      quantity = #{quantity,jdbcType=INTEGER},
+      tag_price = #{tagPrice,jdbcType=DECIMAL},
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      audit_status = #{auditStatus,jdbcType=CHAR},
+      audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      can_order = #{canOrder,jdbcType=CHAR},
+      combine_order_id = #{combineOrderId,jdbcType=INTEGER},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      member_nick = #{memberNick,jdbcType=VARCHAR},
+      address_id = #{addressId,jdbcType=INTEGER},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      source_client = #{sourceClient,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

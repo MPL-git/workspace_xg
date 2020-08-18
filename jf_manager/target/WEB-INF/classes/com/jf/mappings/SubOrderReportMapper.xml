@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SubOrderReportMapper" >
+
+
+	<select id="selectSubOrder" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+
+		SELECT
+		<if test="row_type == 'brand'"><!-- 按品牌 -->
+			pb.NAME NAME,
+			pb.id brandId,
+		</if>
+		<if test="row_type == 'mcht'"><!-- 按商家店铺 -->
+			mi.SHOP_NAME NAME,
+			mi.id mchtId,
+		</if>
+		<if test="row_type == 'product_type'"><!-- 按一级类目-->
+			type.NAME NAME,
+			type.id productTypeId,
+		</if>
+		SUM(od.QUANTITY) QUANTITY_SUM, <!-- 销售数量 -->
+		SUM(od.SALE_PRICE*od.QUANTITY) SALE_PRICE_SUM, <!-- 商品金额 -->
+		SUM(od.MCHT_PREFERENTIAL) MCHT_PREFERENTIAL_SUM, <!-- 商家优惠金额-->
+		SUM(od.PLATFORM_PREFERENTIAL+od.INTEGRAL_PREFERENTIAL) PLATFORM_PREFERENTIAL_SUM, <!-- 平台优惠金额 -->
+		SUM(od.PAY_AMOUNT) PAY_AMOUNT_SUM, <!-- 实付金额 -->
+		ROUND(SUM(od.PAY_AMOUNT)/ SUM(od.QUANTITY), 2) AVG_NUM, <!-- 商品均价 -->
+		CONCAT(ROUND(SUM(od.MCHT_PREFERENTIAL)*100/ SUM(od.SALE_PRICE*od.QUANTITY), 2), '%') MCHT_RATE, <!-- 商家优惠率 -->
+		CONCAT(ROUND(SUM(od.PLATFORM_PREFERENTIAL+od.INTEGRAL_PREFERENTIAL)*100/ SUM(od.SALE_PRICE*od.QUANTITY), 2), '%') PLATFORM_RATE, <!-- 平台优惠率-->
+		CONCAT(ROUND((1- SUM(od.SETTLE_AMOUNT)/ SUM(od.PAY_AMOUNT))*100, 2), '%') M_RATE,<!-- 毛利率 -->
+		SUM(od.SETTLE_AMOUNT) SETTLE_AMOUNT <!-- 结算金额 -->
+		FROM
+		BU_SUB_ORDER so,BU_COMBINE_ORDER co,BU_ORDER_DTL od
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			,bu_mcht_info mif
+		</if>
+		<if test="activityType != null">
+			<if test="activityType == -1 || activityType == 0">
+				,bu_activity_area aa
+			</if>
+			<if test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,bu_single_product_activity spa
+			</if>
+		</if>
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		<if test="row_type == 'brand'"><!-- 按品牌 -->
+			,BU_PRODUCT p, BU_PRODUCT_BRAND pb
+		</if>
+		<if test="row_type == 'mcht'"><!-- 按商家店铺 -->
+			,BU_MCHT_INFO mi
+			<if test="brandId != null">
+				,BU_PRODUCT p
+			</if>
+			<if test="productTypeId != null || selectedProductTypeId != null">
+				,bu_mcht_product_type mpt
+			</if>
+		</if>
+		<if test="row_type == 'product_type'"><!-- 按一级类目 -->
+			,BU_PRODUCT p,BU_PRODUCT_TYPE type
+		</if>
+		WHERE
+		so.COMBINE_ORDER_ID = co.ID AND so.ID = od.SUB_ORDER_ID
+		AND	co.STATUS = '1' AND co.DEL_FLAG = '0' AND od.IS_GIVE = '0'
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			AND so.mcht_id=mif.id
+			AND mif.del_flag='0'
+			AND mif.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator="," close=")">
+				#{listSpecMchtCode}
+			</foreach>
+		</if>
+
+		AND	co.pay_DATE <![CDATA[ >= ]]>#{startPayDate}
+		AND co.pay_DATE <![CDATA[ <= ]]>#{endPayDate}
+		<if test="activityType != null">
+			<if test="activityType == -1">
+				and od.ACTIVITY_AREA_ID = aa.id and aa.source = '2'
+			</if>
+			<if test="activityType == 0">
+				and od.ACTIVITY_AREA_ID = aa.id and aa.source = '1'
+			</if>
+			<if test="activityType == 1">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '1' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 2">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '2' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 3">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '3' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 4">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '4' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 5">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '5' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 6">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '6' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 8">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '7' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 9">
+				and od.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '8' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 7">
+				and od.activity_id IS NULL and od.activity_area_id IS NULL and od.single_product_activity_id IS NULL and od.del_flag='0'
+			</if>
+		</if>
+		<if test="platformContactId!=null">
+			AND so.mcht_id=mpc.mcht_id AND mpc.del_flag = '0' and mpc.status = '1' AND mpc.platform_contact_id=#{platformContactId}
+		</if>
+		<!-- <if test="mchtIds!=null">
+            AND so.mcht_id in
+            <foreach collection="mchtIds" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+               </foreach>
+        </if> -->
+		<if test="row_type == 'brand'"><!-- 按品牌 -->
+			and od.PRODUCT_ID = p.ID AND p.BRAND_ID = pb.ID
+			<if test="productTypeId != null || selectedProductTypeId != null">
+				<if test="productTypeId != null">
+					AND p.product_type1_id = #{productTypeId}
+				</if>
+				<if test="selectedProductTypeId != null">
+					AND p.product_type1_id = #{selectedProductTypeId}
+				</if>
+			</if>
+			<if test="name != null">
+				AND pb.name like concat('%',#{name},'%')
+			</if>
+			<if test="mchtId != null">
+				AND p.mcht_id = #{mchtId}
+			</if>
+			GROUP BY pb.ID
+		</if>
+		<if test="row_type == 'mcht'"><!-- 按商家店铺 -->
+			and so.mcht_id = mi.ID
+			AND mi.del_flag = '0'
+			<if test="brandId != null">
+				AND od.PRODUCT_ID = p.ID AND p.brand_id=#{brandId}
+			</if>
+			<if test="productTypeId != null || selectedProductTypeId != null">
+				AND so.mcht_id = mpt.mcht_id
+				AND mpt.del_flag = '0'
+				<if test="productTypeId != null">
+					AND mpt.product_type_id = #{productTypeId}
+				</if>
+				<if test="selectedProductTypeId != null">
+					AND mpt.product_type_id = #{selectedProductTypeId}
+				</if>
+			</if>
+			<if test="name != null">
+				AND mi.shop_name like concat('%',#{name},'%')
+			</if>
+			GROUP BY mi.ID
+		</if>
+		<if test="row_type == 'product_type'"><!-- 按一级类目 -->
+			and od.PRODUCT_ID = p.ID AND p.product_type1_id = type.id
+			<if test="name != null">
+				AND type.name like concat('%',#{name},'%')
+			</if>
+			<if test="productTypeId != null || selectedProductTypeId != null">
+				<if test="productTypeId != null">
+					AND p.product_type1_id = #{productTypeId}
+				</if>
+				<if test="selectedProductTypeId != null">
+					AND p.product_type1_id = #{selectedProductTypeId}
+				</if>
+			</if>
+			GROUP BY type.id
+		</if>
+		<if test="orderType == 'num'">
+			ORDER BY QUANTITY_SUM DESC <!-- 按销售数量总数倒序 -->
+		</if>
+		<if test="orderType == 'payAmount'">
+			ORDER BY PAY_AMOUNT_SUM DESC <!-- 按实付金额总数倒序 -->
+		</if>
+		LIMIT 0, #{pageSize }
+
+	</select>
+
+	<sql id="selectProductSubOrderSqlT">
+		od.PRODUCT_ID,
+		od.ACTIVITY_ID,
+		od.ACTIVITY_AREA_ID,
+		od.SINGLE_PRODUCT_ACTIVITY_ID,
+		od.del_flag od_del_flag,
+		so.mcht_id,
+		SUM(od.QUANTITY) QUANTITY_SUM,
+		SUM(od.SALE_PRICE * od.QUANTITY) SALE_PRICE_SUM,
+		SUM(od.MCHT_PREFERENTIAL) MCHT_PREFERENTIAL_SUM,
+		SUM(
+			od.PLATFORM_PREFERENTIAL + od.INTEGRAL_PREFERENTIAL
+		) PLATFORM_PREFERENTIAL_SUM,
+		SUM(od.PAY_AMOUNT) PAY_AMOUNT_SUM,
+		SUM(od.PAY_AMOUNT) PAY_AMOUNT,
+		SUM(od.QUANTITY) QUANTITY,
+		SUM(od.MCHT_PREFERENTIAL) MCHT_PREFERENTIAL,
+		SUM(od.SALE_PRICE * od.QUANTITY) SALE_QUANTITY_PRICE,
+		SUM(od.PLATFORM_PREFERENTIAL + od.INTEGRAL_PREFERENTIAL) PLATFORM_INTEGRAL_PREFERENTIAL,
+		SUM(od.SETTLE_AMOUNT) SETTLE_AMOUNT
+	</sql>
+
+	<sql id="selectProductSubOrderSqlZ">
+		t.PRODUCT_ID,
+		t.ACTIVITY_ID,
+		t.ACTIVITY_AREA_ID,
+		t.SINGLE_PRODUCT_ACTIVITY_ID,
+		t.od_del_flag,
+		t.mcht_id,
+		SUM(t.QUANTITY_SUM) QUANTITY_SUM,
+		SUM(t.SALE_PRICE_SUM) SALE_PRICE_SUM,
+		SUM(t.MCHT_PREFERENTIAL_SUM) MCHT_PREFERENTIAL_SUM,
+		SUM(t.PLATFORM_PREFERENTIAL_SUM) PLATFORM_PREFERENTIAL_SUM,
+		SUM(t.PAY_AMOUNT_SUM) PAY_AMOUNT_SUM,
+		SUM(t.PAY_AMOUNT) PAY_AMOUNT,
+		SUM(t.QUANTITY) QUANTITY,
+		SUM(t.MCHT_PREFERENTIAL) MCHT_PREFERENTIAL,
+		SUM(t.SALE_QUANTITY_PRICE) SALE_QUANTITY_PRICE,
+		SUM(t.PLATFORM_INTEGRAL_PREFERENTIAL) PLATFORM_INTEGRAL_PREFERENTIAL,
+		SUM(t.SETTLE_AMOUNT) SETTLE_AMOUNT,
+		p. NAME NAME,
+		p. CODE ID,
+		(SELECT pp.pic FROM bu_product_pic pp WHERE pp.product_id = p.id AND pp.is_default = '1' AND pp.del_flag = '0') pic,
+		mif.shop_name,
+		p.id productId
+	</sql>
+
+	<sql id="selectProductSubOrderSqlTZ">
+		z.PRODUCT_ID,
+		z.ACTIVITY_ID,
+		z.ACTIVITY_AREA_ID,
+		z.SINGLE_PRODUCT_ACTIVITY_ID,
+		z.od_del_flag,
+		z.mcht_id,
+		SUM(z.QUANTITY_SUM) QUANTITY_SUM,
+		SUM(z.SALE_PRICE_SUM) SALE_PRICE_SUM,
+		SUM(z.MCHT_PREFERENTIAL_SUM) MCHT_PREFERENTIAL_SUM,
+		SUM(z.PLATFORM_PREFERENTIAL_SUM) PLATFORM_PREFERENTIAL_SUM,
+		SUM(z.PAY_AMOUNT_SUM) PAY_AMOUNT_SUM,
+		ROUND(SUM(z.PAY_AMOUNT) / SUM(z.QUANTITY),2) AVG_NUM,
+		CONCAT(ROUND(SUM(z.MCHT_PREFERENTIAL) * 100 / SUM(z.SALE_QUANTITY_PRICE),2),'%') MCHT_RATE,
+		CONCAT(ROUND(SUM(z.PLATFORM_INTEGRAL_PREFERENTIAL) * 100 / SUM(z.SALE_QUANTITY_PRICE),2),'%') PLATFORM_RATE,
+		CONCAT(ROUND((1 - SUM(z.SETTLE_AMOUNT) / SUM(z.PAY_AMOUNT)) * 100,2),'%') M_RATE,
+		SUM(z.SETTLE_AMOUNT) SETTLE_AMOUNT,
+		z.NAME,
+		z.ID,
+		z.pic,
+		z.shop_name,
+		z.productId
+	</sql>
+
+	<select id="selectProductSubOrder" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select
+		<include refid="selectProductSubOrderSqlTZ"></include>
+		from (
+		SELECT
+		<include refid="selectProductSubOrderSqlZ"></include>
+		FROM
+		(
+		SELECT
+		<include refid="selectProductSubOrderSqlT"></include>
+		FROM
+		BU_SUB_ORDER so,BU_COMBINE_ORDER co,BU_ORDER_DTL od
+		<if test="platformContactId!=null">
+			,bu_mcht_platform_contact mpc
+		</if>
+		WHERE
+		so.COMBINE_ORDER_ID = co.ID AND so.ID = od.SUB_ORDER_ID
+		AND co.STATUS = '1' AND co.DEL_FLAG = '0' AND od.IS_GIVE = '0'
+		AND co.pay_DATE <![CDATA[ >= ]]>#{startPayDate}
+		AND co.pay_DATE <![CDATA[ <= ]]>#{endPayDate}
+		<if test="platformContactId!=null">
+			AND so.mcht_id=mpc.mcht_id AND mpc.del_flag = '0' and mpc.status = '1' AND
+			mpc.platform_contact_id=#{platformContactId}
+		</if>
+		GROUP BY od.PRODUCT_ID
+		<if test="activityType != null">
+			<if test="activityType == -1 || activityType == 0">
+				,od.ACTIVITY_ID,od.ACTIVITY_AREA_ID
+			</if>
+			<if test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,od.SINGLE_PRODUCT_ACTIVITY_ID
+			</if>
+		</if>
+		) t,BU_PRODUCT p
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			,bu_mcht_info mif
+		</if>
+		<if test="activityType != null">
+			<if test="activityType == -1 || activityType == 0">
+				,bu_activity_area aa
+			</if>
+			<if test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,bu_single_product_activity spa
+			</if>
+		</if>
+		WHERE
+		t.PRODUCT_ID = p.ID
+		<if test="mchtId != null">
+			AND p.mcht_id = #{mchtId}
+		</if>
+		<if test="brandId != null">
+			AND p.brand_id = #{brandId}
+		</if>
+		<if test="productTypeId != null || selectedProductTypeId != null">
+			<if test="productTypeId != null">
+				AND p.product_type1_id = #{productTypeId}
+			</if>
+			<if test="selectedProductTypeId != null">
+				AND p.product_type1_id = #{selectedProductTypeId}
+			</if>
+		</if>
+		<if test="name != null">
+			AND p.name like concat('%',#{name},'%')
+		</if>
+		<if test="code != null">
+			AND p.code = #{code}
+		</if>
+		<if test="listSpecMchtCode!='' and listSpecMchtCode!=null">
+			AND t.mcht_id=mif.id
+			AND mif.del_flag='0'
+			AND mif.mcht_code NOT in
+			<foreach collection="listSpecMchtCode" index="index" item="listSpecMchtCode" open="(" separator=","
+					 close=")">
+				#{listSpecMchtCode}
+			</foreach>
+		</if>
+		<if test="activityType != null">
+			<if test="activityType == -1">
+				and t.ACTIVITY_AREA_ID = aa.id and aa.source = '2'
+			</if>
+			<if test="activityType == 0">
+				and t.ACTIVITY_AREA_ID = aa.id and aa.source = '1'
+			</if>
+			<if test="activityType == 1">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '1' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 2">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '2' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 3">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '3' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 4">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '4' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 5">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '5' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 6">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '6' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 8">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '7' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 9">
+				and t.SINGLE_PRODUCT_ACTIVITY_ID = spa.id and spa.type = '8' and spa.del_flag='0'
+			</if>
+			<if test="activityType == 7">
+				and t.activity_id IS NULL and t.activity_area_id IS NULL and t.single_product_activity_id IS NULL and
+				t.od_del_flag='0'
+			</if>
+		</if>
+		GROUP BY
+		t.PRODUCT_ID
+		<if test="activityType != null">
+			<if test="activityType == -1 || activityType == 0">
+				,t.ACTIVITY_ID,t.ACTIVITY_AREA_ID
+			</if>
+			<if test="activityType == 1 || activityType == 2 || activityType == 3 || activityType == 4 || activityType == 5 || activityType == 6 || activityType == 8 || activityType == 9">
+				,t.SINGLE_PRODUCT_ACTIVITY_ID
+			</if>
+		</if>
+		) z
+		GROUP BY
+		z.PRODUCT_ID
+		<if test="orderType == 'num'">
+			ORDER BY QUANTITY_SUM DESC <!-- 按销售数量总数倒序 -->
+		</if>
+		<if test="orderType == 'payAmount'">
+			ORDER BY PAY_AMOUNT_SUM DESC <!-- 按实付金额总数倒序 -->
+		</if>
+		LIMIT 0, #{pageSize }
+	</select>
+
+	<select id="selectReQuantityRate" parameterType="java.util.HashMap" resultType="String">
+		SELECT
+		CONCAT(ROUND(SUM(T.re_quantity_sum)*100/SUM(T.quantity_sum), 2), '%') re_quantity_rate
+		FROM
+		(
+		SELECT
+		SUM(bo.quantity) re_quantity_sum,
+		0 quantity_sum
+		FROM
+		bu_combine_order bc,
+		bu_sub_order bs,
+		bu_order_dtl bo
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			,bu_product p
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			,bu_product p,
+			bu_product_type pta,
+			bu_product_type ptb
+		</if>
+		WHERE
+		bc.del_flag = '0'
+		<![CDATA[ AND bc.pay_date >= #{payDateBegin } ]]>
+		<![CDATA[ AND bc.pay_date <= #{payDateEnd } ]]>
+		AND bc.`status` = '1'
+		AND bs.combine_order_id = bc.id
+		AND bo.sub_order_id = bs.id
+		AND bo.is_give = '0'
+		AND bo.product_status = '3'
+		<if test="row_type == 'product'"> <!-- 按商品-->
+			AND bo.product_id = #{paramId }
+		</if>
+		<if test="row_type == 'mcht'"> <!-- 按商家店铺 -->
+			AND bs.mcht_id = #{paramId }
+		</if>
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			AND bo.product_id = p.id
+			AND p.brand_id = #{paramId }
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			AND bo.product_id = p.id
+			AND p.product_type_id = pta.id
+			AND pta.parent_id = ptb.id
+			AND ptb.parent_id = #{paramId }
+		</if>
+		UNION ALL
+		SELECT
+		0 re_quantity_sum,
+		SUM(bo.quantity) quantity_sum
+		FROM
+		bu_combine_order bc,
+		bu_sub_order bs,
+		bu_order_dtl bo
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			,bu_product p
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			,bu_product p,
+			bu_product_type pta,
+			bu_product_type ptb
+		</if>
+		WHERE
+		bc.del_flag = '0'
+		<![CDATA[ AND bc.pay_date >= #{payDateBegin } ]]>
+		<![CDATA[ AND bc.pay_date <= #{payDateEnd } ]]>
+		AND bc.`status` = '1'
+		AND bs.combine_order_id = bc.id
+		AND bo.sub_order_id = bs.id
+		AND bo.is_give = '0'
+		<if test="row_type == 'product'"> <!-- 按商品-->
+			AND bo.product_id = #{paramId }
+		</if>
+		<if test="row_type == 'mcht'"> <!-- 按商家店铺 -->
+			AND bs.mcht_id = #{paramId }
+		</if>
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			AND bo.product_id = p.id
+			AND p.brand_id = #{paramId }
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			AND bo.product_id = p.id
+			AND p.product_type_id = pta.id
+			AND pta.parent_id = ptb.id
+			AND ptb.parent_id = #{paramId }
+		</if>
+		) T
+	</select>
+
+	<select id="selectGoodCommentRate" parameterType="java.util.HashMap" resultType="String">
+		SELECT
+		CONCAT(ROUND(SUM(T.good_comment_count)*100/SUM(T.comment_count), 2), '%') good_comment_rate
+		FROM
+		(
+		SELECT
+		COUNT(1) good_comment_count,
+		0 comment_count
+		FROM
+		bu_combine_order bc,
+		bu_sub_order bs,
+		bu_order_dtl bo,
+		bu_comment c
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			,bu_product p
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			,bu_product p,
+			bu_product_type pta,
+			bu_product_type ptb
+		</if>
+		WHERE
+		bc.del_flag = '0'
+		<![CDATA[ AND bc.pay_date >= #{payDateBegin } ]]>
+		<![CDATA[ AND bc.pay_date <= #{payDateEnd } ]]>
+		AND bc.`status` = '1'
+		AND bs.combine_order_id = bc.id
+		AND bo.sub_order_id = bs.id
+		AND bo.is_give = '0'
+		AND c.del_flag = '0'
+		AND c.comment_source = '1'
+		AND c.product_score > 3
+		AND c.is_append_comment = '0'
+		AND c.sub_order_id = bs.id
+		<if test="row_type == 'product'"> <!-- 按商品-->
+			AND bo.product_id = #{paramId }
+		</if>
+		<if test="row_type == 'mcht'"> <!-- 按商家店铺 -->
+			AND bs.mcht_id = #{paramId }
+		</if>
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			AND bo.product_id = p.id
+			AND p.brand_id = #{paramId }
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			AND bo.product_id = p.id
+			AND p.product_type_id = pta.id
+			AND pta.parent_id = ptb.id
+			AND ptb.parent_id = #{paramId }
+		</if>
+		UNION ALL
+		SELECT
+		0 good_comment_count,
+		COUNT(1) comment_count
+		FROM
+		bu_combine_order bc,
+		bu_sub_order bs,
+		bu_order_dtl bo,
+		bu_comment c
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			,bu_product p
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			,bu_product p,
+			bu_product_type pta,
+			bu_product_type ptb
+		</if>
+		WHERE
+		bc.del_flag = '0'
+		<![CDATA[ AND bc.pay_date >= #{payDateBegin } ]]>
+		<![CDATA[ AND bc.pay_date <= #{payDateEnd } ]]>
+		AND bc.`status` = '1'
+		AND bs.combine_order_id = bc.id
+		AND bo.sub_order_id = bs.id
+		AND bo.is_give = '0'
+		AND c.del_flag = '0'
+		AND c.comment_source = '1'
+		AND c.is_append_comment = '0'
+		AND c.sub_order_id = bs.id
+		<if test="row_type == 'product'"> <!-- 按商品-->
+			AND bo.product_id = #{paramId }
+		</if>
+		<if test="row_type == 'mcht'"> <!-- 按商家店铺 -->
+			AND bs.mcht_id = #{paramId }
+		</if>
+		<if test="row_type == 'brand'"> <!-- 按品牌 -->
+			AND bo.product_id = p.id
+			AND p.brand_id = #{paramId }
+		</if>
+		<if test="row_type == 'product_type'"> <!-- 按一级类目 -->
+			AND bo.product_id = p.id
+			AND p.product_type_id = pta.id
+			AND pta.parent_id = ptb.id
+			AND ptb.parent_id = #{paramId }
+		</if>
+		) T
+	</select>
+
+
+
+
+
+</mapper>

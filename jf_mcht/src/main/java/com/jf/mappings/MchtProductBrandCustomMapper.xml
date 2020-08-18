@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtProductBrandCustomMapper">
+	<resultMap id="BaseResultMap" type="com.jf.entity.MchtProductBrandCustom"
+		extends="com.jf.dao.MchtProductBrandMapper.BaseResultMap">
+		<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+		<result column="aptitude_type_desc" property="aptitudeTypeDesc"
+			jdbcType="VARCHAR" />
+		<result column="audit_status_desc" property="auditStatusDesc"
+			jdbcType="VARCHAR" />
+		<result column="brand_name" property="brandName"
+			jdbcType="VARCHAR" />
+		<result column="short_name" property="shortName" jdbcType="VARCHAR" />
+		<result column="aptitude_pic_count" property="aptitudePicCount" jdbcType="INTEGER" />
+		<result column="platform_auth_pic_count" property="platformAuthPicCount" jdbcType="INTEGER" />
+		<result column="name" property="productBrandName" jdbcType="VARCHAR" />
+		<result column="product_brand_logo" property="productBrandLogo" jdbcType="VARCHAR" />
+		<result column="price_model_status_desc" property="priceModelStatusDesc" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+ 
+  <sql id="Base_Column_List" >
+   	    t.*,
+   		(select a.`name` from bu_product_brand a where a.id= t.product_brand_id ) brand_name,
+		(select a.logo from bu_product_brand a where a.id= t.product_brand_id ) product_brand_logo,
+		FUN_GET_STATUS_DESC("BU_MCHT_PRODUCT_BRAND","STATUS", t.`status`) status_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_PRODUCT_BRAND","AUDIT_STATUS",t.audit_status) audit_status_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_PRODUCT_BRAND","PRICE_MODEL",t.price_model) price_model_status_desc,
+		FUN_GET_STATUS_DESC("BU_MCHT_PRODUCT_BRAND","APTITUDE_TYPE", t.aptitude_type) aptitude_type_desc,
+		(select count(1) from bu_mcht_brand_aptitude_pic ap where ap.del_flag='0' and ap.mcht_product_brand_id=t.id) aptitude_pic_count,
+		(select count(1) from bu_mcht_platform_auth_pic  pap where pap.del_flag='0' and pap.mcht_product_brand_id=t.id) platform_auth_pic_count,
+		date_format(t.platform_auth_exp_date,'%Y-%m-%d %H:%i:%s') as platform_auth_exp_dates,
+		date_format(t.other_exp_date,'%Y-%m-%d %H:%i:%s') as other_exp_dates
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtProductBrandExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_product_brand t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_product_brand t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+     
+  <select id="countByExample" parameterType="com.jf.entity.MchtProductBrandExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_product_brand
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getMchtProductBrandList" parameterType="int" resultMap="com.jf.dao.ProductBrandMapper.BaseResultMap" >
+	select * from bu_product_brand pb ,bu_mcht_product_brand mpb where pb.id=mpb.product_brand_id and mpb.del_flag="0" and pb.del_flag="0" and pb.status='1' and mpb.status='1' and mpb.audit_status='3' and mpb.mcht_id = #{mchtId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="getMchtUsebleProductBrand" parameterType="int" resultMap="BaseResultMap" >
+	select mpb.id,mpb.product_brand_id,pb.`name` product_brand_name from bu_product_brand pb ,bu_mcht_product_brand mpb where pb.id=mpb.product_brand_id and mpb.del_flag="0" and pb.del_flag="0" and pb.`status`='1' and mpb.`status`='1' and mpb.audit_status='3' and mpb.mcht_id = #{mchtId,jdbcType=INTEGER}
+  </select>
+
+    <select id="getActivityMchtProductBrandList" parameterType="int"
+            resultMap="com.jf.dao.ProductBrandMapper.BaseResultMap">
+	  select *
+	  from bu_product_brand pb ,bu_mcht_product_brand mpb
+	  where pb.id=mpb.product_brand_id
+          and mpb.del_flag="0"
+          and pb.del_flag="0"
+          and pb.status='1'
+          and mpb.status='1'
+          and mpb.audit_status='3'
+          and mpb.is_activity = '1'
+          and mpb.mcht_id = #{mchtId,jdbcType=INTEGER}
+    </select>
+    
+      <select id="selectByExampleCustom" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtProductBrandCustomExample">
+		select
+	    <if test="distinct" >
+	      distinct
+	    </if>
+	    <include refid="Base_Column_List" />
+	    from bu_mcht_product_brand t
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="orderByClause != null" >
+	      order by ${orderByClause}
+	    </if>
+	    <if test="limitStart != null and limitStart>=0" >
+	      limit #{limitStart} , #{limitSize}
+	    </if>
+	</select>
+</mapper>

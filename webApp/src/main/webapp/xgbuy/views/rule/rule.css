@@ -1,0 +1,42 @@
+.rule .header {
+	height: 3.08rem;
+	padding-top: 1.4rem;
+	text-align: center;
+}
+.rule .header img {
+	width: 1.8rem;
+	height: 1.8rem;
+	margin: 0 auto;
+}
+.rule .header p {
+	font-size: .3rem;
+	line-height: .68rem;
+}
+
+.rule .row {
+	font-size: .3rem;
+}
+.rule .row a {
+	height: .9rem;
+	padding: 0 .3rem;
+	background: #fff;
+}
+.rule .row a.bt {
+	border-top: 1px solid #ddd;
+}
+.rule .row span {
+	color: #999;
+}
+
+.rule .footer {
+	overflow: hidden;
+}
+.rule .footer div {
+	-webkit-align-self: flex-end;
+	align-self: flex-end;
+	width: 100%;
+	line-height: .35rem;
+	padding-bottom: .32rem;
+	font-size: .22rem;
+	text-align: center;
+}

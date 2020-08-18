@@ -1,0 +1,306 @@
+html {
+  font-size: 100px;
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+.red-rain-bg {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: url('./images/red_bg.png') no-repeat top left;
+  background-size: cover;
+}
+.rain-head {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0.3rem 0 0.25rem;
+  font-size: 12px;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.rain-head .rain-total {
+  padding-top: 0.06rem;
+  display: flex;
+}
+.rain-total img {
+  width: 0.18rem;
+  height: 0.24rem;
+}
+.rain-total span {
+  margin: auto 0 0.02rem;
+  font-size: 0.16rem;
+}
+.rain-total .rain-total-x {
+  margin: auto 0.06rem 0.03rem;
+  font-size: 0.1rem;
+}
+.rain-head .rain-countdown {
+  width: 0.56rem;
+  height: 0.29rem;
+  padding: 0 0.16rem 0.06rem;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 0.2rem;
+  background: rgba(0, 0, 0, .6);
+  font-size: 0.11rem;
+}
+.rain-countdown span {
+  margin-top: auto;
+}
+.rain-countdown #countNum {
+  line-height: 1;
+  font-size: 0.23rem;
+  font-weight: 500;
+}
+.rain-head .rain-close {
+  width: 0.17rem;
+  height: 0.17rem;
+  background: url('./images/close.png') no-repeat center;
+  background-size: 100%;
+  margin-top: 0.09rem;
+}
+
+#ranCanvas {
+	position: fixed;
+	z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.red-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  font-size: 0.12rem;
+}
+.red-rain .settlement {
+  width: 2.5rem;
+  height: 3.13rem;
+  padding: 0.25rem 0.15rem 0.1rem;
+  background: url('./images/red_bg1.png') no-repeat center;
+  background-size: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+}
+.settlement p {
+  font-size: 0.14rem;
+  line-height: 1;
+}
+.settlement .rain-grab {
+  font-size: 0.2rem;
+  margin-top: 0;
+}
+.rain-grab span {
+  color: #FFE555;
+}
+.settlement .coupon-list {
+  height: 1.4rem;
+  overflow-y: auto;
+}
+.settlement .coupon {
+  width: 100%;
+  height: 0.65rem;
+  display: flex;
+  background: url('./images/coupon.png') no-repeat center;
+  background-size: 100%;
+  font-size: 0.14rem;
+  font-weight: 600;
+  color: #212121;
+  line-height: 0.65rem;
+  margin-bottom: 0.1rem;
+}
+.settlement .coupon .coupon-left {
+  width: 0.73rem;
+  color: #FF4F4F;
+}
+.coupon .coupon-left span {
+  font-size: 0.1rem;
+  margin-top: auto;
+}
+.coupon .coupon-right {
+  flex: 1;
+  padding: 0 0.05rem;
+  overflow: hidden;/*超出部分隐藏*/
+  text-overflow:ellipsis;/* 超出部分显示省略号 */
+  white-space: nowrap;/*规定段落中的文本不进行换行 */
+}
+
+.settlement .settlement-bottom {
+  width: 100%;
+  height: 1.15rem;
+  padding-top: 0.45rem;
+  background: url('./images/red_bg2.png') no-repeat top left;
+  background-size: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.settlement-bottom .check-coupon {
+  width: 1.5rem;
+  height: 0.33rem;
+  background-color: #FFD750;
+  border-radius: 0.2rem;
+  color: #212121;
+  font-size: 0.13rem;
+  line-height: 0.33rem;
+  text-align: center;
+  margin: 0 auto;
+}
+.settlement-bottom p {
+  font-size: 0.12rem;
+}
+.red-rain .share-rain {
+  width: 1.76rem;
+  height: 0.21rem;
+  padding: 0 0.12rem;
+  margin: 0.1rem auto 0;
+  line-height: 0.21rem;
+  background-color: #CD231C;
+  border-radius: 0.12rem;
+  display: flex;
+  justify-content: space-between;
+}
+.share-rain span {
+  width: 0.15rem;
+  height: 0.14rem;
+  background: url('./images/share.png') no-repeat center;
+  background-size: 100%;
+  margin-top: 0.035rem;
+}
+.settlement-bottom .next-rain {
+  margin: 0.09rem 0 0.11rem;
+  line-height: 1;
+}
+.settlement-bottom .rain-rule {
+  font-size: 0.11rem;
+  color: #FFD74F;
+  margin: 0;
+}
+
+.close-settle {
+  width: 0.3rem;
+  height: 0.3rem;
+  background: url('./images/close1.png') no-repeat center;
+  background-size: 100%;
+  position: absolute;
+  left: 50%;
+  bottom: -0.5rem;
+  transform: translateX(-50%);
+}
+
+.rain-regret {
+  width: 2.5rem;
+  height: 3rem;
+  background: url('./images/red_no.png') no-repeat center;
+  background-size: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+}
+.rain-regret .regret-bottom {
+  width: 100%;
+  padding-bottom: 0.1rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.rain-regret .next-rain {
+  font-size: 0.12rem;
+  line-height: 1;
+  margin-top: 0.09rem;
+}
+
+.rain-gif {
+  width: 3.3rem;
+  height: 3.3rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.rain-gif img {
+  display: block;
+  width: 100%;
+}
+
+.regret-bottom .rain-rule {
+  font-size: 0.11rem;
+  color: #FFD74F;
+  margin: 0;
+}
+
+#inRedRain {
+  opacity: 0;
+}
+
+.red-rain-end {
+  width: 2.8rem;
+  height: 1.6rem;
+  position: fixed;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  text-align: center;
+  border-radius: 0 0 0.05rem 0.05rem;
+  display: none;
+}
+.red-rain-end p {
+  font-size: 0.16rem;
+  color: #333333;
+  font-weight: 500;
+  line-height: 1.2rem;
+  padding: 0;
+  margin: 0;
+}
+.red-rain-end .konw-btn {
+  font-size: 0.14rem;
+  color: #fff;
+  background-color: #FF5050;
+  line-height: 0.4rem;
+  border-radius: 0 0 0.05rem 0.05rem;
+}
+
+.show-git {
+  width: 3.3rem;
+  height: 3.3rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  display: none;
+}
+
+.show-git img {
+  width: 100%;
+  height: 100%;
+}
+.close-gif {
+  bottom: -0.45rem;
+}

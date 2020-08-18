@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.OrderDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.OrderDtlCustom"  extends="com.jf.dao.OrderDtlMapper.BaseResultMap">
+    <result column="customer_service_type" property="customerServiceType" jdbcType="VARCHAR" />
+    <result column="customer_service_status_desc" property="customerServiceStatusDesc" jdbcType="VARCHAR" />
+    <result column="customer_service_status" property="customerServiceStatus" jdbcType="VARCHAR" />
+    <result column="sub_order_status" property="subOrderStatus" jdbcType="VARCHAR" />
+    <result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+    <result column="express_name" property="expressName" jdbcType="VARCHAR" />
+    <result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="county" property="county" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="payment_desc" property="paymentDesc" jdbcType="VARCHAR" />
+    <result column="payment_date" property="paymentDate" jdbcType="TIMESTAMP" />
+    <result column="delivery_date" property="deliveryDate" jdbcType="TIMESTAMP" />
+    <result column="complete_date" property="completeDate" jdbcType="TIMESTAMP" />
+    <result column="product_status_desc" property="productStatusDesc" jdbcType="VARCHAR" />
+    <result column="mcht_remarks" property="mchtRemarks" jdbcType="VARCHAR" />
+    <result column="activity_area_source" property="activityAreaSource" jdbcType="VARCHAR" />
+    <result column="activity_area_type" property="activityAreaType" jdbcType="VARCHAR" />
+    <result column="single_product_activity_type" property="singleProductActivityType" jdbcType="VARCHAR" />
+    <result column="single_product_activity_type_desc" property="singleProductActivityTypeDesc" jdbcType="VARCHAR" />
+    <result column="member_status" property="memberStatus" jdbcType="VARCHAR" />
+    <result column="sub_deposit_order_id" property="subDepositOrderId" jdbcType="INTEGER" />
+    <result column="templet_name" property="templetName" jdbcType="VARCHAR" />
+    <result column="member_remarks" property="memberRemarks" jdbcType="VARCHAR" />
+    <result column="dtl_express_name" property="dtlExpressName" jdbcType="VARCHAR" />
+    <result column="delivery_last_date" property="deliveryLastDate" jdbcType="TIMESTAMP" />
+    <result column="remarks_color" property="remarksColor" jdbcType="VARCHAR" />
+	<result column="audit_date" property="auditDate" jdbcType="TIMESTAMP" />
+	<result column="preferential_type" property="preferentialType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+    t.*,
+    (select a.status from bu_sub_order a where a.id = t.sub_order_id)sub_order_status,
+    (select a.delivery_last_date from bu_sub_order a where a.id = t.sub_order_id)delivery_last_date,
+    (select a.sub_order_code from bu_sub_order a where a.id = t.sub_order_id)sub_order_code,
+    (select b.name from bu_sub_order a,bu_express b where a.id = t.sub_order_id and a.express_id = b.id)express_name,
+    (select a.express_no from bu_sub_order a where a.id = t.sub_order_id)express_no,
+    (select b.receiver_name from bu_sub_order a,bu_combine_order b where a.id = t.sub_order_id and a.combine_order_id = b.id)receiver_name,
+    (select b.receiver_phone from bu_sub_order a,bu_combine_order b where a.id = t.sub_order_id and a.combine_order_id = b.id)receiver_phone,
+    (select d.AREA_NAME from bu_sub_order a,bu_combine_order b,bu_member_address c,bu_p_area d where a.id = t.sub_order_id and a.combine_order_id = b.id and b.address_id = c.id and c.province = d.AREA_ID)province,
+    (select d.AREA_NAME from bu_sub_order a,bu_combine_order b,bu_member_address c,bu_p_area d where a.id = t.sub_order_id and a.combine_order_id = b.id and b.address_id = c.id and c.city = d.AREA_ID)city,
+    (select d.AREA_NAME from bu_sub_order a,bu_combine_order b,bu_member_address c,bu_p_area d where a.id = t.sub_order_id and a.combine_order_id = b.id and b.address_id = c.id and c.county = d.AREA_ID)county,
+    (select b.receiver_address from bu_sub_order a,bu_combine_order b where a.id = t.sub_order_id and a.combine_order_id = b.id)receiver_address,
+    FUN_GET_STATUS_DESC("BU_COMBINE_ORDER","STATUS", (select b.status from bu_sub_order a,bu_combine_order b where a.id = t.sub_order_id and a.combine_order_id = b.id)) payment_desc,
+    (select b.pay_date from bu_sub_order a,bu_combine_order b where a.id = t.sub_order_id and a.combine_order_id = b.id)payment_date,
+    (select a.delivery_date from bu_sub_order a where a.id = t.sub_order_id)delivery_date,
+    (select a.complete_date from bu_sub_order a where a.id = t.sub_order_id)complete_date,
+    FUN_GET_STATUS_DESC("BU_ORDER_DTL","PRODUCT_STATUS",product_status)product_status_desc,
+    FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "SERVICE_TYPE", (select b.service_type from bu_customer_service_order b where b.order_dtl_id=t.id and b.del_flag=0 order by b.id desc limit 1)) customer_service_type,
+   	FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "STATUS", (select b.status from bu_customer_service_order b where b.order_dtl_id=t.id and b.del_flag=0 order by b.id desc limit 1)) customer_service_status_desc,
+   	(select b.status from bu_customer_service_order b where b.order_dtl_id=t.id and b.del_flag=0 order by b.id desc limit 1)customer_service_status,
+   	(select GROUP_CONCAT(mrl.remarks SEPARATOR ";") from bu_mcht_remarks_log mrl where mrl.del_flag='0' and mrl.sub_order_id = t.sub_order_id order by mrl.id desc)mcht_remarks,
+    (SELECT bmi.`status` FROM bu_member_info bmi,bu_combine_order co,bu_sub_order so WHERE bmi.id = co.member_id AND co.id = so.combine_order_id AND so.id = t.sub_order_id) member_status,
+    (select pat.name from bu_product p,bu_product_after_templet pat where p.id = t.product_id and p.cs_templet_id = pat.id and p.del_flag='0' and pat.del_flag='0')templet_name,
+    (select b.remarks from bu_sub_order a,bu_combine_order b where a.id = t.sub_order_id and a.combine_order_id = b.id)member_remarks,
+    (select b.name from bu_express b where t.dtl_express_id = b.id)dtl_express_name,
+    (select a.remarks_color from bu_sub_order a where a.id = t.sub_order_id)remarks_color,
+    (select a.audit_date from bu_sub_order a where a.id = t.sub_order_id)audit_date
+  </sql>
+  <sql id="SubOrder_Column_List">
+  	t.*,
+  	FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "SERVICE_TYPE", (select b.service_type from bu_customer_service_order b where b.order_dtl_id=t.id and b.del_flag=0 order by b.id desc limit 1)) customer_service_type,
+   	FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER", "STATUS", (select b.status from bu_customer_service_order b where b.order_dtl_id=t.id and b.del_flag=0 order by b.id desc limit 1)) customer_service_status_desc,
+   	(select b.status from bu_customer_service_order b where b.order_dtl_id=t.id and b.del_flag=0 order by b.id desc limit 1)customer_service_status,
+   	(select aa.source from bu_activity_area aa where aa.id = t.activity_area_id and aa.del_flag='0')activity_area_source,
+   	(select aa.type from bu_activity_area aa where aa.id = t.activity_area_id and aa.del_flag='0')activity_area_type,
+   	(select spa.type from bu_single_product_activity spa where spa.id = t.single_product_activity_id and spa.del_flag='0')single_product_activity_type,
+   	FUN_GET_STATUS_DESC("BU_SINGLE_PRODUCT_ACTIVITY", "TYPE", (select spa.type from bu_single_product_activity spa where spa.id = t.single_product_activity_id and spa.del_flag='0'))single_product_activity_type_desc,
+   	(select sdo.id from bu_sub_deposit_order sdo where sdo.order_dtl_id = t.id and sdo.del_flag='0' limit 1)sub_deposit_order_id,
+   	(select opi.preferential_type from bu_order_preferential_info opi where opi.order_dtl_id = t.id and opi.del_flag = '0' limit 1) preferential_type
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.OrderDtlCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_order_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="selectOrderDtlByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.OrderDtlCustomExample" >
+  	select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_order_dtl t,bu_sub_order so
+    
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countOrderDtlByExample" resultType="java.lang.Integer" parameterType="com.jf.entity.OrderDtlCustomExample" >
+  	select
+    	count(*)
+    from bu_order_dtl t,bu_sub_order so
+
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getOrderDtlsBySubOrderId" parameterType="com.jf.entity.OrderDtlExample" resultMap="BaseResultMap">
+  	select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="SubOrder_Column_List" />
+    from bu_order_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+  <select id="querySaleQuantityByExample" parameterType="com.jf.entity.OrderDtlExample" resultType="java.lang.Integer" >
+    select ifnull(sum(quantity), 0) from bu_order_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getSubOrderIdsByActivityId" parameterType="java.lang.Integer" resultType="java.lang.Integer" >
+    SELECT DISTINCT t.sub_order_id FROM bu_order_dtl t WHERE t.activity_id=#{activityId} and t.del_flag=0
+  </select>
+  
+  <select id="countOrderDtlCustomByExample" parameterType="com.jf.entity.OrderDtlCustomExample" resultType="java.lang.Integer" >
+  	select count(*) from bu_order_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="eachDaySaleData" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	SELECT
+		DATE_FORMAT(co.pay_date,'%Y-%m-%d')each_day,
+		IFNULL(SUM(od.quantity),0)product_count,
+		IFNULL(SUM(od.quantity*od.sale_price),0.00)product_amount,
+		IFNULL(SUM(od.mcht_preferential),0.00)mcht_preferential,
+		IFNULL(SUM(od.platform_preferential+od.integral_preferential),0.00)platform_preferential,
+		IFNULL(SUM(od.pay_amount),0.00)pay_amount
+	FROM
+		bu_combine_order co,
+		bu_sub_order so,
+		bu_order_dtl od
+		<if test="productCode != null || brandId != null">
+		,bu_product p
+		</if>
+	WHERE
+		co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		<if test="productCode != null">
+		AND od.product_id = p.id AND p.code = #{productCode}
+		</if>
+		<if test="brandId != null">
+		AND od.product_id = p.id AND p.brand_id = #{brandId}
+		</if>
+		AND co.`status` = '1'
+		AND so.mcht_id = #{mchtId}
+		AND co.pay_date<![CDATA[ >= ]]>#{payDateBegin}
+		AND co.pay_date<![CDATA[ <= ]]>#{payDateEnd}
+	GROUP BY DATE_FORMAT(co.pay_date,'%Y-%m-%d')
+  </select>
+  
+  <select id="getProductSaleData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  	SELECT
+		p.`code`,
+		od.product_name,
+		od.brand_name,
+		od.art_no,
+		od.sku_pic,
+		SUM(od.quantity) product_count,
+		SUM(od.sale_price*od.quantity) product_amount,
+		SUM(od.mcht_preferential) mcht_preferential,
+		SUM(od.platform_preferential+od.integral_preferential) platform_preferential,
+		SUM(od.pay_amount) pay_amount,
+		(SELECT COUNT(1) FROM bu_member_footprint mfp WHERE mfp.product_id = od.product_id AND mfp.update_date<![CDATA[ >= ]]> #{payDateBegin} AND mfp.update_date<![CDATA[ <= ]]> #{payDateEnd} AND mfp.del_flag = '0')hit_count
+	FROM
+		bu_combine_order co,
+		bu_sub_order so,
+		bu_order_dtl od,
+		bu_product p
+	WHERE
+			co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		AND od.product_id = p.id
+		AND so.mcht_id = #{mchtId}
+		AND co.pay_status='1'
+		AND od.is_give = '0'
+		AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+		<if test="productName != null">
+		AND od.product_name like concat('%',#{productName},'%')
+		</if>
+		<if test="productCode != null">
+		AND p.`code` = #{productCode}
+		</if>
+		<if test="brandId != null">
+		AND p.brand_id = #{brandId}
+		</if>
+		AND od.del_flag='0'
+		AND so.del_flag='0'
+		AND co.del_flag='0'
+		GROUP BY od.product_id
+		<if test="orderByType == 0">
+		ORDER BY SUM(od.quantity) DESC
+		</if>
+		<if test="orderByType == 1">
+		ORDER BY SUM(od.pay_amount) DESC
+		</if>
+  </select>
+  
+  <select id="getSingleProductActivitySaleData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+  	SELECT
+		p.`code`,
+		od.product_name,
+		od.brand_name,
+		od.art_no,
+		od.sku_pic,
+		SUM(od.quantity) product_count,
+		SUM(od.sale_price*od.quantity) product_amount,
+		SUM(od.mcht_preferential) mcht_preferential,
+		SUM(od.platform_preferential+od.integral_preferential) platform_preferential,
+		SUM(od.pay_amount) pay_amount,
+		(SELECT COUNT(1) FROM bu_member_footprint mfp WHERE mfp.product_id = od.product_id AND mfp.update_date<![CDATA[ >= ]]> #{payDateBegin} AND mfp.update_date<![CDATA[ <= ]]> #{payDateEnd} AND mfp.del_flag = '0')hit_count
+	FROM
+		bu_combine_order co,
+		bu_sub_order so,
+		bu_order_dtl od,
+		bu_product p
+		<if test="activityType != null">
+		,bu_single_product_activity spa
+		</if>
+	WHERE
+			co.id = so.combine_order_id
+		AND so.id = od.sub_order_id
+		AND od.product_id = p.id
+		AND so.mcht_id = #{mchtId}
+		AND co.pay_status='1'
+		AND od.is_give = '0'
+		AND co.pay_date <![CDATA[ >= ]]> #{payDateBegin}
+		AND co.pay_date <![CDATA[ <= ]]> #{payDateEnd}
+		<if test="productName != null">
+		AND od.product_name like concat('%',#{productName},'%')
+		</if>
+		<if test="productCode != null">
+		AND p.`code` = #{productCode}
+		</if>
+		<if test="brandId != null">
+		AND p.brand_id = #{brandId}
+		</if>
+		<if test="activityType != null">
+		AND p.id = spa.product_id
+		AND spa.mcht_id = #{mchtId}
+		AND spa.type = #{activityType}
+		AND spa.del_flag = '0' 
+		</if>
+		AND od.del_flag='0'
+		AND so.del_flag='0'
+		AND co.del_flag='0'
+		GROUP BY od.product_id
+		<if test="orderByType == 0">
+		ORDER BY SUM(od.quantity) DESC
+		</if>
+		<if test="orderByType == 1">
+		ORDER BY SUM(od.pay_amount) DESC
+		</if>
+  </select>
+  
+  <select id="activityAreaSaleData" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	SELECT
+		t.activity_id,
+		t.`NAME` as name,
+		t.benefit_point,
+		t.activity_begin_time,
+		t.activity_end_time,
+		IFNULL(SUM(t.product_count),0)product_count,
+		IFNULL(SUM(t.sale_quantity),0)sale_quantity,
+		IFNULL(SUM(t.product_amount),0)product_amount,
+		IFNULL(SUM(t.mcht_preferential),0)mcht_preferential,
+		IFNULL(SUM(t.platform_preferential),0)platform_preferential,
+		IFNULL(SUM(t.pay_amount),0)pay_amount
+	FROM
+		(
+			SELECT
+				a.id AS activity_id,
+				a. NAME,
+				aa.benefit_point,
+				aa.activity_begin_time,
+				aa.activity_end_time,
+				0 as product_count,
+				0 AS sale_quantity,
+				0 AS product_amount,
+				0 AS mcht_preferential,
+				0 AS platform_preferential,
+				0 AS pay_amount
+			FROM
+				bu_activity_area aa,
+				bu_activity a
+			WHERE
+				aa.id = a.activity_area_id
+			AND aa.mcht_id = #{mchtId}
+			AND aa.activity_begin_time <![CDATA[ >= ]]> #{dateBegin}
+			AND aa.activity_end_time <![CDATA[ <= ]]> #{dateEnd}
+			AND aa.del_flag = '0'
+			AND a.del_flag = '0'
+			GROUP BY
+				a.id
+			UNION
+				SELECT
+					a.id AS activity_id,
+					a.`name` AS NAME,
+					aa.benefit_point AS benefit_point,
+					aa.activity_begin_time AS activity_begin_time,
+					aa.activity_end_time AS activity_end_time,
+					IFNULL((SELECT COUNT(ap.id) FROM bu_activity_product ap WHERE ap.activity_id = a.id AND ap.del_flag = '0' AND ap.coo_audit_status='2'),0)product_count,
+					IFNULL(SUM(od.quantity),0) AS sale_quantity,
+					IFNULL(SUM(od.quantity * od.sale_price),0) AS product_amount,
+					IFNULL(SUM(od.mcht_preferential),0) AS mcht_preferential,
+					IFNULL(SUM(od.platform_preferential + od.integral_preferential),0) AS platform_preferential,
+					IFNULL(SUM(od.pay_amount),0) AS pay_amount
+				FROM
+					bu_combine_order co,
+					bu_sub_order so,
+					bu_order_dtl od,
+					bu_activity a,
+					bu_activity_area aa
+				WHERE
+					co.id = so.combine_order_id
+				AND so.id = od.sub_order_id
+				AND od.activity_id = a.id
+				AND a.activity_area_id = aa.id
+				AND a.mcht_id = #{mchtId}
+				AND aa.activity_begin_time <![CDATA[ >= ]]> #{dateBegin}
+				AND aa.activity_end_time <![CDATA[ <= ]]> #{dateEnd}
+				AND co.pay_status = '1'
+				AND od.is_give = '0'
+				AND od.del_flag = '0'
+				GROUP BY
+					a.id
+		) t
+	GROUP BY
+		t.activity_id
+	ORDER BY t.activity_id DESC	
+  </select>
+  <select id="sumPlatformAndIntegralPreferential" parameterType="java.lang.Integer" resultType="java.math.BigDecimal">
+  		SELECT SUM(od.platform_preferential+od.integral_preferential) FROM bu_order_dtl od WHERE od.mcht_settle_order_id=#{mchtSettleOrderId} and od.is_give = '0' AND od.del_flag='0'
+  </select>
+  
+  <select id="countByCombineOrderId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		SELECT count(od.id) FROM bu_order_dtl od,bu_sub_order so,bu_combine_order co WHERE od.sub_order_id = so.id AND so.combine_order_id = co.id AND od.del_flag='0' AND so.del_flag='0' AND co.del_flag='0' AND co.id=#{combineOrderId}
+  </select>
+  	
+  <update id="updateDeliveryDateAndDeliveryStatus" parameterType="java.util.Map" >
+    UPDATE bu_order_dtl t SET t.delivery_status = #{deliveryStatus},t.delivery_date = #{deliveryDate},t.marked_out_of_stock = #{markedOutOfStock} WHERE t.del_flag='0' and t.sub_order_id IN
+    <foreach item="item" index="index" collection="subOrderIds" open="(" separator="," close=")">  
+  	#{item}  
+ 	</foreach> 
+  </update>
+  	
+  <update id="updateDeliveryDateAndDeliveryStatusByIds" parameterType="java.util.Map" >
+    UPDATE bu_order_dtl t SET t.delivery_status = #{deliveryStatus},t.delivery_date = #{deliveryDate},t.marked_out_of_stock = #{markedOutOfStock} WHERE t.del_flag='0' and t.id IN
+    <foreach item="item" index="index" collection="subOrderIds" open="(" separator="," close=")">  
+  	#{item}  
+ 	</foreach> 
+  </update>
+  
+  <select id="getList" parameterType="java.lang.Integer" resultType="com.jf.entity.OrderDtl">
+  	select 
+  		od.* 
+  	from 
+  		bu_order_dtl od 
+  	where 
+  		od.del_flag='0' 
+  		and od.sub_order_id=#{subOrderId} 
+  		and (od.delivery_status="0" or od.marked_out_of_stock="1")
+  		and NOT EXISTS(select cso.id from bu_customer_service_order cso where cso.order_dtl_id=od.id and cso.del_flag='0' and cso.status in ('0','1') limit 1)
+  </select>
+
+  <select id="selectOrderDtlsBySubOrderIds"  parameterType="java.util.List" resultType="com.jf.entity.OrderDtlCustom">
+	select
+	<include refid="SubOrder_Column_List" />
+	from bu_order_dtl t
+	WHERE
+	t.del_flag='0' AND t.sub_order_id IN
+	<foreach item="id" index="index" collection="subOrderIds" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+
+  </select>
+
+  <select id="selectByExampleCustom"  parameterType="java.lang.Integer" resultType="com.jf.entity.OrderDtlCustom">
+	select
+	t.*,
+	(select ode.manage_self_freight from bu_order_dtl_extend ode where ode.order_dtl_id = t.id and ode.del_flag = '0') manageSelfFreight,
+	so.mcht_type mchtType,
+	so.is_manage_self isManageSelf
+	from bu_order_dtl t,bu_sub_order so
+	where
+	t.sub_order_id = so.id
+	and t.mcht_settle_order_id = #{mchtSettleOrderId}
+	and t.del_flag = '0'
+	and so.del_flag = '0'
+	order by t.create_date desc
+  </select>
+</mapper>

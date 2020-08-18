@@ -1,0 +1,30 @@
+<div class="page checkin-yichang flex dc bgf4" data-title="提现异常" data-id="activity_newsign_yichang">
+    <link rel="stylesheet" href="activity/newsign/draw/yichang/yichang.css?ver=1.1">
+
+    <header class="flex ac jb fn">
+        <div class="flex fn"><i class="back ico-btn" onclick="back('activity/newsign/draw/index.html')"></i></div>
+        <p class="ellipsis">提现异常</p>
+        <div class="fn"></div>
+    </header>
+
+    <div class="main-tishi flex ac jc">
+        <img class="imgs" src="activity/newsign/draw/resources/tishi.png">
+        <p>您的微信存在提现异常，请填写支付宝账号线下处理，审核通过后我们将在工作日7天内为您转账，请注意查收</p>
+    </div>
+
+    <div class="main-body"></div>
+
+    <script id="checkin_yichang_tpl" type="text/html">
+        <div class="main-msg">
+            <div class="flex ac jc yichang-body">
+                <p class="flex jb">姓<i>名:</i></p><input type="text" id="namepass" class="flex ac jc"  value="" required >
+            </div>
+            <div class="flex ac jc yichang-body">
+                <p class="flex jb"><i></i>支付宝账号:</p><input type="text" id="zhanghaopass" class="flex ac jc" value="" required>
+            </div>
+        </div>
+        <div class="flex ac jc btns" onclick="checkinYichangApi.submit()">确认提交</div>
+    </script>
+</div>
+
+<script src="activity/newsign/draw/yichang/yichang.js?ver=1.1" async></script>

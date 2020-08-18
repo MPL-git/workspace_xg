@@ -1,0 +1,315 @@
+<div class="page mall-list malls product-3 bgf4" data-title="商城" data-id="mall_list">
+	<link rel="stylesheet" href="mall/list/index.css?var=1.0">
+	<link rel="stylesheet" href="mall/malls.css?var=1.0">
+	<link rel="stylesheet" href="../static/css/product-3.css">
+
+	<div class="head-search flex ac">
+		<a class="back ico-btn" onclick="back('mall')"></a>
+		<div class="back-search">
+			<form onsubmit="mallsApi.submit()">
+				<label></label>
+				<input type="search" onfocus="mallsApi.focus(this)" autocomplete="off">
+			</form>
+		</div>
+		<a class="cancel ac jc" onclick="mallsApi.blur()">取消</a>
+	</div>
+
+	<div class="mask-search scroll-y"></div>
+
+	<div class="content scroll-y scroll-more">
+		<div class="touchfix w75">
+			<div class="tag-box">
+				<div class="tag flex">
+					<a class="fg flex ac jc" data-name="" onclick="mallListApi.tag(this)">综合</a>
+					<a class="fg flex ac jc" data-name="saleWeightSorf" onclick="mallListApi.tag(this)">销量</a>
+					<a class="fg flex ac jc" data-name="salePriceSorf" onclick="mallListApi.tag(this)">
+						价格<b class="flex dc ac jb"><i class="arrow-t t"></i><i class="arrow-t b"></i></b>
+					</a>
+					<a class="fn flex ac jc filter" onclick="mallListApi.tag(this)">
+						筛选<b class="tag-pick"></b>
+					</a>
+				</div>
+			</div>
+
+			<div class="product clearfix">
+				<div class="left"></div>
+				<div class="right"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="popup popup-mall-pick" onclick="mallListApi.closePick(this)">
+		<div class="popup-right flex dc" onclick="stopSelf()"></div>
+	</div>
+
+	<div class="popup popup-mall-category no-bg" onclick="mallListApi.closePick(this)">
+		<div class="popup-right flex dc" onclick="stopSelf()"></div>
+	</div>
+
+	<div class="popup popup-mall-brand no-bg" onclick="mallListApi.closePick(this)">
+		<div class="popup-right" onclick="stopSelf()"></div>
+	</div>
+
+	<!-- 筛选 -->
+	<script id="mall_pick_tpl" type="text/html">
+		<div class="row-1 scroll-y fg">
+			{{if priceSectionName}}
+			<div class="col-1 price" data-name="价格区间">
+				<h3 class="flex ac jb">{{priceSectionName}}</h3>
+				<div class="con-1 flex ac jb">
+					<input type="number" name="priceMin" placeholder="最低价">
+					<i></i>
+					<input type="number" name="priceMax" placeholder="最高价">
+				</div>
+			</div>
+			{{/if}}
+
+			{{if productTypeMap}}
+			<div class="col-1 category" data-name="全部分类">
+				<h3 class="flex ac jb">
+					{{allCategory}}
+
+					<span class="flex ac corsor" onclick="mallListApi.drop(this)">
+						<input type="text" readonly placeholder="全部" value="{{productTypeMap.val}}" data-id="{{productTypeMap.link}}" data-name="{{productTypeMap.parentName}}">
+						<i class="arrow-r ico"></i>
+					</span>
+				</h3>
+				{{if productTypeMap.categoryList.length}}
+				<div class="con-1 clearfix narrow">
+					{{each productTypeMap.categoryList value}}
+					<input type="button" onclick="mallListApi.radio(this, 'categoryList')" class="elps{{productTypeMap.link == value.productTypeId ? ' on' : ''}}{{value.productTypeName == '全部品类' ? ' more' : ''}}" value="{{value.productTypeName}}" data-id="{{value.productTypeId}}">
+					{{/each}}
+				</div>
+				{{/if}}
+			</div>
+			{{/if}}
+
+			{{if brandMap}}
+			<div class="col-1 brand" data-name="品牌">
+				{{include 'mall_pick_tpl_brand'}}
+			</div>
+			{{/if}}
+
+			{{if sexNameMap}}
+			<div class="col-1 sex" data-type="{{sexNameMap.type}}" data-name="性别">
+				<h3 class="flex ac jb">{{sexNameMap.name}}</h3>
+				{{if sexNameMap.productList.length}}
+				<div class="con-1 clearfix">
+					{{each sexNameMap.productList value}}
+					<input type="button" class="elps" onclick="mallListApi.radio(this)" value="{{value.name}}" data-id="{{value.value}}">
+					{{/each}}
+				</div>
+				{{/if}}
+			</div>
+			{{/if}}
+
+			{{if productSuitPeopleNameMap}}
+			<div class="col-1 group" data-type="{{productSuitPeopleNameMap.type}}" data-name="适用人群">
+				<h3 class="flex ac jb">{{productSuitPeopleNameMap.name}}</h3>
+				{{if productSuitPeopleNameMap.productList.length}}
+				<div class="con-1 clearfix">
+					{{each productSuitPeopleNameMap.productList value}}
+					<input type="button" class="elps" onclick="mallListApi.radio(this)" value="{{value.name}}" data-id="{{value.value}}">
+					{{/each}}
+				</div>
+				{{/if}}
+			</div>
+			{{/if}}
+
+			{{if seasonMap}}
+			<div class="col-1 season" data-type="{{seasonMap.type}}" data-name="适合季节">
+				<h3 class="flex ac jb">{{seasonMap.name}}</h3>
+				{{if seasonMap.productList.length}}
+				<div class="con-1 clearfix">
+					{{each seasonMap.productList value}}
+					<input type="button" class="elps" onclick="mallListApi.radio(this)" value="{{value.name}}" data-id="{{value.value}}">
+					{{/each}}
+				</div>
+				{{/if}}
+			</div>
+			{{/if}}
+		</div>
+		<div class="row-2 footers fn flex">
+			<a class="flex ac jc reset" onclick="mallListApi.reset()">重置</a>
+			<a class="flex ac jc sure" onclick="mallListApi.sure()">确认</a>
+		</div>
+	</script>
+
+	<!-- 筛选-品牌 -->
+	<script id="mall_pick_tpl_brand" type="text/html">
+		<h3 class="flex ac jb">
+			{{brandMap.name}}
+			
+			<span class="flex ac corsor" onclick="mallListApi.drop(this)">
+				<input type="text" readonly placeholder="全部" value="{{brandMap.val}}" data-id="{{brandMap.link}}">
+				<i class="arrow-r ico"></i>
+			</span>
+		</h3>
+		{{if brandMap.productList.length}}
+		<div class="con-1 clearfix narrow">
+			{{each brandMap.productList value}}
+			<input type="button" onclick="mallListApi.checkbox(this)" class="elps{{brandMap.link == value.value ? ' on' : ''}}{{value.value == '' ? ' more' : ''}}" value="{{value.name}}" data-id="{{value.value}}">
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 筛选-全部分类 -->
+	<script id="mall_category_tpl" type="text/html">
+		<div class="row-1 headers flex ac jb fn">
+			<a class="ico-btn back" onclick="closeSelf(this)"></a>
+			<h3>分类筛选</h3>
+			<a class="ico-btn clear je" onclick="mallListApi.radio(this, 'categoryClear')">清除</a>
+		</div>
+		<div class="row-2 scroll-y fg">
+			<h4 class="flex ac jb on">{{parentName}}</h4>
+			<div>
+				{{each categoryList value}}
+				<a class="flex ac jb" onclick="mallListApi.radio(this, 'categoryMore', '{{value.productTypeName}}')" data-id="{{value.productTypeId}}">
+					{{value.productTypeName}}
+				</a>
+				{{/each}}
+			</div>
+		</div>
+	</script>
+
+	<!-- 筛选-全部品牌 -->
+	<script id="mall_brand_tpl" type="text/html">
+		<div class="row-1 headers flex ac jb">
+			<a class="ico-btn back" onclick="closeSelf(this)"></a>
+			<h3>全部品牌</h3>
+			<a></a>
+		</div>
+		<div class="row-2 flex">
+			<div class="scroll-y fg col-1">
+				<h4 class="flex ac">{{name}}</h4>
+				<ul>
+					{{each productList value}}
+					<li data-letter="{{value.letterIndex}}">
+						<a class="flex ac jb" onclick="mallListApi.checkbox(this, '{{value.name}}')" data-id="{{value.value}}">{{value.name}}</a>
+					</li>
+					{{/each}}
+				</ul>
+			</div>
+			<div class="scroll-y col-2 flex dc ac jc">
+				{{each letterList value}}
+					<span class="flex ac jc fn" onclick="mallListApi.letterTop('{{value}}')">{{value}}</span>
+				{{/each}}
+			</div>
+		</div>
+		<div class="row-3 footers flex">
+			<a class="flex ac jc reset" onclick="mallListApi.resetBrand()">重置</a>
+			<a class="flex ac jc sure" onclick="mallListApi.sureBrand()">确认</a>
+		</div>
+	</script>
+
+	<!-- 搜索 -->
+	<script id="mall_search_tpl" type="text/html">
+		{{if dataList.length || cacheList.length}}
+			{{if dataList.length}}
+		<div class="row-1">
+			<h3 class="flex ac">热搜</h3>
+			<div class="scroll-x flex">
+				{{each dataList value i}}
+				<a class="flex ac fn" onclick="mallsApi.submit('{{value.searchName}}')">{{value.searchName}}</a>
+				{{/each}}
+			</div>
+		</div>
+			{{/if}}
+
+			{{if cacheList.length}}
+		<div class="row-2">
+			<h3 class="flex ac">搜索历史</h3>
+			<ul>
+				{{include 'mall_search_tpl_cache'}}
+			</ul>
+			<a class="flex ac jc" onclick="mallsApi.update()">清空搜索记录</a>
+		</div>
+			{{/if}}
+		{{else}}
+			{{include 'mall_search_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="mall_search_tpl_cache" type="text/html">
+		{{each cacheList value i}}
+			{{if i < 20}}
+		<li class="flex ac" onclick="mallsApi.submit('{{value.searchName}}')">
+			<p class="elps">{{value.searchName}}</p>
+			<span class="flex ac jc" onclick="mallsApi.update(this)">删除</span>
+		</li>
+			{{/if}}
+		{{/each}}
+	</script>
+
+	<!-- 商品 -->
+	<script id="mall_list_tpl_product" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+		<a onclick="getUrlGoods('{{value.productId}}', {pos: '{{page + ((right ? 1 : 0) + i) * 2}}', data: mallListApi.data})">
+			<div class="con-1 h370">
+				<img src="{{value.productPic}}">
+
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+
+				<em class="flex ac">{{value.brandName}}</em>
+			</div>
+
+			<div class="con-2">
+
+				<p title="{{value.productName}}">
+					{{if value.activityTypeContent}}
+					<em class="btn-f50">{{value.activityTypeContent}}</em>
+					{{/if}}
+					{{value.productName}}</p>
+
+				<div class="scroll-x">
+					<span>
+						<strong class="f50">{{value.mallPrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</span>
+
+
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+					{{if value.manageSelf == '1'}}
+					<i class="manageSelf">自营</i>
+					{{/if}}
+
+				</div>
+
+				{{if value.commentCountStr}}
+				<div class="c9">
+					<span class="mr20">{{value.commentCountStr}}</span>
+					<span>{{value.goodProductScoreCountStr}}</span>
+				</div>
+				{{/if}}
+
+				{{if value.shopPreferentialInfo}}
+				<dl class="flex jb">
+					<dt>{{value.shopPreferentialInfo}}</dt>
+					<dd class="flex ac jc fn" onclick="getUrlShop(this)" data-id="{{value.mchtId}}">去看看</dd>
+				</dl>
+				{{/if}}
+			</div>
+		</a>
+			{{/each}}
+		{{else}}
+			{{include 'mall_list_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="mall_list_tpl_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>暂无商品</p>
+		</div>
+	</script>
+
+	<script src="mall/malls.js?ver=1.1"></script>
+	<script src="mall/list/index.js?ver=1.0" async></script>
+</div>

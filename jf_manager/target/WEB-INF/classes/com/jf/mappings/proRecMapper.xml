@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jf.dao.ProRecMapper">
+
+
+
+	<select id="selectProducts" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT BP.PRODUCT_ID,BP.PRODUCT_NAME FROM BU_PRODUCT BP
+   </select>
+
+
+
+	<select id="selectProductTypes" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT PRODUCT_TYPE_ID id,
+		PRODUCT_TYPE_NAME text ,
+		PARENT_ID pid
+		FROM BU_PRODUCT_TYPE A
+		WHERE A.STATUS = 'A'
+    </select>
+
+	<sql id="selectProductsForProductTypeId-condition">
+		FROM BU_PRODUCT BP,BU_PRODUCT_TYPE BPT,
+		BU_PRODUCT_BRAND BPB
+		WHERE 1=1
+		AND BP.STATUS='A'
+		AND BP.PRODUCT_TYPE_ID = BPT.PRODUCT_TYPE_ID
+		AND BP.BRAND_ID = BPB.BRAND_ID
+		AND BP.PRODUCT_ID NOT IN (
+		SELECT BCD.CATALOG_VALUE FROM BU_CATALOG_DATA BCD,BU_CATALOG_INFO BCI
+		WHERE BCD.CATALOG_ID = BCI.CATALOG_ID
+		AND BP.PRODUCT_ID=BCD.CATALOG_VALUE
+		AND BCD.STATUS='A' 
+		AND  BCI.PARENT_ID IN(SELECT CATALOG_ID FROM BU_CATALOG_INFO C WHERE C.CATALOG_CODE='YYSPTJ' ))
+		<if test="producttype != null and producttype != ''">
+			AND BP.PRODUCT_TYPE_ID IN (SELECT PRODUCT_TYPE_ID FROM BU_PRODUCT_TYPE
+			WHERE FIND_IN_SET(PRODUCT_TYPE_ID, QUERYPRODUCTTYPE(#{producttype})))
+		</if>
+		<if test="productname != null and productname != ''">
+			AND BP.PRODUCT_NAME LIKE '%${productname}%'
+					</if>
+	</sql>
+
+
+
+	<select id="selectProductsForProductTypeId" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT BP.PRODUCT_ID,BP.PRODUCT_NAME,BPT.PRODUCT_TYPE_NAME
+		,BPB.BRAND_NAME
+		<include refid="selectProductsForProductTypeId-condition" />
+		<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT #{MIN_NUM},#{MAX_NUM}
+	  			 	</if>
+	</select>
+
+	<select id="selectProductsForProductTypeIdCount" parameterType="java.util.HashMap"
+		resultType="String" flushCache="true">
+		SELECT count(1) totalNum
+		<include refid="selectProductsForProductTypeId-condition" />
+
+	</select>
+
+
+	<insert id="saveRecommend" parameterType="java.util.HashMap">
+		INSERT INTO BU_CATALOG_DATA
+		(CATALOG_ID,
+		CATALOG_VALUE,
+		CREATE_STAFF_ID,
+		CREATE_DATE,
+		STATUS,
+		STATUS_DATE)
+		values( #{CATALOG_ID}, #{PRODUCT_ID},#{CREATE_STAFF_ID}, NOW(), 'A', NOW() )
+	</insert>
+
+
+	<delete id="delete" parameterType="java.util.HashMap">
+		UPDATE   BU_CATALOG_DATA SET STATUS='P' WHERE DATA_ID IN (${DATA_ID} )
+	</delete>
+
+	<select id="selectCatalogId" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		SELECT * FROM BU_CATALOG_INFO BCI WHERE BCI.CATALOG_ID = #{CATALOG_ID}
+	</select>
+	<delete id="updatecatainfo" parameterType="java.util.HashMap">
+		UPDATE   BU_CATALOG_INFO SET CATALOG_NAME=#{CATALOG_NAME},CATALOG_DESC=#{CATALOG_DESC}  WHERE CATALOG_ID =#{CATALOG_ID}
+	</delete>
+	<select id="selectCatalogs" resultType="java.util.HashMap">
+		SELECT CATALOG_ID
+		id,0
+		pid,CATALOG_NAME text FROM BU_CATALOG_INFO WHERE PARENT_ID=(SELECT
+		CATALOG_ID FROM BU_CATALOG_INFO WHERE CATALOG_CODE='YYSPTJ')
+   </select>
+	<sql id="querycatalogdata">
+		SELECT
+		BCD.DATA_ID,
+		BCD.CATALOG_VALUE,
+		BP.PRODUCT_NAME,
+		BPT.PRODUCT_TYPE_NAME,
+		BPB.BRAND_NAME,
+		date_format(BP.CREATE_DATE, '%Y-%m-%d %h:%m:%s') CREATE_DATE,
+		SSI.STAFF_NAME,
+		FUN_GET_PRODUCT_PICTURE(BP.PRODUCT_ID) PRODUCT_PICTURE
+		FROM BU_CATALOG_INFO BCI,
+		BU_CATALOG_DATA BCD,
+		BU_PRODUCT BP,
+		BU_PRODUCT_TYPE BPT,
+		BU_PRODUCT_BRAND BPB,
+		SYS_STAFF_INFO SSI
+		WHERE BCI.CATALOG_ID = BCD.CATALOG_ID
+		AND BCD.CATALOG_VALUE = BP.PRODUCT_ID
+		AND BP.PRODUCT_TYPE_ID = BPT.PRODUCT_TYPE_ID
+		AND BP.BRAND_ID = BPB.BRAND_ID
+		AND BCD.CREATE_STAFF_ID = SSI.STAFF_ID
+		AND BCD.STATUS='A' 
+		AND BCI.PARENT_ID IN(SELECT CATALOG_ID FROM BU_CATALOG_INFO C WHERE C.CATALOG_CODE='YYSPTJ' )
+		<if test="DATA_ID !=null and DATA_ID != ''">
+
+			AND BCD.DATA_ID = #{DATA_ID}  
+		 </if>
+		<if test="CATALOG_ID!=null and CATALOG_ID != ''">
+
+			AND BCD.CATALOG_ID = #{CATALOG_ID}  
+		  </if>
+	</sql>
+
+	<select id="querycatadataList" parameterType="java.util.HashMap"
+		resultType="java.util.HashMap">
+		SELECT TB.* FROM (
+		<include refid="querycatalogdata" />
+		ORDER BY DATA_ID DESC
+		) TB
+		<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	       </if>
+	</select>
+
+	<select id="querycatadataListTotal" parameterType="java.util.HashMap"
+		resultType="java.lang.Integer">
+		select count(1) from (
+		<include refid="querycatalogdata" />
+		) TB
+	</select>
+
+</mapper>

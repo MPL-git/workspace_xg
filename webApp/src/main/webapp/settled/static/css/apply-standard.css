@@ -1,0 +1,23 @@
+.wrapper {
+	line-height: .36rem;
+	padding: .2rem .3rem 1.26rem;
+}
+h1, h2 {
+	font-weight: bold;
+}
+
+h1 {
+	line-height: 1.2rem;
+	font-size: .44rem;
+	text-align: center;
+}
+h2 {
+	line-height: .74rem;
+	padding-bottom: .15rem;
+}
+p {
+	margin-bottom: .36rem;
+}
+.mt108 {
+	margin-top: 1.08rem;
+}

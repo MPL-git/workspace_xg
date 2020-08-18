@@ -1,0 +1,202 @@
+a {
+	color: inherit;
+	text-decoration: none;
+}
+img {
+	display: block;
+	width: 100%;
+	border: none;
+}
+dl, dd, ul, p, h2, h3, .mt:empty {
+	margin: 0;
+}
+ul, .con:empty {
+	padding: 0;
+}
+li {
+	list-style: none;
+}
+h2, h3 {
+	font-style: normal;
+}
+s {
+	font-weight: normal;
+}
+.clearfix:after {
+	display: block;
+	content: '\200B';
+	height: 0;
+	clear: both;
+}
+.flex {
+	display: -webkit-flex;
+	display: flex;
+}
+.jc {
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+.ac {
+	-webkit-align-items: center;
+	align-items: center;
+}
+
+h2 {
+	font-size: .36rem;
+	color: #555;
+}
+.section {
+	padding: 0 .3rem .36rem;
+}
+.con {
+	padding: .4rem 0 .5rem;
+	border-bottom: 1px dashed #ddd;
+}
+.con:last-of-type {
+	border-bottom: none;
+}
+.con:not(.con-top) h2 {
+	line-height: .36rem;
+	text-align: center;
+}
+.con:not(.con-top) h2:before,
+.con:not(.con-top) h2:after {
+	display: inline-block;
+	vertical-align: middle;
+	content: '';
+	width: .22rem;
+	height: .04rem;
+	margin: 0 .2rem;
+	background: #333;
+	font-size: 0;
+}
+
+.article {
+	padding-top: .09rem;
+	line-height: .45rem;
+	font-size: .3rem;
+}
+.article.sp1 {
+	font-size: .26rem;
+}
+.download {
+	height: .9rem;
+	font-size: .36rem;
+	color: #fff;
+	background: #ff4040;
+	border-radius: .45rem;
+	cursor: pointer;
+}
+
+/*头部*/
+.con-top dl {
+	padding-left: .1rem;
+}
+.con-top dt {
+	float: left;
+	overflow: hidden;
+	width: 1.8rem;
+	height: 1.8rem;
+	margin-right: .2rem;
+}
+.con-top dd {
+	margin-left: 2rem;
+}
+.con-top h2 {
+	line-height: .4rem;
+	padding-bottom: .04rem;
+}
+.con-top p {
+	line-height: .3rem;
+	margin-top: .09rem;
+	font-size: .22rem;
+	color: #555;
+}
+.star {
+	height: .24rem;
+	margin-top: .06rem;
+}
+.star span {
+	float: left;
+	width: .26rem;
+	height: .24rem;
+	margin-right: .1rem;
+	background: url(../images/spread/star.png) no-repeat 0 / contain;
+}
+.offi {
+	height: .2rem;
+	line-height: .2rem;
+	margin-top: .09rem;
+	font-size: .22rem;
+	color: #6d6d6d;
+}
+.offi span {
+	float: left;
+	margin-right: .2rem;
+}
+.offi span:before {
+	float: left;
+	content: '';
+	width: .19rem;
+	height: .2rem;
+	margin-right: .1rem;
+	background: url(../images/spread/offi.png) no-repeat 0 / contain;
+}
+
+.con-top .download {
+	margin-top: .4rem;
+}
+
+/*小编推荐*/
+
+/*应用截图*/
+.figure {
+	overflow: hidden;
+	padding: 0 .2rem;
+	margin-top: .4rem;
+}
+.con-pic .swiper-container {
+	width: 6.9rem;
+}
+.pagination {
+	height: .16rem;
+	margin: .3rem 0 0 -.2rem;
+	text-align: center;
+}
+.pagination span {
+	vertical-align: top;
+	width: .16rem;
+	height: .16rem;
+	margin: 0 .3rem;
+	background: url(../images/spread/swiper.png) no-repeat 0 / contain;
+}
+.pagination span.swiper-pagination-bullet-active {
+	background: url(../images/spread/swiper-active.png) no-repeat 0 / contain;
+}
+.con-pic li img {
+	width: 3.01rem;
+}
+.con-pic li:first-child {
+	margin: 0;
+}
+
+/*应用信息*/
+.con-info p:before {
+	float: left;
+	content: '';
+	width: .18rem;
+	height: .18rem;
+	background: url(../images/spread/info.png) no-repeat 0 / contain;
+	margin: 1.6% .1rem 0 0;
+}
+.con-info .download {
+	margin-top: .28rem;
+}
+
+/*底部*/
+.footer {
+	line-height: .24rem;
+	font-size: .24rem;
+	color: #999;
+	text-align: center;
+}

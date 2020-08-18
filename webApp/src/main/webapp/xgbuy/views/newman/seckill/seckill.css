@@ -1,0 +1,76 @@
+.newman-seckill {
+	background: #ff5050;
+}
+.newman-seckill .swiper-container,
+.newman-seckill .swiper-container li {
+	height: 3.2rem;
+}
+.newman-seckill .main {
+	padding: .2rem;
+}
+.newman-seckill .main dt {
+	position: relative;
+	overflow: hidden;
+	width: 2.7rem;
+	height: 2.7rem;
+}
+.newman-seckill .main dt div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	width: 1.2rem;
+	height: 1.2rem;
+	margin: -.6rem 0 0 -.6rem;
+	background: rgba(0, 0, 0, .5);
+	font-size: .26rem;
+	color: #fff;
+	border-radius: 100%;
+}
+.newman-seckill .main dl {
+	padding: .2rem;
+	font-size: .28rem;
+	border-top: 1px solid #eee;
+	background: #fff;
+}
+.newman-seckill .main dl:first-child {
+	border: none;
+}
+.newman-seckill .main dl h3 {
+	height: .8rem;
+	line-height: .4rem;
+}
+.newman-seckill .main dd {
+	padding-left: .2rem;
+}
+.newman-seckill .main dd a {
+	display: block;
+	margin: .34rem 0 .15rem;
+	text-align: center;
+}
+.newman-seckill .main dd p {
+	font-size: .26rem;
+}
+.newman-seckill .main dd div b {
+	font-weight: bold;
+	font-size: .36rem;
+	color: #ff5050;
+}
+.newman-seckill .main dd div s {
+	margin: 0 .1rem;
+	color: #999;
+}
+.newman-seckill .main dd div mark {
+	display: none;
+	color: #fff;
+	font-size: .22rem;
+	background: #ff5050;
+}
+
+.newman-seckill .main .btn-yellow {
+	background: #ffdc50;
+	color: #333;
+}
+.newman-seckill .main .btn-gray {
+	background: #ccc;
+}

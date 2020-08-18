@@ -1,0 +1,244 @@
+<div class="page order-detail bgf4" data-title="订单详情" data-id="order_detail">
+	<link rel="stylesheet" href="../static/css/common-goods.css">
+	<link rel="stylesheet" href="order/detail/detail.css">
+
+	<header class="flex ac jb">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('order', true)"></i></div>
+		<p class="ellipsis">订单详情</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="no-after-sale flex ac fn">温馨提示：微信端暂无售后功能，如有需要请下载APP处理~</div>
+
+	<div class="content flex dc"></div>
+
+	<script id="order_detail_tpl" type="text/html">
+		<div class="scroll-y fg">
+			<div class="touchfix main">
+				<div class="row row-1">
+					<div class="con-1 padd">
+						<p class="flex ac">
+							<span>订单状态：</span>
+							<b>{{subOrderStatusName}}</b>
+							{{if subOrderStatus == 1}}
+							<span style="color:#ff5050"> {{auditStatusDesc}}</span>
+						{{/if}}
+						</p>
+						<p class="flex ac">
+							<span class="fn">订单编号：</span>
+							<b class="fg" id="order_detail_copy1">
+								{{if subOrderStatus == 0}}
+								{{combineOrderCode}}
+								{{else}}
+								{{subOrderCode}}
+								{{/if}}
+							</b>
+							<mark class="fn btn-666 btn-copy flex ac" data-clipboard-target="#order_detail_copy1">复制</mark>
+						</p>
+					</div>
+
+					{{if confirmReceiptTimeStr}}
+					<div class="con-2 padd">
+						<dl class="flex">
+							<dt class="fn warn"></dt>
+							<dd class="receipt-time"></dd>
+						</dl>
+					</div>
+					{{/if}}
+
+					<div class="con-3">
+						{{if tractInfo.length > 0}}
+						<dl class="t1 flex corsor"
+							onclick="orderExpress('{{subOrderId}}', '{{expressId}}', '{{expressNo}}', '{{data[0].skuPic}}')">
+							<dt class="fn istics"></dt>
+							<dd class="flex ac jb fg bb">
+								<div>
+									<p>{{tractInfo[0].acceptStation}}</p>
+									<span>{{tractInfo[0].acceptTime}}</span>
+								</div>
+								<i class="arrow-r ico"></i>
+							</dd>
+						</dl>
+						{{/if}}
+						
+						<!-- update -->
+						<dl class="t2 flex">
+							<dt class="fn addr"></dt>
+							<dd class="fg bb flex">
+								<div>
+									<h3><span>{{receiverName}}</span><b>{{receiverPhone}}</b></h3>
+									<p>{{receiverAddress}}</p>
+								</div>
+								{{if seeChangeAddressButton}}
+								<div class="change-address-btn" onclick="getUrl(`order/detail/change/index.html?combineOrderId=${orderDetailApi.data.combineOrderId}&subOrderId=${orderDetailApi.data.subOrderId}`, true)">修改地址</div>
+								{{/if}}
+							</dd>
+						</dl>
+						<!-- <dl class="t2 flex">
+							<dt class="fn addr"></dt>
+							<dd class="fg bb">
+								<h3><span>{{receiverName}}</span><b>{{receiverPhone}}</b></h3>
+								<p>{{receiverAddress}}</p>
+							</dd>
+						</dl> -->
+
+						<dl class="t2 flex">
+							<dt class="fn ico-remark"></dt>
+							<dd class="fg">
+								<h3>留言</h3>
+								<p class="scroll-y">{{if remarks}}{{remarks}}{{else}}无{{/if}}</p>
+							</dd>
+						</dl>
+					</div>
+				</div>
+
+				<div class="row row-2" id="goods_con">
+					<div class="con-goods">
+						{{each data value i}}
+						<div class="dl">
+							<dl class="flex" onclick="getUrlGoods('{{value.productId}}')">
+								<dt class="fn">
+									<img src="{{value.skuPic}}">
+								</dt>
+								<dd class="fg">
+									<p>{{value.productName}}</p>
+									<p class="flex jb">
+										<span>
+											{{value.productPropDesc}}
+										</span>
+
+										<b>X{{value.quantity}}</b>
+									</p>
+									<div class="flex ac jb">
+										<div class="flex ac">
+											<strong class="flex jb">{{value.salePrice}}</strong>
+											{{if value.markedOutOfStock == 1}}
+											<div class="flex f50 ml20">缺货</div>
+											{{else if value.deliveryStatus == 0}}
+											<div class="flex f50 ml20">未发货</div>
+											{{/if}}
+										</div>
+										<div class="flex ac">
+											{{if liveOrderStatus !=1 && subOrderStatus != 0}}
+											<a class="flex ac jc a-evalua ico-btn">再次抢购</a>
+											{{/if}}
+
+											{{if value.appendCommentButton}}
+											<a class="flex ac jc a-evalua ico-btn"
+												onclick="orderDetailApi.evalua('{{value.orderDtlId}}', '{{subOrderId}}')">追评</a>
+											{{/if}}
+										</div>
+									</div>
+								</dd>
+							</dl>
+							{{if value.depositStatus == 1}}
+							<div class="dep-self flex ac je">
+								<span>已付定金{{value.depositSum}}</span>
+								<span>抵用<em class="f50">{{value.deductAmountSum}}</em></span>
+							</div>
+							{{/if}}
+						</div>
+						{{/each}}
+					</div>
+				</div>
+
+				<div class="row row-3 padd">
+					<div class="flex ac jb"><label>运<b style="padding: 0 1em;"></b>费：</label><span>¥{{freight}}</span></div>
+					<div class="flex ac jb"><label>优惠金额：</label><span>¥{{discount}}</span></div>
+					<div class="flex ac jb"><label>实付金额：</label><span class="f50">¥{{payAmount}}</span></div>
+				</div>
+
+				{{if giftIntegralNum > 0 && subOrderStatus != 4}}
+				<div class="row row-4 flex ac padd mt20">
+					{{if subOrderStatus == 3}}
+					<mark class="flex ac jc">积分</mark>订单已完成，获得<em class="f50">{{giftIntegralNum}}</em>积分
+					{{else}}
+					<mark class="flex ac jc">积分</mark>订单完成后，可获得<em class="f50">{{giftIntegralNum}}</em>积分
+					{{/if}}
+				</div>
+				{{/if}}
+
+				<div class="notice mt20"></div>
+
+				<div class="row row-3 padd mt20">
+					<div class="flex ac"><label>创建时间：</label><span>{{orderCreateDate}}</span></div>
+
+					{{if payDate}}
+					<div class="flex ac"><label>付款时间：</label><span>{{payDate}}</span></div>
+					{{/if}}
+
+					{{if deliveryDate}}
+					<div class="flex ac"><label>发货时间：</label><span>{{deliveryDate}}</span></div>
+					{{/if}}
+
+					{{if receiptDateStr}}
+					<div class="flex ac"><label>收货时间：</label><span>{{receiptDateStr}}</span></div>
+					{{/if}}
+
+					{{if closeDateStr}}
+					<div class="flex ac"><label>关闭时间：</label><span>{{closeDateStr}}</span></div>
+					{{/if}}
+
+					{{if completeDate}}
+					<div class="flex ac"><label>完成时间：</label><span>{{completeDate}}</span></div>
+					{{/if}}
+
+					{{if cancelDateStr}}
+					<div class="flex ac"><label>取消时间：</label><span>{{cancelDateStr}}</span></div>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+
+		<div class="footer flex ac je fn">
+			{{if subOrderStatus == 0}}
+			{{if unpaidEndTime > currentTime}}
+			{{if collegeStudentStatus }}
+			<a class="flex ac jc btn-red order-detail-timer"
+				onclick="getUrl('activity/certification/index.html')">去付款：<i></i></a>
+			{{else}}
+			<a class="flex ac jc btn-red order-detail-timer"
+				onclick="orderPayType('{{combineOrderId}}', '{{payAmount}}')">去付款：<i></i></a>
+			{{/if}}
+			{{/if}}
+			<a class="flex ac jc" onclick="orderDetailApi.cancelSelf('{{combineOrderId}}')">取消订单</a>
+			{{/if}}
+			{{if delButton}}
+			<a class="flex ac jc" onclick="orderDetailApi.deleteSelf('{{subOrderId}}', '{{combineOrderId}}')">删除订单</a>
+			{{/if}}
+			{{if receiptMark}}
+			<a class="flex ac jc" onclick="orderDetailApi.orderConfirm('{{subOrderId}}')">确认收货</a>
+			{{/if}}
+			{{if seeLogisticsButton}}
+			<a class="flex ac jc"
+				onclick="orderExpress('{{subOrderId}}', '{{expressId}}', '{{expressNo}}', '{{data[0].skuPic}}')">查看物流</a>
+			{{/if}}
+			{{if seeEvaluateButton}}
+			<a class="flex ac jc" onclick="getUrl('evalua/list/index.html?subOrderId={{subOrderId}}', 'self')">查看评价</a>
+			{{/if}}
+			{{if evaluateButton}}
+			<a class="flex ac jc" onclick="getUrl('evalua/index.html?subOrderId={{subOrderId}}', 'self')">评价</a>
+			{{/if}}
+			<a class="flex ac jc" onclick="getUrlServer('{{xiaoNengId}}', '', '{{subOrderCode}}', '{{payAmount}}')">联系客服</a>
+		</div>
+	</script>
+
+	<div class="popup popup-paymethod" onclick="closeSelf(this)">
+		<div class="popup-pay popup-bottom" onclick="stopSelf()">
+			<div class="bot bot-1 flex ac">支付方式</div>
+
+			<div class="bot bot-2 scroll-y"></div>
+
+			<div class="order-detail-footer">
+				<div class="con-2 flex ac jb fn">
+					<div>
+						应付金额：<strong></strong>
+					</div>
+					<span class="flex ac jc btn-red" onclick="orderPay(this)">确认支付</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="order/detail/detail.js?var=1.1" async></script>
+</div>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtDepositDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtDepositDtlCustom" extends="com.jf.dao.MchtDepositDtlMapper.BaseResultMap">
+    <result column="violate_type_desc" property="violateTypeDesc" jdbcType="VARCHAR" />
+    <result column="violate_action_desc" property="violateActionDesc" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, deposit_id, txn_type, type_sub, txn_amt, pay_amt, biz_type, biz_id, create_by, 
+    create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_TYPE", (select vo.violate_type from bu_violate_order vo where vo.id = t.biz_id and vo.del_flag='0')) violate_type_desc,
+    FUN_GET_STATUS_DESC("BU_VIOLATE_PUNISH_STANDARD","VIOLATE_ACTION", (select vo.violate_action from bu_violate_order vo where vo.id = t.biz_id and vo.del_flag='0')) violate_action_desc,
+    (select vo.content from bu_violate_order vo where vo.id = t.biz_id and vo.del_flag='0')content
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtDepositDtlCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_deposit_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.MchtDepositDtlCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_deposit_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+</mapper>

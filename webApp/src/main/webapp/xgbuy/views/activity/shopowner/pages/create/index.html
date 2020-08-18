@@ -1,0 +1,48 @@
+<div class="page novaplan-create row-1 flex dc" data-title="醒购店长计划协议" data-id="activity_shopowner_pages_create">
+	<link rel="stylesheet" href="activity/shopowner/pages/create/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">醒购店长计划协议</p>
+		<div class="fn">
+			<a class="xieyi" onclick="getUrl('activity/shopowner/pages/create/record/index.html')">开通记录</a>
+		</div>
+	</header>
+
+	<div class="row-1 content fg scroll-y flex dc"></div>
+	<div class="checkbox fn"></div>
+
+	<script id="novaplan_create_tpl" type="text/html">
+		<div class="btn-red flex ac jc" onclick="novaplanCreateApi.open()">立即购买权益（{{payAmount}}元）</div>
+
+		<div class="checkbox-item fn flex ac jc" onclick="novaplanCreateApi.tick(this)">
+			<a class="tick checked"></a>
+			<p>已阅读并同意《醒购店长计划协议》</p>
+		</div>
+	</script>
+
+	<div class="popup popup-paymethod" onclick="closeSelf(this)">
+		<div class="popup-pay popup-bottom" onclick="stopSelf()">
+			<div class="bot bot-1 flex ac jb">
+				<div>
+					<h5 class="f50">开通服务：购买店长权益</h5>
+					<p class="c9">店长权益服务一经开通不支持取消/退款，敬请谅解</p>
+				</div>
+				<div class="delete" onclick="closeSelf(this)"></div>
+			</div>
+
+			<div class="bot bot-2 scroll-y"></div>
+
+			<div class="order-detail-footer">
+				<div class="con-2 flex ac jb fn">
+					<div>
+						应付金额：<strong></strong>
+					</div>
+					<span class="flex ac jc btn-red" onclick="novaplanCreateApi.orderPay(this)">确认支付</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="activity/shopowner/pages/create/index.js?var=1.0"></script>
+</div>

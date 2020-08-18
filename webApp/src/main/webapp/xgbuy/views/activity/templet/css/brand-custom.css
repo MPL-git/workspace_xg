@@ -1,0 +1,7 @@
+.activity-brand-custom .swiper-container {
+	height: 2.82rem;
+}
+.activity-brand-custom .custom-nav a {
+	width: 3.65rem;
+	width: calc(50% - .1rem);
+}

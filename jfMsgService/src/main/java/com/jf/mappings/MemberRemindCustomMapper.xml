@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberRemindCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberRemindCustom" extends="com.jf.dao.MemberRemindMapper.BaseResultMap">
+    <result column="entry_pic" property="entryPic" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="productName" property="productName" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="activityName" property="activityName" jdbcType="VARCHAR" />
+    <result column="activityAreaName" property="activityAreaName" jdbcType="VARCHAR" />
+    <result column="remindId" property="remindId" jdbcType="INTEGER" />
+    <result column="activityAreaId" property="activityAreaId" jdbcType="INTEGER" />
+    <result column="activityId" property="activityId" jdbcType="INTEGER" />
+    <result column="productId" property="productId" jdbcType="INTEGER" />
+    <result column="activity_begin_time" property="activityBeginTime" jdbcType="TIMESTAMP" />
+    <result column="tag_price" property="tagPrice" jdbcType="DECIMAL" />
+    <result column="sale_rice" property="salePrice" jdbcType="DECIMAL" />
+    <result column="is_accept_push" property="isAcceptPush" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <select id="getProductRemindList" parameterType="java.lang.Integer" resultType="com.jf.entity.MemberRemindCustom">
+  		select
+		remind.id,
+		remind.remind_id,
+		remind.member_id,
+		pro.name as productName,
+		activityArea.activity_begin_time,
+		activity.id as activityId,
+		activityArea.id as activityAreaId
+		from bu_member_remind remind
+		left join bu_product pro on pro.id = remind.remind_id
+		left join bu_activity_product activitProduct on activitProduct.product_id = pro.id
+		left join bu_activity activity on activity.id = activitProduct.activity_id
+		left join bu_activity_area activityArea on activityArea.id = activity.activity_area_id
+		where pro.id = #{remindId}
+		and activitProduct.del_flag = '0'
+		group by remind.id
+		order by activityArea.activity_begin_time desc
+  </select>
+    
+  <select id="getActivityRemindList" parameterType="java.lang.Integer" resultType="com.jf.entity.MemberRemindCustom">
+  		select
+		remind.id,
+		remind.remind_id,
+		remind.member_id,
+		activity.name as activityName,
+		activity.entry_pic,
+		activity.id as activityId,
+		activityArea.source,
+		activityArea.name as activityAreaName,
+		activityArea.id as activityAreaId,
+		activityArea.activity_begin_time
+		from bu_member_remind remind
+		left join bu_activity_area activityArea on activityArea.id = remind.remind_id
+		left join bu_activity activity on activity.activity_area_id = activityArea.id 
+		where activityArea.id = #{remindId}
+		group by remind.id
+  </select>
+  
+  <select id="getRemindList" resultType="com.jf.entity.MemberRemindCustom">
+  		select
+  		remind.remind_id,
+  		remind.remind_type,
+  		product.id as productId,
+  		ac.id as activityId,
+  		acArea.id as activityAreaId,
+  		product.name as productName,
+  		ac.name as activityName,
+  		acArea.name as activityAreaName,
+  		acArea.source
+		from bu_activity_area acArea 
+		left join bu_activity ac on acArea.id = ac.activity_area_id
+		left join bu_member_remind remind on remind.remind_id = ac.activity_area_id
+		left join bu_activity_product acPro on acPro.activity_id = ac.id
+		left join bu_product product on product.id = acPro.product_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and acPro.del_flag = '0'
+		and product.del_flag = '0'
+		and acArea.status = '1'
+		and product.status = '1'
+		AND acArea.source = '1'
+		and acArea.activity_begin_time &gt; now()
+		and remind.remind_id is not null
+		and remind.remind_type = '1'
+		and UNIX_TIMESTAMP(acArea.activity_begin_time) - UNIX_TIMESTAMP(SYSDATE()) &lt;= 600
+		and UNIX_TIMESTAMP(acArea.activity_begin_time) - UNIX_TIMESTAMP(SYSDATE()) &gt;= 0
+		group by remind.remind_id
+		
+		UNION
+		
+		select
+  		remind.remind_id,
+  		remind.remind_type,
+  		product.id as productId,
+  		ac.id as activityId,
+  		acArea.id as activityAreaId,
+  		product.name as productName,
+  		ac.name as activityName,
+  		acArea.name as activityAreaName,
+  		acArea.source
+		from bu_activity_area acArea 
+		left join bu_activity ac on acArea.id = ac.activity_area_id
+		left join bu_member_remind remind on remind.remind_id = ac.activity_area_id
+		left join bu_activity_product acPro on acPro.activity_id = ac.id
+		left join bu_product product on product.id = acPro.product_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and acPro.del_flag = '0'
+		and product.del_flag = '0'
+		and acArea.status = '1'
+		and product.status = '1'
+		AND acArea.source = '2'
+		and acArea.activity_begin_time &gt; now()
+		and remind.remind_id is not null
+		and remind.remind_type = '1'
+		and UNIX_TIMESTAMP(acArea.activity_begin_time) - UNIX_TIMESTAMP(SYSDATE()) &lt;= 600
+		and UNIX_TIMESTAMP(acArea.activity_begin_time) - UNIX_TIMESTAMP(SYSDATE()) &gt; 0
+		group by remind.remind_id
+  </select>
+  
+  <select id="getMemberList" parameterType="java.util.Map" resultType="com.jf.entity.MemberRemindCustom">
+  		select
+		remind.id,
+		remind.remind_id,
+		remind.member_id,
+		member.is_accept_push
+		from bu_member_remind remind
+		left join bu_member_info member on member.id = remind.member_id
+		where remind.remind_id = #{remindId}
+		and remind.remind_type = #{remindType}
+  </select>
+  
+	<select id="getNoSignInMemberIdList" parameterType="java.lang.Integer" resultType="com.jf.entity.MemberRemindCustom">
+  		select
+		signIn.member_id
+		from bu_member_sign_in signIn,bu_member_info user
+		where user.id = signIn.member_id 
+		and user.del_flag = '0'
+		and signIn.del_flag = '0'
+		and user.is_accept_push = '1'
+		and signIn.last_sign_in_date &gt;= DATE_FORMAT(date_add(now(), interval -#{noSignDay} day),'%Y-%m-%d 00:00:00')
+		and signIn.last_sign_in_date &lt;= DATE_FORMAT(date_add(now(), interval -#{noSignDay} day),'%Y-%m-%d 23:59:59')
+  </select>
+  
+
+</mapper>

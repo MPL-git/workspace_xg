@@ -1,0 +1,105 @@
+<div class="page seller-common seller-info bgf4 flex dc" data-title="店铺信息" data-id="seller_info">
+	<link rel="stylesheet" href="seller/common.css?var=1.0">
+	<link rel="stylesheet" href="seller/info/index.css?var=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">店铺信息</p>
+		<div class="fn flex ac je h100" onclick="popupShow('.popup-menu')">
+			<div class="ico-more ico-btn"></div>
+		</div>
+	</header>
+
+	<div class="fg scroll-y main"></div>
+
+	<div class="popup start right popup-menu" onclick="closeSelf(this)">
+		<div class="popup-con" onclick="stopSelf()">
+			<a class="flex m-home" onclick="getUrl('home')">
+				<span class="flex ac fg">首页</span>
+			</a>
+			<a class="flex ac m-cart" onclick="getQuickCart()">
+				<span class="flex ac fg btb">购物车</span>
+			</a>
+			<a class="flex ac m-collect" onclick="getUrl('my/collect/index.html', 'self')">
+				<span class="flex ac fg btb">我的收藏</span>
+			</a>
+		</div>
+	</div>
+
+	<script id="seller_info_tpl" type="text/html">
+		<div class="row row-1 flex ac">
+			<div class="shop-logo mr20 fn">
+				<img src="{{shopLogo || '../static/images/seller.png'}}">
+			</div>
+			<div class="shop-head">
+				<h3 class="elps">{{shopName}}</h3>
+				<span class="c9">类型：{{mchtSettledType == 1 ? '企业' : '个人'}}</span>
+				<a class="btn-collect flex ac jc on{{isCollectuonShop ? ' reminded' : ''}}"
+					onclick="getRemind(this, true)"
+					data-type="3"
+					data-id="{{mchtId}}">
+					{{if isCollectuonShop}}已{{/if}}收藏
+				</a>
+			</div>
+		</div>
+
+		<div class="row row-2">
+			<h3 class="flex ac">{{goodProductScoreCountStr}}</h3>
+			<div>
+				<div class="col flex ac">
+					描述相符
+					<div><span style="width: {{productAvgScore * 20}}%"></span></div>
+					<em class="f50">{{productAvgScore}}</em>
+				</div>
+				<div class="col flex ac">
+					服务态度
+					<div><span style="width: {{mchtAvgScore * 20}}%"></span></div>
+					<em class="f50">{{mchtAvgScore}}</em>
+				</div>
+				<div class="col flex ac">
+					物流服务
+					<div><span style="width: {{wuliuAvgScore * 20}}%"></span></div>
+					<em class="f50">{{wuliuAvgScore}}</em>
+				</div>
+			</div>
+		</div>
+
+		<div class="row row-3">
+			<h3 class="flex ac">基础信息</h3>
+
+			<div class="col cursor flex ac jb" onclick="getUrlServer('{{xiaoNengId}}')">
+				<b>联系客服</b>
+				<span class="flex ac">
+					<i class="ico-service"></i>
+					{{shopName}}
+				</span>
+			</div>
+			<div class="col flex ac jb">
+				<b>公司名称</b><span>{{companyName}}</span>
+			</div>
+			<div class="col flex ac jb">
+				<b>所在地</b><span>{{companyAddress}}</span>
+			</div>
+			<div class="col cursor flex ac jb" onclick="sellerInfoApi.zizao()">
+				工商执照
+				<span class="flex ac">
+					<i class="ico-zizao"></i>
+					<i class="arrow-r ico"></i>
+				</span>
+			</div>
+			{{if businessLicensePic}}
+			<div class="col cursor flex ac jb" onclick="sellerInfoApi.operation()">
+				经营许可证
+				<span class="flex ac">
+					<i class="arrow-r ico"></i>
+				</span>
+			</div>
+			{{/if}}
+			<div class="col flex ac jb">
+				开店日期<span>{{shopOpenDate}}</span>
+			</div>
+		</div>
+	</script>
+
+	<script src="seller/info/index.js?var=1.1" async></script>
+</div>

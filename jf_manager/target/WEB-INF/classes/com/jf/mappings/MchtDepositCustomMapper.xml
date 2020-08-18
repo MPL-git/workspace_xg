@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtDepositCustomMapper">
+  <resultMap id="BaseResultCustomMap" type="com.jf.entity.MchtDepositCustom" extends="com.jf.dao.MchtDepositMapper.BaseResultMap" >
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="mcht_status_desc" property="mchtStatusDesc" jdbcType="VARCHAR" />
+  </resultMap>
+    
+    <sql id="selectMchtDepositSql">
+		 select 
+		        a.*,
+		        (select b.mcht_code from bu_mcht_info b where b.id=a.mcht_id) mcht_code,
+		        (select b.company_name from bu_mcht_info b where b.id=a.mcht_id) company_name
+		 from bu_mcht_deposit a
+		 where a.del_flag = '0'
+		 	<if test="mchtId !=null and mchtId != ''">
+				and a.mcht_id =#{mchtId}
+			</if>
+			<if test="companyName !=null and companyName != ''">
+				and a.mcht_id in (select b.id from bu_mcht_info b where b.id=a.mcht_id and b.company_name like CONCAT('%', '${companyName}', '%'))
+			</if>
+    </sql>
+    
+    <select id="selectMchtDepositList"  parameterType="java.util.HashMap" resultMap="BaseResultCustomMap">
+       SELECT TAB.* FROM (
+		<include refid="selectMchtDepositSql" />
+		)TAB
+		order by TAB.id desc
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+    </select>
+    
+    <select id="mchtDepositListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectMchtDepositSql" /> 
+		  ) TAB	 
+	</select>
+	
+	
+	<select id="selectMchtDepositMchtInfoList"  parameterType="java.util.HashMap" resultMap="BaseResultCustomMap">
+    	SELECT md.*,
+    		mi.mcht_code mcht_code,
+    		mi.short_name short_name,
+    		mi.shop_name shop_name,
+    		mi.company_name company_name,
+    		FUN_GET_STATUS_DESC("BU_MCHT_INFO","STATUS",mi.status) mcht_status_desc 
+    	FROM bu_mcht_deposit md 
+    		LEFT JOIN bu_mcht_info mi 
+    			ON md.mcht_id = mi.id 
+    	WHERE 
+    		md.del_flag = '0'
+    	<if test="mchtStatus != null and mchtStatus != '' ">
+			AND mi.status in(${mchtStatus })
+		</if> 
+    	ORDER BY mi.mcht_code ASC 
+    	<if test="limitSize != null and limitSize != '' ">
+			LIMIT ${limitStart}, ${limitSize}
+	    </if>
+    </select>
+    <select id="mchtDepositMchtInfoListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		SELECT COUNT(*)
+    	FROM bu_mcht_deposit md 
+    		LEFT JOIN bu_mcht_info mi 
+    			ON md.mcht_id = mi.id 
+    	WHERE 
+    		md.del_flag = '0'
+    	<if test="mchtStatus != null and mchtStatus != '' ">
+			AND mi.status in(${mchtStatus })
+		</if> 
+	</select>
+	
+	
+	<sql id="Example_Where_Clause" >
+	    <where >
+	      <foreach collection="oredCriteria" item="criteria" separator="or" >
+	        <if test="criteria.valid" >
+	          <trim prefix="(" suffix=")" prefixOverrides="and" >
+	            <foreach collection="criteria.criteria" item="criterion" >
+	              <choose >
+	                <when test="criterion.noValue" >
+	                  and ${criterion.condition}
+	                </when>
+	                <when test="criterion.singleValue" >
+	                  and ${criterion.condition} #{criterion.value}
+	                </when>
+	                <when test="criterion.betweenValue" >
+	                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+	                </when>
+	                <when test="criterion.listValue" >
+	                  and ${criterion.condition}
+	                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+	                    #{listItem}
+	                  </foreach>
+	                </when>
+	              </choose>
+	            </foreach>
+	          </trim>
+	        </if>
+	      </foreach>
+	    </where>
+	</sql>
+	<sql id="Base_Column_List" >
+	    id, mcht_id, total_amt, pay_amt, unpay_amt, create_by, create_date, update_by, update_date, 
+	    remarks, del_flag,
+	    (select m.mcht_code from bu_mcht_info m where m.id=t.mcht_id and m.del_flag='0' ) mcht_code,
+	    (select m.short_name from bu_mcht_info m where m.id=t.mcht_id and m.del_flag='0' ) short_name,
+	    (select m.shop_name from bu_mcht_info m where m.id=t.mcht_id and m.del_flag='0' ) shop_name,
+	    (select m.company_name from bu_mcht_info m where m.id=t.mcht_id and m.del_flag='0' ) company_name,
+	    FUN_GET_STATUS_DESC("BU_MCHT_INFO","STATUS",(select m.status from bu_mcht_info m where m.id=t.mcht_id and m.del_flag='0' )) mcht_status_desc
+	</sql>
+	<select id="selectByCustomExample" resultMap="BaseResultCustomMap" parameterType="com.jf.entity.MchtDepositCustomExample" >
+	    select
+	    <if test="distinct" >
+	      distinct
+	    </if>
+	    <include refid="Base_Column_List" />
+	    from bu_mcht_deposit t
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="orderByClause != null" >
+	      order by ${orderByClause}
+	    </if>
+	    <if test="limitStart != null and limitStart>=0" >
+	      limit #{limitStart} , #{limitSize}
+	    </if>
+	</select>
+	<select id="countByCustomExample" parameterType="com.jf.entity.MchtDepositCustomExample" resultType="java.lang.Integer" >
+	    select count(*) from bu_mcht_deposit t
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	</select>
+	
+	
+</mapper>

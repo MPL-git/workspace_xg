@@ -1,0 +1,37 @@
+<div class="page a-invite flex dc" data-title="邀请好友" data-id="activity_shopowner_pages_invite">
+	<link rel="stylesheet" href="activity/shopowner/pages/invite/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">邀请好友</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg scroll-y clearfix bg"></div>
+
+	<script id="a_invite_list" type="text/html">
+		<div class="code flex dc ac je">
+			<div class="code-img">
+				<img src="data:image/png;base64,{{qrCodeImageArratByte}}"/>
+			</div>
+		</div>
+		<div class="f24 rule">
+			<h2 class="flex ac jc">邀请规则</h2>
+
+			{{each rule value}}
+			<div>{{value}}</div>
+			{{/each}}
+		</div>
+	
+		<div class="flex jb bt-list fn">
+			{{if isWeiXin}}
+			<a class="bt-1" onclick="delayTip('请在浏览器上操作')"></a>
+			{{else}}
+			<a class="bt-1" href="data:image/png;base64,{{imageArrayByte}}" download="code"></a>
+			{{/if}}
+			<button class="bt-2" onclick="aInviteApi.share()"></button>
+		</div>
+	</script>
+
+	<script src="activity/shopowner/pages/invite/index.js?var=1.1" async></script>
+</div>

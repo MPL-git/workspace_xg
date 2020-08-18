@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SysStaffInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SysStaffInfo" >
+    <id column="STAFF_ID" property="staffId" jdbcType="INTEGER" />
+    <result column="STAFF_CODE" property="staffCode" jdbcType="VARCHAR" />
+    <result column="STAFF_PASS" property="staffPass" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+    <result column="MOBILE_PHONE" property="mobilePhone" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="IS_MANAGEMENT" property="isManagement" jdbcType="CHAR" />
+    <result column="CAN_VIEW_QUALIFICATION" property="canViewQualification" jdbcType="CHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="STATUS_DATE" property="statusDate" jdbcType="TIMESTAMP" />
+    <result column="CREATE_STAFF_ID" property="createStaffId" jdbcType="INTEGER" />
+    <result column="MODIFY_STAFF_ID" property="modifyStaffId" jdbcType="INTEGER" />
+    <result column="CERT_TYPE" property="certType" jdbcType="VARCHAR" />
+    <result column="CERT_NBR" property="certNbr" jdbcType="VARCHAR" />
+    <result column="SEX_TYPE" property="sexType" jdbcType="VARCHAR" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="DATE" />
+    <result column="LOGIN_ERROR_COUNT" property="loginErrorCount" jdbcType="INTEGER" />
+    <result column="SUBORDINATE_STAFF_IDS" property="subordinateStaffIds" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    STAFF_ID, STAFF_CODE, STAFF_PASS, STAFF_NAME, MOBILE_PHONE, EMAIL, ORG_ID, IS_MANAGEMENT, 
+    CAN_VIEW_QUALIFICATION, CREATE_DATE, STATUS, STATUS_DATE, CREATE_STAFF_ID, MODIFY_STAFF_ID, 
+    CERT_TYPE, CERT_NBR, SEX_TYPE, BIRTHDAY, LOGIN_ERROR_COUNT, SUBORDINATE_STAFF_IDS, 
+    REMARK
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SysStaffInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_staff_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_staff_info
+    where STAFF_ID = #{staffId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_staff_info
+    where STAFF_ID = #{staffId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.SysStaffInfoExample" >
+    delete from sys_staff_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.SysStaffInfo" >
+    insert into sys_staff_info (STAFF_ID, STAFF_CODE, STAFF_PASS, 
+      STAFF_NAME, MOBILE_PHONE, EMAIL, 
+      ORG_ID, IS_MANAGEMENT, CAN_VIEW_QUALIFICATION, 
+      CREATE_DATE, STATUS, STATUS_DATE, 
+      CREATE_STAFF_ID, MODIFY_STAFF_ID, CERT_TYPE, 
+      CERT_NBR, SEX_TYPE, BIRTHDAY, 
+      LOGIN_ERROR_COUNT, SUBORDINATE_STAFF_IDS, REMARK
+      )
+    values (#{staffId,jdbcType=INTEGER}, #{staffCode,jdbcType=VARCHAR}, #{staffPass,jdbcType=VARCHAR}, 
+      #{staffName,jdbcType=VARCHAR}, #{mobilePhone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{orgId,jdbcType=INTEGER}, #{isManagement,jdbcType=CHAR}, #{canViewQualification,jdbcType=CHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR}, #{statusDate,jdbcType=TIMESTAMP}, 
+      #{createStaffId,jdbcType=INTEGER}, #{modifyStaffId,jdbcType=INTEGER}, #{certType,jdbcType=VARCHAR}, 
+      #{certNbr,jdbcType=VARCHAR}, #{sexType,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{loginErrorCount,jdbcType=INTEGER}, #{subordinateStaffIds,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.SysStaffInfo" >
+    insert into sys_staff_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="staffId != null" >
+        STAFF_ID,
+      </if>
+      <if test="staffCode != null" >
+        STAFF_CODE,
+      </if>
+      <if test="staffPass != null" >
+        STAFF_PASS,
+      </if>
+      <if test="staffName != null" >
+        STAFF_NAME,
+      </if>
+      <if test="mobilePhone != null" >
+        MOBILE_PHONE,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="isManagement != null" >
+        IS_MANAGEMENT,
+      </if>
+      <if test="canViewQualification != null" >
+        CAN_VIEW_QUALIFICATION,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="statusDate != null" >
+        STATUS_DATE,
+      </if>
+      <if test="createStaffId != null" >
+        CREATE_STAFF_ID,
+      </if>
+      <if test="modifyStaffId != null" >
+        MODIFY_STAFF_ID,
+      </if>
+      <if test="certType != null" >
+        CERT_TYPE,
+      </if>
+      <if test="certNbr != null" >
+        CERT_NBR,
+      </if>
+      <if test="sexType != null" >
+        SEX_TYPE,
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY,
+      </if>
+      <if test="loginErrorCount != null" >
+        LOGIN_ERROR_COUNT,
+      </if>
+      <if test="subordinateStaffIds != null" >
+        SUBORDINATE_STAFF_IDS,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="staffId != null" >
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="staffCode != null" >
+        #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPass != null" >
+        #{staffPass,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null" >
+        #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="isManagement != null" >
+        #{isManagement,jdbcType=CHAR},
+      </if>
+      <if test="canViewQualification != null" >
+        #{canViewQualification,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="statusDate != null" >
+        #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createStaffId != null" >
+        #{createStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyStaffId != null" >
+        #{modifyStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="certType != null" >
+        #{certType,jdbcType=VARCHAR},
+      </if>
+      <if test="certNbr != null" >
+        #{certNbr,jdbcType=VARCHAR},
+      </if>
+      <if test="sexType != null" >
+        #{sexType,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="loginErrorCount != null" >
+        #{loginErrorCount,jdbcType=INTEGER},
+      </if>
+      <if test="subordinateStaffIds != null" >
+        #{subordinateStaffIds,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.SysStaffInfoExample" resultType="java.lang.Integer" >
+    select count(*) from sys_staff_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_staff_info
+    <set >
+      <if test="record.staffId != null" >
+        STAFF_ID = #{record.staffId,jdbcType=INTEGER},
+      </if>
+      <if test="record.staffCode != null" >
+        STAFF_CODE = #{record.staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffPass != null" >
+        STAFF_PASS = #{record.staffPass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.staffName != null" >
+        STAFF_NAME = #{record.staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mobilePhone != null" >
+        MOBILE_PHONE = #{record.mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        EMAIL = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgId != null" >
+        ORG_ID = #{record.orgId,jdbcType=INTEGER},
+      </if>
+      <if test="record.isManagement != null" >
+        IS_MANAGEMENT = #{record.isManagement,jdbcType=CHAR},
+      </if>
+      <if test="record.canViewQualification != null" >
+        CAN_VIEW_QUALIFICATION = #{record.canViewQualification,jdbcType=CHAR},
+      </if>
+      <if test="record.createDate != null" >
+        CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.statusDate != null" >
+        STATUS_DATE = #{record.statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createStaffId != null" >
+        CREATE_STAFF_ID = #{record.createStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="record.modifyStaffId != null" >
+        MODIFY_STAFF_ID = #{record.modifyStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="record.certType != null" >
+        CERT_TYPE = #{record.certType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certNbr != null" >
+        CERT_NBR = #{record.certNbr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sexType != null" >
+        SEX_TYPE = #{record.sexType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+        BIRTHDAY = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.loginErrorCount != null" >
+        LOGIN_ERROR_COUNT = #{record.loginErrorCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.subordinateStaffIds != null" >
+        SUBORDINATE_STAFF_IDS = #{record.subordinateStaffIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_staff_info
+    set STAFF_ID = #{record.staffId,jdbcType=INTEGER},
+      STAFF_CODE = #{record.staffCode,jdbcType=VARCHAR},
+      STAFF_PASS = #{record.staffPass,jdbcType=VARCHAR},
+      STAFF_NAME = #{record.staffName,jdbcType=VARCHAR},
+      MOBILE_PHONE = #{record.mobilePhone,jdbcType=VARCHAR},
+      EMAIL = #{record.email,jdbcType=VARCHAR},
+      ORG_ID = #{record.orgId,jdbcType=INTEGER},
+      IS_MANAGEMENT = #{record.isManagement,jdbcType=CHAR},
+      CAN_VIEW_QUALIFICATION = #{record.canViewQualification,jdbcType=CHAR},
+      CREATE_DATE = #{record.createDate,jdbcType=TIMESTAMP},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      STATUS_DATE = #{record.statusDate,jdbcType=TIMESTAMP},
+      CREATE_STAFF_ID = #{record.createStaffId,jdbcType=INTEGER},
+      MODIFY_STAFF_ID = #{record.modifyStaffId,jdbcType=INTEGER},
+      CERT_TYPE = #{record.certType,jdbcType=VARCHAR},
+      CERT_NBR = #{record.certNbr,jdbcType=VARCHAR},
+      SEX_TYPE = #{record.sexType,jdbcType=VARCHAR},
+      BIRTHDAY = #{record.birthday,jdbcType=DATE},
+      LOGIN_ERROR_COUNT = #{record.loginErrorCount,jdbcType=INTEGER},
+      SUBORDINATE_STAFF_IDS = #{record.subordinateStaffIds,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.SysStaffInfo" >
+    update sys_staff_info
+    <set >
+      <if test="staffCode != null" >
+        STAFF_CODE = #{staffCode,jdbcType=VARCHAR},
+      </if>
+      <if test="staffPass != null" >
+        STAFF_PASS = #{staffPass,jdbcType=VARCHAR},
+      </if>
+      <if test="staffName != null" >
+        STAFF_NAME = #{staffName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobilePhone != null" >
+        MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="isManagement != null" >
+        IS_MANAGEMENT = #{isManagement,jdbcType=CHAR},
+      </if>
+      <if test="canViewQualification != null" >
+        CAN_VIEW_QUALIFICATION = #{canViewQualification,jdbcType=CHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="statusDate != null" >
+        STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createStaffId != null" >
+        CREATE_STAFF_ID = #{createStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyStaffId != null" >
+        MODIFY_STAFF_ID = #{modifyStaffId,jdbcType=INTEGER},
+      </if>
+      <if test="certType != null" >
+        CERT_TYPE = #{certType,jdbcType=VARCHAR},
+      </if>
+      <if test="certNbr != null" >
+        CERT_NBR = #{certNbr,jdbcType=VARCHAR},
+      </if>
+      <if test="sexType != null" >
+        SEX_TYPE = #{sexType,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        BIRTHDAY = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="loginErrorCount != null" >
+        LOGIN_ERROR_COUNT = #{loginErrorCount,jdbcType=INTEGER},
+      </if>
+      <if test="subordinateStaffIds != null" >
+        SUBORDINATE_STAFF_IDS = #{subordinateStaffIds,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where STAFF_ID = #{staffId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.SysStaffInfo" >
+    update sys_staff_info
+    set STAFF_CODE = #{staffCode,jdbcType=VARCHAR},
+      STAFF_PASS = #{staffPass,jdbcType=VARCHAR},
+      STAFF_NAME = #{staffName,jdbcType=VARCHAR},
+      MOBILE_PHONE = #{mobilePhone,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=INTEGER},
+      IS_MANAGEMENT = #{isManagement,jdbcType=CHAR},
+      CAN_VIEW_QUALIFICATION = #{canViewQualification,jdbcType=CHAR},
+      CREATE_DATE = #{createDate,jdbcType=TIMESTAMP},
+      STATUS = #{status,jdbcType=VARCHAR},
+      STATUS_DATE = #{statusDate,jdbcType=TIMESTAMP},
+      CREATE_STAFF_ID = #{createStaffId,jdbcType=INTEGER},
+      MODIFY_STAFF_ID = #{modifyStaffId,jdbcType=INTEGER},
+      CERT_TYPE = #{certType,jdbcType=VARCHAR},
+      CERT_NBR = #{certNbr,jdbcType=VARCHAR},
+      SEX_TYPE = #{sexType,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=DATE},
+      LOGIN_ERROR_COUNT = #{loginErrorCount,jdbcType=INTEGER},
+      SUBORDINATE_STAFF_IDS = #{subordinateStaffIds,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where STAFF_ID = #{staffId,jdbcType=INTEGER}
+  </update>
+</mapper>

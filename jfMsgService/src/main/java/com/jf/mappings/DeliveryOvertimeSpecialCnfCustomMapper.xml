@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.DeliveryOvertimeSpecialCnfCustomMapper" >
+
+  <update id="specialAreaDeliveryLastDate" parameterType="java.util.Map" >
+    UPDATE bu_sub_order A
+    INNER JOIN (
+        SELECT
+            co.id combine_order_id,
+            co.pay_date
+        FROM
+            bu_combine_order co
+        WHERE
+            co.del_flag = '0'
+        AND co.status = '1'
+        AND co.pay_date BETWEEN #{beginPayDate}
+        AND #{endPayDate}
+        AND
+        <trim prefix="(" suffix=")" >
+          <foreach collection="addressList" item="address" separator="or"  >
+              co.receiver_address LIKE CONCAT(#{address}, '%')
+          </foreach>
+        </trim>
+      ) B ON A.combine_order_id = B.combine_order_id
+    SET
+    <if test="timeType == 0" >
+        A.delivery_last_date = DATE_ADD(B.pay_date, INTERVAL #{overtime} HOUR),
+        A.delivery_overtime = #{overtime}
+    </if>
+    <if test="timeType == 1" >
+        A.delivery_last_date = #{deliveryDate},
+        A.delivery_overtime = NULL
+    </if>
+    WHERE
+        A.del_flag = '0'
+    AND A.status = '1'
+  </update>
+
+  <update id="updateDeliveryOvertimeBackups" parameterType="java.util.Map" >
+    UPDATE bu_delivery_overtime_backups A
+    INNER JOIN (
+        SELECT
+            so.id sub_order_id,
+            so.delivery_last_date,
+            so.delivery_overtime
+        FROM
+            bu_combine_order co,
+            bu_sub_order so,
+            bu_delivery_overtime_backups dob
+        WHERE
+            co.id = so.combine_order_id
+        AND so.id = dob.sub_order_id
+        AND co.del_flag = '0'
+        AND so.del_flag = '0'
+        AND so.status = '1'
+        AND dob.del_flag = '0'
+        AND co.status = '1'
+        AND co.pay_date BETWEEN #{beginPayDate}
+        AND #{endPayDate}
+        AND
+        <trim prefix="(" suffix=")" >
+          <foreach collection="addressList" item="address" separator="or"  >
+              co.receiver_address LIKE CONCAT(#{address}, '%')
+          </foreach>
+        </trim>
+    ) B ON A.sub_order_id = B.sub_order_id
+    SET A.delivery_last_date = B.delivery_last_date,
+      A.delivery_overtime = B.delivery_overtime,
+      A.update_date = NOW()
+  </update>
+
+  <insert id="insertDeliveryOvertimeBackups" parameterType="java.util.Map" >
+    INSERT INTO bu_delivery_overtime_backups (
+        sub_order_id,
+        delivery_last_date,
+        delivery_overtime,
+        create_by,
+        create_date
+    ) SELECT
+        so.id,
+        so.delivery_last_date,
+        so.delivery_overtime,
+        '1',
+        NOW()
+    FROM
+        bu_combine_order co
+    LEFT JOIN bu_sub_order so ON co.id = so.combine_order_id
+    LEFT JOIN bu_delivery_overtime_backups dob ON so.id = dob.sub_order_id
+    WHERE
+        co.del_flag = '0'
+    AND so.del_flag = '0'
+    AND so.status = '1'
+    AND dob.id IS NULL
+    AND co.status = '1'
+    AND co.pay_date BETWEEN #{beginPayDate}
+    AND #{endPayDate}
+    AND
+    <trim prefix="(" suffix=")" >
+      <foreach collection="addressList" item="address" separator="or"  >
+          co.receiver_address LIKE CONCAT(#{address}, '%')
+      </foreach>
+    </trim>
+  </insert>
+
+  <select id="deliveryOvertimeSubOrderList" parameterType="java.util.Map" resultType="java.util.Map" >
+    SELECT
+        so.id sub_order_id,
+        so.delivery_last_date,
+        so.delivery_overtime
+    FROM
+        bu_combine_order co,
+        bu_sub_order so
+    WHERE
+        co.id = so.combine_order_id
+    AND co.del_flag = '0'
+    AND so.del_flag = '0'
+    AND so.status = '1'
+    AND co.status = '1'
+    AND co.pay_date BETWEEN #{bPayDate}
+    AND #{ePayDate}
+    <if test="addressMapList != null" >
+        <foreach collection="addressMapList" item="addressMap" >
+            AND so.id NOT IN(
+                SELECT
+                    s.id
+                FROM
+                    bu_combine_order c,
+                    bu_sub_order s
+                WHERE
+                    c.id = s.combine_order_id
+                AND c.del_flag = '0'
+                AND s.del_flag = '0'
+                AND s.status = '1'
+                AND c.status = '1'
+                AND c.pay_date BETWEEN #{addressMap.beginPayDate}
+                AND #{addressMap.endPayDate}
+                <foreach collection="addressMap.addressList" item="address" >
+                    AND c.receiver_address LIKE CONCAT(#{address}, '%')
+                </foreach>
+            )
+        </foreach>
+    </if>
+  </select>
+
+  <update id="updateSubOrder" parameterType="java.util.Map" >
+    UPDATE bu_sub_order
+    SET delivery_last_date = #{deliveryLastDate},
+        delivery_overtime = NULL
+    WHERE id = #{id}
+  </update>
+
+</mapper>

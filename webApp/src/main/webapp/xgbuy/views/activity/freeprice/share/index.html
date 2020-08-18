@@ -1,0 +1,199 @@
+<div class="page free-share cut-price flex dc" data-title="邀请享免单" data-id="activity_freeprice_share">
+	<link rel="stylesheet" href="activity/freeprice/share/share.css?ver=1.0">
+	<link rel="stylesheet" href="activity/cutprice/cutprice.css?ver=1.0">
+
+	<header class="flex ac jb fn hide">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">邀请享免单</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-more fg pos-r scroll-decorate">
+		<span class="ico-btn free-share-rule" onclick="popupShow('.popup-rule-share')"></span>
+		<div class="touchfix"></div>
+	</div>
+
+	<script id="free_share_tpl_row1" type="text/html">
+		<div class="row-a1">
+			<dl class="col-1 flex">
+				<dt class="img-cover fn">
+					<img src="{{skuPic}}">
+				</dt>
+				<dd class="fg flex dc jb">
+					<h3>{{productName}}</h3>
+					<div class="flex ac jb">
+						<span>
+							<strong class="f50">0</strong>
+							<s class="c9">{{tagPrice}}</s>
+						</span>
+						<p class="c9">已被领取{{memberRecNum}}件</p>
+					</div>
+				</dd>
+			</dl>
+
+			{{if timer > 0 && status == 1}}
+			<div class="col-2">
+				<h4 class="flex ac jc">已邀请{{alreadyInviteNum}}位好友，还需邀请{{lastNeedInviteNum}}位好友</h4>
+				<p class="flex ac jc c9">
+					<time data-timer="{{timer}}"></time>将失效
+				</p>
+			</div>
+			<a class="col-3 flex ac jc btn-red" onclick="freeShare.share()">继续邀请</a>
+		</div>
+
+		<div class="row-a2 row-21"></div>
+			{{else}}
+			<div class="col-2">
+				<h4 class="flex ac jc">已邀请好友</h4>
+				<div class="row-2 row-22"></div>
+			</div>
+				{{if status == 2 || status == 4}}
+			<a class="col-3 flex ac jc btn-red">助力成功</a>
+				{{else}}
+			<a class="col-3 flex ac jc btn-red" onclick="getUrl('goods/detail?id={{productId}}', 'self')">重新抢</a>
+				{{/if}}
+			<a class="col-3 flex ac jc btn-red" onclick="getUrl('activity/freeprice/index.html', 'self')">其他免单商品</a>
+		</div>
+			{{/if}}
+
+		<div class="row-3"></div>
+	</script>
+
+	<script id="free_share_tpl_row2" type="text/html">
+		<h2 class="flex ac jc">助力详情</h2>
+		{{if returnData.length}}
+		<div class="scroll-y show3{{returnData.length < 5 ? ' jc' : ''}}">
+			{{include 'free_share_tpl_row2_list'}}
+		</div>
+			{{if returnData.length > 3}}
+		<a class="free-more-share" onclick="freeShare.more(this)"></a>
+			{{/if}}
+		{{else}}
+		<div class="flex ac jc no-help">当前还没有成功邀请好友助力</div>
+		{{/if}}
+	</script>
+
+	<script id="free_share_tpl_row2_list" type="text/html">
+		{{each returnData value i}}
+	<dl class="flex ac fn">
+		<dt class="fn img-cover">
+			<img src="{{value.weixinHead}}">
+		</dt>
+		<dd class="fg flex jb">
+			<p class="ellipsis fg">{{value.memberNick}}</p>
+			<em class="fn btn-f50 flex ac jc">{{value.content}}</em>
+		</dd>
+	</dl>
+		{{/each}}
+	</script>
+
+	<div class="popup free-share-help" onclick="closeSelf(this)"></div>
+
+	<script id="free_share_tpl_help" type="text/html">
+		<div class="popup-main" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+			<div>
+				<h3>{{returnMsg}}</h3>
+			</div>
+		</div>
+	</script>
+
+	<script id="free_share_tpl_row1s" type="text/html">
+		<div class="contents">
+			<div class="row-a1s">
+				<div class="col-1">
+					<img src="{{skuPic}}">
+				</div>
+				<h2 class="flex ac">{{productName}}</h2>
+				<p class="c9 flex ac jb">
+					<s>{{tagPrice}}</s>
+					<span>{{memberRecNum}}人已免费领取</span>
+				</p>
+			</div>
+
+			<div class="row-2s">
+				{{if timer > 0 && status == 1}}
+				<!-- <h2 class="flex ac jc">再邀请{{lastNeedInviteNum}}位好友即可免费领取</h2> -->
+				<a class="flex ac jc" onclick="freeShare.load()">立即助力</a>
+				{{else if status == 2 || status == 4}}
+				<a class="flex ac jc">您的好友已经完成助力</a>
+				{{else}}
+				<a class="flex ac jc">超时未完成、免单失败</a>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class="row-3s"></div>
+	</script>
+
+	<script id="free_share_tpl_row3" type="text/html">
+		<div class="free-app-tip flex ac jc">前往APP帮好友助力，自己也可以免费领取哦</div>
+		<h2 class="flex ac jc spe-h2">其他邀请免费商品</h2>
+		<div class="con-list con-1 tab-con">
+			{{include 'free_share_tpl_row3_list'}}
+		</div>
+	</script>
+
+	<script id="free_share_tpl_row3_list" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+				{{if value.status == 1}}
+		<dl class="flex fg bb1 corsor" onclick="getUrl('my/download/index.html')">
+				{{else}}
+		<dl class="flex fg bb1">
+				{{/if}}
+			<dt class="fn">
+				<img src="{{value.productPic}}">
+			</dt>
+			<dd class="fg">
+				<h3>{{value.productName}}</h3>
+
+				<p class="c9 flex jb mb20">
+					<span>需邀请{{value.needInviteNum}}人</span>
+					<span>已领{{value.memberReceiveNum}}件</span>
+				</p>
+
+				<div class="flex ac jb">
+					<span class="f50">
+						<strong>{{value.tagPrice}}</strong>
+					</span>
+					
+					{{if value.status == 1}}
+					<a class="btn-red flex ac jc">
+					免费领取
+					{{else if value.status == 2}}
+					<a class="btn-red flex ac jc btn-gray">
+					名额已满
+					{{else}}
+					<a class="btn-red flex ac jc btn-gray">
+					已抢光
+					{{/if}}
+					</a>
+				</div>
+			</dd>
+		</dl>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<div class="popup popup-rule popup-rule-share" onclick="closeSelf(this)">
+		<div class="popup-rule-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">
+				邀请享免单规则
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</div>
+
+			<div class="con scroll-y f28">
+				<div class="touchfix">
+					<p class="mb20">1、每个新用户可助力一次，同一个设备、微信号、视为同一个用户。</p>
+					<p class="mb20">2、若发现用户存在刷单、虚假用户助力等违规行为，平台有权利判定助力失败。</p>
+					<p class="mb20">3、免单成功后，平台审核后生成对应订单，24小时內审核下单。</p>
+					<p class="mb20">4、每个用户每天只能发起一次邀请享免单，发起后只能隔天在发起新的邀请享免单。</p>
+					<p>5、本活动成功下单的商品不支持退换。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="activity/freeprice/share/share.js?ver=1.2" async></script>
+</div>

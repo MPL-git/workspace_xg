@@ -1,0 +1,61 @@
+@CHARSET "UTF-8";
+
+.upload_image_list {
+	font: 12px/1.5 tahoma,arial,'Hiragino Sans GB','宋体',sans-serif;
+}
+
+.upload_image_list li {
+	border: 1px solid #CCCCCC;
+	float: left;
+	list-style: none;
+	list-style-type: none;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+	padding: 0px;
+}
+
+.upload_image_list li p {
+	margin: 0px;
+	padding: 0px;
+	position: relative;
+}
+
+.upload_image_list li p img {
+	height: 90px;
+	width: 90px;
+}
+
+.upload_image_list li p a.def {
+	background-color: #FB7254;
+	color: #FFFFFF;
+	cursor: pointer;
+	display: block;
+	font-weight: normal;
+	height: 20px;
+	line-height: 20px;
+	position: absolute;
+	text-align: center;
+	top: 0px;
+	width: 55px;
+}
+
+.upload_image_list li a.del {
+	background-color: #F2F2F2;
+	background-image: url(../images/close3.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	color: #0066CC;
+	display: block;
+	height: 15px;
+	line-height: 15px;
+	overflow: hidden;
+	text-decoration: none;
+	text-indent: -1200px;
+	width: 90px;
+}
+
+.upload_image_list li a.del:hover {
+	background-image: url(../images/close3-hover.png);
+}

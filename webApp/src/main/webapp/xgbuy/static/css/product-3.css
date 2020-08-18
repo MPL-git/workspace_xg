@@ -1,0 +1,183 @@
+/*商品列表*/
+.product-3 div.product {
+	padding-top: .1rem;
+}
+.product-3 div.product a {
+	overflow: hidden;
+	float: left;
+	border: 1px solid #f2f2f2;
+	width: calc(50% - .05rem);
+	height: auto;
+	margin: 0 .1rem .1rem 0;
+	background: #fff;
+	box-sizing: border-box;
+}
+.product-3 div.product a:nth-child(2n) {
+	float: right;
+	margin-right: 0;
+}
+.product-3 div.product .con-1 {
+	position: relative;
+	height: calc(3.7rem - 2px);
+	background: #f1f1f1;
+}
+.product-3 div.product .con-1 div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+	width: 1.2rem;
+	height: 1.2rem;
+	margin: -.6rem 0 0 -.6rem;
+	background: rgba(0, 0, 0, .5);
+	font-size: .26rem;
+	color: #fff;
+	border-radius: 100%;
+}
+.product-3 div.product .con-1 em {
+	position: absolute;
+	bottom: 0;
+	left: .2rem;
+	height: .28rem;
+	padding: 0 .1rem;
+	background: #ffdb36;
+	font-size: .2rem;
+	border-radius: .02rem;
+}
+.product-3 div.product .con-2 {
+	padding: .12rem .16rem .12rem;
+	font-size: .24rem;
+	line-height: .34rem;
+}
+.product-3 div.product .con-2 strong {
+	font-size: .4rem;
+	font-weight: bold;
+	margin-right: .05rem;
+}
+.product-3 div.product .con-2 s {
+	font-size: .24rem;
+}
+.product-3 div.product .con-2 strong:before {
+	content: '¥';
+	margin-right: .03rem;
+	font-size: .75em;
+}
+.product-3 div.product .con-2 mark.btn-f50 {
+	display: none;
+}
+.product-3 div.product .con-2 p {
+	height: .67rem;
+	font-size: .26rem;
+	line-height: .34rem;
+
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+.product-3 div.product .con-2 div {
+	position: relative;
+	left: -.05rem;
+	height: .54rem;
+	width: calc(100% + .05rem);
+	margin-top: .13rem;
+	white-space: nowrap;
+}
+.product-3 div.product .con-2 dl {
+	margin-top: .17rem;
+	color: #ff5050;
+	font-size: .24rem;
+}
+.product-3 div.product .con-2 dt {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.product-3 div.product .con-2 dd {
+	width: .9rem;
+	height: .36rem;
+	font-size: .22rem;
+	background: #f4f4f4;
+	border: 1px solid #ff5050;
+}
+
+/*筛选*/
+.product-3 .tag,
+.product-3 .tag-box {
+	height: .81rem;
+	background: #fff;
+}
+.product-3 .tag {
+	position: relative;
+	z-index: 2;
+	border-bottom: 1px solid #eee;
+	font-size: .3rem;
+}
+.product-3 .tag a:active {
+	background: #f4f4f4;
+}
+.product-3 .tag b {
+	position: relative;
+	width: .16rem;
+	height: .25rem;
+	margin-left: .1rem;
+}
+.product-3 .tag .filter>b {
+	width: .2rem;
+	height: .24rem;
+	background: url(../images/pick.png) no-repeat;
+	background-size: contain;
+}
+.product-3 .tag .filter.active>b {
+	background-image: url(../images/picked.png);
+}
+.product-3 .tag i {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.product-3 .tag b i.b {
+	top: auto;
+	bottom: 0;
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+.product-3 .tag a.active {
+	color: #ff5050;
+}
+.product-3 .tag a.filter {
+	overflow: hidden;
+	white-space: nowrap;
+	width: 1.8rem;
+}
+.product-3 .tag a.desc i.b,
+.product-3 .tag a.asc i.t {
+	background-position: 0 -.16rem;
+}
+
+.product-3 .tag-filter {
+	position: absolute;
+	top: calc(100% + 1px);
+	left: 0;
+	width: 100%;
+	padding: 0 .24rem;
+	font-size: .28rem;
+	background: #fff;
+	box-shadow: 0 0.1rem 0.1rem rgba(0, 0, 0, .1);
+}
+.product-3 .tag-filter a {
+	min-width: 1.4rem;
+	height: .5rem;
+	padding: 0 .15rem;
+	margin: .2rem .17rem;
+	border-radius: .04rem;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.product-3 .tag-filter a:active {
+	background: #fff0f0;
+}
+.product-3 .tag-filter .active {
+	background: #fff0f0;
+	color: #ff5050;
+}

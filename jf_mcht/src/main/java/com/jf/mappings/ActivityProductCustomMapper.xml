@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ActivityProductCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ActivityProduct" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="refuse_flag" property="refuseFlag" jdbcType="CHAR" />
+    <result column="operate_audit_by" property="operateAuditBy" jdbcType="INTEGER" />
+    <result column="operate_audit_status" property="operateAuditStatus" jdbcType="CHAR" />
+    <result column="design_audit_by" property="designAuditBy" jdbcType="INTEGER" />
+    <result column="design_audit_status" property="designAuditStatus" jdbcType="CHAR" />
+    <result column="law_audit_by" property="lawAuditBy" jdbcType="INTEGER" />
+    <result column="law_audit_status" property="lawAuditStatus" jdbcType="CHAR" />
+    <result column="coo_audit_by" property="cooAuditBy" jdbcType="INTEGER" />
+    <result column="coo_audit_status" property="cooAuditStatus" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <select id="selectActivityProduct" resultMap="BaseResultMap" parameterType="com.jf.entity.ActivityProductCustomExample" >
+    select a.* from bu_activity_product a left join bu_activity b on b.id = a.activity_id
+    where a.del_flag = 0 and b.mcht_id = #{mchtId} and b.del_flag = 0 and b.activity_area_id in(
+    select id from bu_activity_area where status = '1' and del_flag = 0 and activity_end_time > now()
+    )
+    <if test="activityId != null and activityId > 0" >
+      or (a.del_flag = 0 and a.activity_id = #{activityId})
+    </if>
+  </select>
+  
+  <select id="getProductIdsByActivityId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select a.product_id from bu_activity_product a where a.activity_id=#{activityId} and a.refuse_flag='0' and a.del_flag='0'
+  </select>
+  
+  <select id="saveSort" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+  	select FUN_UPDATE_ACTIVITY_PRODUCT_SEQ_NO(#{data},#{mchtId}) from dual;
+  </select>
+  
+  <select id="getEffectiveProductCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	SELECT count(1) FROM bu_activity_area aa,bu_activity a,	bu_activity_product ap 
+  	WHERE aa.id = a.activity_area_id AND a.id = ap.activity_id
+  	AND ap.product_id = #{productId}
+	AND ap.refuse_flag = '0'
+	AND a.`status` != '4'
+	AND aa.activity_end_time>=#{date}
+  </select>
+  
+  <select id="getProductIds" resultType="java.lang.Integer" parameterType="java.util.Map">
+  	SELECT DISTINCT ap.product_id FROM bu_activity_area aa,bu_activity a,bu_activity_product ap,bu_product p
+  	WHERE aa.id = a.activity_area_id AND a.id = ap.activity_id
+  	AND ap.product_id = p.id
+	AND ap.refuse_flag = '0'
+	AND a.`status` != '4'
+	AND aa.activity_end_time>=#{date}
+	<if test="searchType == 1">
+  	AND p.code = #{code}
+	</if>
+	<if test="searchType == 2">
+  	AND p.art_no = #{artNo}
+	</if>
+	<if test="searchType == 3">
+  	AND p.name like concat('%',#{productName},'%')
+	</if>
+  </select>
+  
+  <select id="checkSvipDiscount" parameterType="java.lang.Integer" resultType="com.jf.entity.ActivityProduct">
+  	SELECT
+		*
+	FROM
+		bu_activity_product ap
+	WHERE
+		ap.activity_id = #{activityId}
+	AND ap.del_flag = '0'
+	AND ap.refuse_flag = '0'
+	AND EXISTS (
+		SELECT
+			p.id
+		FROM
+			bu_product p
+		WHERE
+			p.id = ap.product_id
+		AND p.del_flag = '0'
+		AND p.svip_discount IS NULL
+	)
+  </select>
+</mapper>

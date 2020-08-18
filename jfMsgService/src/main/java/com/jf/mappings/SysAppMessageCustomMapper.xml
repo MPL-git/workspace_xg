@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SysAppMessageCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SysAppMessageCustom"  extends="com.jf.dao.SysAppMessageMapper.BaseResultMap" >
+    <result column="app_message_member_id" property="appMessageMemberId" jdbcType="INTEGER" />
+    <result column="app_message_id" property="appMessageId" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+  </resultMap>
+  
+     <insert id="insertBatchForMemberMsg">
+     	insert into sys_app_message_member (app_message_id,member_id,create_date,del_flag)
+     	values
+     		<foreach collection="list" item="item" separator=",">
+     			(#{item.appMessageId,jdbcType=INTEGER},
+     			#{item.memberId,jdbcType=INTEGER},
+     			#{item.createDate,jdbcType=TIMESTAMP},
+     			#{item.delFlag,jdbcType=CHAR})
+     		</foreach>
+     </insert>
+
+	<insert id="batchInsertSysAppMessageByTaskActivitySelectionId">
+		INSERT INTO sys_app_message (
+		type, title, content, pic, link_type, link_id,
+		member_id, create_by, create_date, del_flag )
+		VALUES
+		<foreach collection="taskSendMemberList" item="item"  separator="," >
+			(#{sysAppMessage.type},#{sysAppMessage.title},#{sysAppMessage.content},
+			#{sysAppMessage.pic},#{sysAppMessage.linkType},#{sysAppMessage.linkId},
+			#{item.memberId,jdbcType=INTEGER},#{sysAppMessage.createBy},#{sysAppMessage.createDate},"0")
+		</foreach>
+	</insert>
+</mapper>

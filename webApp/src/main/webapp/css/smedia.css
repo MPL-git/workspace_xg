@@ -1,0 +1,57 @@
+a {
+	cursor: pointer;
+	color: inherit;
+	text-decoration: none;
+}
+img {
+	display: block;
+	width: 100%;
+	border: none;
+}
+.flex {
+	display: -webkit-flex;
+	display: flex;
+}
+.dc {
+	-webkit-flex-direction: column;
+	flex-direction: column;
+}
+.jc {
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+.ac {
+	-webkit-align-items: center;
+	align-items: center;
+}
+.fg {
+	-webkit-flex-grow: 1;
+	flex-grow: 1;
+}
+.fn {
+	-webkit-flex: none;
+	flex: none;
+}
+.h100 {
+	height: 100%;
+}
+
+.scroll-y {
+	overflow: auto;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+
+/*自媒体1*/
+.smedia-1 a,
+.smedia-2 a {
+	height: .8rem;
+	font-size: .4rem;
+	color: #333;
+	background: #ffc124;
+}
+
+.smedia-2 a {
+	color: #fff;
+	background: #ff4643;
+}

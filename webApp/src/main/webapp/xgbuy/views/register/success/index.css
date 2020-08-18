@@ -1,0 +1,21 @@
+.success .content {
+	background: url(resources/success.png) no-repeat;
+	background-size: contain;
+}
+.success .con-1 {
+    width: 4rem;
+    height: .88rem;
+    background-color: #48db8d;
+    border-radius: .44rem;
+    font-size: .36rem;
+    color: #fff;
+}
+.success .con-span {
+    margin-bottom: .8rem;
+    font-size: .5rem;
+}
+.success .center {
+    position: absolute;
+    left: calc(50% - 2rem);
+    top: 40%;
+}

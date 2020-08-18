@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberLabelRelationCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberLabelRelationCustom" extends="com.jf.dao.MemberLabelRelationMapper.BaseResultMap" >
+    <result column="member_status_desc" property="memberStatusDesc" jdbcType="VARCHAR" />
+    <result column="member_create_date" property="memberCreateDate" jdbcType="TIMESTAMP" />
+    <result column="member_nick" property="memberNick" jdbcType="VARCHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="member_mobile" property="memberMobile" jdbcType="VARCHAR" />
+    <result column="memberlabel_name" property="memberlabelName" jdbcType="VARCHAR" />
+    <result column="memberlabeltype_name" property="memberlabelTypeName" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, label_type_id, label_id, memeber_id, create_by, create_date, update_by, update_date, 
+    remarks, del_flag,
+    (select GROUP_CONCAT(ml.label_name) from bu_member_label ml where mll.label_id=ml.id and ml.del_flag='0') memberlabel_name,
+    (select mlt.label_type_name from bu_member_label_type mlt where mlt.id=mll.label_type_id and mlt.del_flag='0') memberlabeltype_name,
+    (select ss.STAFF_NAME from sys_staff_info ss,bu_member_label_type mlt where ss.STAFF_ID=mlt.create_by and mlt.id=mll.label_type_id and mlt.del_flag='0' and ss.STATUS='A') staff_name
+  </sql>
+  <select id="selectMemberLabelRelationCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberLabelRelationCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_label_relation mll
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectMemberLabelRelationCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+   from bu_member_label_relation mll
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countMemberLabelRelationCustomExample" parameterType="com.jf.entity.MemberLabelRelationCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_label_relation mll
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectMemberLabelRelationCount" parameterType="java.util.Map" resultType="java.lang.Integer" >
+  	SELECT
+		COUNT(1)
+	FROM
+		bu_member_label_group_relation a,
+		bu_member_label_relation b
+	WHERE
+		a.label_id = b.label_id
+	AND a.label_type_id = b.label_type_id
+	AND a.del_flag = '0'
+	AND a.type = '0'
+	AND b.del_flag = '0'
+	AND a.label_group_id IN (${labelGroupIds})
+	AND NOT EXISTS (
+		SELECT
+			d.memeber_id
+		FROM
+			bu_member_label_group_relation c,
+			bu_member_label_relation d
+		WHERE
+			c.label_id = d.label_id
+		AND c.label_type_id = d.label_type_id
+		AND c.del_flag = '0'
+		AND c.type = '1'
+		AND d.del_flag = '0'
+		AND d.memeber_id = b.memeber_id
+		AND c.label_group_id IN (${labelGroupIds})
+	)
+  </select>
+  
+  <select id="getMemberLabelRelationList" parameterType="java.util.Map" resultMap="BaseResultMap" >
+  	SELECT
+		a.*,
+		FUN_GET_STATUS_DESC("BU_MEMBER_INFO", "STATUS", m.status) member_status_desc,
+		m.create_date member_create_date,
+		m.nick member_nick,
+		m.id member_id,
+		m.mobile member_mobile
+	FROM
+		bu_member_label_group_relation a,
+		bu_member_label_relation b,
+		bu_member_info m
+	WHERE
+		 a.label_id = b.label_id
+	AND	a.label_type_id = b.label_type_id
+	AND b.memeber_id = m.id
+	AND a.del_flag = '0'
+	AND a.type = '0'
+	AND b.del_flag = '0'
+	AND m.del_flag = '0'
+	<if test="labelGroupId != null and labelGroupId != ''">
+		AND a.label_group_id IN(#{labelGroupId})
+		AND NOT EXISTS (
+			SELECT
+				d.memeber_id
+			FROM
+				bu_member_label_group_relation c,
+				bu_member_label_relation d
+			WHERE
+				 c.label_id = d.label_id
+			AND c.label_type_id = d.label_type_id
+			AND c.del_flag = '0'
+			AND c.type = '1'
+			AND d.del_flag = '0'
+			AND d.memeber_id = b.memeber_id
+			AND c.label_group_id IN (#{labelGroupId})
+		)
+	</if>
+	<if test="labelId != null">
+		AND a.label_id = #{labelId}
+	</if>
+	<if test="memeberId != null">
+		AND m.id = #{memeberId} 
+	</if>
+	<if test="nick != null">
+		AND m.nick like CONCAT('%', #{nick}, '%') 
+	</if>
+	<if test="startCreateDate != null">
+		AND m.create_date >= #{startCreateDate}  
+	</if>
+	<if test="endCreateDate != null">
+		<![CDATA[AND m.create_date <= #{endCreateDate}]]>
+	</if>
+	<if test="orderByClause != null" >
+      	order by ${orderByClause}
+    </if>
+	<if test="limitStart != null and limitStart>=0" >
+      LIMIT #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="getMemberLabelRelationCount" parameterType="java.util.Map" resultType="java.lang.Integer" >
+  	SELECT
+		COUNT(1)
+	FROM
+		bu_member_label_group_relation a,
+		bu_member_label_relation b,
+		bu_member_info m
+	WHERE
+		a.label_id = b.label_id
+	AND a.label_type_id = b.label_type_id
+	AND b.memeber_id = m.id
+	AND a.del_flag = '0'
+	AND a.type = '0'
+	AND b.del_flag = '0'
+	AND m.del_flag = '0'
+	<if test="labelGroupId != null and labelGroupId != ''">
+		AND a.label_group_id IN(#{labelGroupId})
+		AND NOT EXISTS (
+			SELECT
+				d.memeber_id
+			FROM
+				bu_member_label_group_relation c,
+				bu_member_label_relation d
+			WHERE
+				c.label_id = d.label_id
+			AND c.label_type_id = d.label_type_id
+			AND c.del_flag = '0'
+			AND c.type = '1'
+			AND d.del_flag = '0'
+			AND d.memeber_id = b.memeber_id
+			AND c.label_group_id IN (#{labelGroupId})
+		)
+	</if>
+	<if test="labelId != null">
+		AND a.label_id = #{labelId}
+	</if>
+	<if test="memeberId != null">
+		AND m.id = #{memeberId} 
+	</if>
+	<if test="nick != null">
+		AND m.nick like CONCAT('%', #{nick}, '%') 
+	</if>
+	<if test="startCreateDate != null">
+		AND m.create_date >= #{startCreateDate}  
+	</if>
+	<if test="endCreateDate != null">
+		<![CDATA[AND m.create_date <= #{endCreateDate}]]>
+	</if>
+  </select>
+  
+</mapper>

@@ -1,0 +1,769 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SubDepositOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SubDepositOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="combine_deposit_order_id" property="combineDepositOrderId" jdbcType="INTEGER" />
+    <result column="sub_deposit_order_code" property="subDepositOrderCode" jdbcType="VARCHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="mcht_type" property="mchtType" jdbcType="CHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="activity_pre_sell_product_id" property="activityPreSellProductId" jdbcType="INTEGER" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="product_item_id" property="productItemId" jdbcType="INTEGER" />
+    <result column="sku_pic" property="skuPic" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="art_no" property="artNo" jdbcType="VARCHAR" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="product_prop_desc" property="productPropDesc" jdbcType="VARCHAR" />
+    <result column="sku" property="sku" jdbcType="VARCHAR" />
+    <result column="tag_price" property="tagPrice" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="mall_price" property="mallPrice" jdbcType="DECIMAL" />
+    <result column="settle_price" property="settlePrice" jdbcType="DECIMAL" />
+    <result column="deposit" property="deposit" jdbcType="DECIMAL" />
+    <result column="deduct_amount" property="deductAmount" jdbcType="DECIMAL" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="order_dtl_id" property="orderDtlId" jdbcType="INTEGER" />
+    <result column="pop_commission_rate" property="popCommissionRate" jdbcType="DECIMAL" />
+    <result column="settle_amount" property="settleAmount" jdbcType="DECIMAL" />
+    <result column="commission_amount" property="commissionAmount" jdbcType="DECIMAL" />
+    <result column="member_remarks" property="memberRemarks" jdbcType="VARCHAR" />
+    <result column="mcht_remarks" property="mchtRemarks" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="complete_date" property="completeDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_settle_order_id" property="mchtSettleOrderId" jdbcType="INTEGER" />
+    <result column="shopping_cart_id" property="shoppingCartId" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, combine_deposit_order_id, sub_deposit_order_code, mcht_id, mcht_type, member_id, 
+    activity_pre_sell_product_id, product_id, product_item_id, sku_pic, product_name, 
+    art_no, brand_name, product_prop_desc, sku, tag_price, sale_price, mall_price, settle_price, 
+    deposit, deduct_amount, quantity, pay_amount, status, order_dtl_id, pop_commission_rate, 
+    settle_amount, commission_amount, member_remarks, mcht_remarks, pay_date, complete_date, 
+    mcht_settle_order_id, shopping_cart_id, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SubDepositOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_sub_deposit_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_sub_deposit_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_sub_deposit_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.SubDepositOrderExample" >
+    delete from bu_sub_deposit_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.SubDepositOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_sub_deposit_order (combine_deposit_order_id, sub_deposit_order_code, 
+      mcht_id, mcht_type, member_id, 
+      activity_pre_sell_product_id, product_id, product_item_id, 
+      sku_pic, product_name, art_no, 
+      brand_name, product_prop_desc, sku, 
+      tag_price, sale_price, mall_price, 
+      settle_price, deposit, deduct_amount, 
+      quantity, pay_amount, status, 
+      order_dtl_id, pop_commission_rate, settle_amount, 
+      commission_amount, member_remarks, mcht_remarks, 
+      pay_date, complete_date, mcht_settle_order_id, 
+      shopping_cart_id, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{combineDepositOrderId,jdbcType=INTEGER}, #{subDepositOrderCode,jdbcType=VARCHAR}, 
+      #{mchtId,jdbcType=INTEGER}, #{mchtType,jdbcType=CHAR}, #{memberId,jdbcType=INTEGER}, 
+      #{activityPreSellProductId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{productItemId,jdbcType=INTEGER}, 
+      #{skuPic,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, #{artNo,jdbcType=VARCHAR}, 
+      #{brandName,jdbcType=VARCHAR}, #{productPropDesc,jdbcType=VARCHAR}, #{sku,jdbcType=VARCHAR}, 
+      #{tagPrice,jdbcType=DECIMAL}, #{salePrice,jdbcType=DECIMAL}, #{mallPrice,jdbcType=DECIMAL}, 
+      #{settlePrice,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL}, #{deductAmount,jdbcType=DECIMAL}, 
+      #{quantity,jdbcType=INTEGER}, #{payAmount,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, 
+      #{orderDtlId,jdbcType=INTEGER}, #{popCommissionRate,jdbcType=DECIMAL}, #{settleAmount,jdbcType=DECIMAL}, 
+      #{commissionAmount,jdbcType=DECIMAL}, #{memberRemarks,jdbcType=VARCHAR}, #{mchtRemarks,jdbcType=VARCHAR}, 
+      #{payDate,jdbcType=TIMESTAMP}, #{completeDate,jdbcType=TIMESTAMP}, #{mchtSettleOrderId,jdbcType=INTEGER}, 
+      #{shoppingCartId,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.SubDepositOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_sub_deposit_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="combineDepositOrderId != null" >
+        combine_deposit_order_id,
+      </if>
+      <if test="subDepositOrderCode != null" >
+        sub_deposit_order_code,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="mchtType != null" >
+        mcht_type,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="activityPreSellProductId != null" >
+        activity_pre_sell_product_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productItemId != null" >
+        product_item_id,
+      </if>
+      <if test="skuPic != null" >
+        sku_pic,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="artNo != null" >
+        art_no,
+      </if>
+      <if test="brandName != null" >
+        brand_name,
+      </if>
+      <if test="productPropDesc != null" >
+        product_prop_desc,
+      </if>
+      <if test="sku != null" >
+        sku,
+      </if>
+      <if test="tagPrice != null" >
+        tag_price,
+      </if>
+      <if test="salePrice != null" >
+        sale_price,
+      </if>
+      <if test="mallPrice != null" >
+        mall_price,
+      </if>
+      <if test="settlePrice != null" >
+        settle_price,
+      </if>
+      <if test="deposit != null" >
+        deposit,
+      </if>
+      <if test="deductAmount != null" >
+        deduct_amount,
+      </if>
+      <if test="quantity != null" >
+        quantity,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="orderDtlId != null" >
+        order_dtl_id,
+      </if>
+      <if test="popCommissionRate != null" >
+        pop_commission_rate,
+      </if>
+      <if test="settleAmount != null" >
+        settle_amount,
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount,
+      </if>
+      <if test="memberRemarks != null" >
+        member_remarks,
+      </if>
+      <if test="mchtRemarks != null" >
+        mcht_remarks,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="completeDate != null" >
+        complete_date,
+      </if>
+      <if test="mchtSettleOrderId != null" >
+        mcht_settle_order_id,
+      </if>
+      <if test="shoppingCartId != null" >
+        shopping_cart_id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="combineDepositOrderId != null" >
+        #{combineDepositOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="subDepositOrderCode != null" >
+        #{subDepositOrderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtType != null" >
+        #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="activityPreSellProductId != null" >
+        #{activityPreSellProductId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productItemId != null" >
+        #{productItemId,jdbcType=INTEGER},
+      </if>
+      <if test="skuPic != null" >
+        #{skuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="artNo != null" >
+        #{artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPropDesc != null" >
+        #{productPropDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="tagPrice != null" >
+        #{tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mallPrice != null" >
+        #{mallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="settlePrice != null" >
+        #{settlePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="deductAmount != null" >
+        #{deductAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="orderDtlId != null" >
+        #{orderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="popCommissionRate != null" >
+        #{popCommissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="settleAmount != null" >
+        #{settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="memberRemarks != null" >
+        #{memberRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtRemarks != null" >
+        #{mchtRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDate != null" >
+        #{completeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtSettleOrderId != null" >
+        #{mchtSettleOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="shoppingCartId != null" >
+        #{shoppingCartId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.SubDepositOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_sub_deposit_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_sub_deposit_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.combineDepositOrderId != null" >
+        combine_deposit_order_id = #{record.combineDepositOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subDepositOrderCode != null" >
+        sub_deposit_order_code = #{record.subDepositOrderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtType != null" >
+        mcht_type = #{record.mchtType,jdbcType=CHAR},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityPreSellProductId != null" >
+        activity_pre_sell_product_id = #{record.activityPreSellProductId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productItemId != null" >
+        product_item_id = #{record.productItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.skuPic != null" >
+        sku_pic = #{record.skuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.artNo != null" >
+        art_no = #{record.artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brandName != null" >
+        brand_name = #{record.brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productPropDesc != null" >
+        product_prop_desc = #{record.productPropDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sku != null" >
+        sku = #{record.sku,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tagPrice != null" >
+        tag_price = #{record.tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mallPrice != null" >
+        mall_price = #{record.mallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.settlePrice != null" >
+        settle_price = #{record.settlePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deposit != null" >
+        deposit = #{record.deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deductAmount != null" >
+        deduct_amount = #{record.deductAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.orderDtlId != null" >
+        order_dtl_id = #{record.orderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.popCommissionRate != null" >
+        pop_commission_rate = #{record.popCommissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.settleAmount != null" >
+        settle_amount = #{record.settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commissionAmount != null" >
+        commission_amount = #{record.commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.memberRemarks != null" >
+        member_remarks = #{record.memberRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtRemarks != null" >
+        mcht_remarks = #{record.mchtRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeDate != null" >
+        complete_date = #{record.completeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtSettleOrderId != null" >
+        mcht_settle_order_id = #{record.mchtSettleOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shoppingCartId != null" >
+        shopping_cart_id = #{record.shoppingCartId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_sub_deposit_order
+    set id = #{record.id,jdbcType=INTEGER},
+      combine_deposit_order_id = #{record.combineDepositOrderId,jdbcType=INTEGER},
+      sub_deposit_order_code = #{record.subDepositOrderCode,jdbcType=VARCHAR},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      mcht_type = #{record.mchtType,jdbcType=CHAR},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      activity_pre_sell_product_id = #{record.activityPreSellProductId,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      product_item_id = #{record.productItemId,jdbcType=INTEGER},
+      sku_pic = #{record.skuPic,jdbcType=VARCHAR},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      art_no = #{record.artNo,jdbcType=VARCHAR},
+      brand_name = #{record.brandName,jdbcType=VARCHAR},
+      product_prop_desc = #{record.productPropDesc,jdbcType=VARCHAR},
+      sku = #{record.sku,jdbcType=VARCHAR},
+      tag_price = #{record.tagPrice,jdbcType=DECIMAL},
+      sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      mall_price = #{record.mallPrice,jdbcType=DECIMAL},
+      settle_price = #{record.settlePrice,jdbcType=DECIMAL},
+      deposit = #{record.deposit,jdbcType=DECIMAL},
+      deduct_amount = #{record.deductAmount,jdbcType=DECIMAL},
+      quantity = #{record.quantity,jdbcType=INTEGER},
+      pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=CHAR},
+      order_dtl_id = #{record.orderDtlId,jdbcType=INTEGER},
+      pop_commission_rate = #{record.popCommissionRate,jdbcType=DECIMAL},
+      settle_amount = #{record.settleAmount,jdbcType=DECIMAL},
+      commission_amount = #{record.commissionAmount,jdbcType=DECIMAL},
+      member_remarks = #{record.memberRemarks,jdbcType=VARCHAR},
+      mcht_remarks = #{record.mchtRemarks,jdbcType=VARCHAR},
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      complete_date = #{record.completeDate,jdbcType=TIMESTAMP},
+      mcht_settle_order_id = #{record.mchtSettleOrderId,jdbcType=INTEGER},
+      shopping_cart_id = #{record.shoppingCartId,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.SubDepositOrder" >
+    update bu_sub_deposit_order
+    <set >
+      <if test="combineDepositOrderId != null" >
+        combine_deposit_order_id = #{combineDepositOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="subDepositOrderCode != null" >
+        sub_deposit_order_code = #{subDepositOrderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtType != null" >
+        mcht_type = #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="activityPreSellProductId != null" >
+        activity_pre_sell_product_id = #{activityPreSellProductId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productItemId != null" >
+        product_item_id = #{productItemId,jdbcType=INTEGER},
+      </if>
+      <if test="skuPic != null" >
+        sku_pic = #{skuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="artNo != null" >
+        art_no = #{artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="brandName != null" >
+        brand_name = #{brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPropDesc != null" >
+        product_prop_desc = #{productPropDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sku != null" >
+        sku = #{sku,jdbcType=VARCHAR},
+      </if>
+      <if test="tagPrice != null" >
+        tag_price = #{tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="salePrice != null" >
+        sale_price = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="mallPrice != null" >
+        mall_price = #{mallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="settlePrice != null" >
+        settle_price = #{settlePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="deductAmount != null" >
+        deduct_amount = #{deductAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="orderDtlId != null" >
+        order_dtl_id = #{orderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="popCommissionRate != null" >
+        pop_commission_rate = #{popCommissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="settleAmount != null" >
+        settle_amount = #{settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="commissionAmount != null" >
+        commission_amount = #{commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="memberRemarks != null" >
+        member_remarks = #{memberRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtRemarks != null" >
+        mcht_remarks = #{mchtRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDate != null" >
+        complete_date = #{completeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtSettleOrderId != null" >
+        mcht_settle_order_id = #{mchtSettleOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="shoppingCartId != null" >
+        shopping_cart_id = #{shoppingCartId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.SubDepositOrder" >
+    update bu_sub_deposit_order
+    set combine_deposit_order_id = #{combineDepositOrderId,jdbcType=INTEGER},
+      sub_deposit_order_code = #{subDepositOrderCode,jdbcType=VARCHAR},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      mcht_type = #{mchtType,jdbcType=CHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      activity_pre_sell_product_id = #{activityPreSellProductId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      product_item_id = #{productItemId,jdbcType=INTEGER},
+      sku_pic = #{skuPic,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      art_no = #{artNo,jdbcType=VARCHAR},
+      brand_name = #{brandName,jdbcType=VARCHAR},
+      product_prop_desc = #{productPropDesc,jdbcType=VARCHAR},
+      sku = #{sku,jdbcType=VARCHAR},
+      tag_price = #{tagPrice,jdbcType=DECIMAL},
+      sale_price = #{salePrice,jdbcType=DECIMAL},
+      mall_price = #{mallPrice,jdbcType=DECIMAL},
+      settle_price = #{settlePrice,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      deduct_amount = #{deductAmount,jdbcType=DECIMAL},
+      quantity = #{quantity,jdbcType=INTEGER},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=CHAR},
+      order_dtl_id = #{orderDtlId,jdbcType=INTEGER},
+      pop_commission_rate = #{popCommissionRate,jdbcType=DECIMAL},
+      settle_amount = #{settleAmount,jdbcType=DECIMAL},
+      commission_amount = #{commissionAmount,jdbcType=DECIMAL},
+      member_remarks = #{memberRemarks,jdbcType=VARCHAR},
+      mcht_remarks = #{mchtRemarks,jdbcType=VARCHAR},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      complete_date = #{completeDate,jdbcType=TIMESTAMP},
+      mcht_settle_order_id = #{mchtSettleOrderId,jdbcType=INTEGER},
+      shopping_cart_id = #{shoppingCartId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

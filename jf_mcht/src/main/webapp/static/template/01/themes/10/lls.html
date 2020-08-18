@@ -1,0 +1,588 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var globalNav = $("#nav .navwrap");
+            var navheight = globalNav.height(),navtop = globalNav.offset().top;
+            $(window).on("scroll",function(){
+                var scrolltop = $(this).scrollTop();
+                globalNav.removeAttr("style");
+                if(scrolltop > navtop){
+                    globalNav.addClass("global-nav-fix");
+                }else{
+                    globalNav.removeClass("global-nav-fix");
+                }
+            });
+
+            $(".global-catalog").hover(function(){
+                showGlobalCat();
+            }, function(){
+                hideGlobalCat();
+            });
+            var globalCatalog = $('.global-catalog'),
+                    globalCatCon = $('.gbc-blockcon'),
+                    gbcDuration = 200;
+            function showGlobalCat(){
+                globalCatCon.stop().slideDown(gbcDuration);
+                globalCatalog.addClass('global-catalog-open');
+            }
+            function hideGlobalCat(){
+                globalCatCon.stop().slideUp(gbcDuration);
+                globalCatalog.removeClass('global-catalog-open');
+            }
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'none',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {}
+            });
+            $('#intabs .switchable-tab-item').each(function(){
+                var item = $(this);
+                item.switchable({
+                    triggers: false,
+                    panels: 'li',
+                    easing: 'ease-in-out',
+                    effect: 'scrollLeft',
+                    steps: 3,
+                    visible: 3,
+                    end2end: false,
+                    autoplay: true,
+                    prev: item.find('.prev'),
+                    next: item.find('.next')
+                });
+            })
+        });
+    </script>
+</head>
+<style>
+.header{ background: #d20000;}
+.lls-goods{ padding: 20px; margin: 10px auto; background: #bfbfbf; width: 1160px; }
+</style>
+<body class="page-index">
+<div id="topbar">
+	<div class="topbar">
+        <div class="layout">
+	        <div class="toptools"></div>
+			<div class="toplinks">
+                <p><a href="#"><img src="images/ico-account.png" alt=""/>我的帐号</a></p>
+                <p><a href="#"><img src="images/ico-mobile.png" alt=""/>手机商城</a></p>
+			</div>
+	        <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+	        </div>
+		</div>
+    </div>
+</div>
+<div id="header">
+	<div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/pic/lls/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+		</div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <div class="hdsearch-right">
+
+        </div>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+<div id="nav">
+    <div class="navwrap">
+
+        <div class="global-catalog">
+            <div class="gbc-wrap">
+                <h2 class="gbc-title"><span>全部商品分类</span></h2>
+                <div class="gbc-blockcon">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli tree-hover">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="sublayer">
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="layout">
+                <div class="textNav">
+                    <p><a class="current" href="http://www.genanx.com/">首页</a></p>
+                    <p><a href="http://www.genanx.com/products/0.html">新品上架</a></p>
+                    <p><a href="http://www.genanx.com/products/3-10.html">T恤</a></p>
+                    <p><a href="http://www.genanx.com/products/3-12.html">POLO衫</a></p>
+                    <p><a href="http://www.genanx.com/products/3-22.html">衬衫</a></p>
+                    <p><a href="http://www.genanx.com/products/0-26.html">夹克</a></p>
+                    <p><a href="http://www.genanx.com/products/3-28.html">皮衣</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/lls/banner_1.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <table width="1200" align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/lls/llstop_01.jpg" width="594" height="260" alt=""></td>
+            <td width="11" height="260"></td>
+            <td rowspan="3">
+                <img src="images/pic/lls/llstop_03.jpg" width="302" height="446" alt=""></td>
+            <td width="9" height="260"></td>
+            <td>
+                <img src="images/pic/lls/llstop_05.jpg" width="284" height="260" alt=""></td>
+        </tr>
+        <tr>
+            <td width="594" height="10"></td>
+            <td width="11" height="10"></td>
+            <td width="9" height="10"></td>
+            <td width="284" height="10"></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="images/pic/lls/llstop_10.jpg" width="594" height="176" alt=""></td>
+            <td width="11" height="176"></td>
+            <td width="9" height="176"></td>
+            <td>
+                <img src="images/pic/lls/llstop_13.jpg" width="284" height="176" alt=""></td>
+        </tr>
+    </table>
+
+    <br/>
+    <br/>
+    <table width="1200" align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td><a href="#"><img src="images/pic/lls/lls_title_1.png" alt=""/></a></td>
+        </tr>
+    </table>
+    <div class="lls-goods">
+        <table align="center" width="1160" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_01.jpg" width="284" height="284" alt=""></td>
+                <td width="8" height="576" rowspan="3"></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_03.jpg" width="284" height="284" alt=""></td>
+                <td width="8" height="576" rowspan="3"></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_05.jpg" width="284" height="284" alt=""></td>
+                <td width="8" height="576" rowspan="3"></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_07.jpg" width="284" height="284" alt=""></td>
+            </tr>
+            <tr>
+                <td width="284" height="8"></td>
+                <td width="284" height="8"></td>
+                <td width="284" height="8"></td>
+                <td width="284" height="8"></td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_12.jpg" width="284" height="284" alt=""></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_13.jpg" width="284" height="284" alt=""></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_14.jpg" width="284" height="284" alt=""></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods1_15.jpg" width="284" height="284" alt=""></td>
+            </tr>
+        </table>
+    </div>
+
+    <br/>
+    <table width="1200" align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td><a href="#"><img src="images/pic/lls/lls_title_2.png" alt=""/></a></td>
+        </tr>
+    </table>
+    <div class="lls-goods">
+        <table align="center" width="1160" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_01.jpg" width="284" height="284" alt=""></td>
+                <td width="8" height="576" rowspan="3"></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_03.jpg" width="284" height="284" alt=""></td>
+                <td width="8" height="576" rowspan="3"></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_05.jpg" width="284" height="284" alt=""></td>
+                <td width="8" height="576" rowspan="3"></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_07.jpg" width="284" height="284" alt=""></td>
+            </tr>
+            <tr>
+                <td width="284" height="8"></td>
+                <td width="284" height="8"></td>
+                <td width="284" height="8"></td>
+                <td width="284" height="8"></td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_12.jpg" width="284" height="284" alt=""></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_13.jpg" width="284" height="284" alt=""></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_14.jpg" width="284" height="284" alt=""></td>
+                <td>
+                    <img src="images/pic/lls/lls_goods2_15.jpg" width="284" height="284" alt=""></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+<div id="footer">
+    <div class="footwarranty">
+        <div class="layout">
+            <table width="100%" height="55" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td><img src="/static/images/ftw_01.png"/></td>
+                    <td class="ftw-line"></td>
+                    <td><img src="/static/images/ftw_02.png"/></td>
+                    <td class="ftw-line"></td>
+                    <td><img src="/static/images/ftw_03.png"/></td>
+                    <td class="ftw-line"></td>
+                    <td><img src="/static/images/ftw_04.png"/></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footothers">
+            <div class="layout">
+                <div class="ftconlist">
+                    <dl>
+                        <dt><img src="/static/images/footico_1.png"/>订购与支付</dt>
+                        <dd>
+                            <p><a href="javascript:void(0)">新手注册与登录</a></p>
+                            <p><a href="javascript:void(0)">如何购物</a></p>
+                            <p><a href="javascript:void(0)">优惠券使用细则</a></p>
+                            <p><a href="javascript:void(0)">在线支付宝</a></p>
+                            <p><a href="javascript:void(0)">验收签收</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_2.png"/>快递与配送</dt>
+                        <dd>
+                            <p><a href="javascript:void(0)">配送方式/时间</a></p>
+                            <p><a href="javascript:void(0)">货到付款</a></p>
+                            <p><a href="javascript:void(0)">运费说明</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_3.png"/>售后服务</dt>
+                        <dd>
+                            <p><a href="javascript:void(0)">联系客服</a></p>
+                            <p><a href="javascript:void(0)">订单查询</a></p>
+                            <p><a href="javascript:void(0)">退换保修服务</a></p>
+                            <p><a href="javascript:void(0)">退款方式</a></p>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dt><img src="/static/images/footico_4.png"/>关于我们</dt>
+                        <dd>
+                            <p><a href="javascript:void(0)">了解我们</a></p>
+                            <p><a href="javascript:void(0)">关注我们</a></p>
+                            <p><a href="javascript:void(0)">品牌文化</a></p>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="ftqrcode">
+                    <h3><span>手机无线端</span></h3>
+                    <ul>
+                        <li>
+                            <div><img src="/static/images/qrcode.png"/></div>
+                            <p>无线端二维码</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ftfriends">
+                    <h3>友情链接：</h3>
+                    <p><a href="javascript:void(0)">友情链接</a></p>
+                    <p><a href="javascript:void(0)">友情链接</a></p>
+                    <p><a href="javascript:void(0)">友情链接</a></p>
+                    <p><a href="javascript:void(0)">友情链接</a></p>
+                </div>
+                <div class="ftlinks">
+                    <p><a href="javascript:void(0)">关于我们</a></p>
+                    <p><a href="javascript:void(0)">网站地址</a></p>
+                    <p><a href="javascript:void(0)">隐私条款</a></p>
+                    <p><a href="javascript:void(0)">企业订购</a></p>
+                    <p><a href="javascript:void(0)">加入我们</a></p>
+                    <p><a href="javascript:void(0)">帮助中心</a></p>
+                    <p><a href="javascript:void(0)">网站联盟</a></p>
+                    <p><a href="javascript:void(0)">总裁邮箱</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="gotop"></div>
+
+</body>
+</html>

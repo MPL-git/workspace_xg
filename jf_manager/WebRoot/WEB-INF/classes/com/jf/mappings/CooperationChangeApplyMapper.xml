@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CooperationChangeApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CooperationChangeApply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="shop_type" property="shopType" jdbcType="CHAR" />
+    <result column="business_firms" property="businessFirms" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="pre_product_type" property="preProductType" jdbcType="VARCHAR" />
+    <result column="product_type" property="productType" jdbcType="VARCHAR" />
+    <result column="pre_shop_name" property="preShopName" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="pre_product_type_id" property="preProductTypeId" jdbcType="INTEGER" />
+    <result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+    <result column="pre_deposit" property="preDeposit" jdbcType="DECIMAL" />
+    <result column="deposit" property="deposit" jdbcType="DECIMAL" />
+    <result column="zs_audit_status" property="zsAuditStatus" jdbcType="CHAR" />
+    <result column="zs_audit_remarks" property="zsAuditRemarks" jdbcType="VARCHAR" />
+    <result column="zs_audit_by" property="zsAuditBy" jdbcType="INTEGER" />
+    <result column="zs_audit_date" property="zsAuditDate" jdbcType="TIMESTAMP" />
+    <result column="fw_audit_status" property="fwAuditStatus" jdbcType="CHAR" />
+    <result column="fw_audit_remarks" property="fwAuditRemarks" jdbcType="VARCHAR" />
+    <result column="fw_audit_by" property="fwAuditBy" jdbcType="INTEGER" />
+    <result column="fw_audit_date" property="fwAuditDate" jdbcType="TIMESTAMP" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="upload_status" property="uploadStatus" jdbcType="CHAR" />
+    <result column="send_status" property="sendStatus" jdbcType="CHAR" />
+    <result column="express_id" property="expressId" jdbcType="INTEGER" />
+    <result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+    <result column="archive_status" property="archiveStatus" jdbcType="CHAR" />
+    <result column="archive_remarks" property="archiveRemarks" jdbcType="VARCHAR" />
+    <result column="archive_by" property="archiveBy" jdbcType="INTEGER" />
+    <result column="archive_date" property="archiveDate" jdbcType="TIMESTAMP" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, shop_type, business_firms, brand, pre_product_type, product_type, pre_shop_name,
+    shop_name, pre_product_type_id, product_type_id, pre_deposit, deposit, zs_audit_status,
+    zs_audit_remarks, zs_audit_by, zs_audit_date, fw_audit_status, fw_audit_remarks,
+    fw_audit_by, fw_audit_date, file_path, upload_status, send_status, express_id, express_no,
+    archive_status, archive_remarks, archive_by, archive_date, create_by, create_date,
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CooperationChangeApplyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_cooperation_change_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bu_cooperation_change_apply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_cooperation_change_apply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.CooperationChangeApplyExample" >
+    delete from bu_cooperation_change_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.CooperationChangeApply" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_cooperation_change_apply (mcht_id, shop_type, business_firms,
+    brand, pre_product_type, product_type,
+    pre_shop_name, shop_name, pre_product_type_id,
+    product_type_id, pre_deposit, deposit,
+    zs_audit_status, zs_audit_remarks, zs_audit_by,
+    zs_audit_date, fw_audit_status, fw_audit_remarks,
+    fw_audit_by, fw_audit_date, file_path,
+    upload_status, send_status, express_id,
+    express_no, archive_status, archive_remarks,
+    archive_by, archive_date, create_by,
+    create_date, update_by, update_date,
+    remarks, del_flag)
+    values (#{mchtId,jdbcType=INTEGER}, #{shopType,jdbcType=CHAR}, #{businessFirms,jdbcType=VARCHAR},
+    #{brand,jdbcType=VARCHAR}, #{preProductType,jdbcType=VARCHAR}, #{productType,jdbcType=VARCHAR},
+    #{preShopName,jdbcType=VARCHAR}, #{shopName,jdbcType=VARCHAR}, #{preProductTypeId,jdbcType=INTEGER},
+    #{productTypeId,jdbcType=INTEGER}, #{preDeposit,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL},
+    #{zsAuditStatus,jdbcType=CHAR}, #{zsAuditRemarks,jdbcType=VARCHAR}, #{zsAuditBy,jdbcType=INTEGER},
+    #{zsAuditDate,jdbcType=TIMESTAMP}, #{fwAuditStatus,jdbcType=CHAR}, #{fwAuditRemarks,jdbcType=VARCHAR},
+    #{fwAuditBy,jdbcType=INTEGER}, #{fwAuditDate,jdbcType=TIMESTAMP}, #{filePath,jdbcType=VARCHAR},
+    #{uploadStatus,jdbcType=CHAR}, #{sendStatus,jdbcType=CHAR}, #{expressId,jdbcType=INTEGER},
+    #{expressNo,jdbcType=VARCHAR}, #{archiveStatus,jdbcType=CHAR}, #{archiveRemarks,jdbcType=VARCHAR},
+    #{archiveBy,jdbcType=INTEGER}, #{archiveDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=INTEGER},
+    #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP},
+    #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.CooperationChangeApply" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_cooperation_change_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="shopType != null" >
+        shop_type,
+      </if>
+      <if test="businessFirms != null" >
+        business_firms,
+      </if>
+      <if test="brand != null" >
+        brand,
+      </if>
+      <if test="preProductType != null" >
+        pre_product_type,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="preShopName != null" >
+        pre_shop_name,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="preProductTypeId != null" >
+        pre_product_type_id,
+      </if>
+      <if test="productTypeId != null" >
+        product_type_id,
+      </if>
+      <if test="preDeposit != null" >
+        pre_deposit,
+      </if>
+      <if test="deposit != null" >
+        deposit,
+      </if>
+      <if test="zsAuditStatus != null" >
+        zs_audit_status,
+      </if>
+      <if test="zsAuditRemarks != null" >
+        zs_audit_remarks,
+      </if>
+      <if test="zsAuditBy != null" >
+        zs_audit_by,
+      </if>
+      <if test="zsAuditDate != null" >
+        zs_audit_date,
+      </if>
+      <if test="fwAuditStatus != null" >
+        fw_audit_status,
+      </if>
+      <if test="fwAuditRemarks != null" >
+        fw_audit_remarks,
+      </if>
+      <if test="fwAuditBy != null" >
+        fw_audit_by,
+      </if>
+      <if test="fwAuditDate != null" >
+        fw_audit_date,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="uploadStatus != null" >
+        upload_status,
+      </if>
+      <if test="sendStatus != null" >
+        send_status,
+      </if>
+      <if test="expressId != null" >
+        express_id,
+      </if>
+      <if test="expressNo != null" >
+        express_no,
+      </if>
+      <if test="archiveStatus != null" >
+        archive_status,
+      </if>
+      <if test="archiveRemarks != null" >
+        archive_remarks,
+      </if>
+      <if test="archiveBy != null" >
+        archive_by,
+      </if>
+      <if test="archiveDate != null" >
+        archive_date,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="shopType != null" >
+        #{shopType,jdbcType=CHAR},
+      </if>
+      <if test="businessFirms != null" >
+        #{businessFirms,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="preProductType != null" >
+        #{preProductType,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="preShopName != null" >
+        #{preShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="preProductTypeId != null" >
+        #{preProductTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeId != null" >
+        #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="preDeposit != null" >
+        #{preDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null" >
+        #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="zsAuditStatus != null" >
+        #{zsAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="zsAuditRemarks != null" >
+        #{zsAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsAuditBy != null" >
+        #{zsAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="zsAuditDate != null" >
+        #{zsAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwAuditStatus != null" >
+        #{fwAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="fwAuditRemarks != null" >
+        #{fwAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwAuditBy != null" >
+        #{fwAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="fwAuditDate != null" >
+        #{fwAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadStatus != null" >
+        #{uploadStatus,jdbcType=CHAR},
+      </if>
+      <if test="sendStatus != null" >
+        #{sendStatus,jdbcType=CHAR},
+      </if>
+      <if test="expressId != null" >
+        #{expressId,jdbcType=INTEGER},
+      </if>
+      <if test="expressNo != null" >
+        #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        #{archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveRemarks != null" >
+        #{archiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveBy != null" >
+        #{archiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="archiveDate != null" >
+        #{archiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.CooperationChangeApplyExample" resultType="java.lang.Integer" >
+    select count(*) from bu_cooperation_change_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_cooperation_change_apply
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopType != null" >
+        shop_type = #{record.shopType,jdbcType=CHAR},
+      </if>
+      <if test="record.businessFirms != null" >
+        business_firms = #{record.businessFirms,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brand != null" >
+        brand = #{record.brand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preProductType != null" >
+        pre_product_type = #{record.preProductType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productType != null" >
+        product_type = #{record.productType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preShopName != null" >
+        pre_shop_name = #{record.preShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preProductTypeId != null" >
+        pre_product_type_id = #{record.preProductTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productTypeId != null" >
+        product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.preDeposit != null" >
+        pre_deposit = #{record.preDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deposit != null" >
+        deposit = #{record.deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.zsAuditStatus != null" >
+        zs_audit_status = #{record.zsAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.zsAuditRemarks != null" >
+        zs_audit_remarks = #{record.zsAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zsAuditBy != null" >
+        zs_audit_by = #{record.zsAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.zsAuditDate != null" >
+        zs_audit_date = #{record.zsAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fwAuditStatus != null" >
+        fw_audit_status = #{record.fwAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.fwAuditRemarks != null" >
+        fw_audit_remarks = #{record.fwAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fwAuditBy != null" >
+        fw_audit_by = #{record.fwAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.fwAuditDate != null" >
+        fw_audit_date = #{record.fwAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uploadStatus != null" >
+        upload_status = #{record.uploadStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.sendStatus != null" >
+        send_status = #{record.sendStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.expressId != null" >
+        express_id = #{record.expressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.expressNo != null" >
+        express_no = #{record.expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.archiveStatus != null" >
+        archive_status = #{record.archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.archiveRemarks != null" >
+        archive_remarks = #{record.archiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.archiveBy != null" >
+        archive_by = #{record.archiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.archiveDate != null" >
+        archive_date = #{record.archiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_cooperation_change_apply
+    set id = #{record.id,jdbcType=INTEGER},
+    mcht_id = #{record.mchtId,jdbcType=INTEGER},
+    shop_type = #{record.shopType,jdbcType=CHAR},
+    business_firms = #{record.businessFirms,jdbcType=VARCHAR},
+    brand = #{record.brand,jdbcType=VARCHAR},
+    pre_product_type = #{record.preProductType,jdbcType=VARCHAR},
+    product_type = #{record.productType,jdbcType=VARCHAR},
+    pre_shop_name = #{record.preShopName,jdbcType=VARCHAR},
+    shop_name = #{record.shopName,jdbcType=VARCHAR},
+    pre_product_type_id = #{record.preProductTypeId,jdbcType=INTEGER},
+    product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+    pre_deposit = #{record.preDeposit,jdbcType=DECIMAL},
+    deposit = #{record.deposit,jdbcType=DECIMAL},
+    zs_audit_status = #{record.zsAuditStatus,jdbcType=CHAR},
+    zs_audit_remarks = #{record.zsAuditRemarks,jdbcType=VARCHAR},
+    zs_audit_by = #{record.zsAuditBy,jdbcType=INTEGER},
+    zs_audit_date = #{record.zsAuditDate,jdbcType=TIMESTAMP},
+    fw_audit_status = #{record.fwAuditStatus,jdbcType=CHAR},
+    fw_audit_remarks = #{record.fwAuditRemarks,jdbcType=VARCHAR},
+    fw_audit_by = #{record.fwAuditBy,jdbcType=INTEGER},
+    fw_audit_date = #{record.fwAuditDate,jdbcType=TIMESTAMP},
+    file_path = #{record.filePath,jdbcType=VARCHAR},
+    upload_status = #{record.uploadStatus,jdbcType=CHAR},
+    send_status = #{record.sendStatus,jdbcType=CHAR},
+    express_id = #{record.expressId,jdbcType=INTEGER},
+    express_no = #{record.expressNo,jdbcType=VARCHAR},
+    archive_status = #{record.archiveStatus,jdbcType=CHAR},
+    archive_remarks = #{record.archiveRemarks,jdbcType=VARCHAR},
+    archive_by = #{record.archiveBy,jdbcType=INTEGER},
+    archive_date = #{record.archiveDate,jdbcType=TIMESTAMP},
+    create_by = #{record.createBy,jdbcType=INTEGER},
+    create_date = #{record.createDate,jdbcType=TIMESTAMP},
+    update_by = #{record.updateBy,jdbcType=INTEGER},
+    update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+    remarks = #{record.remarks,jdbcType=VARCHAR},
+    del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.CooperationChangeApply" >
+    update bu_cooperation_change_apply
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="shopType != null" >
+        shop_type = #{shopType,jdbcType=CHAR},
+      </if>
+      <if test="businessFirms != null" >
+        business_firms = #{businessFirms,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+      <if test="preProductType != null" >
+        pre_product_type = #{preProductType,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=VARCHAR},
+      </if>
+      <if test="preShopName != null" >
+        pre_shop_name = #{preShopName,jdbcType=VARCHAR},
+      </if>
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="preProductTypeId != null" >
+        pre_product_type_id = #{preProductTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeId != null" >
+        product_type_id = #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="preDeposit != null" >
+        pre_deposit = #{preDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null" >
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="zsAuditStatus != null" >
+        zs_audit_status = #{zsAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="zsAuditRemarks != null" >
+        zs_audit_remarks = #{zsAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsAuditBy != null" >
+        zs_audit_by = #{zsAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="zsAuditDate != null" >
+        zs_audit_date = #{zsAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwAuditStatus != null" >
+        fw_audit_status = #{fwAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="fwAuditRemarks != null" >
+        fw_audit_remarks = #{fwAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwAuditBy != null" >
+        fw_audit_by = #{fwAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="fwAuditDate != null" >
+        fw_audit_date = #{fwAuditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadStatus != null" >
+        upload_status = #{uploadStatus,jdbcType=CHAR},
+      </if>
+      <if test="sendStatus != null" >
+        send_status = #{sendStatus,jdbcType=CHAR},
+      </if>
+      <if test="expressId != null" >
+        express_id = #{expressId,jdbcType=INTEGER},
+      </if>
+      <if test="expressNo != null" >
+        express_no = #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        archive_status = #{archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveRemarks != null" >
+        archive_remarks = #{archiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveBy != null" >
+        archive_by = #{archiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="archiveDate != null" >
+        archive_date = #{archiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.CooperationChangeApply" >
+    update bu_cooperation_change_apply
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      shop_type = #{shopType,jdbcType=CHAR},
+      business_firms = #{businessFirms,jdbcType=VARCHAR},
+      brand = #{brand,jdbcType=VARCHAR},
+      pre_product_type = #{preProductType,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=VARCHAR},
+      pre_shop_name = #{preShopName,jdbcType=VARCHAR},
+      shop_name = #{shopName,jdbcType=VARCHAR},
+      pre_product_type_id = #{preProductTypeId,jdbcType=INTEGER},
+      product_type_id = #{productTypeId,jdbcType=INTEGER},
+      pre_deposit = #{preDeposit,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=DECIMAL},
+      zs_audit_status = #{zsAuditStatus,jdbcType=CHAR},
+      zs_audit_remarks = #{zsAuditRemarks,jdbcType=VARCHAR},
+      zs_audit_by = #{zsAuditBy,jdbcType=INTEGER},
+      zs_audit_date = #{zsAuditDate,jdbcType=TIMESTAMP},
+      fw_audit_status = #{fwAuditStatus,jdbcType=CHAR},
+      fw_audit_remarks = #{fwAuditRemarks,jdbcType=VARCHAR},
+      fw_audit_by = #{fwAuditBy,jdbcType=INTEGER},
+      fw_audit_date = #{fwAuditDate,jdbcType=TIMESTAMP},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      upload_status = #{uploadStatus,jdbcType=CHAR},
+      send_status = #{sendStatus,jdbcType=CHAR},
+      express_id = #{expressId,jdbcType=INTEGER},
+      express_no = #{expressNo,jdbcType=VARCHAR},
+      archive_status = #{archiveStatus,jdbcType=CHAR},
+      archive_remarks = #{archiveRemarks,jdbcType=VARCHAR},
+      archive_by = #{archiveBy,jdbcType=INTEGER},
+      archive_date = #{archiveDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,236 @@
+.friend-home header {
+	background: none;
+}
+.friend-home header .ellipsis {
+	display: none;
+}
+.friend-home header.pattern2 {
+	background: #fff;
+}
+.friend-home header.pattern2 .ellipsis {
+	display: block;
+}
+
+.friend-home .main {
+	height: calc(100%);
+	margin-top: -.88rem;
+}
+.friend-home .user {
+	height: 3.68rem;
+	background: url('../images/index-bg.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	overflow: hidden;
+}
+.friend-home .user .head {
+	width: 1.18rem;
+	height: 1.18rem;
+	margin: .88rem auto 0;
+}
+.friend-home .user .head .head-img {
+	width: 1.18rem;
+	height: 1.18rem;
+	border-radius: 100%;
+	border: 1px solid #fff;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+.friend-home .user .head .head-img img {
+	width: 100%;
+	height: 100%;
+}
+.friend-home .user .head .svip {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: .72rem;
+	height: .24rem;
+}
+.friend-home .user .name {
+	height: .34rem;
+	color: #fff;
+	font-size: .36rem;
+}
+.friend-home .user .name .gender {
+	width: .32rem;
+	height: .32rem;
+	margin-left: .10rem;
+}
+.friend-home .user .relevant {
+	height: .22rem;
+	font-size: .22rem;
+	color: #fff;
+}
+.friend-home .user .relevant .fans:before {
+	content: '丨';
+	margin: 0 .15rem;
+}
+
+.friend-home .empty-page {
+	width: 100%;
+	height: calc(100vh - 3.68rem);
+	font-size: .3rem;
+	background: #fff;
+}
+.friend-home .empty-page img {
+	width: 5.2rem;
+	height: auto;
+	margin-bottom: .4rem;
+}
+
+.friend-home .list .li {
+	margin-bottom: .2rem;
+	background: #fff;
+}
+.friend-home .list .li:last-child {
+	margin-bottom: 1.1rem;
+}
+.friend-home .list.no-mb .li:last-child {
+	margin-bottom: 0;
+}
+.friend-home .list .li .head {
+	height: 1.2rem;
+	padding: 0 .3rem;
+}
+.friend-home .list .li .head .img {
+	width: .8rem;
+	height: .8rem;
+	border-radius: 50%;
+}
+.friend-home .list .li .head .name {
+	max-width: 5.5rem;
+	font-size: .28rem;
+	font-weight: bold;
+}
+.friend-home .list .li .head .time-row {
+	font-size: .22rem;
+	margin-top: .15rem;
+}
+.friend-home .list .li .head .source {
+	max-width: 3.1rem;
+	font-size: .24rem;
+}
+.friend-home .list .li .body {
+	font-size: .3rem;
+	word-wrap: break-word;
+	padding: .07rem .3rem .3rem;
+}
+.friend-home .list .li .body .img-box {
+	padding-top: .15rem;
+	overflow: hidden;
+}
+.friend-home .list .li .body .img-box img {
+	width: 2.23rem;
+	height: 2.23rem;
+	float: left;
+	margin-top: .1rem;
+	margin-right: .1rem;
+}
+.friend-home .list .li .body .img-box img:nth-of-type(3n) {
+	margin-right: 0;
+}
+.friend-home .list .li .tail {
+	height: .8rem;
+	font-size: .28rem;
+	border-top: 1px solid #eee;
+}
+.friend-home .list .li .tail>div {
+	width: 50%;
+}
+.friend-home .list .li .tail .share {
+	height: 100%;
+	border-right: 1px solid #eee;
+}
+.friend-home .list .li .tail .share:before {
+	content: '';
+	width: .28rem;
+	height: .28rem;
+	margin-right: .1rem;
+	background: url('../images/share.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.friend-home .list .li .tail .fabulous:before {
+	content: '';
+	width: .27rem;
+	height: .3rem;
+	margin-right: .1rem;
+	background: url('../images/fabulous.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.friend-home .list .li .tail .fabulous.fabulous-1 {
+	color: #ff5050;
+}
+.friend-home .list .li .tail .fabulous.fabulous-1:before {
+	color: #ff5050;
+}
+.friend-home .list .li .tail .fabulous.fabulous-1:before {
+	content: '';
+	width: .27rem;
+	height: .3rem;
+	margin-right: .1rem;
+	background: url('../images/fabulous-1.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+
+
+.friend-home .follow-bt {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 9;
+	width: 100%;
+	height: .9rem;
+	font-size: .34rem;
+	color: #999;
+	background: #fff;
+}
+.friend-home .follow {
+	color: #ff5050;
+}
+.friend-home .follow:before {
+	content: '';
+	width: .21rem;
+	height: .21rem;
+	margin-right: .1rem;
+	background: url('https://m.xgbuy.cc/webApp/applet/image/activity/novaPlan/friend/follow-1.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.friend-home .follow:after {
+	content: '关注'
+}
+.friend-home .follow-2,
+.friend-home .follow-3 {
+	color: #333;
+}
+.friend-home .follow.follow-2:before {
+	content: '';
+	width: .25rem;
+	height: .17rem;
+	margin-right: .1rem;
+	background: url('https://m.xgbuy.cc/webApp/applet/image/activity/novaPlan/friend/follow-2.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.friend-home .follow.follow-2:after {
+	content: '已关注'
+}
+.friend-home .follow.follow-3:before {
+	content: '';
+	width: .28rem;
+	height: .23rem;
+	margin-right: .1rem;
+	background: url('https://m.xgbuy.cc/webApp/applet/image/activity/novaPlan/friend/follow-3.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+}
+.friend-home .follow.follow-3:after {
+	content: '互相关注'
+}
+
+.friend-home .ico-back-top {
+	bottom: 2.5rem;
+}

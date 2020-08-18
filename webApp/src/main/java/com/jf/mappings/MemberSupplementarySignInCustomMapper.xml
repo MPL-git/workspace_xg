@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberSupplementarySignInCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberSupplementarySignInCustom" extends="com.jf.dao.MemberSupplementarySignInMapper.BaseResultMap" >
+
+  </resultMap>
+  
+  <!-- 获取每月的签到设置 -->
+  <select id="getMySupplementarySignTaskList" parameterType="map" resultType="com.jf.entity.MemberSupplementarySignInCustom">
+  		select 
+		t.*,
+		(select ssis.invitation_count from bu_supplementary_sign_in_setting ssis where ssis.id = t.supplementary_sign_in_setting_id and ssis.del_flag = '0') as settingInvitationCount,
+		(select ssis.supplementary_card_count from bu_supplementary_sign_in_setting ssis where ssis.id = t.supplementary_sign_in_setting_id and ssis.del_flag = '0') as supplementaryCardCount
+		from bu_member_supplementary_sign_in t
+		where t.del_flag = '0'
+		and t.member_id = #{memberId}
+		order by t.status,id desc
+		 <if test="currentPage != null and currentPage>=0" >
+     	 limit #{currentPage} , #{pageSize}
+   		</if>
+  </select>
+  
+</mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CutPriceOrderDtlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CutPriceOrderDtlCustom" extends="com.jf.dao.CutPriceOrderDtlMapper.BaseResultMap">
+  
+  </resultMap>
+  
+  <select id="getMemberInviteOrder" parameterType="map" resultType="CutPriceOrderDtl">
+  		select dtl.*
+		from bu_cut_price_order co, bu_cut_price_order_dtl dtl
+		where co.id = dtl.cut_price_order_id
+		and co.del_flag = '0'
+		and dtl.del_flag = '0'
+	    and co.activity_type = #{activityType}
+	    and dtl.`status` = '0'
+	    and dtl.member_id = #{memberId}
+		order by dtl.id desc
+		limit 1
+  	</select>
+  	
+  	
+  	 <!-- 邀请享免单 助力成功更新状态 -->
+  <update id="updateInviteOrderHelpSuccess" parameterType="int">
+  		UPDATE
+		  bu_cut_price_order_dtl t
+		SET
+			t.`status` = '1',
+			t.update_by = #{updateBy},
+			t.update_date = now()
+		WHERE
+			t.`status` = '0'
+			and t.id = #{id}
+			AND t.del_flag = '0'
+  </update>
+</mapper>

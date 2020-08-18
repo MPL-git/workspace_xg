@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ImpeachMemberCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ImpeachMemberCustom" extends="com.jf.dao.ImpeachMemberMapper.BaseResultMap">
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="kf_staff_name" property="kfStaffName" jdbcType="VARCHAR" />
+    <result column="fawu_staff_name" property="fawuStaffName" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="type_desc" property="typeDesc" jdbcType="VARCHAR" />
+    <result column="scene_desc1" property="scenedesc1" jdbcType="VARCHAR" />
+    <result column="scene_desc2" property="scenedesc2" jdbcType="VARCHAR" />
+    <result column="scene_desc3" property="scenedesc3" jdbcType="VARCHAR" />
+    <result column="caseclose_desc" property="casecloseDesc" jdbcType="VARCHAR" />
+    <result column="rejectreason_desc" property="rejectreasonDesc" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, member_ids, mcht_id, code, status, type, scene, sub_order_ids, description, name, 
+    mobile, need_limit, limit_member_action,receiver_date,reject_reason, case_close_desc, 
+    commissioner_inner_remarks, commissioner_audit_by, commissioner_audit_date, fw_inner_remarks, 
+    fw_reject_reason, fw_audit_by, fw_audit_date, end_inner_remarks, end_reject_reason, 
+    end_audit_by, end_audit_date, last_edit_date, source, create_by, create_date, update_by, 
+    update_date, remarks, del_flag,
+    (select m.company_name from bu_mcht_info m where m.id=imm.mcht_id and m.del_flag='0')company_name,
+    (select m.mcht_code from bu_mcht_info m where m.id=imm.mcht_id and m.del_flag='0')mcht_code,
+    (select s.STAFF_NAME from sys_staff_info s where s.STAFF_ID=imm.commissioner_audit_by and s.STATUS='A')kf_staff_name,
+    (select s.STAFF_NAME from sys_staff_info s where s.STAFF_ID=imm.fw_audit_by and s.STATUS='A')fawu_staff_name,
+    FUN_GET_STATUS_DESC("BU_IMPEACH_MEMBER", "TYPE", imm.type)type_desc,
+    FUN_GET_STATUS_DESC("BU_IMPEACH_MEMBER", "SCENE1", imm.scene)scene_desc1,
+    FUN_GET_STATUS_DESC("BU_IMPEACH_MEMBER", "SCENE2", imm.scene)scene_desc2,
+    FUN_GET_STATUS_DESC("BU_IMPEACH_MEMBER", "SCENE3", imm.scene)scene_desc3,
+    FUN_GET_STATUS_DESC("BU_IMPEACH_MEMBER", "CASE_CLOSE_DESC", imm.case_close_desc)caseclose_desc,
+    FUN_GET_STATUS_DESC("BU_IMPEACH_MEMBER", "REJECT_REASON", imm.reject_reason)rejectreason_desc,
+    (select s.STAFF_NAME from sys_staff_info s where s.STAFF_ID=imm.create_by and s.STATUS='A')staff_name
+  </sql>
+  <select id="selectByImpeachMemberCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ImpeachMemberCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_impeach_member imm
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="selectByImpeachMemberCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_impeach_member imm
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="countByImpeachMemberCustomExample" parameterType="com.jf.entity.ImpeachMemberCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_impeach_member imm
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <!-- 获取初审人-->
+  <select id="getCommissionerauditbyList" resultType="java.util.Map">
+  	SELECT DISTINCT
+		imm.commissioner_audit_by,
+		(
+			SELECT
+				s.staff_name
+			FROM
+				sys_staff_info s
+			WHERE
+				s.staff_id = imm.commissioner_audit_by
+		) staff_name
+	FROM
+		bu_impeach_member imm
+	WHERE
+		imm.del_flag = '0'
+	AND imm.commissioner_audit_date IS NOT NULL
+	AND imm.commissioner_audit_by IS NOT NULL
+  </select>
+  
+  
+  <!-- 获取复审人-->
+  <select id="getFwauditbyList" resultType="java.util.Map">
+  	SELECT DISTINCT
+		imm.fw_audit_by,
+		(
+			SELECT
+				s.staff_name
+			FROM
+				sys_staff_info s
+			WHERE
+				s.staff_id = imm.fw_audit_by
+		) staff_name
+	FROM
+		bu_impeach_member imm
+	WHERE
+		imm.del_flag = '0'
+	AND imm.fw_audit_by IS NOT NULL
+  </select>
+  
+  <!-- 获取领取人-->
+  <select id="getReceiverbyList" resultType="java.util.Map">
+  	SELECT DISTINCT
+		imm.commissioner_audit_by,
+		(
+			SELECT
+				s.staff_name
+			FROM
+				sys_staff_info s
+			WHERE
+				s.staff_id = imm.commissioner_audit_by
+		) staff_name
+	FROM
+		bu_impeach_member imm
+	WHERE
+		imm.del_flag = '0'
+	AND imm.receiver_date IS NOT NULL
+	AND imm.commissioner_audit_by IS NOT NULL
+  </select>
+    
+</mapper>

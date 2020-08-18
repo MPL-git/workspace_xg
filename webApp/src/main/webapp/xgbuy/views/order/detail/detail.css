@@ -1,0 +1,224 @@
+.order-detail {
+	font-size: .3rem;
+}
+.order-detail .row {
+	margin-top: .2rem;
+	background: #fff;
+}
+.order-detail .row:first-child {
+	margin: 0;
+}
+.order-detail .row:last-child {
+	margin-bottom: .2rem;
+}
+.order-detail .padd {
+	padding: .25rem .2rem;
+}
+
+.order-detail .row-1 .con-1 {
+	line-height: .58rem;
+	padding: .25rem .2rem;
+	border-bottom: 1px solid #ddd;
+}
+.order-detail .row-1 .con-1 span {
+	color: #999;
+}
+
+.order-detail .row-1 .con-3 dl {
+	padding: 0 .2rem;
+}
+.order-detail .row-1 dt {
+	width: .58rem;
+}
+.order-detail .row-1 .con-3 dd {
+	padding: .25rem 0;
+}
+.order-detail .row-1 .con-3 .bb {
+	border-bottom: 1px solid #ddd;
+}
+.order-detail .row-1 .con-3 .t1 p {
+	line-height: .44rem;
+	margin-bottom: .06rem;
+	color: #34b39d;
+}
+.order-detail .row-1 .con-3 .t1 span {
+	line-height: .3rem;
+	font-size: .24rem;
+	color: #999;
+}
+.order-detail .row-1 .con-3 h3 {
+	line-height: .34rem;
+	margin-bottom: .16rem;
+}
+.order-detail .row-1 .con-3 .t2 p {
+	min-height: .36rem;
+	line-height: .36rem;
+	margin-top: .06rem;
+	font-size: .28rem;
+	color: #666;
+}
+.order-detail .row-1 .con-3 .t2 span {
+	margin-right: .4rem;
+}
+.order-detail .row-1 .con-3 .istics {
+	background: url(resources/istics.png) no-repeat left center;
+	background-size: .38rem .34rem;
+}
+.order-detail .row-1 .con-3 .addr {
+	background: url(resources/addr.png) no-repeat left center;
+	background-size: .3rem .4rem;
+}
+.order-detail .row-1 .con-3 .ico-remark {
+	background: url(resources/remark.png) no-repeat left center;
+	background-size: .34rem .33rem;
+}
+.order-detail .row-1 .con-3:after {
+	display: block;
+	content: '';
+	height: .08rem;
+	background: url(resources/con-2.jpg) no-repeat;
+	background-size: contain;
+}
+.order-detail .row-1 .con-3 .scroll-y {
+	max-height: 2rem;
+}
+
+.order-detail .row-1 .con-2 {
+	border-bottom: 1px solid #ddd;
+}
+.order-detail .row-1 .con-2 dl {
+	line-height: .4rem;
+	font-size: .3rem;
+	font-weight: bold;
+}
+.order-detail .row-1 .con-2 em {
+	color: #ff5050;
+}
+.order-detail .row-1 .con-2 .warn {
+	background: url(resources/warn.png) no-repeat left center;
+	background-size: .38rem .38rem;
+}
+
+.order-detail .a-evalua {
+	/* width: .8rem; */
+	height: .4rem;
+	padding: .09rem .13rem;
+	margin-left: .2rem;
+	border: 1px solid #bbb;
+	border-radius: .04rem;
+	font-size: .22rem;
+}
+
+.order-detail .row-3 div {
+	margin-top: .1rem;
+	line-height: .48rem;
+}
+.order-detail .row-3 div:first-child {
+	margin: 0;
+}
+.order-detail .row-3 label {
+	margin-right: .05rem;
+	color: #999;
+}
+
+.order-detail .row-4 {
+	height: .8rem;
+	font-size: .28rem;
+}
+.order-detail .row-4 mark {
+	width: .6rem;
+	height: .36rem;
+	border: 1px solid #ff5050;
+	color: #ff5050;
+	border-radius: .02rem;
+	margin-right: .1rem;
+	font-size: .22rem;
+	background: #fff0f0;
+}
+
+.order-detail .row-5 span {
+	color: #999;
+}
+.order-detail .row-5 .btn-666 {
+	margin-top: .1rem;
+	padding: .08rem .24rem;
+	font-size: .22rem;
+}
+
+.order-detail .btn-copy {
+	width: .9rem;
+	height: .4rem;
+	padding: 0 .2rem;
+	border: 1px solid #bbb;
+	border-radius: .04rem;
+	font-size: .22rem;
+	line-height: .22rem;
+}
+
+.order-detail .content {
+	height: calc(100% - .88rem);
+}
+.sys-app .order-detail .content {
+	height: 100%;
+}
+
+.order-detail .footer {
+	height: .9rem;
+	background: #fff;
+	border-top: 1px solid #eee;
+}
+.order-detail .footer a {
+	min-width: 1.4rem;
+	height: .48rem;
+	font-size: .24rem;
+	margin-right: .2rem;
+	border: 1px solid #bbb;
+	border-radius: .04rem;
+}
+.order-detail .footer a.order-detail-timer {
+	border: none;
+}
+
+.order-detail .con-goods .dl:not(:first-child) {
+	border-top: 1px solid #eee;
+}
+.order-detail .con-goods dl {
+	border: none;
+}
+
+/*无售后功能提醒*/
+.order-detail .no-after-sale {
+	display: none;
+	height: .6rem;
+	font-size: .24rem;
+	padding-left: .2rem;
+	background: #fff6b8;
+}
+.show-after-sale.order-detail .no-after-sale {
+	display: -webkit-flex;
+	display: flex;
+}
+
+/*预售定金*/
+.order-detail .dep-self {
+	height: .8rem;
+	padding: 0 .2rem;
+	border-top: 1px solid #eee;
+}
+.order-detail .dep-self span {
+	color: #333;
+	font-size: .28rem;
+	margin-left: .1rem;
+}
+.order-detail .change-address-btn {
+	width: 1.18rem;
+	height: .38rem;
+	border: 1px solid #BBBBBB;
+	border-radius: .04rem;
+	line-height: .38rem;
+	text-align: center;
+	font-size: .22rem;
+	font-weight: 500;
+	margin: auto;
+	margin-right: 0;
+}

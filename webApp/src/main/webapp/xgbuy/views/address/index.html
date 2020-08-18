@@ -1,0 +1,86 @@
+<div class="page address flex dc" data-title="收货地址" data-id="address">
+	<link rel="stylesheet" href="address/index.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="addressApi.back()"></i></div>
+		<p class="ellipsis">收货地址</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg flex dc">
+		<ul class="fg scroll-y scroll-more"></ul>
+
+		<div class="footer fn flex ac jc fn">
+			<a onclick="getUrl('address/edit/index.html', 'self')" class="flex ac jc btn-red">+ 新增地址</a>
+		</div>
+	</div>
+
+	<script id="address_tpl" type="text/html">
+		{{if returnData.length}}
+			{{each returnData value i}}
+			<li>
+				<div class="con-1">
+					<h3>
+						<span>{{value.recipient}}</span>
+						<b>{{value.phone}}</b>
+					</h3>
+					<p>
+						{{value.provinceName}}
+						{{value.cityName}}
+						{{value.countyName}}
+						{{value.address}}
+					</p>
+				</div>
+
+				<div class="con-2 flex ac jb" data-id="{{value.id}}">
+					<div class="flex ac">
+						{{if value.isPrimary == "Y"}}
+						<i class="ico-btn tick ticked" onclick="addressApi.default(this)">
+						{{else}}
+						<i class="ico-btn tick" onclick="addressApi.default(this)">
+						{{/if}}
+						</i>
+						设为默认
+					</div>
+
+					<div class="flex">
+						<span class="flex ac"
+							onclick="addressApi.update(this)"
+							data-id="{{value.id}}"
+							data-phone="{{value.phone}}"
+							data-recipient="{{value.recipient}}"
+							data-address="{{value.address}}"
+
+							data-nprovince="{{value.provinceName}}"
+							data-ncity="{{value.cityName}}"
+							data-ncounty="{{value.countyName}}"
+
+							data-province="{{value.province}}"
+							data-city="{{value.city}}"
+							data-county="{{value.county}}"
+							>
+							<i class="edit ico"></i>
+							编辑
+						</span>
+						<span class="flex ac" onclick="addressApi.deleted(this)">
+							<i class="delete sp1 ico"></i>
+							删除
+						</span>
+					</div>
+				</div>
+			</li>
+			{{/each}}
+		{{else}}
+		{{include 'address_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="address_tpl_empty" type="text/html">
+		<div class="page-empty empty-address flex dc ac jc fg">
+			<i></i>
+			<p>当前还没有收获地址哦</p>
+		</div>
+	</script>
+
+	<script src="address/index.js?var=1.0" async></script>
+</div>

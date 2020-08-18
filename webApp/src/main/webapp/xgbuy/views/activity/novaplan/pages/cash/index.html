@@ -1,0 +1,133 @@
+<div class="page novaplan-cash row-1 flex dc" data-title="提现" data-id="activity_novaplan_cash">
+	<link rel="stylesheet" href="activity/novaplan/pages/cash/cash.css?var=1.0">
+	
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">提现</p>
+		<div class="fn">
+			<a onclick="getUrl('activity/novaplan/pages/cash/record/index.html', 'self');">明细记录</a>
+		</div>
+	</header>
+
+	<div class="popup popup-clear" onclick="novaplanCashApi.closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">请您仔细确认提现信息</div>
+			<div class="tab-by">
+				<div class="flex ptb20">
+					提现金额: ￥<span class="money"></span>（含手续费￥1）
+				</div>
+				<div class="flex ptb20">
+					账户名: <span class="name"></span>
+				</div>
+				<div class="flex ptb20">
+					银行卡号: <span class="bank-num"></span>
+				</div>
+				<div class="flex ptb20">
+					银行名称: <span class="bankName"></span>
+				</div>
+				<div class="flex ptb20">
+					省市: <span class="home"></span>
+				</div>
+				<div class="flex ptb20">
+					<span class="flex w150">开户行:</span> <span class="address"></span>
+				</div>
+			</div>
+			<div class="flex clear-btn ac jc">
+				<a class="flex ac jc c9 bdrg" onclick="novaplanCashApi.closeSelf(this)">取消</a>
+				<a class="flex ac jc f50" onclick="novaplanCashApi.complet()">确定</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="scroll-y fg scroll-more">
+		<div class="touchfix">
+			<div class="row-1"></div>
+
+			<div class="row-2 flex jb fw">
+				<div class="h150 flex ac jc">
+					<span class="flex ac">提现金额:</span>
+					<div class="input-box"></div>
+				</div>
+				<div class="h150 flex ac jc">
+					<span class="flex ac">账户名:</span> <input name="name-text" type="text" placeholder="请输入姓名">
+				</div>
+				<div class="h150 flex ac jc">
+					<span class="flex ac">银行卡号:</span> <input name="bank-text" oninput="if(value.length>19) value=value.slice(0,19)" type="number" placeholder="请输入收款银行卡号">
+				</div>
+				<div class="h150 flex ac jc">
+					<span class="flex ac">银行名称:</span> 
+					<select class="bank-name" name="bank" list="Bankcars" required onchange="novaplanCashApi.getBankName(this)" placeholder="请输入银行名称"></select>
+				</div>
+				<div class="h150 flex ac jc">
+					<span class="flex ac">省市:</span>
+					<div class="select flex ac jc">
+						<select class="province" name="province" required autocomplete="off" onchange="novaplanCashApi.getProvince(this)"></select>
+						<select class="city" name="province" required autocomplete="off" onchange="novaplanCashApi.getCity(this)"></select>
+					</div>
+				</div>
+				<div class="h150 flex ac jc">
+					<span class="flex ac">开户行:</span>
+					<select class="bank" name="bank" required autocomplete="off" onchange="novaplanCashApi.getBank(this)"></select>
+				</div>
+
+				<button class="btn-f50" onclick="novaplanCashApi.draw()">确认提现</button>
+			</div>
+
+		</div>
+	</div>
+
+	<script id="novaplan_cash_input_tpl" type="text/html">
+		<input name="money-text" placeholder="{{remarks}}" type="number"  onkeyup="novaplanCashApi.num(this)"/>
+	</script>
+
+	<script id="novaplan_cash_tpl" type="text/html">
+		<div class="col-2">
+			<dl class="flex">
+				<dt class="fn img-cover">
+					<img src="{{memberPic}}">
+				</dt>
+				<dd class="fg flex dc jc">
+					<h3 class="elps">{{nick}}</h3>
+					<p>
+						<span class="c9">现金余额：</span>
+						<em class="f50">{{profitInviteBalance}}元</em>
+					</p>
+				</dd>
+			</dl>
+		</div>
+	</script>
+	
+	<script id="novaplan_cash_row2_tpl" type="text/html">
+		{{if returnData}}
+			<option value="">请选择</option>
+			{{each returnData value i}}
+			<option id="{{value.areaId}}">{{value.areaName}}</option>
+			{{/each}}
+		{{/if}}
+	</script>
+	
+	<script id="novaplan_cash_bank_name_tpl" type="text/html">
+		{{if bankList}}
+		<datalist id="Bankcars">
+			<option value="">请选择</option>
+			{{each bankList value i}}
+			<option value="{{value.name}}" onclick="novaplanCashApi.change(this)">{{value.name}}</option>
+			{{/each}}
+		</datalist>
+		{{/if}}
+	</script>
+
+	<script id="novaplan_cash_bank_tpl" type="text/html">
+		{{if returnData}}
+			<option value="">请选择</option>
+			{{each returnData value i}}
+			<option id="{{value.id}}">{{value.name}}</option>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="novaplan_cash_row3_tpl" type="text/html">
+		<option value="">请选择</option>
+	</script>
+	<script src="activity/novaplan/pages/cash/cash.js?var=1.1"></script>
+</div>

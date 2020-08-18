@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.WorkHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.WorkHistory" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="work_id" property="workId" jdbcType="INTEGER" />
+    <result column="org_id" property="orgId" jdbcType="INTEGER" />
+    <result column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="work_type" property="workType" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="status_behavior" property="statusBehavior" jdbcType="CHAR" />
+    <result column="urgent_degree" property="urgentDegree" jdbcType="CHAR" />
+    <result column="close_reason" property="closeReason" jdbcType="CHAR" />
+    <result column="title_content" property="titleContent" jdbcType="VARCHAR" />
+    <result column="relevant_type" property="relevantType" jdbcType="CHAR" />
+    <result column="relevant_code" property="relevantCode" jdbcType="VARCHAR" />
+    <result column="relevant_id" property="relevantId" jdbcType="INTEGER" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.jf.entity.WorkHistory" extends="BaseResultMap" >
+    <result column="describe_content" property="describeContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, work_id, org_id, staff_id, work_type, status, status_behavior, urgent_degree, 
+    close_reason, title_content, relevant_type, relevant_code, relevant_id, create_by, 
+    create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <sql id="Blob_Column_List" >
+    describe_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.jf.entity.WorkHistoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bu_work_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.WorkHistoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_work_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from bu_work_history
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_work_history
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.WorkHistoryExample" >
+    delete from bu_work_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.WorkHistory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_work_history (work_id, org_id, staff_id, 
+      work_type, status, status_behavior, 
+      urgent_degree, close_reason, title_content, 
+      relevant_type, relevant_code, relevant_id, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag, 
+      describe_content)
+    values (#{workId,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, 
+      #{workType,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{statusBehavior,jdbcType=CHAR}, 
+      #{urgentDegree,jdbcType=CHAR}, #{closeReason,jdbcType=CHAR}, #{titleContent,jdbcType=VARCHAR}, 
+      #{relevantType,jdbcType=CHAR}, #{relevantCode,jdbcType=VARCHAR}, #{relevantId,jdbcType=INTEGER}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}, 
+      #{describeContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.WorkHistory" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_work_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="workId != null" >
+        work_id,
+      </if>
+      <if test="orgId != null" >
+        org_id,
+      </if>
+      <if test="staffId != null" >
+        staff_id,
+      </if>
+      <if test="workType != null" >
+        work_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="statusBehavior != null" >
+        status_behavior,
+      </if>
+      <if test="urgentDegree != null" >
+        urgent_degree,
+      </if>
+      <if test="closeReason != null" >
+        close_reason,
+      </if>
+      <if test="titleContent != null" >
+        title_content,
+      </if>
+      <if test="relevantType != null" >
+        relevant_type,
+      </if>
+      <if test="relevantCode != null" >
+        relevant_code,
+      </if>
+      <if test="relevantId != null" >
+        relevant_id,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="describeContent != null" >
+        describe_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="workId != null" >
+        #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null" >
+        #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="workType != null" >
+        #{workType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="statusBehavior != null" >
+        #{statusBehavior,jdbcType=CHAR},
+      </if>
+      <if test="urgentDegree != null" >
+        #{urgentDegree,jdbcType=CHAR},
+      </if>
+      <if test="closeReason != null" >
+        #{closeReason,jdbcType=CHAR},
+      </if>
+      <if test="titleContent != null" >
+        #{titleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="relevantType != null" >
+        #{relevantType,jdbcType=CHAR},
+      </if>
+      <if test="relevantCode != null" >
+        #{relevantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="relevantId != null" >
+        #{relevantId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="describeContent != null" >
+        #{describeContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.WorkHistoryExample" resultType="java.lang.Integer" >
+    select count(*) from bu_work_history
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_work_history
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.workId != null" >
+        work_id = #{record.workId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orgId != null" >
+        org_id = #{record.orgId,jdbcType=INTEGER},
+      </if>
+      <if test="record.staffId != null" >
+        staff_id = #{record.staffId,jdbcType=INTEGER},
+      </if>
+      <if test="record.workType != null" >
+        work_type = #{record.workType,jdbcType=CHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.statusBehavior != null" >
+        status_behavior = #{record.statusBehavior,jdbcType=CHAR},
+      </if>
+      <if test="record.urgentDegree != null" >
+        urgent_degree = #{record.urgentDegree,jdbcType=CHAR},
+      </if>
+      <if test="record.closeReason != null" >
+        close_reason = #{record.closeReason,jdbcType=CHAR},
+      </if>
+      <if test="record.titleContent != null" >
+        title_content = #{record.titleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relevantType != null" >
+        relevant_type = #{record.relevantType,jdbcType=CHAR},
+      </if>
+      <if test="record.relevantCode != null" >
+        relevant_code = #{record.relevantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relevantId != null" >
+        relevant_id = #{record.relevantId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+      <if test="record.describeContent != null" >
+        describe_content = #{record.describeContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update bu_work_history
+    set id = #{record.id,jdbcType=INTEGER},
+      work_id = #{record.workId,jdbcType=INTEGER},
+      org_id = #{record.orgId,jdbcType=INTEGER},
+      staff_id = #{record.staffId,jdbcType=INTEGER},
+      work_type = #{record.workType,jdbcType=CHAR},
+      status = #{record.status,jdbcType=CHAR},
+      status_behavior = #{record.statusBehavior,jdbcType=CHAR},
+      urgent_degree = #{record.urgentDegree,jdbcType=CHAR},
+      close_reason = #{record.closeReason,jdbcType=CHAR},
+      title_content = #{record.titleContent,jdbcType=VARCHAR},
+      relevant_type = #{record.relevantType,jdbcType=CHAR},
+      relevant_code = #{record.relevantCode,jdbcType=VARCHAR},
+      relevant_id = #{record.relevantId,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR},
+      describe_content = #{record.describeContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_work_history
+    set id = #{record.id,jdbcType=INTEGER},
+      work_id = #{record.workId,jdbcType=INTEGER},
+      org_id = #{record.orgId,jdbcType=INTEGER},
+      staff_id = #{record.staffId,jdbcType=INTEGER},
+      work_type = #{record.workType,jdbcType=CHAR},
+      status = #{record.status,jdbcType=CHAR},
+      status_behavior = #{record.statusBehavior,jdbcType=CHAR},
+      urgent_degree = #{record.urgentDegree,jdbcType=CHAR},
+      close_reason = #{record.closeReason,jdbcType=CHAR},
+      title_content = #{record.titleContent,jdbcType=VARCHAR},
+      relevant_type = #{record.relevantType,jdbcType=CHAR},
+      relevant_code = #{record.relevantCode,jdbcType=VARCHAR},
+      relevant_id = #{record.relevantId,jdbcType=INTEGER},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.WorkHistory" >
+    update bu_work_history
+    <set >
+      <if test="workId != null" >
+        work_id = #{workId,jdbcType=INTEGER},
+      </if>
+      <if test="orgId != null" >
+        org_id = #{orgId,jdbcType=INTEGER},
+      </if>
+      <if test="staffId != null" >
+        staff_id = #{staffId,jdbcType=INTEGER},
+      </if>
+      <if test="workType != null" >
+        work_type = #{workType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="statusBehavior != null" >
+        status_behavior = #{statusBehavior,jdbcType=CHAR},
+      </if>
+      <if test="urgentDegree != null" >
+        urgent_degree = #{urgentDegree,jdbcType=CHAR},
+      </if>
+      <if test="closeReason != null" >
+        close_reason = #{closeReason,jdbcType=CHAR},
+      </if>
+      <if test="titleContent != null" >
+        title_content = #{titleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="relevantType != null" >
+        relevant_type = #{relevantType,jdbcType=CHAR},
+      </if>
+      <if test="relevantCode != null" >
+        relevant_code = #{relevantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="relevantId != null" >
+        relevant_id = #{relevantId,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+      <if test="describeContent != null" >
+        describe_content = #{describeContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jf.entity.WorkHistory" >
+    update bu_work_history
+    set work_id = #{workId,jdbcType=INTEGER},
+      org_id = #{orgId,jdbcType=INTEGER},
+      staff_id = #{staffId,jdbcType=INTEGER},
+      work_type = #{workType,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      status_behavior = #{statusBehavior,jdbcType=CHAR},
+      urgent_degree = #{urgentDegree,jdbcType=CHAR},
+      close_reason = #{closeReason,jdbcType=CHAR},
+      title_content = #{titleContent,jdbcType=VARCHAR},
+      relevant_type = #{relevantType,jdbcType=CHAR},
+      relevant_code = #{relevantCode,jdbcType=VARCHAR},
+      relevant_id = #{relevantId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR},
+      describe_content = #{describeContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.WorkHistory" >
+    update bu_work_history
+    set work_id = #{workId,jdbcType=INTEGER},
+      org_id = #{orgId,jdbcType=INTEGER},
+      staff_id = #{staffId,jdbcType=INTEGER},
+      work_type = #{workType,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      status_behavior = #{statusBehavior,jdbcType=CHAR},
+      urgent_degree = #{urgentDegree,jdbcType=CHAR},
+      close_reason = #{closeReason,jdbcType=CHAR},
+      title_content = #{titleContent,jdbcType=VARCHAR},
+      relevant_type = #{relevantType,jdbcType=CHAR},
+      relevant_code = #{relevantCode,jdbcType=VARCHAR},
+      relevant_id = #{relevantId,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ApprovalApplicationNodeCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ApprovalApplicationNodeCustom"  extends="com.jf.dao.ApprovalApplicationNodeMapper.BaseResultMap">
+    <result column="application_commit_date" property="applicationCommitDate" jdbcType="TIMESTAMP" />
+ 	  <result column="procedure_name" property="procedureName" jdbcType="VARCHAR" />
+ 	  <result column="application_name" property="applicationName" jdbcType="VARCHAR" />
+ 	  <result column="create_name" property="createName" jdbcType="VARCHAR" />
+ 	  <result column="department" property="department" jdbcType="VARCHAR" />
+ 	  <result column="node_approver_status" property="nodeApproverStatus" jdbcType="VARCHAR" />
+ 	  <result column="max_seq_no" property="maxSeqNo" jdbcType="INTEGER" />
+ 	  <result column="aai" property="aai" jdbcType="INTEGER" />
+ 	  <result column="max_seq" property="maxSeq" jdbcType="INTEGER" />
+ 	  
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+   id, approval_application_id, name, type, approver_type, approvers, seq_no, need_approval, 
+    approval_status, approval_remarks, steps, create_by, create_date, update_by, update_date, 
+    remarks, del_flag,
+    (select max(seq_no) from bu_approval_application_node t1 where t1.approval_application_id = aan.approval_application_id) maxSeq
+  </sql>
+ 
+  <select id="selectCustomByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ApprovalApplicationNodeCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_approval_application_node aan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+   <select id="selectCustomByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+     from bu_approval_application_node aan
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  <select id="countCustomByExample" parameterType="com.jf.entity.ApprovalApplicationNodeCustomExample" resultType="java.lang.Integer" >
+    select count(*)  from bu_approval_application_node aan
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  
+  <select id="findToExamineCustom" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+		select 
+		  id, approval_application_id, name, type, approver_type, approvers, seq_no, need_approval, 
+   	 	approval_status, approval_remarks, steps, create_by, create_date, update_by, update_date, 
+   		 remarks, del_flag,
+		(select aa.commit_date from  bu_approval_application aa where aan.approval_application_id = aa.id  and aa.del_flag = "0" ) application_commit_date,
+		(select p.name from bu_approval_application aa , bu_procedure p where  aa.id = aan.approval_application_id and aa.procedure_id = p.id) procedure_name,
+		(select aa.name from  bu_approval_application aa where  aan.approval_application_id = aa.id ) application_name,
+		(select si.STAFF_NAME from sys_staff_info si where si.STAFF_ID = aan.create_by)create_name,
+		(select so.ORG_NAME from sys_staff_info si , sys_organization so where si.STAFF_ID = aan.create_by and si.ORG_ID = so.ORG_ID )department,
+		(select na.status from bu_node_approver na where na.del_flag ='0' and na.node_id  = aan.id and  na.approver=#{staffId}) node_approver_status
+		from bu_approval_application_node aan
+		where aan.del_flag ='0' and aan.need_approval = '1'
+		and FIND_IN_SET(#{staffId},aan.approvers)
+		and aan.approval_application_id  in (select aa.id from bu_approval_application aa where aa.status not in ('0') )
+		<if test="applicationName != null and applicationName!= ''">
+			and aan.approval_application_id in  (select aa.id  from bu_approval_application aa  where  aan.approval_application_id = aa.id and aa.name like CONCAT('%',#{applicationName},'%'))
+		</if>
+		<if test="createBy!=null and createBy!= ''">
+			and aan.create_by in (select si.STAFF_ID from sys_staff_info si where si.STAFF_Id = aan.create_by and si.STAFF_NAME like CONCAT('%',#{createBy},'%'))
+		</if>
+		<if test="status !=null and status != ''">
+			and  aan.id in (select na.node_id from bu_node_approver na where na.node_id = aan.id and na.approver = #{staffId}  and na.status= #{status}  and na.del_flag='0')
+		</if>
+	
+		<if test="orderBy != '' and orderBy != null">
+			${orderBy }
+		</if>
+		<if test="pageLimit != '' and pageLimit != null">
+			${pageLimit }
+		</if>	
+	</select>
+	
+	
+	  <select id="countToExamineCustom" parameterType="java.util.HashMap" resultType="int">
+		select 
+		count(1) countNum
+		from bu_approval_application_node aan
+		where aan.del_flag ='0' and aan.need_approval = '1' and FIND_IN_SET(#{staffId},aan.approvers)
+
+		<if test="applicationName!=null and applicationName!= ''">
+			and aan.approval_application_id in  (select aa.id  from bu_approval_application aa  where  aan.approval_application_id = aa.id and aa.name like CONCAT('%',#{applicationName},'%'))
+		</if>
+		<if test="createBy!=null and createBy!= ''">
+			and aan.create_by in (select si.STAFF_ID from sys_staff_info si where si.STAFF_Id = aan.create_by and si.STAFF_NAME like CONCAT('%',#{createBy},'%'))
+		</if>
+		<if test="status !=null and status != ''">
+			and  aan.id in (select na.node_id from bu_node_approver na where na.node_id = aan.id and na.approver = #{staffId}  and na.status= #{status}  and na.del_flag='0')
+		</if>
+	</select>
+	
+	<!--查找最大的当前需要审核的seq  -->
+	<select id="selectNowMaxSeqNo"  resultType="java.lang.Integer" parameterType="java.lang.Integer">
+	select IFNULL(max(seq_no),0) from bu_approval_application_node where del_flag='0' and need_approval = '1' and approval_application_id = #{approvalApplicationId}
+	</select>
+  
+  <!-- 查找未审核的排序值最小的核心节点 -->
+  	<select id="selectMinCoreSeqNo"  resultType="java.lang.Integer"  parameterType="java.util.HashMap">
+   select IFNULL(min(seq_no) ,0)  from bu_approval_application_node aan 
+    where aan.approval_status='0'  and aan.type in ('0','1')
+    <if test="approvalApplicationId !=null and approvalApplicationId != ''">
+     and aan.approval_application_id = #{approvalApplicationId} 
+     </if>
+     <if test="seqNo !=null and seqNo != ''">
+     and aan.seq_no > #{seqNo}
+     </if>
+  	</select>
+  
+  
+</mapper>

@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtBrandChgMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtBrandChg" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_product_brand_id" property="mchtProductBrandId" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="product_brand_id" property="productBrandId" jdbcType="INTEGER" />
+    <result column="product_brand_name" property="productBrandName" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="inspection_exp_date" property="inspectionExpDate" jdbcType="DATE" />
+    <result column="other_exp_date" property="otherExpDate" jdbcType="DATE" />
+    <result column="aptitude_type" property="aptitudeType" jdbcType="CHAR" />
+    <result column="aptitude_exp_date" property="aptitudeExpDate" jdbcType="DATE" />
+    <result column="platform_auth_exp_date" property="platformAuthExpDate" jdbcType="DATE" />
+    <result column="audit_status" property="auditStatus" jdbcType="CHAR" />
+    <result column="audit_remarks" property="auditRemarks" jdbcType="VARCHAR" />
+    <result column="audit_inner_remarks" property="auditInnerRemarks" jdbcType="VARCHAR" />
+    <result column="archive_status" property="archiveStatus" jdbcType="CHAR" />
+    <result column="archive_deal_status" property="archiveDealStatus" jdbcType="CHAR" />
+    <result column="archive_deal_remarks" property="archiveDealRemarks" jdbcType="VARCHAR" />
+    <result column="archive_deal_inner_remarks" property="archiveDealInnerRemarks" jdbcType="VARCHAR" />
+    <result column="express_id" property="expressId" jdbcType="INTEGER" />
+    <result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+    <result column="pop_commission_rate" property="popCommissionRate" jdbcType="DECIMAL" />
+    <result column="price_model" property="priceModel" jdbcType="CHAR" />
+    <result column="price_model_desc" property="priceModelDesc" jdbcType="VARCHAR" />
+    <result column="commit_date" property="commitDate" jdbcType="TIMESTAMP" />
+    <result column="is_audit_recommit" property="isAuditRecommit" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_product_brand_id, mcht_id, product_brand_id, product_brand_name, logo, inspection_exp_date, 
+    other_exp_date, aptitude_type, aptitude_exp_date, platform_auth_exp_date, audit_status, 
+    audit_remarks, audit_inner_remarks, archive_status, archive_deal_status, archive_deal_remarks, 
+    archive_deal_inner_remarks, express_id, express_no, pop_commission_rate, price_model, 
+    price_model_desc, commit_date, is_audit_recommit, create_by, create_date, update_by, 
+    update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtBrandChgExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_brand_chg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_brand_chg
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_brand_chg
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtBrandChgExample" >
+    delete from bu_mcht_brand_chg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtBrandChg" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_brand_chg (mcht_product_brand_id, mcht_id, product_brand_id, 
+      product_brand_name, logo, inspection_exp_date, 
+      other_exp_date, aptitude_type, aptitude_exp_date, 
+      platform_auth_exp_date, audit_status, audit_remarks, 
+      audit_inner_remarks, archive_status, archive_deal_status, 
+      archive_deal_remarks, archive_deal_inner_remarks, 
+      express_id, express_no, pop_commission_rate, 
+      price_model, price_model_desc, commit_date, 
+      is_audit_recommit, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{mchtProductBrandId,jdbcType=INTEGER}, #{mchtId,jdbcType=INTEGER}, #{productBrandId,jdbcType=INTEGER}, 
+      #{productBrandName,jdbcType=VARCHAR}, #{logo,jdbcType=VARCHAR}, #{inspectionExpDate,jdbcType=DATE}, 
+      #{otherExpDate,jdbcType=DATE}, #{aptitudeType,jdbcType=CHAR}, #{aptitudeExpDate,jdbcType=DATE}, 
+      #{platformAuthExpDate,jdbcType=DATE}, #{auditStatus,jdbcType=CHAR}, #{auditRemarks,jdbcType=VARCHAR}, 
+      #{auditInnerRemarks,jdbcType=VARCHAR}, #{archiveStatus,jdbcType=CHAR}, #{archiveDealStatus,jdbcType=CHAR}, 
+      #{archiveDealRemarks,jdbcType=VARCHAR}, #{archiveDealInnerRemarks,jdbcType=VARCHAR}, 
+      #{expressId,jdbcType=INTEGER}, #{expressNo,jdbcType=VARCHAR}, #{popCommissionRate,jdbcType=DECIMAL}, 
+      #{priceModel,jdbcType=CHAR}, #{priceModelDesc,jdbcType=VARCHAR}, #{commitDate,jdbcType=TIMESTAMP}, 
+      #{isAuditRecommit,jdbcType=CHAR}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtBrandChg" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_brand_chg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtProductBrandId != null" >
+        mcht_product_brand_id,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="productBrandId != null" >
+        product_brand_id,
+      </if>
+      <if test="productBrandName != null" >
+        product_brand_name,
+      </if>
+      <if test="logo != null" >
+        logo,
+      </if>
+      <if test="inspectionExpDate != null" >
+        inspection_exp_date,
+      </if>
+      <if test="otherExpDate != null" >
+        other_exp_date,
+      </if>
+      <if test="aptitudeType != null" >
+        aptitude_type,
+      </if>
+      <if test="aptitudeExpDate != null" >
+        aptitude_exp_date,
+      </if>
+      <if test="platformAuthExpDate != null" >
+        platform_auth_exp_date,
+      </if>
+      <if test="auditStatus != null" >
+        audit_status,
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks,
+      </if>
+      <if test="auditInnerRemarks != null" >
+        audit_inner_remarks,
+      </if>
+      <if test="archiveStatus != null" >
+        archive_status,
+      </if>
+      <if test="archiveDealStatus != null" >
+        archive_deal_status,
+      </if>
+      <if test="archiveDealRemarks != null" >
+        archive_deal_remarks,
+      </if>
+      <if test="archiveDealInnerRemarks != null" >
+        archive_deal_inner_remarks,
+      </if>
+      <if test="expressId != null" >
+        express_id,
+      </if>
+      <if test="expressNo != null" >
+        express_no,
+      </if>
+      <if test="popCommissionRate != null" >
+        pop_commission_rate,
+      </if>
+      <if test="priceModel != null" >
+        price_model,
+      </if>
+      <if test="priceModelDesc != null" >
+        price_model_desc,
+      </if>
+      <if test="commitDate != null" >
+        commit_date,
+      </if>
+      <if test="isAuditRecommit != null" >
+        is_audit_recommit,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtProductBrandId != null" >
+        #{mchtProductBrandId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="productBrandId != null" >
+        #{productBrandId,jdbcType=INTEGER},
+      </if>
+      <if test="productBrandName != null" >
+        #{productBrandName,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionExpDate != null" >
+        #{inspectionExpDate,jdbcType=DATE},
+      </if>
+      <if test="otherExpDate != null" >
+        #{otherExpDate,jdbcType=DATE},
+      </if>
+      <if test="aptitudeType != null" >
+        #{aptitudeType,jdbcType=CHAR},
+      </if>
+      <if test="aptitudeExpDate != null" >
+        #{aptitudeExpDate,jdbcType=DATE},
+      </if>
+      <if test="platformAuthExpDate != null" >
+        #{platformAuthExpDate,jdbcType=DATE},
+      </if>
+      <if test="auditStatus != null" >
+        #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="auditInnerRemarks != null" >
+        #{auditInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        #{archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveDealStatus != null" >
+        #{archiveDealStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveDealRemarks != null" >
+        #{archiveDealRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveDealInnerRemarks != null" >
+        #{archiveDealInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null" >
+        #{expressId,jdbcType=INTEGER},
+      </if>
+      <if test="expressNo != null" >
+        #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="popCommissionRate != null" >
+        #{popCommissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="priceModel != null" >
+        #{priceModel,jdbcType=CHAR},
+      </if>
+      <if test="priceModelDesc != null" >
+        #{priceModelDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="commitDate != null" >
+        #{commitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAuditRecommit != null" >
+        #{isAuditRecommit,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtBrandChgExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_brand_chg
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_brand_chg
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtProductBrandId != null" >
+        mcht_product_brand_id = #{record.mchtProductBrandId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productBrandId != null" >
+        product_brand_id = #{record.productBrandId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productBrandName != null" >
+        product_brand_name = #{record.productBrandName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logo != null" >
+        logo = #{record.logo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inspectionExpDate != null" >
+        inspection_exp_date = #{record.inspectionExpDate,jdbcType=DATE},
+      </if>
+      <if test="record.otherExpDate != null" >
+        other_exp_date = #{record.otherExpDate,jdbcType=DATE},
+      </if>
+      <if test="record.aptitudeType != null" >
+        aptitude_type = #{record.aptitudeType,jdbcType=CHAR},
+      </if>
+      <if test="record.aptitudeExpDate != null" >
+        aptitude_exp_date = #{record.aptitudeExpDate,jdbcType=DATE},
+      </if>
+      <if test="record.platformAuthExpDate != null" >
+        platform_auth_exp_date = #{record.platformAuthExpDate,jdbcType=DATE},
+      </if>
+      <if test="record.auditStatus != null" >
+        audit_status = #{record.auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.auditRemarks != null" >
+        audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditInnerRemarks != null" >
+        audit_inner_remarks = #{record.auditInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.archiveStatus != null" >
+        archive_status = #{record.archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.archiveDealStatus != null" >
+        archive_deal_status = #{record.archiveDealStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.archiveDealRemarks != null" >
+        archive_deal_remarks = #{record.archiveDealRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.archiveDealInnerRemarks != null" >
+        archive_deal_inner_remarks = #{record.archiveDealInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expressId != null" >
+        express_id = #{record.expressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.expressNo != null" >
+        express_no = #{record.expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.popCommissionRate != null" >
+        pop_commission_rate = #{record.popCommissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.priceModel != null" >
+        price_model = #{record.priceModel,jdbcType=CHAR},
+      </if>
+      <if test="record.priceModelDesc != null" >
+        price_model_desc = #{record.priceModelDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commitDate != null" >
+        commit_date = #{record.commitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isAuditRecommit != null" >
+        is_audit_recommit = #{record.isAuditRecommit,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_brand_chg
+    set id = #{record.id,jdbcType=INTEGER},
+      mcht_product_brand_id = #{record.mchtProductBrandId,jdbcType=INTEGER},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      product_brand_id = #{record.productBrandId,jdbcType=INTEGER},
+      product_brand_name = #{record.productBrandName,jdbcType=VARCHAR},
+      logo = #{record.logo,jdbcType=VARCHAR},
+      inspection_exp_date = #{record.inspectionExpDate,jdbcType=DATE},
+      other_exp_date = #{record.otherExpDate,jdbcType=DATE},
+      aptitude_type = #{record.aptitudeType,jdbcType=CHAR},
+      aptitude_exp_date = #{record.aptitudeExpDate,jdbcType=DATE},
+      platform_auth_exp_date = #{record.platformAuthExpDate,jdbcType=DATE},
+      audit_status = #{record.auditStatus,jdbcType=CHAR},
+      audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      audit_inner_remarks = #{record.auditInnerRemarks,jdbcType=VARCHAR},
+      archive_status = #{record.archiveStatus,jdbcType=CHAR},
+      archive_deal_status = #{record.archiveDealStatus,jdbcType=CHAR},
+      archive_deal_remarks = #{record.archiveDealRemarks,jdbcType=VARCHAR},
+      archive_deal_inner_remarks = #{record.archiveDealInnerRemarks,jdbcType=VARCHAR},
+      express_id = #{record.expressId,jdbcType=INTEGER},
+      express_no = #{record.expressNo,jdbcType=VARCHAR},
+      pop_commission_rate = #{record.popCommissionRate,jdbcType=DECIMAL},
+      price_model = #{record.priceModel,jdbcType=CHAR},
+      price_model_desc = #{record.priceModelDesc,jdbcType=VARCHAR},
+      commit_date = #{record.commitDate,jdbcType=TIMESTAMP},
+      is_audit_recommit = #{record.isAuditRecommit,jdbcType=CHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtBrandChg" >
+    update bu_mcht_brand_chg
+    <set >
+      <if test="mchtProductBrandId != null" >
+        mcht_product_brand_id = #{mchtProductBrandId,jdbcType=INTEGER},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="productBrandId != null" >
+        product_brand_id = #{productBrandId,jdbcType=INTEGER},
+      </if>
+      <if test="productBrandName != null" >
+        product_brand_name = #{productBrandName,jdbcType=VARCHAR},
+      </if>
+      <if test="logo != null" >
+        logo = #{logo,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionExpDate != null" >
+        inspection_exp_date = #{inspectionExpDate,jdbcType=DATE},
+      </if>
+      <if test="otherExpDate != null" >
+        other_exp_date = #{otherExpDate,jdbcType=DATE},
+      </if>
+      <if test="aptitudeType != null" >
+        aptitude_type = #{aptitudeType,jdbcType=CHAR},
+      </if>
+      <if test="aptitudeExpDate != null" >
+        aptitude_exp_date = #{aptitudeExpDate,jdbcType=DATE},
+      </if>
+      <if test="platformAuthExpDate != null" >
+        platform_auth_exp_date = #{platformAuthExpDate,jdbcType=DATE},
+      </if>
+      <if test="auditStatus != null" >
+        audit_status = #{auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="auditInnerRemarks != null" >
+        audit_inner_remarks = #{auditInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        archive_status = #{archiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveDealStatus != null" >
+        archive_deal_status = #{archiveDealStatus,jdbcType=CHAR},
+      </if>
+      <if test="archiveDealRemarks != null" >
+        archive_deal_remarks = #{archiveDealRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveDealInnerRemarks != null" >
+        archive_deal_inner_remarks = #{archiveDealInnerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null" >
+        express_id = #{expressId,jdbcType=INTEGER},
+      </if>
+      <if test="expressNo != null" >
+        express_no = #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="popCommissionRate != null" >
+        pop_commission_rate = #{popCommissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="priceModel != null" >
+        price_model = #{priceModel,jdbcType=CHAR},
+      </if>
+      <if test="priceModelDesc != null" >
+        price_model_desc = #{priceModelDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="commitDate != null" >
+        commit_date = #{commitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isAuditRecommit != null" >
+        is_audit_recommit = #{isAuditRecommit,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtBrandChg" >
+    update bu_mcht_brand_chg
+    set mcht_product_brand_id = #{mchtProductBrandId,jdbcType=INTEGER},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      product_brand_id = #{productBrandId,jdbcType=INTEGER},
+      product_brand_name = #{productBrandName,jdbcType=VARCHAR},
+      logo = #{logo,jdbcType=VARCHAR},
+      inspection_exp_date = #{inspectionExpDate,jdbcType=DATE},
+      other_exp_date = #{otherExpDate,jdbcType=DATE},
+      aptitude_type = #{aptitudeType,jdbcType=CHAR},
+      aptitude_exp_date = #{aptitudeExpDate,jdbcType=DATE},
+      platform_auth_exp_date = #{platformAuthExpDate,jdbcType=DATE},
+      audit_status = #{auditStatus,jdbcType=CHAR},
+      audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      audit_inner_remarks = #{auditInnerRemarks,jdbcType=VARCHAR},
+      archive_status = #{archiveStatus,jdbcType=CHAR},
+      archive_deal_status = #{archiveDealStatus,jdbcType=CHAR},
+      archive_deal_remarks = #{archiveDealRemarks,jdbcType=VARCHAR},
+      archive_deal_inner_remarks = #{archiveDealInnerRemarks,jdbcType=VARCHAR},
+      express_id = #{expressId,jdbcType=INTEGER},
+      express_no = #{expressNo,jdbcType=VARCHAR},
+      pop_commission_rate = #{popCommissionRate,jdbcType=DECIMAL},
+      price_model = #{priceModel,jdbcType=CHAR},
+      price_model_desc = #{priceModelDesc,jdbcType=VARCHAR},
+      commit_date = #{commitDate,jdbcType=TIMESTAMP},
+      is_audit_recommit = #{isAuditRecommit,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

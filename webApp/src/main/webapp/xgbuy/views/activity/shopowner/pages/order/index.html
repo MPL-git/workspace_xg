@@ -1,0 +1,69 @@
+<div class="page novaplan-order flex dc bgf4" data-title="推广订单" data-id="activity_shopowner_pages_order">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="activity/novaplan/pages/order/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">推广订单</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="tab-top flex fn">
+		<a class="brand flex fg dc ac" onclick="novaplanOrder.init('0')"><span class="fg flex ac">全部</span></a>
+		<a class="brand flex fg dc ac" onclick="novaplanOrder.init('1')"><span class="fg flex ac">已付款</span></a>
+		<a class="brand flex fg dc ac" onclick="novaplanOrder.init('2')"><span class="fg flex ac">已收货</span></a>
+		<a class="brand flex fg dc ac" onclick="novaplanOrder.init('3')"><span class="fg flex ac">已结算</span></a>
+		<a class="brand flex fg dc ac" onclick="novaplanOrder.init('4')"><span class="fg flex ac">已失效</span></a>
+	</div>
+
+	<div class="tab-body fg">
+		<div class="scroll-y tab-con bgf4">
+			<ul class="touchfix flex dc"></ul>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<ul class="touchfix flex dc"></ul>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<ul class="touchfix flex dc"></ul>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<ul class="touchfix flex dc"></ul>
+		</div>
+		<div class="scroll-y tab-con bgf4">
+			<ul class="touchfix flex dc"></ul>
+		</div>
+	</div>
+
+	<script id="novaplan_order_tpl" type="text/html">
+		{{if dataList.length}}
+			{{each dataList item}}
+			<li>
+				<div class="row-1 pd30 bb1 flex ac">
+					<dl class="fg flex">
+						<dt class="fn img-cover">
+							<img src="{{item.memberPic ? item.memberPic : '../static/images/def-head.png'}}">
+						</dt>
+						<dd class="fg flex-col jc">
+							<h2 class="elps">{{item.memberNick}}</h2>
+							<p class="c9">{{item.payDateStr}}</p>
+						</dd>
+					</dl>
+					<button class="fn{{item.status === '3' ? ' red' : item.status === '4' ? ' gray' : ''}}">{{item.subOrderStatusStr}}</button>
+				</div>
+				<div class="row-2 pd30 flex ac">订单编号：{{item.subOrderCode}}</div>
+				<div class="row-3 pd30 flex ac jb">
+					<span class="elps">共{{item.quantity}}件商品 实付：￥{{item.payAmount}}</span>
+					<div class="f50">{{item.distributionAmountStr}}</div>
+				</div>
+			</li>
+			{{/each}}
+		{{else}}
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>当前订单为空</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="activity/shopowner/pages/order/index.js?var=1.0" async></script>
+</div>

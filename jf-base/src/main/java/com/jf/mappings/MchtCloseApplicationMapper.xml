@@ -1,0 +1,1682 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtCloseApplicationMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtCloseApplication" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="apply_source" property="applySource" jdbcType="CHAR" />
+    <result column="apply_name" property="applyName" jdbcType="VARCHAR" />
+    <result column="apply_reason" property="applyReason" jdbcType="VARCHAR" />
+    <result column="progress_status" property="progressStatus" jdbcType="CHAR" />
+    <result column="zs_confirm_status" property="zsConfirmStatus" jdbcType="CHAR" />
+    <result column="zs_confirm_date" property="zsConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="zs_confirm_by" property="zsConfirmBy" jdbcType="INTEGER" />
+    <result column="zs_reject_reason" property="zsRejectReason" jdbcType="VARCHAR" />
+    <result column="zs_remarks" property="zsRemarks" jdbcType="VARCHAR" />
+    <result column="zs_remarks_date" property="zsRemarksDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_info_status" property="mchtInfoStatus" jdbcType="CHAR" />
+    <result column="activity_status" property="activityStatus" jdbcType="CHAR" />
+    <result column="commodity_status" property="commodityStatus" jdbcType="CHAR" />
+    <result column="marketing_status" property="marketingStatus" jdbcType="CHAR" />
+    <result column="commodity_confirm_date" property="commodityConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="commodity_confirm_by" property="commodityConfirmBy" jdbcType="INTEGER" />
+    <result column="commodity_remarks" property="commodityRemarks" jdbcType="VARCHAR" />
+    <result column="commodity_remarks_date" property="commodityRemarksDate" jdbcType="TIMESTAMP" />
+    <result column="fw_close_hang_up_status" property="fwCloseHangUpStatus" jdbcType="CHAR" />
+    <result column="mcht_contract_status" property="mchtContractStatus" jdbcType="CHAR" />
+    <result column="mcht_archive_status" property="mchtArchiveStatus" jdbcType="CHAR" />
+    <result column="business_information_status" property="businessInformationStatus" jdbcType="CHAR" />
+    <result column="business_information_remarks" property="businessInformationRemarks" jdbcType="VARCHAR" />
+    <result column="fw_hang_up_reason" property="fwHangUpReason" jdbcType="CHAR" />
+    <result column="fw_hang_up_date" property="fwHangUpDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_archive_confirm_date" property="mchtArchiveConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="mcht_archive_confirm_by" property="mchtArchiveConfirmBy" jdbcType="INTEGER" />
+    <result column="mcht_archive_remarks" property="mchtArchiveRemarks" jdbcType="VARCHAR" />
+    <result column="mcht_archive_remarks_date" property="mchtArchiveRemarksDate" jdbcType="TIMESTAMP" />
+    <result column="kf_close_hang_up_status" property="kfCloseHangUpStatus" jdbcType="CHAR" />
+    <result column="order_confirm_status" property="orderConfirmStatus" jdbcType="CHAR" />
+    <result column="service_order_confirm_status" property="serviceOrderConfirmStatus" jdbcType="CHAR" />
+    <result column="appeal_order_confirm_status" property="appealOrderConfirmStatus" jdbcType="CHAR" />
+    <result column="intervention_order_confirm_status" property="interventionOrderConfirmStatus" jdbcType="CHAR" />
+    <result column="three_package_period" property="threePackagePeriod" jdbcType="VARCHAR" />
+    <result column="kf_hang_up_reason" property="kfHangUpReason" jdbcType="CHAR" />
+    <result column="kf_hang_up_date" property="kfHangUpDate" jdbcType="TIMESTAMP" />
+    <result column="kf_confirm_date" property="kfConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="kf_confirm_by" property="kfConfirmBy" jdbcType="INTEGER" />
+    <result column="kf_remarks" property="kfRemarks" jdbcType="VARCHAR" />
+    <result column="kf_remarks_date" property="kfRemarksDate" jdbcType="TIMESTAMP" />
+    <result column="cw_close_hang_up_status" property="cwCloseHangUpStatus" jdbcType="CHAR" />
+    <result column="payment_of_goods_confirm" property="paymentOfGoodsConfirm" jdbcType="CHAR" />
+    <result column="cw_hang_up_reason" property="cwHangUpReason" jdbcType="CHAR" />
+    <result column="cw_confirm_date" property="cwConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="cw_confirm_by" property="cwConfirmBy" jdbcType="INTEGER" />
+    <result column="cw_remarks" property="cwRemarks" jdbcType="VARCHAR" />
+    <result column="cw_remarks_date" property="cwRemarksDate" jdbcType="TIMESTAMP" />
+    <result column="file_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="express_id" property="expressId" jdbcType="INTEGER" />
+    <result column="express_no" property="expressNo" jdbcType="VARCHAR" />
+    <result column="end_cooperation_agreement" property="endCooperationAgreement" jdbcType="CHAR" />
+    <result column="agreement_issue_date" property="agreementIssueDate" jdbcType="TIMESTAMP" />
+    <result column="deposit_date" property="depositDate" jdbcType="TIMESTAMP" />
+    <result column="fw_confirm_date" property="fwConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="fw_confirm_by" property="fwConfirmBy" jdbcType="INTEGER" />
+    <result column="fw_remarks" property="fwRemarks" jdbcType="VARCHAR" />
+    <result column="fw_remarks_date" property="fwRemarksDate" jdbcType="TIMESTAMP" />
+    <result column="director_confirm_status" property="directorConfirmStatus" jdbcType="CHAR" />
+    <result column="director_confirm_date" property="directorConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="director_confirm_by" property="directorConfirmBy" jdbcType="INTEGER" />
+    <result column="product_confirm_status" property="productConfirmStatus" jdbcType="CHAR" />
+    <result column="product_confirm_date" property="productConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="product_confirm_by" property="productConfirmBy" jdbcType="INTEGER" />
+    <result column="settlement_audit_status" property="settlementAuditStatus" jdbcType="CHAR" />
+    <result column="settlement_confirm_date" property="settlementConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="settlement_confirm_by" property="settlementConfirmBy" jdbcType="INTEGER" />
+    <result column="deposit_return_status" property="depositReturnStatus" jdbcType="CHAR" />
+    <result column="deposit_return_date" property="depositReturnDate" jdbcType="TIMESTAMP" />
+    <result column="need_pay_status" property="needPayStatus" jdbcType="CHAR" />
+    <result column="op_confirm_date" property="opConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="op_confirm_by" property="opConfirmBy" jdbcType="INTEGER" />
+    <result column="close_reason" property="closeReason" jdbcType="CHAR" />
+    <result column="is_platform_send" property="isPlatformSend" jdbcType="CHAR" />
+    <result column="platform_send_date" property="platformSendDate" jdbcType="TIMESTAMP" />
+    <result column="platform_express_id" property="platformExpressId" jdbcType="INTEGER" />
+    <result column="platform_express_no" property="platformExpressNo" jdbcType="VARCHAR" />
+    <result column="contract_audit_status" property="contractAuditStatus" jdbcType="CHAR" />
+    <result column="contract_audit_by" property="contractAuditBy" jdbcType="INTEGER" />
+    <result column="contract_upload_date" property="contractUploadDate" jdbcType="TIMESTAMP" />
+    <result column="inner_remarks" property="innerRemarks" jdbcType="VARCHAR" />
+    <result column="contract_audit_remarks" property="contractAuditRemarks" jdbcType="VARCHAR" />
+    <result column="contract_archive_status" property="contractArchiveStatus" jdbcType="CHAR" />
+    <result column="contract_archive_by" property="contractArchiveBy" jdbcType="INTEGER" />
+    <result column="contract_archive_remarks" property="contractArchiveRemarks" jdbcType="VARCHAR" />
+    <result column="bills_path" property="billsPath" jdbcType="VARCHAR" />
+    <result column="comfirm_bills_status" property="comfirmBillsStatus" jdbcType="CHAR" />
+    <result column="returned_deposit_amount" property="returnedDepositAmount" jdbcType="DECIMAL" />
+    <result column="is_need_upload" property="isNeedUpload" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, apply_source, apply_name, apply_reason, progress_status, zs_confirm_status,
+    zs_confirm_date, zs_confirm_by, zs_reject_reason, zs_remarks, zs_remarks_date, mcht_info_status,
+    activity_status, commodity_status, marketing_status, commodity_confirm_date, commodity_confirm_by,
+    commodity_remarks, commodity_remarks_date, fw_close_hang_up_status, mcht_contract_status,
+    mcht_archive_status, business_information_status, business_information_remarks, fw_hang_up_reason,
+    fw_hang_up_date, mcht_archive_confirm_date, mcht_archive_confirm_by, mcht_archive_remarks,
+    mcht_archive_remarks_date, kf_close_hang_up_status, order_confirm_status, service_order_confirm_status,
+    appeal_order_confirm_status, intervention_order_confirm_status, three_package_period,
+    kf_hang_up_reason, kf_hang_up_date, kf_confirm_date, kf_confirm_by, kf_remarks, kf_remarks_date,
+    cw_close_hang_up_status, payment_of_goods_confirm, cw_hang_up_reason, cw_confirm_date,
+    cw_confirm_by, cw_remarks, cw_remarks_date, file_path, express_id, express_no, end_cooperation_agreement,
+    agreement_issue_date, deposit_date, fw_confirm_date, fw_confirm_by, fw_remarks, fw_remarks_date,
+    director_confirm_status, director_confirm_date, director_confirm_by, product_confirm_status,
+    product_confirm_date, product_confirm_by, settlement_audit_status, settlement_confirm_date,
+    settlement_confirm_by, deposit_return_status, deposit_return_date, need_pay_status,
+    op_confirm_date, op_confirm_by, close_reason, is_platform_send, platform_send_date,
+    platform_express_id, platform_express_no, contract_audit_status, contract_audit_by,
+    contract_upload_date, inner_remarks, contract_audit_remarks, contract_archive_status,
+    contract_archive_by, contract_archive_remarks, bills_path, comfirm_bills_status,
+    returned_deposit_amount, is_need_upload, create_by, create_date, update_by, update_date,
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtCloseApplicationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_close_application
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from bu_mcht_close_application
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_close_application
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtCloseApplicationExample" >
+    delete from bu_mcht_close_application
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtCloseApplication" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_close_application (mcht_id, apply_source, apply_name,
+    apply_reason, progress_status, zs_confirm_status,
+    zs_confirm_date, zs_confirm_by, zs_reject_reason,
+    zs_remarks, zs_remarks_date, mcht_info_status,
+    activity_status, commodity_status, marketing_status,
+    commodity_confirm_date, commodity_confirm_by,
+    commodity_remarks, commodity_remarks_date,
+    fw_close_hang_up_status, mcht_contract_status, mcht_archive_status,
+    business_information_status, business_information_remarks,
+    fw_hang_up_reason, fw_hang_up_date, mcht_archive_confirm_date,
+    mcht_archive_confirm_by, mcht_archive_remarks,
+    mcht_archive_remarks_date, kf_close_hang_up_status,
+    order_confirm_status, service_order_confirm_status,
+    appeal_order_confirm_status, intervention_order_confirm_status,
+    three_package_period, kf_hang_up_reason, kf_hang_up_date,
+    kf_confirm_date, kf_confirm_by, kf_remarks,
+    kf_remarks_date, cw_close_hang_up_status, payment_of_goods_confirm,
+    cw_hang_up_reason, cw_confirm_date, cw_confirm_by,
+    cw_remarks, cw_remarks_date, file_path,
+    express_id, express_no, end_cooperation_agreement,
+    agreement_issue_date, deposit_date, fw_confirm_date,
+    fw_confirm_by, fw_remarks, fw_remarks_date,
+    director_confirm_status, director_confirm_date,
+    director_confirm_by, product_confirm_status, product_confirm_date,
+    product_confirm_by, settlement_audit_status, settlement_confirm_date,
+    settlement_confirm_by, deposit_return_status,
+    deposit_return_date, need_pay_status, op_confirm_date,
+    op_confirm_by, close_reason, is_platform_send,
+    platform_send_date, platform_express_id,
+    platform_express_no, contract_audit_status, contract_audit_by,
+    contract_upload_date, inner_remarks, contract_audit_remarks,
+    contract_archive_status, contract_archive_by,
+    contract_archive_remarks, bills_path, comfirm_bills_status,
+    returned_deposit_amount, is_need_upload, create_by,
+    create_date, update_by, update_date,
+    remarks, del_flag)
+    values (#{mchtId,jdbcType=INTEGER}, #{applySource,jdbcType=CHAR}, #{applyName,jdbcType=VARCHAR},
+    #{applyReason,jdbcType=VARCHAR}, #{progressStatus,jdbcType=CHAR}, #{zsConfirmStatus,jdbcType=CHAR},
+    #{zsConfirmDate,jdbcType=TIMESTAMP}, #{zsConfirmBy,jdbcType=INTEGER}, #{zsRejectReason,jdbcType=VARCHAR},
+    #{zsRemarks,jdbcType=VARCHAR}, #{zsRemarksDate,jdbcType=TIMESTAMP}, #{mchtInfoStatus,jdbcType=CHAR},
+    #{activityStatus,jdbcType=CHAR}, #{commodityStatus,jdbcType=CHAR}, #{marketingStatus,jdbcType=CHAR},
+    #{commodityConfirmDate,jdbcType=TIMESTAMP}, #{commodityConfirmBy,jdbcType=INTEGER},
+    #{commodityRemarks,jdbcType=VARCHAR}, #{commodityRemarksDate,jdbcType=TIMESTAMP},
+    #{fwCloseHangUpStatus,jdbcType=CHAR}, #{mchtContractStatus,jdbcType=CHAR}, #{mchtArchiveStatus,jdbcType=CHAR},
+    #{businessInformationStatus,jdbcType=CHAR}, #{businessInformationRemarks,jdbcType=VARCHAR},
+    #{fwHangUpReason,jdbcType=CHAR}, #{fwHangUpDate,jdbcType=TIMESTAMP}, #{mchtArchiveConfirmDate,jdbcType=TIMESTAMP},
+    #{mchtArchiveConfirmBy,jdbcType=INTEGER}, #{mchtArchiveRemarks,jdbcType=VARCHAR},
+    #{mchtArchiveRemarksDate,jdbcType=TIMESTAMP}, #{kfCloseHangUpStatus,jdbcType=CHAR},
+    #{orderConfirmStatus,jdbcType=CHAR}, #{serviceOrderConfirmStatus,jdbcType=CHAR},
+    #{appealOrderConfirmStatus,jdbcType=CHAR}, #{interventionOrderConfirmStatus,jdbcType=CHAR},
+    #{threePackagePeriod,jdbcType=VARCHAR}, #{kfHangUpReason,jdbcType=CHAR}, #{kfHangUpDate,jdbcType=TIMESTAMP},
+    #{kfConfirmDate,jdbcType=TIMESTAMP}, #{kfConfirmBy,jdbcType=INTEGER}, #{kfRemarks,jdbcType=VARCHAR},
+    #{kfRemarksDate,jdbcType=TIMESTAMP}, #{cwCloseHangUpStatus,jdbcType=CHAR}, #{paymentOfGoodsConfirm,jdbcType=CHAR},
+    #{cwHangUpReason,jdbcType=CHAR}, #{cwConfirmDate,jdbcType=TIMESTAMP}, #{cwConfirmBy,jdbcType=INTEGER},
+    #{cwRemarks,jdbcType=VARCHAR}, #{cwRemarksDate,jdbcType=TIMESTAMP}, #{filePath,jdbcType=VARCHAR},
+    #{expressId,jdbcType=INTEGER}, #{expressNo,jdbcType=VARCHAR}, #{endCooperationAgreement,jdbcType=CHAR},
+    #{agreementIssueDate,jdbcType=TIMESTAMP}, #{depositDate,jdbcType=TIMESTAMP}, #{fwConfirmDate,jdbcType=TIMESTAMP},
+    #{fwConfirmBy,jdbcType=INTEGER}, #{fwRemarks,jdbcType=VARCHAR}, #{fwRemarksDate,jdbcType=TIMESTAMP},
+    #{directorConfirmStatus,jdbcType=CHAR}, #{directorConfirmDate,jdbcType=TIMESTAMP},
+    #{directorConfirmBy,jdbcType=INTEGER}, #{productConfirmStatus,jdbcType=CHAR}, #{productConfirmDate,jdbcType=TIMESTAMP},
+    #{productConfirmBy,jdbcType=INTEGER}, #{settlementAuditStatus,jdbcType=CHAR}, #{settlementConfirmDate,jdbcType=TIMESTAMP},
+    #{settlementConfirmBy,jdbcType=INTEGER}, #{depositReturnStatus,jdbcType=CHAR},
+    #{depositReturnDate,jdbcType=TIMESTAMP}, #{needPayStatus,jdbcType=CHAR}, #{opConfirmDate,jdbcType=TIMESTAMP},
+    #{opConfirmBy,jdbcType=INTEGER}, #{closeReason,jdbcType=CHAR}, #{isPlatformSend,jdbcType=CHAR},
+    #{platformSendDate,jdbcType=TIMESTAMP}, #{platformExpressId,jdbcType=INTEGER},
+    #{platformExpressNo,jdbcType=VARCHAR}, #{contractAuditStatus,jdbcType=CHAR}, #{contractAuditBy,jdbcType=INTEGER},
+    #{contractUploadDate,jdbcType=TIMESTAMP}, #{innerRemarks,jdbcType=VARCHAR}, #{contractAuditRemarks,jdbcType=VARCHAR},
+    #{contractArchiveStatus,jdbcType=CHAR}, #{contractArchiveBy,jdbcType=INTEGER},
+    #{contractArchiveRemarks,jdbcType=VARCHAR}, #{billsPath,jdbcType=VARCHAR}, #{comfirmBillsStatus,jdbcType=CHAR},
+    #{returnedDepositAmount,jdbcType=DECIMAL}, #{isNeedUpload,jdbcType=CHAR}, #{createBy,jdbcType=INTEGER},
+    #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP},
+    #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtCloseApplication" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_close_application
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="applySource != null" >
+        apply_source,
+      </if>
+      <if test="applyName != null" >
+        apply_name,
+      </if>
+      <if test="applyReason != null" >
+        apply_reason,
+      </if>
+      <if test="progressStatus != null" >
+        progress_status,
+      </if>
+      <if test="zsConfirmStatus != null" >
+        zs_confirm_status,
+      </if>
+      <if test="zsConfirmDate != null" >
+        zs_confirm_date,
+      </if>
+      <if test="zsConfirmBy != null" >
+        zs_confirm_by,
+      </if>
+      <if test="zsRejectReason != null" >
+        zs_reject_reason,
+      </if>
+      <if test="zsRemarks != null" >
+        zs_remarks,
+      </if>
+      <if test="zsRemarksDate != null" >
+        zs_remarks_date,
+      </if>
+      <if test="mchtInfoStatus != null" >
+        mcht_info_status,
+      </if>
+      <if test="activityStatus != null" >
+        activity_status,
+      </if>
+      <if test="commodityStatus != null" >
+        commodity_status,
+      </if>
+      <if test="marketingStatus != null" >
+        marketing_status,
+      </if>
+      <if test="commodityConfirmDate != null" >
+        commodity_confirm_date,
+      </if>
+      <if test="commodityConfirmBy != null" >
+        commodity_confirm_by,
+      </if>
+      <if test="commodityRemarks != null" >
+        commodity_remarks,
+      </if>
+      <if test="commodityRemarksDate != null" >
+        commodity_remarks_date,
+      </if>
+      <if test="fwCloseHangUpStatus != null" >
+        fw_close_hang_up_status,
+      </if>
+      <if test="mchtContractStatus != null" >
+        mcht_contract_status,
+      </if>
+      <if test="mchtArchiveStatus != null" >
+        mcht_archive_status,
+      </if>
+      <if test="businessInformationStatus != null" >
+        business_information_status,
+      </if>
+      <if test="businessInformationRemarks != null" >
+        business_information_remarks,
+      </if>
+      <if test="fwHangUpReason != null" >
+        fw_hang_up_reason,
+      </if>
+      <if test="fwHangUpDate != null" >
+        fw_hang_up_date,
+      </if>
+      <if test="mchtArchiveConfirmDate != null" >
+        mcht_archive_confirm_date,
+      </if>
+      <if test="mchtArchiveConfirmBy != null" >
+        mcht_archive_confirm_by,
+      </if>
+      <if test="mchtArchiveRemarks != null" >
+        mcht_archive_remarks,
+      </if>
+      <if test="mchtArchiveRemarksDate != null" >
+        mcht_archive_remarks_date,
+      </if>
+      <if test="kfCloseHangUpStatus != null" >
+        kf_close_hang_up_status,
+      </if>
+      <if test="orderConfirmStatus != null" >
+        order_confirm_status,
+      </if>
+      <if test="serviceOrderConfirmStatus != null" >
+        service_order_confirm_status,
+      </if>
+      <if test="appealOrderConfirmStatus != null" >
+        appeal_order_confirm_status,
+      </if>
+      <if test="interventionOrderConfirmStatus != null" >
+        intervention_order_confirm_status,
+      </if>
+      <if test="threePackagePeriod != null" >
+        three_package_period,
+      </if>
+      <if test="kfHangUpReason != null" >
+        kf_hang_up_reason,
+      </if>
+      <if test="kfHangUpDate != null" >
+        kf_hang_up_date,
+      </if>
+      <if test="kfConfirmDate != null" >
+        kf_confirm_date,
+      </if>
+      <if test="kfConfirmBy != null" >
+        kf_confirm_by,
+      </if>
+      <if test="kfRemarks != null" >
+        kf_remarks,
+      </if>
+      <if test="kfRemarksDate != null" >
+        kf_remarks_date,
+      </if>
+      <if test="cwCloseHangUpStatus != null" >
+        cw_close_hang_up_status,
+      </if>
+      <if test="paymentOfGoodsConfirm != null" >
+        payment_of_goods_confirm,
+      </if>
+      <if test="cwHangUpReason != null" >
+        cw_hang_up_reason,
+      </if>
+      <if test="cwConfirmDate != null" >
+        cw_confirm_date,
+      </if>
+      <if test="cwConfirmBy != null" >
+        cw_confirm_by,
+      </if>
+      <if test="cwRemarks != null" >
+        cw_remarks,
+      </if>
+      <if test="cwRemarksDate != null" >
+        cw_remarks_date,
+      </if>
+      <if test="filePath != null" >
+        file_path,
+      </if>
+      <if test="expressId != null" >
+        express_id,
+      </if>
+      <if test="expressNo != null" >
+        express_no,
+      </if>
+      <if test="endCooperationAgreement != null" >
+        end_cooperation_agreement,
+      </if>
+      <if test="agreementIssueDate != null" >
+        agreement_issue_date,
+      </if>
+      <if test="depositDate != null" >
+        deposit_date,
+      </if>
+      <if test="fwConfirmDate != null" >
+        fw_confirm_date,
+      </if>
+      <if test="fwConfirmBy != null" >
+        fw_confirm_by,
+      </if>
+      <if test="fwRemarks != null" >
+        fw_remarks,
+      </if>
+      <if test="fwRemarksDate != null" >
+        fw_remarks_date,
+      </if>
+      <if test="directorConfirmStatus != null" >
+        director_confirm_status,
+      </if>
+      <if test="directorConfirmDate != null" >
+        director_confirm_date,
+      </if>
+      <if test="directorConfirmBy != null" >
+        director_confirm_by,
+      </if>
+      <if test="productConfirmStatus != null" >
+        product_confirm_status,
+      </if>
+      <if test="productConfirmDate != null" >
+        product_confirm_date,
+      </if>
+      <if test="productConfirmBy != null" >
+        product_confirm_by,
+      </if>
+      <if test="settlementAuditStatus != null" >
+        settlement_audit_status,
+      </if>
+      <if test="settlementConfirmDate != null" >
+        settlement_confirm_date,
+      </if>
+      <if test="settlementConfirmBy != null" >
+        settlement_confirm_by,
+      </if>
+      <if test="depositReturnStatus != null" >
+        deposit_return_status,
+      </if>
+      <if test="depositReturnDate != null" >
+        deposit_return_date,
+      </if>
+      <if test="needPayStatus != null" >
+        need_pay_status,
+      </if>
+      <if test="opConfirmDate != null" >
+        op_confirm_date,
+      </if>
+      <if test="opConfirmBy != null" >
+        op_confirm_by,
+      </if>
+      <if test="closeReason != null" >
+        close_reason,
+      </if>
+      <if test="isPlatformSend != null" >
+        is_platform_send,
+      </if>
+      <if test="platformSendDate != null" >
+        platform_send_date,
+      </if>
+      <if test="platformExpressId != null" >
+        platform_express_id,
+      </if>
+      <if test="platformExpressNo != null" >
+        platform_express_no,
+      </if>
+      <if test="contractAuditStatus != null" >
+        contract_audit_status,
+      </if>
+      <if test="contractAuditBy != null" >
+        contract_audit_by,
+      </if>
+      <if test="contractUploadDate != null" >
+        contract_upload_date,
+      </if>
+      <if test="innerRemarks != null" >
+        inner_remarks,
+      </if>
+      <if test="contractAuditRemarks != null" >
+        contract_audit_remarks,
+      </if>
+      <if test="contractArchiveStatus != null" >
+        contract_archive_status,
+      </if>
+      <if test="contractArchiveBy != null" >
+        contract_archive_by,
+      </if>
+      <if test="contractArchiveRemarks != null" >
+        contract_archive_remarks,
+      </if>
+      <if test="billsPath != null" >
+        bills_path,
+      </if>
+      <if test="comfirmBillsStatus != null" >
+        comfirm_bills_status,
+      </if>
+      <if test="returnedDepositAmount != null" >
+        returned_deposit_amount,
+      </if>
+      <if test="isNeedUpload != null" >
+        is_need_upload,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="applySource != null" >
+        #{applySource,jdbcType=CHAR},
+      </if>
+      <if test="applyName != null" >
+        #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyReason != null" >
+        #{applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="progressStatus != null" >
+        #{progressStatus,jdbcType=CHAR},
+      </if>
+      <if test="zsConfirmStatus != null" >
+        #{zsConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="zsConfirmDate != null" >
+        #{zsConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zsConfirmBy != null" >
+        #{zsConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="zsRejectReason != null" >
+        #{zsRejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="zsRemarks != null" >
+        #{zsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsRemarksDate != null" >
+        #{zsRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtInfoStatus != null" >
+        #{mchtInfoStatus,jdbcType=CHAR},
+      </if>
+      <if test="activityStatus != null" >
+        #{activityStatus,jdbcType=CHAR},
+      </if>
+      <if test="commodityStatus != null" >
+        #{commodityStatus,jdbcType=CHAR},
+      </if>
+      <if test="marketingStatus != null" >
+        #{marketingStatus,jdbcType=CHAR},
+      </if>
+      <if test="commodityConfirmDate != null" >
+        #{commodityConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commodityConfirmBy != null" >
+        #{commodityConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="commodityRemarks != null" >
+        #{commodityRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityRemarksDate != null" >
+        #{commodityRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwCloseHangUpStatus != null" >
+        #{fwCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtContractStatus != null" >
+        #{mchtContractStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtArchiveStatus != null" >
+        #{mchtArchiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="businessInformationStatus != null" >
+        #{businessInformationStatus,jdbcType=CHAR},
+      </if>
+      <if test="businessInformationRemarks != null" >
+        #{businessInformationRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwHangUpReason != null" >
+        #{fwHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="fwHangUpDate != null" >
+        #{fwHangUpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtArchiveConfirmDate != null" >
+        #{mchtArchiveConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtArchiveConfirmBy != null" >
+        #{mchtArchiveConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="mchtArchiveRemarks != null" >
+        #{mchtArchiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtArchiveRemarksDate != null" >
+        #{mchtArchiveRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfCloseHangUpStatus != null" >
+        #{kfCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderConfirmStatus != null" >
+        #{orderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="serviceOrderConfirmStatus != null" >
+        #{serviceOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="appealOrderConfirmStatus != null" >
+        #{appealOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="interventionOrderConfirmStatus != null" >
+        #{interventionOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="threePackagePeriod != null" >
+        #{threePackagePeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="kfHangUpReason != null" >
+        #{kfHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="kfHangUpDate != null" >
+        #{kfHangUpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfConfirmDate != null" >
+        #{kfConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfConfirmBy != null" >
+        #{kfConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="kfRemarks != null" >
+        #{kfRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="kfRemarksDate != null" >
+        #{kfRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cwCloseHangUpStatus != null" >
+        #{cwCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="paymentOfGoodsConfirm != null" >
+        #{paymentOfGoodsConfirm,jdbcType=CHAR},
+      </if>
+      <if test="cwHangUpReason != null" >
+        #{cwHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="cwConfirmDate != null" >
+        #{cwConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cwConfirmBy != null" >
+        #{cwConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="cwRemarks != null" >
+        #{cwRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="cwRemarksDate != null" >
+        #{cwRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null" >
+        #{expressId,jdbcType=INTEGER},
+      </if>
+      <if test="expressNo != null" >
+        #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="endCooperationAgreement != null" >
+        #{endCooperationAgreement,jdbcType=CHAR},
+      </if>
+      <if test="agreementIssueDate != null" >
+        #{agreementIssueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="depositDate != null" >
+        #{depositDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwConfirmDate != null" >
+        #{fwConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwConfirmBy != null" >
+        #{fwConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="fwRemarks != null" >
+        #{fwRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwRemarksDate != null" >
+        #{fwRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="directorConfirmStatus != null" >
+        #{directorConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="directorConfirmDate != null" >
+        #{directorConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="directorConfirmBy != null" >
+        #{directorConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="productConfirmStatus != null" >
+        #{productConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="productConfirmDate != null" >
+        #{productConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productConfirmBy != null" >
+        #{productConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="settlementAuditStatus != null" >
+        #{settlementAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="settlementConfirmDate != null" >
+        #{settlementConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settlementConfirmBy != null" >
+        #{settlementConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="depositReturnStatus != null" >
+        #{depositReturnStatus,jdbcType=CHAR},
+      </if>
+      <if test="depositReturnDate != null" >
+        #{depositReturnDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="needPayStatus != null" >
+        #{needPayStatus,jdbcType=CHAR},
+      </if>
+      <if test="opConfirmDate != null" >
+        #{opConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opConfirmBy != null" >
+        #{opConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="closeReason != null" >
+        #{closeReason,jdbcType=CHAR},
+      </if>
+      <if test="isPlatformSend != null" >
+        #{isPlatformSend,jdbcType=CHAR},
+      </if>
+      <if test="platformSendDate != null" >
+        #{platformSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformExpressId != null" >
+        #{platformExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="platformExpressNo != null" >
+        #{platformExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="contractAuditStatus != null" >
+        #{contractAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="contractAuditBy != null" >
+        #{contractAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="contractUploadDate != null" >
+        #{contractUploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="innerRemarks != null" >
+        #{innerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="contractAuditRemarks != null" >
+        #{contractAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="contractArchiveStatus != null" >
+        #{contractArchiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="contractArchiveBy != null" >
+        #{contractArchiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="contractArchiveRemarks != null" >
+        #{contractArchiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="billsPath != null" >
+        #{billsPath,jdbcType=VARCHAR},
+      </if>
+      <if test="comfirmBillsStatus != null" >
+        #{comfirmBillsStatus,jdbcType=CHAR},
+      </if>
+      <if test="returnedDepositAmount != null" >
+        #{returnedDepositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="isNeedUpload != null" >
+        #{isNeedUpload,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtCloseApplicationExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_close_application
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_close_application
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.applySource != null" >
+        apply_source = #{record.applySource,jdbcType=CHAR},
+      </if>
+      <if test="record.applyName != null" >
+        apply_name = #{record.applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyReason != null" >
+        apply_reason = #{record.applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.progressStatus != null" >
+        progress_status = #{record.progressStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.zsConfirmStatus != null" >
+        zs_confirm_status = #{record.zsConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.zsConfirmDate != null" >
+        zs_confirm_date = #{record.zsConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.zsConfirmBy != null" >
+        zs_confirm_by = #{record.zsConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.zsRejectReason != null" >
+        zs_reject_reason = #{record.zsRejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zsRemarks != null" >
+        zs_remarks = #{record.zsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zsRemarksDate != null" >
+        zs_remarks_date = #{record.zsRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtInfoStatus != null" >
+        mcht_info_status = #{record.mchtInfoStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.activityStatus != null" >
+        activity_status = #{record.activityStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.commodityStatus != null" >
+        commodity_status = #{record.commodityStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.marketingStatus != null" >
+        marketing_status = #{record.marketingStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.commodityConfirmDate != null" >
+        commodity_confirm_date = #{record.commodityConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.commodityConfirmBy != null" >
+        commodity_confirm_by = #{record.commodityConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.commodityRemarks != null" >
+        commodity_remarks = #{record.commodityRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commodityRemarksDate != null" >
+        commodity_remarks_date = #{record.commodityRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fwCloseHangUpStatus != null" >
+        fw_close_hang_up_status = #{record.fwCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtContractStatus != null" >
+        mcht_contract_status = #{record.mchtContractStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtArchiveStatus != null" >
+        mcht_archive_status = #{record.mchtArchiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.businessInformationStatus != null" >
+        business_information_status = #{record.businessInformationStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.businessInformationRemarks != null" >
+        business_information_remarks = #{record.businessInformationRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fwHangUpReason != null" >
+        fw_hang_up_reason = #{record.fwHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="record.fwHangUpDate != null" >
+        fw_hang_up_date = #{record.fwHangUpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtArchiveConfirmDate != null" >
+        mcht_archive_confirm_date = #{record.mchtArchiveConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mchtArchiveConfirmBy != null" >
+        mcht_archive_confirm_by = #{record.mchtArchiveConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtArchiveRemarks != null" >
+        mcht_archive_remarks = #{record.mchtArchiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtArchiveRemarksDate != null" >
+        mcht_archive_remarks_date = #{record.mchtArchiveRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.kfCloseHangUpStatus != null" >
+        kf_close_hang_up_status = #{record.kfCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.orderConfirmStatus != null" >
+        order_confirm_status = #{record.orderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.serviceOrderConfirmStatus != null" >
+        service_order_confirm_status = #{record.serviceOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.appealOrderConfirmStatus != null" >
+        appeal_order_confirm_status = #{record.appealOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.interventionOrderConfirmStatus != null" >
+        intervention_order_confirm_status = #{record.interventionOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.threePackagePeriod != null" >
+        three_package_period = #{record.threePackagePeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kfHangUpReason != null" >
+        kf_hang_up_reason = #{record.kfHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="record.kfHangUpDate != null" >
+        kf_hang_up_date = #{record.kfHangUpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.kfConfirmDate != null" >
+        kf_confirm_date = #{record.kfConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.kfConfirmBy != null" >
+        kf_confirm_by = #{record.kfConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.kfRemarks != null" >
+        kf_remarks = #{record.kfRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.kfRemarksDate != null" >
+        kf_remarks_date = #{record.kfRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cwCloseHangUpStatus != null" >
+        cw_close_hang_up_status = #{record.cwCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.paymentOfGoodsConfirm != null" >
+        payment_of_goods_confirm = #{record.paymentOfGoodsConfirm,jdbcType=CHAR},
+      </if>
+      <if test="record.cwHangUpReason != null" >
+        cw_hang_up_reason = #{record.cwHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="record.cwConfirmDate != null" >
+        cw_confirm_date = #{record.cwConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cwConfirmBy != null" >
+        cw_confirm_by = #{record.cwConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.cwRemarks != null" >
+        cw_remarks = #{record.cwRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cwRemarksDate != null" >
+        cw_remarks_date = #{record.cwRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.filePath != null" >
+        file_path = #{record.filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expressId != null" >
+        express_id = #{record.expressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.expressNo != null" >
+        express_no = #{record.expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endCooperationAgreement != null" >
+        end_cooperation_agreement = #{record.endCooperationAgreement,jdbcType=CHAR},
+      </if>
+      <if test="record.agreementIssueDate != null" >
+        agreement_issue_date = #{record.agreementIssueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.depositDate != null" >
+        deposit_date = #{record.depositDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fwConfirmDate != null" >
+        fw_confirm_date = #{record.fwConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fwConfirmBy != null" >
+        fw_confirm_by = #{record.fwConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.fwRemarks != null" >
+        fw_remarks = #{record.fwRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fwRemarksDate != null" >
+        fw_remarks_date = #{record.fwRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.directorConfirmStatus != null" >
+        director_confirm_status = #{record.directorConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.directorConfirmDate != null" >
+        director_confirm_date = #{record.directorConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.directorConfirmBy != null" >
+        director_confirm_by = #{record.directorConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.productConfirmStatus != null" >
+        product_confirm_status = #{record.productConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.productConfirmDate != null" >
+        product_confirm_date = #{record.productConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.productConfirmBy != null" >
+        product_confirm_by = #{record.productConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.settlementAuditStatus != null" >
+        settlement_audit_status = #{record.settlementAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.settlementConfirmDate != null" >
+        settlement_confirm_date = #{record.settlementConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.settlementConfirmBy != null" >
+        settlement_confirm_by = #{record.settlementConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.depositReturnStatus != null" >
+        deposit_return_status = #{record.depositReturnStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.depositReturnDate != null" >
+        deposit_return_date = #{record.depositReturnDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.needPayStatus != null" >
+        need_pay_status = #{record.needPayStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.opConfirmDate != null" >
+        op_confirm_date = #{record.opConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.opConfirmBy != null" >
+        op_confirm_by = #{record.opConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.closeReason != null" >
+        close_reason = #{record.closeReason,jdbcType=CHAR},
+      </if>
+      <if test="record.isPlatformSend != null" >
+        is_platform_send = #{record.isPlatformSend,jdbcType=CHAR},
+      </if>
+      <if test="record.platformSendDate != null" >
+        platform_send_date = #{record.platformSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.platformExpressId != null" >
+        platform_express_id = #{record.platformExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="record.platformExpressNo != null" >
+        platform_express_no = #{record.platformExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractAuditStatus != null" >
+        contract_audit_status = #{record.contractAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.contractAuditBy != null" >
+        contract_audit_by = #{record.contractAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractUploadDate != null" >
+        contract_upload_date = #{record.contractUploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.innerRemarks != null" >
+        inner_remarks = #{record.innerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractAuditRemarks != null" >
+        contract_audit_remarks = #{record.contractAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractArchiveStatus != null" >
+        contract_archive_status = #{record.contractArchiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.contractArchiveBy != null" >
+        contract_archive_by = #{record.contractArchiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractArchiveRemarks != null" >
+        contract_archive_remarks = #{record.contractArchiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.billsPath != null" >
+        bills_path = #{record.billsPath,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comfirmBillsStatus != null" >
+        comfirm_bills_status = #{record.comfirmBillsStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.returnedDepositAmount != null" >
+        returned_deposit_amount = #{record.returnedDepositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isNeedUpload != null" >
+        is_need_upload = #{record.isNeedUpload,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_close_application
+    set id = #{record.id,jdbcType=INTEGER},
+    mcht_id = #{record.mchtId,jdbcType=INTEGER},
+    apply_source = #{record.applySource,jdbcType=CHAR},
+    apply_name = #{record.applyName,jdbcType=VARCHAR},
+    apply_reason = #{record.applyReason,jdbcType=VARCHAR},
+    progress_status = #{record.progressStatus,jdbcType=CHAR},
+    zs_confirm_status = #{record.zsConfirmStatus,jdbcType=CHAR},
+    zs_confirm_date = #{record.zsConfirmDate,jdbcType=TIMESTAMP},
+    zs_confirm_by = #{record.zsConfirmBy,jdbcType=INTEGER},
+    zs_reject_reason = #{record.zsRejectReason,jdbcType=VARCHAR},
+    zs_remarks = #{record.zsRemarks,jdbcType=VARCHAR},
+    zs_remarks_date = #{record.zsRemarksDate,jdbcType=TIMESTAMP},
+    mcht_info_status = #{record.mchtInfoStatus,jdbcType=CHAR},
+    activity_status = #{record.activityStatus,jdbcType=CHAR},
+    commodity_status = #{record.commodityStatus,jdbcType=CHAR},
+    marketing_status = #{record.marketingStatus,jdbcType=CHAR},
+    commodity_confirm_date = #{record.commodityConfirmDate,jdbcType=TIMESTAMP},
+    commodity_confirm_by = #{record.commodityConfirmBy,jdbcType=INTEGER},
+    commodity_remarks = #{record.commodityRemarks,jdbcType=VARCHAR},
+    commodity_remarks_date = #{record.commodityRemarksDate,jdbcType=TIMESTAMP},
+    fw_close_hang_up_status = #{record.fwCloseHangUpStatus,jdbcType=CHAR},
+    mcht_contract_status = #{record.mchtContractStatus,jdbcType=CHAR},
+    mcht_archive_status = #{record.mchtArchiveStatus,jdbcType=CHAR},
+    business_information_status = #{record.businessInformationStatus,jdbcType=CHAR},
+    business_information_remarks = #{record.businessInformationRemarks,jdbcType=VARCHAR},
+    fw_hang_up_reason = #{record.fwHangUpReason,jdbcType=CHAR},
+    fw_hang_up_date = #{record.fwHangUpDate,jdbcType=TIMESTAMP},
+    mcht_archive_confirm_date = #{record.mchtArchiveConfirmDate,jdbcType=TIMESTAMP},
+    mcht_archive_confirm_by = #{record.mchtArchiveConfirmBy,jdbcType=INTEGER},
+    mcht_archive_remarks = #{record.mchtArchiveRemarks,jdbcType=VARCHAR},
+    mcht_archive_remarks_date = #{record.mchtArchiveRemarksDate,jdbcType=TIMESTAMP},
+    kf_close_hang_up_status = #{record.kfCloseHangUpStatus,jdbcType=CHAR},
+    order_confirm_status = #{record.orderConfirmStatus,jdbcType=CHAR},
+    service_order_confirm_status = #{record.serviceOrderConfirmStatus,jdbcType=CHAR},
+    appeal_order_confirm_status = #{record.appealOrderConfirmStatus,jdbcType=CHAR},
+    intervention_order_confirm_status = #{record.interventionOrderConfirmStatus,jdbcType=CHAR},
+    three_package_period = #{record.threePackagePeriod,jdbcType=VARCHAR},
+    kf_hang_up_reason = #{record.kfHangUpReason,jdbcType=CHAR},
+    kf_hang_up_date = #{record.kfHangUpDate,jdbcType=TIMESTAMP},
+    kf_confirm_date = #{record.kfConfirmDate,jdbcType=TIMESTAMP},
+    kf_confirm_by = #{record.kfConfirmBy,jdbcType=INTEGER},
+    kf_remarks = #{record.kfRemarks,jdbcType=VARCHAR},
+    kf_remarks_date = #{record.kfRemarksDate,jdbcType=TIMESTAMP},
+    cw_close_hang_up_status = #{record.cwCloseHangUpStatus,jdbcType=CHAR},
+    payment_of_goods_confirm = #{record.paymentOfGoodsConfirm,jdbcType=CHAR},
+    cw_hang_up_reason = #{record.cwHangUpReason,jdbcType=CHAR},
+    cw_confirm_date = #{record.cwConfirmDate,jdbcType=TIMESTAMP},
+    cw_confirm_by = #{record.cwConfirmBy,jdbcType=INTEGER},
+    cw_remarks = #{record.cwRemarks,jdbcType=VARCHAR},
+    cw_remarks_date = #{record.cwRemarksDate,jdbcType=TIMESTAMP},
+    file_path = #{record.filePath,jdbcType=VARCHAR},
+    express_id = #{record.expressId,jdbcType=INTEGER},
+    express_no = #{record.expressNo,jdbcType=VARCHAR},
+    end_cooperation_agreement = #{record.endCooperationAgreement,jdbcType=CHAR},
+    agreement_issue_date = #{record.agreementIssueDate,jdbcType=TIMESTAMP},
+    deposit_date = #{record.depositDate,jdbcType=TIMESTAMP},
+    fw_confirm_date = #{record.fwConfirmDate,jdbcType=TIMESTAMP},
+    fw_confirm_by = #{record.fwConfirmBy,jdbcType=INTEGER},
+    fw_remarks = #{record.fwRemarks,jdbcType=VARCHAR},
+    fw_remarks_date = #{record.fwRemarksDate,jdbcType=TIMESTAMP},
+    director_confirm_status = #{record.directorConfirmStatus,jdbcType=CHAR},
+    director_confirm_date = #{record.directorConfirmDate,jdbcType=TIMESTAMP},
+    director_confirm_by = #{record.directorConfirmBy,jdbcType=INTEGER},
+    product_confirm_status = #{record.productConfirmStatus,jdbcType=CHAR},
+    product_confirm_date = #{record.productConfirmDate,jdbcType=TIMESTAMP},
+    product_confirm_by = #{record.productConfirmBy,jdbcType=INTEGER},
+    settlement_audit_status = #{record.settlementAuditStatus,jdbcType=CHAR},
+    settlement_confirm_date = #{record.settlementConfirmDate,jdbcType=TIMESTAMP},
+    settlement_confirm_by = #{record.settlementConfirmBy,jdbcType=INTEGER},
+    deposit_return_status = #{record.depositReturnStatus,jdbcType=CHAR},
+    deposit_return_date = #{record.depositReturnDate,jdbcType=TIMESTAMP},
+    need_pay_status = #{record.needPayStatus,jdbcType=CHAR},
+    op_confirm_date = #{record.opConfirmDate,jdbcType=TIMESTAMP},
+    op_confirm_by = #{record.opConfirmBy,jdbcType=INTEGER},
+    close_reason = #{record.closeReason,jdbcType=CHAR},
+    is_platform_send = #{record.isPlatformSend,jdbcType=CHAR},
+    platform_send_date = #{record.platformSendDate,jdbcType=TIMESTAMP},
+    platform_express_id = #{record.platformExpressId,jdbcType=INTEGER},
+    platform_express_no = #{record.platformExpressNo,jdbcType=VARCHAR},
+    contract_audit_status = #{record.contractAuditStatus,jdbcType=CHAR},
+    contract_audit_by = #{record.contractAuditBy,jdbcType=INTEGER},
+    contract_upload_date = #{record.contractUploadDate,jdbcType=TIMESTAMP},
+    inner_remarks = #{record.innerRemarks,jdbcType=VARCHAR},
+    contract_audit_remarks = #{record.contractAuditRemarks,jdbcType=VARCHAR},
+    contract_archive_status = #{record.contractArchiveStatus,jdbcType=CHAR},
+    contract_archive_by = #{record.contractArchiveBy,jdbcType=INTEGER},
+    contract_archive_remarks = #{record.contractArchiveRemarks,jdbcType=VARCHAR},
+    bills_path = #{record.billsPath,jdbcType=VARCHAR},
+    comfirm_bills_status = #{record.comfirmBillsStatus,jdbcType=CHAR},
+    returned_deposit_amount = #{record.returnedDepositAmount,jdbcType=DECIMAL},
+    is_need_upload = #{record.isNeedUpload,jdbcType=CHAR},
+    create_by = #{record.createBy,jdbcType=INTEGER},
+    create_date = #{record.createDate,jdbcType=TIMESTAMP},
+    update_by = #{record.updateBy,jdbcType=INTEGER},
+    update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+    remarks = #{record.remarks,jdbcType=VARCHAR},
+    del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtCloseApplication" >
+    update bu_mcht_close_application
+    <set >
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="applySource != null" >
+        apply_source = #{applySource,jdbcType=CHAR},
+      </if>
+      <if test="applyName != null" >
+        apply_name = #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyReason != null" >
+        apply_reason = #{applyReason,jdbcType=VARCHAR},
+      </if>
+      <if test="progressStatus != null" >
+        progress_status = #{progressStatus,jdbcType=CHAR},
+      </if>
+      <if test="zsConfirmStatus != null" >
+        zs_confirm_status = #{zsConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="zsConfirmDate != null" >
+        zs_confirm_date = #{zsConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zsConfirmBy != null" >
+        zs_confirm_by = #{zsConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="zsRejectReason != null" >
+        zs_reject_reason = #{zsRejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="zsRemarks != null" >
+        zs_remarks = #{zsRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="zsRemarksDate != null" >
+        zs_remarks_date = #{zsRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtInfoStatus != null" >
+        mcht_info_status = #{mchtInfoStatus,jdbcType=CHAR},
+      </if>
+      <if test="activityStatus != null" >
+        activity_status = #{activityStatus,jdbcType=CHAR},
+      </if>
+      <if test="commodityStatus != null" >
+        commodity_status = #{commodityStatus,jdbcType=CHAR},
+      </if>
+      <if test="marketingStatus != null" >
+        marketing_status = #{marketingStatus,jdbcType=CHAR},
+      </if>
+      <if test="commodityConfirmDate != null" >
+        commodity_confirm_date = #{commodityConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commodityConfirmBy != null" >
+        commodity_confirm_by = #{commodityConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="commodityRemarks != null" >
+        commodity_remarks = #{commodityRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="commodityRemarksDate != null" >
+        commodity_remarks_date = #{commodityRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwCloseHangUpStatus != null" >
+        fw_close_hang_up_status = #{fwCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtContractStatus != null" >
+        mcht_contract_status = #{mchtContractStatus,jdbcType=CHAR},
+      </if>
+      <if test="mchtArchiveStatus != null" >
+        mcht_archive_status = #{mchtArchiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="businessInformationStatus != null" >
+        business_information_status = #{businessInformationStatus,jdbcType=CHAR},
+      </if>
+      <if test="businessInformationRemarks != null" >
+        business_information_remarks = #{businessInformationRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwHangUpReason != null" >
+        fw_hang_up_reason = #{fwHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="fwHangUpDate != null" >
+        fw_hang_up_date = #{fwHangUpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtArchiveConfirmDate != null" >
+        mcht_archive_confirm_date = #{mchtArchiveConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mchtArchiveConfirmBy != null" >
+        mcht_archive_confirm_by = #{mchtArchiveConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="mchtArchiveRemarks != null" >
+        mcht_archive_remarks = #{mchtArchiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtArchiveRemarksDate != null" >
+        mcht_archive_remarks_date = #{mchtArchiveRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfCloseHangUpStatus != null" >
+        kf_close_hang_up_status = #{kfCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="orderConfirmStatus != null" >
+        order_confirm_status = #{orderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="serviceOrderConfirmStatus != null" >
+        service_order_confirm_status = #{serviceOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="appealOrderConfirmStatus != null" >
+        appeal_order_confirm_status = #{appealOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="interventionOrderConfirmStatus != null" >
+        intervention_order_confirm_status = #{interventionOrderConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="threePackagePeriod != null" >
+        three_package_period = #{threePackagePeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="kfHangUpReason != null" >
+        kf_hang_up_reason = #{kfHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="kfHangUpDate != null" >
+        kf_hang_up_date = #{kfHangUpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfConfirmDate != null" >
+        kf_confirm_date = #{kfConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kfConfirmBy != null" >
+        kf_confirm_by = #{kfConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="kfRemarks != null" >
+        kf_remarks = #{kfRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="kfRemarksDate != null" >
+        kf_remarks_date = #{kfRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cwCloseHangUpStatus != null" >
+        cw_close_hang_up_status = #{cwCloseHangUpStatus,jdbcType=CHAR},
+      </if>
+      <if test="paymentOfGoodsConfirm != null" >
+        payment_of_goods_confirm = #{paymentOfGoodsConfirm,jdbcType=CHAR},
+      </if>
+      <if test="cwHangUpReason != null" >
+        cw_hang_up_reason = #{cwHangUpReason,jdbcType=CHAR},
+      </if>
+      <if test="cwConfirmDate != null" >
+        cw_confirm_date = #{cwConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cwConfirmBy != null" >
+        cw_confirm_by = #{cwConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="cwRemarks != null" >
+        cw_remarks = #{cwRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="cwRemarksDate != null" >
+        cw_remarks_date = #{cwRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filePath != null" >
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="expressId != null" >
+        express_id = #{expressId,jdbcType=INTEGER},
+      </if>
+      <if test="expressNo != null" >
+        express_no = #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="endCooperationAgreement != null" >
+        end_cooperation_agreement = #{endCooperationAgreement,jdbcType=CHAR},
+      </if>
+      <if test="agreementIssueDate != null" >
+        agreement_issue_date = #{agreementIssueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="depositDate != null" >
+        deposit_date = #{depositDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwConfirmDate != null" >
+        fw_confirm_date = #{fwConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fwConfirmBy != null" >
+        fw_confirm_by = #{fwConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="fwRemarks != null" >
+        fw_remarks = #{fwRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="fwRemarksDate != null" >
+        fw_remarks_date = #{fwRemarksDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="directorConfirmStatus != null" >
+        director_confirm_status = #{directorConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="directorConfirmDate != null" >
+        director_confirm_date = #{directorConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="directorConfirmBy != null" >
+        director_confirm_by = #{directorConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="productConfirmStatus != null" >
+        product_confirm_status = #{productConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="productConfirmDate != null" >
+        product_confirm_date = #{productConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productConfirmBy != null" >
+        product_confirm_by = #{productConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="settlementAuditStatus != null" >
+        settlement_audit_status = #{settlementAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="settlementConfirmDate != null" >
+        settlement_confirm_date = #{settlementConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settlementConfirmBy != null" >
+        settlement_confirm_by = #{settlementConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="depositReturnStatus != null" >
+        deposit_return_status = #{depositReturnStatus,jdbcType=CHAR},
+      </if>
+      <if test="depositReturnDate != null" >
+        deposit_return_date = #{depositReturnDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="needPayStatus != null" >
+        need_pay_status = #{needPayStatus,jdbcType=CHAR},
+      </if>
+      <if test="opConfirmDate != null" >
+        op_confirm_date = #{opConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="opConfirmBy != null" >
+        op_confirm_by = #{opConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="closeReason != null" >
+        close_reason = #{closeReason,jdbcType=CHAR},
+      </if>
+      <if test="isPlatformSend != null" >
+        is_platform_send = #{isPlatformSend,jdbcType=CHAR},
+      </if>
+      <if test="platformSendDate != null" >
+        platform_send_date = #{platformSendDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="platformExpressId != null" >
+        platform_express_id = #{platformExpressId,jdbcType=INTEGER},
+      </if>
+      <if test="platformExpressNo != null" >
+        platform_express_no = #{platformExpressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="contractAuditStatus != null" >
+        contract_audit_status = #{contractAuditStatus,jdbcType=CHAR},
+      </if>
+      <if test="contractAuditBy != null" >
+        contract_audit_by = #{contractAuditBy,jdbcType=INTEGER},
+      </if>
+      <if test="contractUploadDate != null" >
+        contract_upload_date = #{contractUploadDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="innerRemarks != null" >
+        inner_remarks = #{innerRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="contractAuditRemarks != null" >
+        contract_audit_remarks = #{contractAuditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="contractArchiveStatus != null" >
+        contract_archive_status = #{contractArchiveStatus,jdbcType=CHAR},
+      </if>
+      <if test="contractArchiveBy != null" >
+        contract_archive_by = #{contractArchiveBy,jdbcType=INTEGER},
+      </if>
+      <if test="contractArchiveRemarks != null" >
+        contract_archive_remarks = #{contractArchiveRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="billsPath != null" >
+        bills_path = #{billsPath,jdbcType=VARCHAR},
+      </if>
+      <if test="comfirmBillsStatus != null" >
+        comfirm_bills_status = #{comfirmBillsStatus,jdbcType=CHAR},
+      </if>
+      <if test="returnedDepositAmount != null" >
+        returned_deposit_amount = #{returnedDepositAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="isNeedUpload != null" >
+        is_need_upload = #{isNeedUpload,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtCloseApplication" >
+    update bu_mcht_close_application
+    set mcht_id = #{mchtId,jdbcType=INTEGER},
+      apply_source = #{applySource,jdbcType=CHAR},
+      apply_name = #{applyName,jdbcType=VARCHAR},
+      apply_reason = #{applyReason,jdbcType=VARCHAR},
+      progress_status = #{progressStatus,jdbcType=CHAR},
+      zs_confirm_status = #{zsConfirmStatus,jdbcType=CHAR},
+      zs_confirm_date = #{zsConfirmDate,jdbcType=TIMESTAMP},
+      zs_confirm_by = #{zsConfirmBy,jdbcType=INTEGER},
+      zs_reject_reason = #{zsRejectReason,jdbcType=VARCHAR},
+      zs_remarks = #{zsRemarks,jdbcType=VARCHAR},
+      zs_remarks_date = #{zsRemarksDate,jdbcType=TIMESTAMP},
+      mcht_info_status = #{mchtInfoStatus,jdbcType=CHAR},
+      activity_status = #{activityStatus,jdbcType=CHAR},
+      commodity_status = #{commodityStatus,jdbcType=CHAR},
+      marketing_status = #{marketingStatus,jdbcType=CHAR},
+      commodity_confirm_date = #{commodityConfirmDate,jdbcType=TIMESTAMP},
+      commodity_confirm_by = #{commodityConfirmBy,jdbcType=INTEGER},
+      commodity_remarks = #{commodityRemarks,jdbcType=VARCHAR},
+      commodity_remarks_date = #{commodityRemarksDate,jdbcType=TIMESTAMP},
+      fw_close_hang_up_status = #{fwCloseHangUpStatus,jdbcType=CHAR},
+      mcht_contract_status = #{mchtContractStatus,jdbcType=CHAR},
+      mcht_archive_status = #{mchtArchiveStatus,jdbcType=CHAR},
+      business_information_status = #{businessInformationStatus,jdbcType=CHAR},
+      business_information_remarks = #{businessInformationRemarks,jdbcType=VARCHAR},
+      fw_hang_up_reason = #{fwHangUpReason,jdbcType=CHAR},
+      fw_hang_up_date = #{fwHangUpDate,jdbcType=TIMESTAMP},
+      mcht_archive_confirm_date = #{mchtArchiveConfirmDate,jdbcType=TIMESTAMP},
+      mcht_archive_confirm_by = #{mchtArchiveConfirmBy,jdbcType=INTEGER},
+      mcht_archive_remarks = #{mchtArchiveRemarks,jdbcType=VARCHAR},
+      mcht_archive_remarks_date = #{mchtArchiveRemarksDate,jdbcType=TIMESTAMP},
+      kf_close_hang_up_status = #{kfCloseHangUpStatus,jdbcType=CHAR},
+      order_confirm_status = #{orderConfirmStatus,jdbcType=CHAR},
+      service_order_confirm_status = #{serviceOrderConfirmStatus,jdbcType=CHAR},
+      appeal_order_confirm_status = #{appealOrderConfirmStatus,jdbcType=CHAR},
+      intervention_order_confirm_status = #{interventionOrderConfirmStatus,jdbcType=CHAR},
+      three_package_period = #{threePackagePeriod,jdbcType=VARCHAR},
+      kf_hang_up_reason = #{kfHangUpReason,jdbcType=CHAR},
+      kf_hang_up_date = #{kfHangUpDate,jdbcType=TIMESTAMP},
+      kf_confirm_date = #{kfConfirmDate,jdbcType=TIMESTAMP},
+      kf_confirm_by = #{kfConfirmBy,jdbcType=INTEGER},
+      kf_remarks = #{kfRemarks,jdbcType=VARCHAR},
+      kf_remarks_date = #{kfRemarksDate,jdbcType=TIMESTAMP},
+      cw_close_hang_up_status = #{cwCloseHangUpStatus,jdbcType=CHAR},
+      payment_of_goods_confirm = #{paymentOfGoodsConfirm,jdbcType=CHAR},
+      cw_hang_up_reason = #{cwHangUpReason,jdbcType=CHAR},
+      cw_confirm_date = #{cwConfirmDate,jdbcType=TIMESTAMP},
+      cw_confirm_by = #{cwConfirmBy,jdbcType=INTEGER},
+      cw_remarks = #{cwRemarks,jdbcType=VARCHAR},
+      cw_remarks_date = #{cwRemarksDate,jdbcType=TIMESTAMP},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      express_id = #{expressId,jdbcType=INTEGER},
+      express_no = #{expressNo,jdbcType=VARCHAR},
+      end_cooperation_agreement = #{endCooperationAgreement,jdbcType=CHAR},
+      agreement_issue_date = #{agreementIssueDate,jdbcType=TIMESTAMP},
+      deposit_date = #{depositDate,jdbcType=TIMESTAMP},
+      fw_confirm_date = #{fwConfirmDate,jdbcType=TIMESTAMP},
+      fw_confirm_by = #{fwConfirmBy,jdbcType=INTEGER},
+      fw_remarks = #{fwRemarks,jdbcType=VARCHAR},
+      fw_remarks_date = #{fwRemarksDate,jdbcType=TIMESTAMP},
+      director_confirm_status = #{directorConfirmStatus,jdbcType=CHAR},
+      director_confirm_date = #{directorConfirmDate,jdbcType=TIMESTAMP},
+      director_confirm_by = #{directorConfirmBy,jdbcType=INTEGER},
+      product_confirm_status = #{productConfirmStatus,jdbcType=CHAR},
+      product_confirm_date = #{productConfirmDate,jdbcType=TIMESTAMP},
+      product_confirm_by = #{productConfirmBy,jdbcType=INTEGER},
+      settlement_audit_status = #{settlementAuditStatus,jdbcType=CHAR},
+      settlement_confirm_date = #{settlementConfirmDate,jdbcType=TIMESTAMP},
+      settlement_confirm_by = #{settlementConfirmBy,jdbcType=INTEGER},
+      deposit_return_status = #{depositReturnStatus,jdbcType=CHAR},
+      deposit_return_date = #{depositReturnDate,jdbcType=TIMESTAMP},
+      need_pay_status = #{needPayStatus,jdbcType=CHAR},
+      op_confirm_date = #{opConfirmDate,jdbcType=TIMESTAMP},
+      op_confirm_by = #{opConfirmBy,jdbcType=INTEGER},
+      close_reason = #{closeReason,jdbcType=CHAR},
+      is_platform_send = #{isPlatformSend,jdbcType=CHAR},
+      platform_send_date = #{platformSendDate,jdbcType=TIMESTAMP},
+      platform_express_id = #{platformExpressId,jdbcType=INTEGER},
+      platform_express_no = #{platformExpressNo,jdbcType=VARCHAR},
+      contract_audit_status = #{contractAuditStatus,jdbcType=CHAR},
+      contract_audit_by = #{contractAuditBy,jdbcType=INTEGER},
+      contract_upload_date = #{contractUploadDate,jdbcType=TIMESTAMP},
+      inner_remarks = #{innerRemarks,jdbcType=VARCHAR},
+      contract_audit_remarks = #{contractAuditRemarks,jdbcType=VARCHAR},
+      contract_archive_status = #{contractArchiveStatus,jdbcType=CHAR},
+      contract_archive_by = #{contractArchiveBy,jdbcType=INTEGER},
+      contract_archive_remarks = #{contractArchiveRemarks,jdbcType=VARCHAR},
+      bills_path = #{billsPath,jdbcType=VARCHAR},
+      comfirm_bills_status = #{comfirmBillsStatus,jdbcType=CHAR},
+      returned_deposit_amount = #{returnedDepositAmount,jdbcType=DECIMAL},
+      is_need_upload = #{isNeedUpload,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

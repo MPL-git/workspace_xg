@@ -1,0 +1,74 @@
+@charset "utf-8";
+
+//颜色值格式: #xxxxxx || transparent
+//背景图片格式: url("../images/xxxxx.png") || none
+
+//body背景
+$body_bg : url("../images/pagebg.jpg");
+//头部背景
+$header_bg : url("../images/header_bg.jpg");
+//主颜色
+$theme_color : #7a0026;
+//副颜色
+$theme_color2 : #23130c;
+//导航背景
+$nav_bg : rgba(0,0,0,.8);
+//标题颜色
+$title_color : #5a0c10;
+$title_bg : null;
+$title_bottom_line : #5a0c10;
+//通知图标
+$notify_bg : null;
+
+//普通按钮
+$btn_bg : #7a0026;
+//立即购买按钮
+$btn_buy_bg : #7a0026;
+//加入购物车按钮
+$btn_cart_bg : #8c8b8b;
+//操作按钮
+$btn_action_bg : null;
+$btn_action2_bg : null;
+
+//团购框
+$group_buy_bg : #23130c;
+//团购按钮
+$btn_group_buy_bg : null;
+//团购打折标签
+$group_buy_tag_bg : null;
+//团购倒计时框
+$group_buy_time_color : null;
+$group_buy_time_bg : null;
+$group_buy_time_ico : null;
+
+//促销颜色
+$promote_color: #5a0c10;
+
+//详情
+$detail_tab_bg : #5a0c10;
+$detail_tab_border_color : #4e0a0d;
+$detail_tab_text_color : #ffffff;
+$detail_tab_active_bg :#23130c;
+$detail_tab_active_text_color :#ffffff;
+$detail_title_bg : #5a0c10;
+$detail_title_color : #ffffff;
+
+//个人中心侧栏当前箭头
+$mc_menu_arrow_img: null;
+//密码强度
+$psw_strength_bg_img: null;
+//链接颜色
+$link_color : #e62826;
+
+//配送状态
+$deliver_status_line : null;
+$deliver_status_bg_img: null;
+
+//右上角步骤
+$step_bg_img : null;
+$step_active_line_color : null;
+$step_active_color : null;
+//中间步骤
+$step_large_bg_img : null;
+$step_large_active_line_color : null;
+$step_large_active_color : null;

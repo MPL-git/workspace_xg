@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductStatisticsCustomMapper" >
+
+  <sql id="Id_Column_List" >
+    t.id product_id,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_id = t.id) sold_7_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0), ',', IFNULL(COUNT(DISTINCT so.id), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_status = '2' and od.product_id = t.id) refund_7_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_id = t.id) sold_30_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0), ',', IFNULL(COUNT(DISTINCT so.id), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_status = '2' and od.product_id = t.id) refund_30_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_id = t.id) sold_90_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0), ',', IFNULL(COUNT(DISTINCT so.id), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_status = '2' and od.product_id = t.id) refund_90_days,
+	IF((select COUNT(1) from bu_comment c where c.del_flag = '0' and c.product_id = t.id and c.product_score in(4, 5) ) = 0,
+			'',
+			CONCAT(TRUNCATE(
+				(select COUNT(1) from bu_comment c where c.del_flag = '0' and c.product_id = t.id and c.product_score in(4, 5) )
+				/(select COUNT(1) from bu_comment c where c.del_flag = '0' and c.product_id = t.id )*100
+			, 2))) applause_rate
+  </sql>
+  <select id="countNewProduct" resultType="java.lang.Integer" >
+    select COUNT(1) from bu_product t where t.del_flag = '0'
+        and t.id not in(select ps.product_id from bu_product_statistics ps where ps.del_flag = '0')
+  </select>
+  <select id="selectIdProductStatistics" resultType="java.util.Map" parameterType="java.util.Map" >
+    select
+    <include refid="Id_Column_List" />
+    from bu_product t
+    where t.del_flag = '0' and t.id not in(select ps.product_id from bu_product_statistics ps where ps.del_flag = '0')
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <sql id="Product_id_Column_List" >
+    t.product_id product_id,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_id = t.product_id) sold_7_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0), ',', IFNULL(COUNT(DISTINCT so.id), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_status = '2' and od.product_id = t.product_id) refund_7_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_id = t.product_id) sold_30_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0), ',', IFNULL(COUNT(DISTINCT so.id), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_status = '2' and od.product_id = t.product_id) refund_30_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_id = t.product_id) sold_90_days,
+	(select CONVERT(CONCAT(IFNULL(SUM(od.quantity), 0), ',', IFNULL(SUM(od.pay_amount), 0), ',', IFNULL(COUNT(DISTINCT so.id), 0)), CHAR) from bu_combine_order co, bu_sub_order so, bu_order_dtl od
+		where co.del_flag = '0' and so.del_flag = '0' and od.del_flag = '0' and co.id = so.combine_order_id and so.id = od.sub_order_id
+					and co.pay_date between CONCAT(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and CONCAT(CURDATE(), ' 23:59:59') and od.product_status = '2' and od.product_id = t.product_id) refund_90_days,
+	IF((select COUNT(1) from bu_comment c where c.del_flag = '0' and c.product_id = t.product_id and c.product_score in(4, 5) ) = 0,
+			'',
+			CONCAT(TRUNCATE(
+				(select COUNT(1) from bu_comment c where c.del_flag = '0' and c.product_id = t.product_id and c.product_score in(4, 5) )
+				/(select COUNT(1) from bu_comment c where c.del_flag = '0' and c.product_id = t.product_id )*100
+			, 2))) applause_rate
+  </sql>
+  <select id="countProductStatistics" resultType="java.lang.Integer" >
+    <![CDATA[ select COUNT(1) from bu_product_statistics t where t.del_flag = '0' and t.update_date < CONCAT(CURDATE(), ' 00:00:00') ]]>
+  </select>
+  <select id="selectProductIdProductStatistics" resultType="java.util.Map" parameterType="java.util.Map" >
+    select
+    <include refid="Product_id_Column_List" />
+    from bu_product_statistics t
+    <![CDATA[ where t.del_flag = '0' and t.update_date < CONCAT(CURDATE(), ' 00:00:00') ]]>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <insert id="insertProductStatisticsList" parameterType="java.util.List" >
+    insert into bu_product_statistics (product_id, sold_count_7_days, sold_amount_7_days,
+      refund_count_7_days, refund_amount_7_days, sub_order_count_7_days,
+      sold_count_30_days, sold_amount_30_days, refund_count_30_days,
+      refund_amount_30_days, sub_order_count_30_days,
+      sold_count_90_days, sold_amount_90_days, refund_count_90_days,
+      refund_amount_90_days, sub_order_count_90_days,
+      applause_rate, create_by, create_date, update_date)
+    values
+    <foreach collection="list" item="item" separator="," >
+      (#{item.productId}, #{item.soldCount7Days}, #{item.soldAmount7Days},
+      #{item.refundCount7Days}, #{item.refundAmount7Days}, #{item.subOrderCount7Days},
+      #{item.soldCount30Days}, #{item.soldAmount30Days}, #{item.refundCount30Days},
+      #{item.refundAmount30Days}, #{item.subOrderCount30Days},
+      #{item.soldCount90Days}, #{item.soldAmount90Days}, #{item.refundCount90Days},
+      #{item.refundAmount90Days}, #{item.subOrderCount90Days},
+      #{item.applauseRate}, #{item.createBy}, #{item.createDate}, #{item.updateDate})
+    </foreach>
+  </insert>
+  <update id="updateProductStatisticsList" parameterType="java.util.List" >
+    <foreach collection="list" item="record" separator=";" >
+      update bu_product_statistics
+      <set >
+        <if test="record.soldCount7Days != null" >
+          sold_count_7_days = #{record.soldCount7Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.soldAmount7Days != null" >
+          sold_amount_7_days = #{record.soldAmount7Days,jdbcType=DECIMAL},
+        </if>
+        <if test="record.refundCount7Days != null" >
+          refund_count_7_days = #{record.refundCount7Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.refundAmount7Days != null" >
+          refund_amount_7_days = #{record.refundAmount7Days,jdbcType=DECIMAL},
+        </if>
+        <if test="record.subOrderCount7Days != null" >
+          sub_order_count_7_days = #{record.subOrderCount7Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.soldCount30Days != null" >
+          sold_count_30_days = #{record.soldCount30Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.soldAmount30Days != null" >
+          sold_amount_30_days = #{record.soldAmount30Days,jdbcType=DECIMAL},
+        </if>
+        <if test="record.refundCount30Days != null" >
+          refund_count_30_days = #{record.refundCount30Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.refundAmount30Days != null" >
+          refund_amount_30_days = #{record.refundAmount30Days,jdbcType=DECIMAL},
+        </if>
+        <if test="record.subOrderCount30Days != null" >
+          sub_order_count_30_days = #{record.subOrderCount30Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.soldCount90Days != null" >
+          sold_count_90_days = #{record.soldCount90Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.soldAmount90Days != null" >
+          sold_amount_90_days = #{record.soldAmount90Days,jdbcType=DECIMAL},
+        </if>
+        <if test="record.refundCount90Days != null" >
+          refund_count_90_days = #{record.refundCount90Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.refundAmount90Days != null" >
+          refund_amount_90_days = #{record.refundAmount90Days,jdbcType=DECIMAL},
+        </if>
+        <if test="record.subOrderCount90Days != null" >
+          sub_order_count_90_days = #{record.subOrderCount90Days,jdbcType=INTEGER},
+        </if>
+        <if test="record.applauseRate != null" >
+          applause_rate = #{record.applauseRate,jdbcType=DECIMAL},
+        </if>
+        <if test="record.createBy != null" >
+          create_by = #{record.createBy,jdbcType=INTEGER},
+        </if>
+        <if test="record.createDate != null" >
+          create_date = #{record.createDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.updateBy != null" >
+          update_by = #{record.updateBy,jdbcType=INTEGER},
+        </if>
+        <if test="record.updateDate != null" >
+          update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.remarks != null" >
+          remarks = #{record.remarks,jdbcType=VARCHAR},
+        </if>
+        <if test="record.delFlag != null" >
+          del_flag = #{record.delFlag,jdbcType=CHAR},
+        </if>
+      </set>
+      where del_flag = '0' and product_id = #{record.productId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+</mapper>

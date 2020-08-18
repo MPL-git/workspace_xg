@@ -1,0 +1,62 @@
+<div class="page advance flex dc bgf4" data-title="预告" data-id="advance">
+	<link rel="stylesheet" href="../static/css/common-brand.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">预告</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg scroll-y scroll-more flex dc"></div>
+
+	<script id="advance_tpl" type="text/html">
+		{{if Rows.length}}
+		<div class="con-brand con-brand2">
+			{{include 'advance_tpl_list'}}
+		</div>
+		{{else}}
+		{{include 'advance_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="advance_tpl_list" type="text/html">
+		{{each Rows value i}}
+		<a class="mb20 w75"
+			onclick="getUrlActive(this, {pos: '{{page + i}}'})"
+			data-url="{{value.areaUrl}}"
+			data-activityid="{{value.activityId}}"
+			data-activityareaid="{{value.activityAreaId}}"
+			data-source="{{value.source}}">
+			<dl>
+				<dt>
+					<img src="{{value.entryPic}}">
+					{{if value.isExist}}
+					<span class="ico-btn remind reminded" onclick="advanceApi.getRemind(this)" data-type="1" data-id="{{value.activityAreaId}}"></span>
+					{{else}}
+					<span class="ico-btn remind" onclick="advanceApi.getRemind(this)" data-type="1" data-id="{{value.activityAreaId}}"></span>
+					{{/if}}
+				</dt>
+
+				<dd>
+					<div class="row-1 flex ac jb">
+						<div class="flex ac">
+							<p class="ellipsis" title="{{value.name}}">{{value.name}}</p>
+						</div>
+						<time class="flex ac"><p class="ellipsis f50">{{value.time}}</p></time>
+					</div>
+					<div class="row-2 elps">{{value.benefitPoint}}</div>
+				</dd>
+			</dl>
+		</a>
+		{{/each}}
+	</script>
+
+	<script id="advance_tpl_empty" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+	</script>
+
+	<script src="advance/index.js?var=1.1" async></script>
+</div>

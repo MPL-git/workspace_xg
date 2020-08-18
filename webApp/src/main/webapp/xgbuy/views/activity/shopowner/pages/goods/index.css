@@ -1,0 +1,79 @@
+.novaplan-goods {
+	font-size: .24rem;
+}
+.novaplan-goods .page-empty {
+	height: calc(100vh - 1.58rem);
+}
+
+.novaplan-goods .nav {
+	height: .7rem;
+	font-size: .28rem;
+	line-height: .28rem;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+}
+.novaplan-goods .nav .scroll-x {
+	height: 100%;
+	padding: 0 .05rem;
+}
+.novaplan-goods .nav .divide a {
+	width: 20%;
+	padding: 0;
+}
+.novaplan-goods .nav a {
+	position: relative;
+	height: 100%;
+	padding: 0 .25rem;
+	white-space: nowrap;
+}
+.novaplan-goods .nav a:after {
+	position: absolute;
+	bottom: 0;
+	left: .08rem;
+	content: '';
+	width: calc(100% - .16rem);
+	height: .04rem;
+	background: transparent;
+}
+.novaplan-goods .nav a.active:after {
+	background: #ff5050;
+}
+
+.novaplan-goods .swiper-container,
+.novaplan-goods .swiper-container li {
+	height: 2.78rem;
+}
+
+.novaplan-goods .goods li {
+	padding: .2rem;
+	border-bottom: 1px solid #eee;
+}
+.novaplan-goods .goods dt {
+	width: 2.4rem;
+	height: 2.4rem;
+	margin-right: .2rem;
+}
+.novaplan-goods .goods dt img {
+	height: 100%;
+}
+.novaplan-goods .goods h2 {
+	height: .6rem;
+	max-width: 4.5rem;
+	font-size: .3rem;
+}
+.novaplan-goods .goods p {
+	height: .56rem;
+	line-height: .28rem;
+}
+.novaplan-goods .row-2 {
+	height: .5rem;
+}
+.novaplan-goods strong {
+	margin-right: .1rem;
+	font-size: .26rem;
+	color: #ff5050;
+}
+.novaplan-goods strong:before {
+	font-size: .75em;
+	content: '¥';
+}

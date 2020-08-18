@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ShopDecorateInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ShopDecorateInfoCustom" extends="com.jf.dao.ShopDecorateInfoMapper.BaseResultMap">
+   	  <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+   	  <result column="shop_logo" property="shopLogo" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getShopDecorateInfo" parameterType="int" resultType="com.jf.entity.ShopDecorateInfoCustom">
+  		select
+		page.banner,
+		info.id,
+		mcht.shop_name,
+		mcht.shop_logo
+		from bu_shop_decorate_page page,bu_shop_decorate_info info,bu_mcht_info mcht
+		where page.mcht_id = mcht.id and page.shop_decorate_info_id = info.id
+		and page.`status` = '1'
+		and page.del_flag = '0'
+		and info.del_flag = '0'
+		and mcht.status = '1'
+		and mcht.shop_status = '1'
+		and mcht.id = #{mchtId}
+  	</select>
+</mapper>

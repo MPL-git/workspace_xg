@@ -1,0 +1,1116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ActivityCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ActivityCustom"  extends="com.jf.dao.ActivityMapper.BaseResultMap">
+    <result column="activity_begin_time" property="activityBeginTime" jdbcType="TIMESTAMP" />
+    <result column="activity_end_time" property="activityEndTime" jdbcType="TIMESTAMP" />
+    <result column="preheat_time" property="preheatTime" jdbcType="TIMESTAMP" />
+    <result column="activityAreaId" property="activityAreaId" jdbcType="VARCHAR" />
+    <result column="activityAreaName" property="activityAreaName" jdbcType="VARCHAR" />
+    
+    <result column="productName" property="productName" jdbcType="VARCHAR" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="productTypeName" property="productTypeName" jdbcType="VARCHAR" />
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="benefit_point" property="benefitPoint" jdbcType="VARCHAR" />
+    
+	<result column="sale_price" property="salePrice" jdbcType="DECIMAL"/>
+	<result column="tag_price" property="tagPrice" jdbcType="DECIMAL"/>
+	<result column="discount" property="discount" jdbcType="DECIMAL"/>
+	
+	<result column="product_id" property="productId" jdbcType="INTEGER"/>
+	<result column="productTypeId" property="productTypeId" jdbcType="INTEGER"/>
+	<result column="stock" property="stock" jdbcType="INTEGER"/>
+	<result column="locked_amount" property="lockedAmount" jdbcType="INTEGER"/>
+	<result column="stockSum" property="stockSum" jdbcType="INTEGER"/>
+	<result column="limit_buy" property="limitBuy" jdbcType="INTEGER"/>
+	
+	<result column="preferential_type" property="preferentialType" jdbcType="VARCHAR" />
+    <result column="preferential_id_group" property="preferentialIdGroup" jdbcType="VARCHAR" />
+    
+    <result column="activityProductNum" property="activityProductNum" jdbcType="INTEGER"/>
+    
+    <result column="areaEntryPic" property="areaEntryPic" jdbcType="VARCHAR" />
+    
+    <result column="productPic" property="productPic" jdbcType="VARCHAR" />
+    <result column="productStatus" property="productStatus" jdbcType="VARCHAR" />
+    <result column="templet_suffix" property="templetSuffix" jdbcType="VARCHAR" />
+    <result column="activityAreaType" property="activityAreaType" jdbcType="VARCHAR" />
+     <result column="is_watermark" property="isWatermark" jdbcType="VARCHAR" />
+     <result column="svip_discount" property="svipDiscount" jdbcType="DECIMAL" />
+  </resultMap>
+  <select id="getActivityCustomList" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  			select * from (
+  			<if test="adCatalog != null and adCatalog != ''">
+				select
+				acArea.id as activityAreaId,
+				ifnull(acAdInfo.seq_no,99999) AS seq_no,
+				ifnull(ac.seq_no,99999) AS activity_seq_no,
+		  		ac.id, 
+				ac.product_type_id,
+				(select brand.logo from bu_product_brand brand where brand.del_flag = '0' and brand.id = ac.product_brand_id) as logo,
+				'2' as source,
+				acArea.type,
+				ac.name as activityAreaName,
+				acArea.benefit_point,
+				ac.entry_pic as areaEntryPic,
+				acArea.activity_begin_time,
+				acArea.activity_end_time,
+				acArea.templet_suffix
+				from bu_activity_area acArea,bu_ad_info acAdInfo,bu_activity ac
+				where ac.del_flag = '0'
+				and acArea.del_flag = '0' 
+				and acArea.status = '1'     
+				and acArea.activity_begin_time &lt;= now() 
+				and acArea.activity_end_time &gt;= now()
+				<!-- and acArea.source = '2' -->
+				and acArea.id = ac.activity_area_id
+				and ac.id = acAdInfo.link_id
+				and ac.status = '6' 
+				and acAdInfo.link_type = '2'  
+				and acAdInfo.position = '9' 
+				and acAdInfo.status = '1'
+				and acAdInfo.type = '2'
+				and acAdInfo.del_flag = '0'
+				and acAdInfo.auto_up_date &lt;= now()
+				and acAdInfo.auto_down_date &gt;= now()   
+				and acAdInfo.catalog = #{adCatalog}
+				
+			union
+			
+			select
+			acArea.id as activityAreaId,
+			ifnull(acAdInfo.seq_no,99999) AS seq_no,
+			99999 as activity_seq_no,
+	  		0 as id, 
+			0 as product_type_id,
+			'' as logo,
+			acArea.source,
+			acArea.type,
+			acArea.name as activityAreaName,
+			acArea.benefit_point,
+			acArea.entry_pic as areaEntryPic,
+			acArea.activity_begin_time,
+			acArea.activity_end_time,
+			acArea.templet_suffix
+			from bu_activity_area acArea,bu_ad_info acAdInfo
+			where acArea.del_flag = '0' 
+			and acArea.status = '1'     
+			and acArea.activity_begin_time &lt;= now()   
+			and acArea.activity_end_time &gt;= now() 
+			<!-- and acArea.source = '1' -->
+			and acArea.type != '3'
+			and acArea.id = acAdInfo.link_id
+			and acAdInfo.link_type = '1'  
+			and acAdInfo.position = '9' 
+			and acAdInfo.status = '1'
+			and acAdInfo.type = '2'
+			and acAdInfo.del_flag = '0'
+			and acAdInfo.auto_up_date &lt;= now()
+			and acAdInfo.auto_down_date &gt;= now()   
+			and acAdInfo.catalog = #{adCatalog}
+			</if>
+			
+			<if test="adCatalog != null and adCatalog != 1">
+				union
+				
+				select
+				acArea.id as activityAreaId,
+				99999 as seq_no,
+				ifnull(ac.seq_no,99999) AS activity_seq_no,
+		  		ac.id, 
+				ac.product_type_id,
+				(select brand.logo from bu_product_brand brand where brand.del_flag = '0' and brand.id = ac.product_brand_id) as logo,
+				acArea.source,
+				acArea.type,
+				acArea.name as activityAreaName,
+				acArea.benefit_point,
+				ac.entry_pic as areaEntryPic,
+				acArea.activity_begin_time,
+				acArea.activity_end_time,
+				acArea.templet_suffix
+				from bu_activity_area acArea,bu_activity ac
+				where ac.del_flag = '0'
+				and acArea.del_flag = '0' 
+				and acArea.status = '1'     
+				and acArea.activity_begin_time &lt;= now()  
+				and acArea.activity_end_time &gt;= now() 
+				and acArea.source = '2'
+				and acArea.id = ac.activity_area_id
+				and ac.status = '6'  
+				and ac.id not in (
+					select ifnull(activityAdInfo.link_id,0) from bu_ad_info activityAdInfo where 
+					activityAdInfo.link_type = '2' 
+					and activityAdInfo.position = '9' 
+					and activityAdInfo.status = '1'
+					and activityAdInfo.type = '2'
+					and activityAdInfo.del_flag = '0'
+					and activityAdInfo.auto_up_date &lt;= now()
+					and activityAdInfo.auto_down_date &gt;= now()
+					and activityAdInfo.catalog = #{adCatalog})
+				<if test="isNewVersion != null and isNewVersion != '' and isNewVersion == '1'.toString()">
+					AND acArea.id NOT IN(
+						select 
+						brandGroupAc.activity_area_id
+						from bu_activity_brand_group acBrandGroup,bu_activity_brand_group_activity brandGroupAc
+						WHERE acBrandGroup.id = brandGroupAc.activity_brand_group_id
+						AND acBrandGroup.app_catalog = #{productTypeId} 
+						AND acBrandGroup.`status` = '1'
+						AND acBrandGroup.del_flag = '0'
+						AND brandGroupAc.del_flag = '0'
+			  		)
+				</if>	
+				<if test="productTypeId != null and productTypeId != ''">
+					and ac.product_type_id = #{productTypeId}
+				</if>	
+			</if>
+			) apiA
+			order by apiA.seq_no,apiA.activity_seq_no,apiA.activityAreaId DESC
+
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getNewUserEnjoyList" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  	select * from (
+  	select apiA.*,sum(apiA.stock-apiA.locked_amount) as stockSum from (
+  		select 
+  		pro.id AS productId,
+  		acPro.seq_no, 
+  		ac.id,
+		ac.activity_area_id,  
+		proTypeThree.name AS productTypeName, 
+		proTypeThree.id AS productTypeId, 
+		pro.status as productStatus,
+		ac.entry_pic,
+		pro.name AS productName,
+		pro.limit_buy, 
+		acArea.activity_begin_time, 
+		acArea.activity_end_time,
+		pic.pic as productPic,
+		item.sale_price,
+		item.tag_price,
+		item.stock as stock,
+		item.locked_amount
+		from bu_activity_area acArea 
+		left join bu_activity ac on ac.activity_area_id = acArea.id 
+		left join bu_activity_product acPro on acPro.activity_id = ac.id 
+		left join bu_product pro on pro.id = acPro.product_id
+		left join bu_product_type proType on proType.id = pro.product_type_id
+		left join bu_product_type proTypeTwo on proTypeTwo.id = proType.parent_id
+		left join bu_product_type proTypeThree on proTypeThree.id = proTypeTwo.parent_id
+		left join bu_product_pic pic on pic.product_id = pro.id
+		left join bu_product_item item on item.product_id = pro.id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and proType.del_flag = '0'
+		and acPro.del_flag = '0'
+		and pic.del_flag = '0'
+		and pic.is_default = '1'
+		and acArea.status = '1'
+		and pro.del_flag = '0'
+		and item.del_flag = '0'
+		and ac.status = '6'
+		and acPro.refuse_flag = '0'
+		and acPro.coo_audit_status = '2'
+		and proType.status = '1'
+		and proTypeTwo.status = '1'
+		and proTypeThree.status = '1'
+		and acArea.type= #{type}
+		and acArea.id = #{activityAreaId}
+		<if test="productTypeId != null and productTypeId != '' and productTypeId != 'JJSX'">
+			and proTypeThree.id = #{productTypeId}
+		</if>
+		<if test="productTypeId == 'JJSX'">
+			and now() &lt; acArea.activity_begin_time
+		</if>
+		<if test="productTypeId != 'JJSX'">
+			and now() &gt;= acArea.activity_begin_time and now() &lt;= acArea.activity_end_time
+		</if>
+		order by pro.id,item.sale_price) apiA
+		group by apiA.productId) apiB
+		order by ifnull(apiB.seq_no,99999),apiB.sale_price
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+		
+  	</select>
+  	
+  	<select id="getNewSingleActivityList" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  	select * from(
+	select apiA.*,sum(apiA.stock-apiA.locked_amount) as stockSum from (
+  		select 
+  		pro.id AS productId, 
+		proTypeThree.name AS productTypeName, 
+		proTypeThree.id AS productTypeId, 
+		pro.status as productStatus,
+		pro.name AS productName,
+		pro.limit_buy, 
+		pic.pic as productPic,
+		item.sale_price,
+		item.tag_price,
+		item.stock as stock,
+		item.locked_amount,
+		single.seq_no
+		from bu_single_product_activity single
+		left join bu_product pro on pro.id = single.product_id
+		left join bu_product_type proType on proType.id = pro.product_type_id
+		left join bu_product_type proTypeTwo on proTypeTwo.id = proType.parent_id
+		left join bu_product_type proTypeThree on proTypeThree.id = proTypeTwo.parent_id
+		left join bu_product_pic pic on pic.product_id = pro.id
+		left join bu_product_item item on item.product_id = pro.id
+		where single.del_flag = '0'
+		and proType.del_flag = '0'
+		and pic.del_flag = '0'
+		and pro.del_flag = '0'
+		and item.del_flag = '0'
+		and pic.is_default = '1'
+		and pro.status = '1'
+		and single.type = #{activityType}
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and proType.status = '1'
+		and proTypeTwo.status = '1'
+		and proTypeThree.status = '1'
+		and single.end_time &gt;= now()
+		and single.begin_time &lt;= now()
+		<if test="productTypeId != null and productTypeId != '' and productTypeId != 'JJSX'">
+			and proTypeThree.id = #{productTypeId}
+		</if>
+		order by pro.id,item.sale_price) apiA
+		group by apiA.productId) apiB
+		order by ifnull(apiB.seq_no,99999),apiB.sale_price
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+		
+  	</select>
+  	
+  	<select id="getNewSingleActivityCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select 
+  		count(*)
+		from bu_single_product_activity single
+		left join bu_product pro on pro.id = single.product_id
+		left join bu_product_type proType on proType.id = pro.product_type_id
+		left join bu_product_type proTypeTwo on proTypeTwo.id = proType.parent_id
+		left join bu_product_type proTypeThree on proTypeThree.id = proTypeTwo.parent_id
+		left join bu_product_pic pic on pic.product_id = pro.id
+		where single.del_flag = '0'
+		and proType.del_flag = '0'
+		and pic.del_flag = '0'
+		and pro.del_flag = '0'
+		and pic.is_default = '1'
+		and pro.status = '1'
+		and single.type = #{activityType}
+		and single.is_close = '0'
+		and single.audit_status = '3'
+		and proType.status = '1'
+		and proTypeTwo.status = '1'
+		and proTypeThree.status = '1'
+		and single.end_time &gt;= now()
+		and single.begin_time &lt;= now()
+		<if test="productTypeId != null and productTypeId != '' and productTypeId != 'JJSX'">
+			and proTypeThree.id = #{productTypeId}
+		</if>
+		
+  	</select>
+  	
+  	<select id="getNewUserEnjoyCount"  parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select count(*)
+		from bu_activity_area acArea 
+		left join bu_activity ac on ac.activity_area_id = acArea.id 
+		left join bu_activity_product acPro on acPro.activity_id = ac.id 
+		left join bu_product pro on pro.id = acPro.product_id
+		left join bu_product_type proType on proType.id = pro.product_type_id 
+		left join bu_product_type proTypeTwo on proTypeTwo.id = proType.parent_id
+		left join bu_product_type proTypeThree on proTypeThree.id = proTypeTwo.parent_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and proType.del_flag = '0'
+		and acPro.del_flag = '0'
+		and acArea.status = '1'
+		and pro.del_flag = '0'
+		and ac.status = '6'
+		and acPro.refuse_flag = '0'
+		and acPro.coo_audit_status = '2'
+		and acArea.type= #{type}
+		and acArea.id = #{activityAreaId}
+		and proType.status = '1'
+		and proTypeTwo.status = '1'
+		and proTypeThree.status = '1'
+		<if test="productTypeId != null and productTypeId != '' and productTypeId != 'JJSX'">
+			and proTypeThree.id = #{productTypeId}
+		</if>
+		<if test="productTypeId == 'JJSX'">
+			and now() &lt; acArea.activity_begin_time
+		</if>
+		<if test="productTypeId != 'JJSX'">
+			and now() &gt;= acArea.activity_begin_time and now() &lt;= acArea.activity_end_time
+		</if>
+  	</select>
+  	
+  	<select id="getNewUserEnjoyCategory" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select 
+		proTypeThree.id AS productTypeId,
+		proTypeThree.name AS productTypeName
+		from bu_activity_area acArea 
+		left join bu_activity ac on ac.activity_area_id = acArea.id 
+		left join bu_activity_product acPro on acPro.activity_id = ac.id 
+		left join bu_product pro on pro.id = acPro.product_id
+		left join bu_product_type proType on proType.id = pro.product_type_id
+		left join bu_product_type proTypeTwo on proTypeTwo.id = proType.parent_id
+		left join bu_product_type proTypeThree on proTypeThree.id = proTypeTwo.parent_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and proType.del_flag = '0'
+		and acPro.del_flag = '0'
+		and acArea.status = '1'
+		and pro.del_flag = '0'
+		and ac.status = '6'
+		and acPro.refuse_flag = '0'
+		and acPro.coo_audit_status = '2'
+		and acArea.type= #{type}
+		and acArea.id = #{activityAreaId}
+		and proType.status = '1'
+		and proTypeTwo.status = '1'
+		and proTypeThree.status = '1'
+		and now() &gt;= acArea.activity_begin_time 
+		and now() &lt;= acArea.activity_end_time
+		group by proTypeThree.id
+		
+  	</select>
+  	
+  	<select id="getCurrentMaxActivityAreaId" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select 
+		max(acArea.id) as activityAreaId
+		from bu_activity_area acArea 
+		left join bu_activity ac on ac.activity_area_id = acArea.id
+		left join bu_activity_product acPro on acPro.activity_id = ac.id 
+		left join bu_product pro on pro.id = acPro.product_id
+		left join bu_product_type proType on proType.id = pro.product_type_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and proType.del_flag = '0'
+		and acPro.del_flag = '0'
+		and acArea.status = '1'
+		and pro.del_flag = '0'
+		and ac.status = '6'
+		and acPro.refuse_flag = '0'
+		and acPro.coo_audit_status = '2'
+		and proType.status = '1'
+		and acArea.type= #{type}
+		<if test="productTypeId == 'JJSX'">
+			and now() &lt; acArea.activity_begin_time
+		</if>
+		<if test="productTypeId != 'JJSX'">
+			and now() &gt;= acArea.activity_begin_time and now() &lt;= acArea.activity_end_time
+		</if>
+  	</select>
+  	
+  	<select id="getActivityPreheatList" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select t.* from(
+		select
+  		ac.id, 
+  		acArea.preheat_time,
+  		acArea.preheat_seq_no,
+  		acArea.templet_suffix,
+		ac.entry_pic,
+		ac.poster_pic,
+		ac.name,
+		acArea.preferential_type,
+		acArea.preferential_id_group,
+		acArea.source,
+		acArea.type,
+		acArea.id as activityAreaId,
+		acArea.name as activityAreaName,
+		acArea.activity_begin_time,
+		acArea.activity_end_time,
+		acArea.entry_pic as areaEntryPic,
+		acArea.benefit_point,
+		(select brand.logo from bu_product_brand brand where brand.id = ac.product_brand_id and brand.del_flag = '0') as logo
+		from bu_activity_area acArea 
+		left join bu_activity ac on acArea.id = ac.activity_area_id
+		left join bu_activity_product acPro on acPro.activity_id = ac.id
+		left join bu_product product on product.id = acPro.product_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and ac.status = '6'
+		and acPro.del_flag = '0'
+		and product.del_flag = '0'    
+		and (acArea.type = '0' or acArea.type = '1' or acArea.type = '2')  <!-- #专区类型(1品牌活动 2单品活动 6单品爆款 7新用户专享) -->
+		and acArea.status = '1'      <!-- #会场状态(0未启用 1启用) -->
+		and acArea.preheat_flag = '1'
+		and acArea.preheat_time &lt;= now()
+		and acArea.activity_begin_time &gt; now()
+		and acArea.activity_end_time &gt; now()
+		and product.status = '1'
+		AND acArea.source = '1'
+		and acPro.refuse_flag = '0'
+		and acPro.coo_audit_status = '2'
+		<if test="activityTime != null and activityTime != ''">
+			and acArea.activity_begin_time &gt;= #{activityBeginTime} and acArea.activity_begin_time &lt;= #{activityEndTime}
+		</if>
+		group by acArea.id
+		
+		UNION
+		
+		select
+  		ac.id, 
+  		acArea.preheat_time,
+  		acArea.preheat_seq_no,
+  		acArea.templet_suffix,
+		ac.entry_pic,
+		ac.poster_pic,
+		ac.name,
+		acArea.preferential_type,
+		acArea.preferential_id_group,
+		acArea.source,
+		acArea.type,
+		acArea.id as activityAreaId,
+		acArea.name as activityAreaName,
+		acArea.activity_begin_time,
+		acArea.activity_end_time,
+		acArea.entry_pic as areaEntryPic,
+		acArea.benefit_point,
+		(select brand.logo from bu_product_brand brand where brand.id = ac.product_brand_id and brand.del_flag = '0') as logo
+		from bu_activity_area acArea 
+		left join bu_activity ac on acArea.id = ac.activity_area_id
+		left join bu_activity_product acPro on acPro.activity_id = ac.id
+		left join bu_product product on product.id = acPro.product_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and ac.status = '6'
+		and (acArea.type = '0' or acArea.type = '1' or acArea.type = '2')  <!-- #专区类型(1品牌活动 2单品活动 6单品爆款 7新用户专享) -->
+		and acArea.status = '1'     <!-- #会场状态(0未启用 1启用) -->
+		and acArea.preheat_flag = '1'
+		and acArea.preheat_time &lt;= now()
+		and acArea.activity_begin_time &gt; now()
+		and acArea.activity_end_time &gt; now()
+		and product.status = '1'
+		and product.del_flag = '0'
+		and acArea.source = '2'
+		and acPro.refuse_flag = '0'
+		and acPro.coo_audit_status = '2'
+		and acPro.del_flag = '0'
+		<if test="activityTime != null and activityTime != ''">
+			and acArea.activity_begin_time &gt;= #{activityBeginTime} and acArea.activity_begin_time &lt;= #{activityEndTime}
+		</if>
+		) t 
+		order by IFNULL(t.preheat_seq_no, 99999),t.activity_begin_time,t.activityAreaId,t.id
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<!-- 弃用 -->
+  	<select id="getActivityPreheatCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select count(*)
+		from bu_activity_area acArea 
+		left join bu_activity ac on acArea.id = ac.activity_area_id
+		left join bu_activity_product acPro on acPro.activity_id = ac.id
+		left join bu_product product on product.id = acPro.product_id
+		left join bu_product_brand brand on brand.id = ac.product_brand_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and acPro.del_flag = '0'
+		and product.del_flag = '0'
+		and brand.del_flag = '0'
+		and (acArea.type not in (6,7) or acArea.type is null)       <!-- #专区类型(1品牌活动 2单品活动 6单品爆款 7新用户专享) -->
+		and acArea.status = 1     <!-- 会场状态(0未启用 1启用) -->
+		and acArea.preheat_time is not null
+		and acArea.preheat_flag = 1
+		and acArea.preheat_time &lt; now()
+		and acArea.activity_begin_time &gt; now()
+		and product.status = 1
+		<if test="activityTime != null and activityTime != ''">
+			and DATE_FORMAT(acArea.activity_begin_time,'%m月%d日') = #{activityTime}
+		</if>
+		group by acArea.id
+  	</select>
+  	
+  	<select id="getProductByActiviTyId" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select apiA.*,
+  		round(apiA.salePrice/apiA.tagPrice,2) discount
+  		from(
+		select
+		product.id as productId,
+		acProduct.seq_no,
+		acArea.id as activityAreaId,
+		acArea.benefit_point,
+		acArea.preferential_type,
+		acArea.preferential_id_group,
+		acArea.activity_begin_time,
+		acArea.activity_end_time,
+		ac.id,
+		ac.poster_pic,
+		ac.name,
+		ac.mcht_id,
+		acProduct.is_watermark,
+		product.name as productName,
+		product.product_type_id,
+		product.suit_sex,
+		product.suit_group,
+		product.svip_discount,
+		(select is_manage_self from bu_mcht_info where id = product.mcht_id and del_flag = '0') isManageSelf,
+		(select MAX(item.sale_price) from bu_product_item item where item.product_id = product.id and item.del_flag = '0') AS maxSalePrice,
+		(select item.sale_price from bu_product_item item where item.id = product.min_sale_price_item_id and item.del_flag = '0') AS salePrice,
+		(select item.tag_price from bu_product_item item where item.id = product.min_sale_price_item_id and item.del_flag = '0') AS tagPrice,
+		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = product.id and item.del_flag = '0') AS stockSum,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = product.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS productPic,
+		(select apd.deposit from bu_activity_product_deposit apd where apd.activity_id = acProduct.activity_id and apd.product_id = acProduct.product_id and apd.del_flag='0') AS deposit,
+		(select apd.deduct_amount from bu_activity_product_deposit apd where apd.activity_id = acProduct.activity_id and apd.product_id = acProduct.product_id and apd.del_flag='0') AS deductAmount
+		from bu_activity_area acArea
+		left join bu_activity ac on ac.activity_area_id = acArea.id
+		left join bu_activity_product acProduct on acProduct.activity_id = ac.id
+		left join bu_product product on product.id = acProduct.product_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and acProduct.del_flag = '0'
+		and product.del_flag = '0'
+		and product.status = '1'
+		and ac.status = '6'
+		and acProduct.refuse_flag = '0'
+		and acProduct.coo_audit_status = '2'
+		and ac.id = #{activityId}
+		<if test="alias != null and alias != ''">
+			AND EXISTS( select item.id from bu_product_item item where item.product_id=product.id 
+			and item.del_flag = '0'
+			and item.stock > 0
+			and (
+			<if test="propValueIdList != null and propValueIdList.size() > 0">
+			        <foreach collection="propValueIdList" index="index" item="item" >
+						FIND_IN_SET(#{item},item.prop_val_id) or
+			        </foreach>
+			</if>
+			 FIND_IN_SET(999999999999,item.prop_val_id))
+		)
+		</if>
+		<!-- #性别 -->
+		<if test="suitSex != null and suitSex != ''">
+			and product.suit_sex like #{suitSex}
+		</if>
+		<!-- #适合人群 -->
+		<if test="suitGroup != null and suitGroup != ''">
+			and product.suit_group like #{suitGroup}
+		</if>
+		<!-- #商品品类 -->
+		<if test="productTypeIdList != null and productTypeIdList.size() > 0">
+			and product.product_type_id in
+			<foreach collection="productTypeIdList" index="index" item="productTypeId" open="(" separator="," close=")">
+	             #{productTypeId}
+	        </foreach>
+		</if>
+		<!-- #价格区间 -->
+		<if test="salePriceMin != null and salePriceMin != ''">
+			and product.min_sale_price &gt;= #{salePriceMin}
+		</if>
+		<if test="salePriceMax != null and salePriceMax != ''">
+			and product.min_sale_price &lt;= #{salePriceMax}
+		</if>
+		group by product.id
+		) apiA
+		<where>
+			<!-- #库存 -->
+			<if test="stockMark != null and stockMark != ''">
+				apiA.stockSum &gt; 0
+			</if>
+		</where>
+		
+
+		<choose>
+			<!-- #折扣排序 -->
+			<when test="discountSort != null and discountSort != ''">
+				ORDER BY discount ${discountSort}
+			</when>
+			<!-- #价格排序 -->
+			<when test="salePriceSort != null and salePriceSort != ''">
+				ORDER BY apiA.salePrice ${salePriceSort}
+			</when>
+			<otherwise>
+				order by ifnull(apiA.seq_no,99999),apiA.salePrice
+			</otherwise>
+		</choose>
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getProductCount" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  	select * from(
+  		select
+		<if test="(salePriceMin != null and salePriceMin != '') or (salePriceMax != null and salePriceMax != '') or (salePriceSort != null and salePriceSort != '') ">
+			(select min(proItem.sale_price) from bu_product_item proItem where proItem.del_flag = '0' and proItem.product_id = product.id) as sale_price,
+		</if>
+		<if test="stockMark != null and stockMark != ''">
+			(select sum(proItem.stock-proItem.locked_amount) from bu_product_item proItem where proItem.del_flag = '0' and proItem.product_id = product.id) as stock,
+		</if>
+		<if test="discountSort != null and discountSort != ''">
+			(select min(proItem.sale_price/proItem.tag_price) from bu_product_item proItem where proItem.del_flag = '0' and proItem.product_id = product.id) as discount,
+		</if>
+		count(*) as activityProductNum
+		from bu_activity_area acArea
+		left join bu_activity ac on ac.activity_area_id = acArea.id
+		left join bu_activity_product acProduct on acProduct.activity_id = ac.id
+		left join bu_product product on product.id = acProduct.product_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and acProduct.del_flag = '0'
+		and product.del_flag = '0'
+		and product.status = '1'
+		and ac.status = '6'
+		and acProduct.refuse_flag = '0'
+		and acProduct.coo_audit_status = '2'
+		and ac.id = #{activityId}
+		<!-- #性别 -->
+		<if test="suitSex != null and suitSex != ''">
+			and product.suit_sex = #{suitSex}
+		</if>
+		<!-- #适合人群 -->
+		<if test="suitGroup != null and suitGroup != ''">
+			and product.suit_group = #{suitGroup}
+		</if>
+		<!-- #商品品类 -->
+		<if test="productTypeIdList != null and productTypeIdList.size() > 0">
+			and product.product_type_id in
+			<foreach collection="productTypeIdList" index="index" item="productTypeId" open="(" separator="," close=")">
+	             #{productTypeId}
+	        </foreach>
+		</if>
+		) t
+		where 1 = 1
+		<!-- #价格区间 -->
+		<if test="salePriceMin != null and salePriceMin != ''">
+			and t.sale_price &gt;= #{salePriceMin}
+		</if>
+		<if test="salePriceMax != null and salePriceMax != ''">
+			and t.sale_price &lt;= #{salePriceMax}
+		</if>
+		<!-- #库存 -->
+		<if test="stockMark != null and stockMark != ''">
+			and t.stock &gt; 0
+		</if>
+			<!-- #折扣排序 -->
+		<if test="discountSort != null and discountSort != ''">
+			ORDER BY t.discount ${discountSort}
+		</if>
+		<!-- #价格排序 -->
+		<if test="salePriceSort != null and salePriceSort != ''">
+			ORDER BY sale_price ${salePriceSort}
+		</if>
+  	</select>
+  	
+  	<select id="getActivityInfoById" parameterType="java.lang.Integer" resultType="com.jf.entity.ActivityCustom">
+  		select
+		ac.poster_pic,
+		ac.name,
+		ac.activity_area_id,
+		ac.activity_group_id,
+		area.benefit_point,
+		area.preferential_type,
+		area.preferential_id_group,
+		area.activity_end_time,
+		area.activity_begin_time,
+		area.activity_group_id as areaGroupId,
+		area.source,
+		ac.pre_sell_audit_status
+		from bu_activity_area area
+		left join bu_activity ac on ac.activity_area_id = area.id
+		where ac.del_flag = '0' 
+		and area.del_flag = '0'
+		and ac.id = #{activityId}
+  	</select>
+  	
+  	<select id="selectActivityAreaInfo" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select
+  		area.id as activityAreaId,
+		area.preferential_type,
+		area.preferential_id_group,
+		area.activity_begin_time,
+		area.activity_end_time,
+		area.templet_suffix,
+		area.type as activityAreaType,
+		area.source,
+		area.name,
+		area.type,
+		area.entry_pic,
+		area.benefit_point,
+		area.activity_group_id as areaGroupId,
+		ac.id,
+		ac.activity_group_id,
+		acProduct.is_watermark
+		from bu_activity_area area
+		left join bu_activity ac on ac.activity_area_id = area.id
+		left join bu_activity_product acProduct on acProduct.activity_id = ac.id
+		where acProduct.product_id = #{productId}
+		and area.del_flag = '0'
+		and ac.del_flag = '0'
+		and acProduct.del_flag = '0' 
+		and acProduct.coo_audit_status = '2'
+		and acProduct.refuse_flag = 0
+		
+		<if test="activityAreaId != null and activityAreaId != ''">
+			and area.id = #{activityAreaId}
+		</if>
+		order by acProduct.id desc
+		limit 1
+  	</select>
+  	
+  	<select id="getActivityProductInfo" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select
+  		area.preheat_time,
+  		area.is_pre_sell as isPreSell,
+  		area.id as activityAreaId,
+		area.preferential_type,
+		area.preferential_id_group,
+		area.activity_begin_time,
+		area.activity_end_time,
+		area.templet_suffix,
+		area.type as activityAreaType,
+		area.source,
+		area.name,
+		area.type,
+		area.entry_pic,
+		area.benefit_point,
+		area.activity_group_id as areaGroupId,
+		area.area_label as areaLabel,
+		area.area_label_pic as areaLabelPic,
+		area.purchase_limits,
+		area.purchase_limits_quantity,
+		ac.id,
+		ac.activity_group_id,
+		ac.pre_sell_audit_status,
+		acProduct.is_watermark,
+		acProduct.product_id,
+		p.mcht_id,
+		p.is_single_prop as isSingleProp,
+		(select item.sale_price from bu_product_item item where item.id = p.min_sale_price_item_id) as salePrice,
+		(select item.mall_price from bu_product_item item where item.id = p.min_sale_price_item_id) as mallPrice,
+		(select item.tag_price from bu_product_item item where item.id = p.min_sale_price_item_id) as tagPrice,
+		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = p.id and item.del_flag = '0') as stockSum
+		from bu_activity_area area
+		left join bu_activity ac on ac.activity_area_id = area.id
+		left join bu_activity_product acProduct on acProduct.activity_id = ac.id
+		left join bu_product p on p.id = acProduct.product_id
+		where area.del_flag = '0'
+		<if test="productIdList != null">
+			and acProduct.product_id in
+			<foreach collection="productIdList" index="index" item="id" open="(" separator="," close=")">
+	             #{id}
+	        </foreach>
+		</if>
+		<if test="productId != null and productId != ''">
+			and acProduct.product_id = #{productId}
+		</if>
+		and p.del_flag = '0'
+		and area.status = '1'
+		<if test="type == null">
+			and area.activity_begin_time &lt;= now()
+		</if>
+		and area.activity_end_time &gt;= now()
+		and ac.del_flag = '0'
+		and ac.status = '6'
+		and acProduct.del_flag = '0' 
+		and acProduct.coo_audit_status = '2'
+		and acProduct.refuse_flag = 0
+		order by acProduct.id desc
+  	</select>
+  	
+  	<select id="getOrderDataByCombineOrderId" parameterType="java.lang.Integer" resultType="com.jf.entity.ActivityCustom">
+  		select 
+		sum(dtl.pay_amount) as activityAreaTotalSalePrice,
+		dtl.activity_area_id,
+		dtl.activity_id as id,
+		area.preferential_type as preferentialType,
+		area.preferential_id_group as preferentialIdGroup
+		from bu_combine_order combine
+		left join bu_sub_order sub on sub.combine_order_id = combine.id
+		left join bu_order_dtl dtl on dtl.sub_order_id = sub.id
+		left join bu_activity_area area on area.id = dtl.activity_area_id
+		where area.preferential_type = '3'
+		and combine.id = #{combineOrderId}
+		group by dtl.activity_area_id
+		
+		
+		union
+		
+		select * from(
+		select 
+		sum(dtl.pay_amount) as activityAreaTotalSalePrice,
+		sub.mcht_id as activity_area_id,
+		null as id,
+		shopPre.type as preferentialType,
+		shopPre.preferential_id as preferentialIdGroup
+		from bu_combine_order combine
+		left join bu_sub_order sub on sub.combine_order_id = combine.id
+		left join bu_order_dtl dtl on dtl.sub_order_id = sub.id
+		left join bu_shop_preferential_info shopPre on shopPre.mcht_id = sub.mcht_id
+		where shopPre.type = '3'
+		and shopPre.status = '1'
+		and shopPre.del_flag = '0'
+		and shopPre.begin_date &lt;= now()
+		and shopPre.end_date &gt;= now()
+		and combine.id = #{combineOrderId}
+		order by shopPre.id desc) t
+		group by t.activity_area_id
+  	</select>
+  	
+  	
+  	<select id="getBrandRecommendActivityByMchtId" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select 
+		area.benefit_point,
+		area.activity_begin_time,
+		area.activity_end_time,
+		ac.activity_area_id,
+		ac.id,
+		ac.entry_pic,
+		ac.name
+		from bu_activity_area area
+		left join bu_activity ac on ac.activity_area_id = area.id
+		where area.del_flag = '0'
+		and ac.del_flag = '0'
+		and area.activity_begin_time &lt;= now()
+		and area.activity_end_time &gt; now()
+		and area.status = '1'
+		and area.source = '2'
+		and ac.status = '6'
+		and ac.mcht_id = #{mchtId}
+		<if test="brandId != null and brandId != ''">and ac.product_brand_id = #{brandId}</if>
+		<if test="orderByType != null and orderByType == '1'.toString()">
+			ORDER BY (area.activity_end_time-now())
+		</if>
+		<choose>
+			<when test="limit != null and limit != ''">order by RAND() limit #{limit}</when>
+			<when test="currentPage != null and currentPage >= 0">limit #{currentPage},#{pageSize}</when>
+		</choose>
+		
+  	</select>
+  	
+  	
+  	<select id="getActivityBrandGroupActivityList" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select
+		acArea.id AS activityAreaId,
+		ac.seq_no,
+		ac.id,
+		acArea.source,
+		acArea.type,
+		acArea. NAME AS activityAreaName,
+		acArea.benefit_point,
+		ac.entry_pic AS areaEntryPic,
+		acArea.activity_begin_time,
+		acArea.activity_end_time,
+		acArea.templet_suffix
+		from bu_activity_brand_group acBrandGroup,bu_activity_brand_group_activity brandGroupAc,bu_activity_area acArea,bu_activity ac
+		WHERE acBrandGroup.id = brandGroupAc.activity_brand_group_id
+		AND brandGroupAc.activity_area_id = acArea.id
+		AND acArea.id = ac.activity_area_id
+		<if test="productTypeId != null and productTypeId != ''">AND acBrandGroup.app_catalog = #{productTypeId} </if>
+		<if test="activityBrandGroupId != null and activityBrandGroupId != ''">AND acBrandGroup.id= #{activityBrandGroupId} </if>
+		AND acBrandGroup.`status` = '1'
+		AND acBrandGroup.del_flag = '0'
+		AND brandGroupAc.del_flag = '0'
+		AND acArea.`status` = '1'
+		AND acArea.activity_begin_time &lt;= NOW()
+		AND acArea.activity_end_time &gt;= NOW()
+		AND acArea.del_flag = '0'
+		AND ac.`status` = '6'
+		AND ac.del_flag = '0'
+		order by ifnull(ac.seq_no, 99999)
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	
+  	<select id="getCategoryBrandGroup" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select * from (
+  			<if test="productType1Id != null and productType1Id != '' and productType1Id != '0'.toString()">
+			select
+			acArea.id as activityAreaId,
+			ifnull(acAdInfo.seq_no,99999) AS seq_no,
+			ifnull(ac.seq_no,99999) AS activity_seq_no,
+	  		ac.id, 
+			ac.product_type_id,
+			'2' as source,
+			acArea.type,
+			ac.name as activityAreaName,
+			acArea.benefit_point,
+			ac.entry_pic as areaEntryPic,
+			ac.brand_team_pic,
+			acArea.activity_begin_time,
+			acArea.activity_end_time,
+			acArea.templet_suffix
+			from bu_activity_area acArea,bu_ad_info acAdInfo,bu_activity ac
+			where ac.del_flag = '0'
+			and acArea.del_flag = '0' 
+			and acArea.status = '1'     
+			and acArea.activity_begin_time &lt;= now() 
+			and acArea.activity_end_time &gt;= now()
+			and acArea.id = ac.activity_area_id
+			and ac.id = acAdInfo.link_id
+			and ac.status = '6' 
+			<if test="productType1Id != null and productType1Id != ''">
+				and ac.product_type_id = #{productType1Id}
+			</if>	
+			and acAdInfo.link_type = '2'  
+			and acAdInfo.position = '9' 
+			and acAdInfo.status = '1'
+			and acAdInfo.type = '2'
+			and acAdInfo.del_flag = '0'
+			and acAdInfo.auto_up_date &lt;= now()
+			and acAdInfo.auto_down_date &gt;= now()   
+			and acAdInfo.catalog = #{adCatalog}
+			
+			union
+			</if>
+			
+			select
+			acArea.id as activityAreaId,
+			99999 as seq_no,
+			ifnull(ac.seq_no,99999) AS activity_seq_no,
+	  		ac.id, 
+			ac.product_type_id,
+			acArea.source,
+			acArea.type,
+			acArea.name as activityAreaName,
+			acArea.benefit_point,
+			ac.entry_pic as areaEntryPic,
+			ac.brand_team_pic,
+			acArea.activity_begin_time,
+			acArea.activity_end_time,
+			acArea.templet_suffix
+			from bu_activity_area acArea,bu_activity ac
+			where ac.del_flag = '0'
+			and acArea.del_flag = '0'
+			and acArea.status = '1'
+			and acArea.source = '2'
+			and acArea.id = ac.activity_area_id
+			and ac.status = '6'
+			<choose>
+				<when test="productType1Id != null and productType1Id == '0'.toString()">
+					and acArea.preheat_flag = '1'
+					and acArea.preheat_time &lt;= now()
+					and acArea.activity_begin_time &gt;= now()
+					and acArea.activity_end_time &gt;= now()
+				</when>
+				<when test="productType2IdList != null and productType2IdList.size() > 0">
+					and acArea.preheat_flag = '1'
+					and acArea.preheat_time &lt;= now()
+					and acArea.activity_begin_time &lt;= now()
+					and acArea.activity_end_time &gt;= now()
+				</when>
+				<otherwise>
+				and acArea.activity_begin_time &lt;= now()
+				and acArea.activity_end_time &gt;= now()
+				and ac.id not in (
+					select ifnull(activityAdInfo.link_id,0) from bu_ad_info activityAdInfo where
+					activityAdInfo.link_type = '2'
+					and activityAdInfo.position = '9'
+					and activityAdInfo.status = '1'
+					and activityAdInfo.type = '2'
+					and activityAdInfo.del_flag = '0'
+					and activityAdInfo.auto_up_date &lt;= now()
+					and activityAdInfo.auto_down_date &gt;= now()
+					and activityAdInfo.catalog = #{adCatalog})
+				</otherwise>
+			</choose>
+			<if test="productType1Id != null and productType1Id != ''">
+				and ac.product_type_id = #{productType1Id}
+			</if>
+			<if test="productType2IdList != null and productType2IdList.size() > 0">
+		        and ac.product_type_second_id in
+		        <foreach collection="productType2IdList" index="index" item="productType2Id"  open="(" separator="," close=")">
+		        	#{productType2Id}
+		        </foreach>
+			</if>
+			) apiA where 1=1
+			<if test="idNotIn != null and idNotIn.size() > 0">
+				and apiA.id not in
+				<foreach collection="idNotIn" index="index" item="id"  open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+			order by apiA.seq_no,apiA.activity_seq_no,apiA.activityAreaId DESC
+
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getActivityByModuleItem" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select
+		ac.activity_area_id,
+		ac.id,
+		ac.name,
+		area.type,
+		area.source,
+		area.benefit_point,
+		area.activity_end_time,
+		ac.entry_pic as areaEntryPic
+		from bu_module_item moduleItem
+		left join bu_activity ac on ac.id = moduleItem.item_id
+		left join bu_activity_area area on area.id = ac.activity_area_id
+		where moduleItem.del_flag = '0'
+		and moduleItem.decorate_module_id = #{decorateModuleId}
+		and ac.del_flag = '0'
+		and area.del_flag = '0'
+		and moduleItem.item_type = '2'
+		and area.activity_begin_time &lt;= area.activity_end_time
+		and area.activity_end_time &gt;= now()
+		and area.status = '1'
+		and ac.status = '6'
+		and ac.coo_audit_status = '2'
+		order by ifnull(moduleItem.seq_no,99999),moduleItem.id
+		<if test="pageSize != null and pageSize != 0 and pageSize != ''">
+			limit #{pageSize}
+		</if>
+  	</select>
+  	
+  	<select id="getActivityByIds" parameterType="java.util.Map" resultType="com.jf.entity.ActivityCustom">
+  		select
+		ac.activity_area_id,
+		ac.id,
+		ac.entry_pic as areaEntryPic,
+		acArea.benefit_point,
+		acArea.activity_end_time,
+		ac.name
+		from bu_activity_area acArea
+		join bu_activity ac on ac.activity_area_id = acArea.id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and acArea.source = '2'
+		<if test="productType1IdList !=null and productType1IdList.size() > 0">
+			and ac.product_type_id in
+			<foreach collection="productType1IdList" index="index" item="productType1Id" open="(" separator="," close=")">
+	             #{productType1Id}
+	        </foreach>
+		</if>
+		<if test="productType2IdList !=null and productType2IdList.size() > 0">
+			and ac.product_type_second_id in
+			<foreach collection="productType2IdList" index="index" item="productType2Id" open="(" separator="," close=")">
+	             #{productType2Id}
+	        </foreach>
+		</if>
+		<if test="productBrandIdList !=null and productBrandIdList.size() > 0">
+			and ac.product_brand_id in
+			<foreach collection="productBrandIdList" index="index" item="productBrandId" open="(" separator="," close=")">
+	             #{productBrandId}
+	        </foreach>
+		</if>
+		and acArea.status = '1'
+		and acArea.activity_begin_time &lt;= now()
+		and acArea.activity_end_time &gt;= now()
+		and ac.status = '6'
+		and ac.coo_audit_status = '2'
+		order by ifnull(ac.seq_no,99999),ac.id
+
+		<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+</mapper>

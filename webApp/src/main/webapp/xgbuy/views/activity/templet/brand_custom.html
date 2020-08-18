@@ -1,0 +1,122 @@
+<div class="page common-activity activity-brand-custom flex dc bgf4" data-id="activity_templet_brand_custom">
+	<link rel="stylesheet" href="../static/css/common-activity.css">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+	<link rel="stylesheet" href="activity/templet/css/brand-custom.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis"></p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-fix fg scroll-more">
+		<div class="con-top w75"></div>
+		<div class="con-brand con-brand2 w75"></div>
+	</div>
+
+	<script id="brand_custom_tpl_top" type="text/html">
+		{{if topPic.length}}
+			{{include 'brand_custom_tpl_swiper'}}
+		{{/if}}
+
+		{{if topPic1.length && topPic2.length}}
+			{{include 'brand_custom_tpl_toppic'}}
+		{{/if}}
+	</script>
+
+	<script id="brand_custom_tpl_swiper" type="text/html">
+		<div class="swiper-container">
+			<ul class="swiper-wrapper">
+				{{each topPic value i}}
+				<li class="swiper-slide"
+					onclick="getBrandDef(this, {pos: '{{i}}', data: brandCustomApi.data})"
+					data-id="{{value.id}}"
+					data-url="{{value.areaUrl}}"
+					data-type="{{value.linkType}}"
+					data-link="{{value.linkValue}}"
+					data-productid="{{value.linkId}}"
+					data-activityareaid="{{value.activityAreaId}}">
+					<img src="{{value.pic}}">
+				</li>
+				{{/each}}
+			</ul>
+
+			<div class="pagination"></div>
+		</div>
+	</script>
+
+	<script id="brand_custom_tpl_toppic" type="text/html">
+		<div class="custom-nav flex jb mt20 mb20">
+			<a onclick="getBrandDef(this, 0, {data: brandCustomApi.data})"
+				data-activityareaid="{{topPic1[0].linkValue}}"
+				data-productid="{{topPic1[0].linkValue}}"
+				data-url="{{topPic1[0].areaUrl}}"
+				data-type="{{topPic1[0].linkType}}"
+				data-link="{{topPic1[0].linkValue}}"
+				data-id="{{topPic1[0].id}}">
+				<img src="{{topPic1[0].pic}}">
+			</a>
+
+			<a onclick="getBrandDef(this, 1, {data: brandCustomApi.data})"
+				data-activityareaid="{{topPic2[0].linkValue}}"
+				data-productid="{{topPic2[0].linkValue}}"
+				data-url="{{topPic2[0].areaUrl}}"
+				data-type="{{topPic2[0].linkType}}"
+				data-link="{{topPic2[0].linkValue}}"
+				data-id="{{topPic2[0].id}}">
+				<img src="{{topPic2[0].pic}}">
+			</a>
+		</div>
+	</script>
+
+	<script id="brand_custom_tpl" type="text/html">
+		{{if activityList.length}}
+			{{each activityList value i}}
+				{{if value.length || value.length == '0'}}
+					{{each value valu i}}
+		<a class="mt20 h50vw"
+			onclick="brandCustomApi.brand(this)"
+			data-pic="{{valu.posterPic}}"
+			data-name="{{valu.name}}"
+			data-id="{{valu.activityBrandGroupId}}">
+			<img src="{{valu.entryPic}}">
+		</a>
+					{{/each}}
+				{{else}}
+		<a class="mb20"
+			onclick="getUrlActive(this, {pos: '{{page + i}}', data: brandCustomApi.data})"
+			data-typeof="{{value.length}}"
+			data-name="{{value.name}}"
+			data-url="{{value.areaUrl}}"
+			data-activityid="{{value.activityId}}"
+			data-activityareaid="{{value.activityAreaId}}"
+			data-source="{{value.source}}"
+			data-type="{{value.type}}">
+			<dl>
+				<dt class="h50vw">
+					<img src="{{value.entryPic}}">
+				</dt>
+
+				<dd>
+					<div class="row-1 flex ac jb">
+						<div class="flex ac">
+							<p class="ellipsis" title="{{value.name}}">{{value.name}}</p>
+						</div>
+						<time class="flex ac"><p class="ellipsis f50">{{value.activityTime}}</p></time>
+					</div>
+					<div class="row-2 elps">{{value.groups}}</div>
+				</dd>
+			</dl>
+		</a>
+				{{/if}}
+			{{/each}}
+		{{else}}
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>当前商品为空</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="activity/templet/js/brand-custom.js?var=1.0" async></script>
+</div>

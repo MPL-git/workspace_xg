@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.AppealOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.AppealOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_type" property="userType" jdbcType="CHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="sub_order_id" property="subOrderId" jdbcType="INTEGER" />
+    <result column="order_dtl_id" property="orderDtlId" jdbcType="INTEGER" />
+    <result column="appeal_type" property="appealType" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="service_status" property="serviceStatus" jdbcType="CHAR" />
+    <result column="platform_processor" property="platformProcessor" jdbcType="INTEGER" />
+    <result column="service_sponsor_type" property="serviceSponsorType" jdbcType="CHAR" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="contact_phone" property="contactPhone" jdbcType="VARCHAR" />
+    <result column="liability" property="liability" jdbcType="CHAR" />
+    <result column="platform_remarks" property="platformRemarks" jdbcType="VARCHAR" />
+    <result column="mcht_remarks" property="mchtRemarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_code, user_id, user_type, user_name, mcht_id, sub_order_id, order_dtl_id, 
+    appeal_type, status, service_status, platform_processor, service_sponsor_type, contact_name, 
+    contact_phone, liability, platform_remarks, mcht_remarks, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.AppealOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_appeal_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_appeal_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_appeal_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.AppealOrderExample" >
+    delete from bu_appeal_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.AppealOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_appeal_order (order_code, user_id, user_type, 
+      user_name, mcht_id, sub_order_id, 
+      order_dtl_id, appeal_type, status, 
+      service_status, platform_processor, service_sponsor_type, 
+      contact_name, contact_phone, liability, 
+      platform_remarks, mcht_remarks, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{orderCode,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{userType,jdbcType=CHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{mchtId,jdbcType=INTEGER}, #{subOrderId,jdbcType=INTEGER}, 
+      #{orderDtlId,jdbcType=INTEGER}, #{appealType,jdbcType=CHAR}, #{status,jdbcType=CHAR}, 
+      #{serviceStatus,jdbcType=CHAR}, #{platformProcessor,jdbcType=INTEGER}, #{serviceSponsorType,jdbcType=CHAR}, 
+      #{contactName,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR}, #{liability,jdbcType=CHAR}, 
+      #{platformRemarks,jdbcType=VARCHAR}, #{mchtRemarks,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.AppealOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_appeal_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        order_code,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="subOrderId != null" >
+        sub_order_id,
+      </if>
+      <if test="orderDtlId != null" >
+        order_dtl_id,
+      </if>
+      <if test="appealType != null" >
+        appeal_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="serviceStatus != null" >
+        service_status,
+      </if>
+      <if test="platformProcessor != null" >
+        platform_processor,
+      </if>
+      <if test="serviceSponsorType != null" >
+        service_sponsor_type,
+      </if>
+      <if test="contactName != null" >
+        contact_name,
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone,
+      </if>
+      <if test="liability != null" >
+        liability,
+      </if>
+      <if test="platformRemarks != null" >
+        platform_remarks,
+      </if>
+      <if test="mchtRemarks != null" >
+        mcht_remarks,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=CHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="subOrderId != null" >
+        #{subOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderDtlId != null" >
+        #{orderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="appealType != null" >
+        #{appealType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="serviceStatus != null" >
+        #{serviceStatus,jdbcType=CHAR},
+      </if>
+      <if test="platformProcessor != null" >
+        #{platformProcessor,jdbcType=INTEGER},
+      </if>
+      <if test="serviceSponsorType != null" >
+        #{serviceSponsorType,jdbcType=CHAR},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="liability != null" >
+        #{liability,jdbcType=CHAR},
+      </if>
+      <if test="platformRemarks != null" >
+        #{platformRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtRemarks != null" >
+        #{mchtRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.AppealOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_appeal_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_appeal_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderCode != null" >
+        order_code = #{record.orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userType != null" >
+        user_type = #{record.userType,jdbcType=CHAR},
+      </if>
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subOrderId != null" >
+        sub_order_id = #{record.subOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderDtlId != null" >
+        order_dtl_id = #{record.orderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.appealType != null" >
+        appeal_type = #{record.appealType,jdbcType=CHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.serviceStatus != null" >
+        service_status = #{record.serviceStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.platformProcessor != null" >
+        platform_processor = #{record.platformProcessor,jdbcType=INTEGER},
+      </if>
+      <if test="record.serviceSponsorType != null" >
+        service_sponsor_type = #{record.serviceSponsorType,jdbcType=CHAR},
+      </if>
+      <if test="record.contactName != null" >
+        contact_name = #{record.contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactPhone != null" >
+        contact_phone = #{record.contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.liability != null" >
+        liability = #{record.liability,jdbcType=CHAR},
+      </if>
+      <if test="record.platformRemarks != null" >
+        platform_remarks = #{record.platformRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtRemarks != null" >
+        mcht_remarks = #{record.mchtRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_appeal_order
+    set id = #{record.id,jdbcType=INTEGER},
+      order_code = #{record.orderCode,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      user_type = #{record.userType,jdbcType=CHAR},
+      user_name = #{record.userName,jdbcType=VARCHAR},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      sub_order_id = #{record.subOrderId,jdbcType=INTEGER},
+      order_dtl_id = #{record.orderDtlId,jdbcType=INTEGER},
+      appeal_type = #{record.appealType,jdbcType=CHAR},
+      status = #{record.status,jdbcType=CHAR},
+      service_status = #{record.serviceStatus,jdbcType=CHAR},
+      platform_processor = #{record.platformProcessor,jdbcType=INTEGER},
+      service_sponsor_type = #{record.serviceSponsorType,jdbcType=CHAR},
+      contact_name = #{record.contactName,jdbcType=VARCHAR},
+      contact_phone = #{record.contactPhone,jdbcType=VARCHAR},
+      liability = #{record.liability,jdbcType=CHAR},
+      platform_remarks = #{record.platformRemarks,jdbcType=VARCHAR},
+      mcht_remarks = #{record.mchtRemarks,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.AppealOrder" >
+    update bu_appeal_order
+    <set >
+      <if test="orderCode != null" >
+        order_code = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=CHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="subOrderId != null" >
+        sub_order_id = #{subOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderDtlId != null" >
+        order_dtl_id = #{orderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="appealType != null" >
+        appeal_type = #{appealType,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="serviceStatus != null" >
+        service_status = #{serviceStatus,jdbcType=CHAR},
+      </if>
+      <if test="platformProcessor != null" >
+        platform_processor = #{platformProcessor,jdbcType=INTEGER},
+      </if>
+      <if test="serviceSponsorType != null" >
+        service_sponsor_type = #{serviceSponsorType,jdbcType=CHAR},
+      </if>
+      <if test="contactName != null" >
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactPhone != null" >
+        contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="liability != null" >
+        liability = #{liability,jdbcType=CHAR},
+      </if>
+      <if test="platformRemarks != null" >
+        platform_remarks = #{platformRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="mchtRemarks != null" >
+        mcht_remarks = #{mchtRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.AppealOrder" >
+    update bu_appeal_order
+    set order_code = #{orderCode,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=CHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      sub_order_id = #{subOrderId,jdbcType=INTEGER},
+      order_dtl_id = #{orderDtlId,jdbcType=INTEGER},
+      appeal_type = #{appealType,jdbcType=CHAR},
+      status = #{status,jdbcType=CHAR},
+      service_status = #{serviceStatus,jdbcType=CHAR},
+      platform_processor = #{platformProcessor,jdbcType=INTEGER},
+      service_sponsor_type = #{serviceSponsorType,jdbcType=CHAR},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      liability = #{liability,jdbcType=CHAR},
+      platform_remarks = #{platformRemarks,jdbcType=VARCHAR},
+      mcht_remarks = #{mchtRemarks,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

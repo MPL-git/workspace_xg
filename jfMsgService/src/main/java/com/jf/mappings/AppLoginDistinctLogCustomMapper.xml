@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.AppLoginDistinctLogCustomMapper" >
+
+
+  <insert id="insertSelect" parameterType="java.util.Map"  >
+    INSERT INTO sys_app_login_distinct_log (distinct_date, member_id, sex_type)
+    SELECT DATE_FORMAT(lg.create_date, '%Y-%m-%d') create_date, mb.id id, mb.sex_type sex_type
+    FROM
+        sys_app_login_log lg,
+        bu_member_info mb
+    WHERE
+        lg.member_id = mb.id
+    AND lg.del_flag = '0'
+    <if test="createDateBegin != null" >
+        <![CDATA[
+            AND lg.create_date >= #{createDateBegin}
+        ]]>
+    </if>
+    <if test="createDateEnd != null" >
+        <![CDATA[
+            AND lg.create_date <= #{createDateEnd}
+        ]]>
+    </if>
+    GROUP BY
+        create_date, id
+  </insert>
+
+</mapper>

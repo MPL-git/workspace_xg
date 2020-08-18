@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MenuCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MenuCustom"  extends="com.jf.dao.MenuMapper.BaseResultMap">
+    <association column="id" property="subMenus" select="queryMenuByparentId" />
+  </resultMap>
+  <select id="queryMenuByparentId" parameterType="int" resultMap="BaseResultMap" >
+  select * from m_menu where del_flag='0' and parent_id=#{id}  order by seq_no
+  </select>
+  
+  <select id="queryMenuTree" parameterType="int" resultMap="BaseResultMap">
+  select * from m_menu where del_flag='0' and parent_id=#{id}  order by seq_no
+  </select>
+</mapper>

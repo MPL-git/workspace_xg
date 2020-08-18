@@ -1,0 +1,286 @@
+<div class="page cup flex dc" data-title="世界杯竞猜" data-id="cup">
+	<link rel="stylesheet" href="cup/index.css?var=1.0">
+	<link rel="stylesheet" href="../static/css/swiper.min.css">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">世界杯竞猜</p>
+		<div class="fn">
+			<a class="fg share ico-btn" onclick="popupShow('.popup-share')"></a>
+		</div>
+	</header>
+
+	<div class="fg content scroll-y scroll-more">
+		<div class="row-1 flex"></div>
+
+		<div class="swiper-container hide">
+			<ul class="swiper-wrapper">
+				<li onclick="getSingleHot('15147')" class="swiper-slide">
+					<img src="cup/resources/s3.png">
+				</li>
+				<li onclick="getSingleHot('15855')" class="swiper-slide">
+					<img src="cup/resources/s2.png">
+				</li>
+				<li onclick="getSingleHot('16031')" class="swiper-slide">
+					<img src="cup/resources/s1s.png">
+				</li>
+			</ul>
+			<div class="pagination"></div>
+		</div>
+
+		<div class="row-2">
+			<div class="tab-head flex jb">
+				<a class="tab-btn flex ac jc data active" onclick="cupApi.changeTab(this)"><b>胜负竞猜</b></a>
+				<a class="tab-btn flex ac jc" onclick="cupApi.changeTab(this)"><b>夺冠竞猜</b></a>
+				<a class="tab-btn flex ac jc" onclick="cupApi.changeTab(this)"><b>赛事记录</b></a>
+			</div>
+
+			<div class="tab-body">
+				<div class="tab-con con-1 con-1s"></div>
+				<div class="tab-con con-2 hide"></div>
+				<div class="tab-con con-3 con-1s hide"></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 竞猜 -->
+	<div class="popup popup-guess end" onclick="closeSelf(this)">
+		<div class="popup-cup-con" onclick="stopSelf()"></div>
+	</div>
+
+	<!-- 竞猜成功 -->
+	<div class="popup popup-succ" onclick="closeSelf(this)">
+		<div class="popup-cup-con" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+			<h3 class="flex ac jc">竞猜成功</h3>
+			<span></span>
+			<p class="flex ac jc c9">竞猜成功请前往竞猜记录查看</p>
+			<a class="popup-btn flex ac jc" onclick="closeSelf(this)">知道了</a>
+		</div>
+	</div>
+
+	<!-- 活动说明 -->
+	<div class="popup popup-rule" onclick="closeSelf(this)">
+		<div class="popup-cup-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">
+				活动说明
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</div>
+
+			<div class="con scroll-y">
+				<div>
+					<h4>竞猜形式：</h4>
+					<p>1、球队竞猜赢积分、竞猜最后冠军队伍赢积分</p>
+					<p>2、竞猜分为三种情况，主胜、平、客胜</p>
+					<p>3、投注积分，押对赢得更多积分</p>
+					<p>4、用户可消耗积分兑换商品</p>
+					<p>5、猜对最后冠军队伍赢积分奖励</p>
+				</div>
+
+				<div>
+					<h4>规则说明：</h4>
+					<p>1、根据真实比赛结果押注积分，下注积分为20起的任意数量，可选择多种比赛结果。投注时间截止比赛前。根据比赛结果，可获得对应的积分奖励。</p>
+					<p>2、对于每一场比赛，根据你对于比赛的（90分钟及补时）结果的判断，选择“主胜、平、客胜”，设定对应的投注积分（积分不可提现，可用于兑换积分商城奖品），确认后即完成流程。如果你猜错了比赛的结果，则无法获得奖励。如果猜中结果，奖励将以积分形式派发。返奖积分 = 设定的投注积分数量 x 下单时的实时赔率。</p>
+					<p>3、加时赛及以点球决胜负的赛果均不予计算，积分奖励在比赛结束后系统自动发放。</p>
+					<p>4、消耗积分可兑换活动页商品，个别商品每天限量更新，先到先得。</p>
+					<p>5、每场比赛开始时刻将截止竞猜投注，未截止前用户可任意投注，不设上限，一个账号可多次投注。</p>
+					<p>6、冠军竞猜模式说明：在截止日期前下注积分，投注心仪的冠军队伍，该队伍假如在最后的总决赛中获胜，下注用户将获得对应赔率的积分奖励，一个账号可以竞猜多只队伍，不设限，比赛结果以最终实际赛事结果为准。</p>
+				</div>
+
+				<div>
+					<h4>积分获得方式：</h4>
+					<p>1、醒购APP内任意订单每满100元送100积分，上不封顶，多买多送。</p>
+					<p>2、APP内完成指定积分任务获得积分。</p>
+					<p>3、绑定手机号码的新老用户，系统将赠送500积分。</p>
+				</div>
+
+				<div>
+					<h4>温馨提示：</h4>
+					<p>具体活动时间请留意平台公告。</p>
+					<p>最终活动解释权为醒购所有。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 分享 -->
+	<div class="popup popup-share" onclick="closeSelf(this)">
+		<div class="popup-bottom" onclick="stopSelf()">
+			<div class="popup-top flex ac jc c9">
+				分享到
+			</div>
+			<div class="popup-con flex jc">
+				<a onclick="shareQQ('{{shareTitle}}', '{{shareUrl}}')">
+					<img src="../static/images/share-qq.png">
+					QQ
+				</a>
+				<a onclick="shareWB('{{shareTitle}}', '{{shareUrl}}')">
+					<img src="../static/images/share-wb.png">
+					微博
+				</a>
+			</div>
+			<a class="close-share flex ac jc" onclick="closeSelf(this)">取消分享</a>
+		</div>
+	</div>
+
+	<script id="cup_tpl_row1" type="text/html">
+		<dl class="fg flex">
+			<dt class="fn img-cover">
+				<img src="{{pic}}">
+			</dt>
+			<dd class="fg flex dc ja">
+				<h3>{{nick}}</h3>
+				<p>积分：{{integral}}</p>
+			</dd>
+		</dl>
+
+		<ul class="fg flex je">
+			<li class="points" onclick="getUrl('cup/points/index.html')">赚取积分</li>
+			<li class="diamond" onclick="cupApi.getUrlIntegral()">积分兑换</li>
+			<li class="record" onclick="getUrl('cup/record/index.html', 'self')">竞猜记录</li>
+			<li class="rule" onclick="popupShow('.popup-rule')">活动说明</li>
+		</ul>
+	</script>
+
+	<script id="cup_tpl_row2_con1" type="text/html">
+		{{each dataList value i}}
+		<div class="con flex dc">
+			<h4 class="flex ac jc fn">{{value.date}} 2018年俄罗斯世界杯{{value.sportName}}</h4>
+			<div class="flex jb fg">
+				<dl class="flex dc jb ac">
+					<dt class="pic">
+						<img src="{{value.homeTeamPic}}">
+					</dt>
+					<dd class="flex ac jc"
+						data-sport="{{value.sportId}}"
+						data-team="{{value.homeTeam}}"
+						data-rate="{{value.homeTeamRate}}"
+						data-type="1"
+						onclick="cupApi.guess(this)">
+						{{value.homeTeamName}}胜<br>
+						{{value.homeTeamRate}}
+					</dd>
+				</dl>
+
+				<dl class="flex dc jb ac time">
+					<dt class="flex ac jc">
+						<span class="flex ac jc">{{value.time}}</span>
+					</dt>
+					<p>您的竞猜结果为？</p>
+
+					{{if value.drawRate}}
+					<dd class="flex ac jc"
+						data-sport="{{value.sportId}}"
+						data-team=""
+						data-rate="{{value.drawRate}}"
+						data-type="1"
+						onclick="cupApi.guess(this)">
+					{{else}}
+					<dd class="op0">
+					{{/if}}
+						平局<br>
+						{{value.drawRate}}
+					</dd>
+				</dl>
+
+				<dl class="flex dc jb ac">
+					<dt class="pic">
+						<img src="{{value.awayTeamPic}}">
+					</dt>
+					<dd class="flex ac jc"
+						data-sport="{{value.sportId}}"
+						data-team="{{value.awayTeam}}"
+						data-rate="{{value.awayTeamRate}}"
+						data-type="1"
+						onclick="cupApi.guess(this)">
+						{{value.awayTeamName}}胜<br>
+						{{value.awayTeamRate}}
+					</dd>
+				</dl>
+			</div>
+		</div>
+		{{/each}}
+	</script>
+
+	<script id="cup_tpl_row2_con2" type="text/html">
+		<div class="con">
+			<h4 class="flex ac jc">2018年俄罗斯世界杯</h4>
+			<p class="flex ac jc">{{date}}截止</p>
+			<ul class="clearfix">
+				{{each dataList value i}}
+				<li class="flex ac ja{{value.resutlt == '0' ? ' on' : (value.resutlt == '2' ? ' first' : '')}}"
+					data-sport=""
+					data-team="{{value.sportTeamId}}"
+					data-rate="{{value.winRate}}"
+					data-type="2"
+					onclick="cupApi.guess(this, 1)">
+					{{value.sportTeamName}}<br>
+					{{value.winRate}}
+				</li>
+				{{/each}}
+			</ul>
+			<div class="bot flex ac jc">哪个国家可以获得冠军</div>
+		</div>
+	</script>
+
+	<script id="cup_tpl_row2_con3" type="text/html">
+		{{each dataList value i}}
+		<div class="con flex dc">
+			<h4 class="flex ac jc fn">{{value.date}} 2018年俄罗斯世界杯{{value.sportName}}</h4>
+			<div class="flex jb fg">
+				<dl class="flex dc jb ac">
+					<dt class="pic">
+						<img src="{{value.homeTeamPic}}">
+					</dt>
+					<p>{{value.homeTeamName}}</p>
+				</dl>
+
+				<dl class="flex dc jb ac time">
+					<dt class="flex ac jc">
+						<span class="flex ac jc">{{value.homeScore}}:{{value.awayScore}}</span>
+					</dt>
+				</dl>
+
+				<dl class="flex dc jb ac">
+					<dt class="pic">
+						<img src="{{value.awayTeamPic}}">
+					</dt>
+					<p>{{value.awayTeamName}}</p>
+				</dl>
+			</div>
+		</div>
+		{{/each}}
+	</script>
+
+	<script id="cup_tpl_guess" type="text/html">
+		<div class="col-1 flex ac jb">
+			<p>竞猜<b class="integral-0">20</b>积分可获得<b class="integral-1">20</b>积分</p>
+			<p>您的积分: {{integral}}</p>
+		</div>
+
+		<div class="col-2">
+			<div class="flex ac jb con-1">
+				<span class="flex ac jc on" onclick="cupApi.guessPoints(this)">20</span>
+				<span class="flex ac jc" onclick="cupApi.guessPoints(this)">50</span>
+				<span class="flex ac jc" onclick="cupApi.guessPoints(this)">100</span>
+				<span class="flex ac jc" onclick="cupApi.guessPointsOther(this)">其他</span>
+			</div>
+
+			<div class="flex ac jb con-1 hide">
+				<span class="on flex ac jc" onclick="cupApi.guessPointsOther(this)">其他</span>
+				<input type="number" placeholder="请输入您要竞猜的积分" min="{{min}}" max="{{max}}" onchange="cupApi.guessInput(this)">
+			</div>
+
+			<a class="flex ac jc popup-btn" onclick="cupApi.guessSubmit('{{min}}', '{{max}}')">立即竞猜</a>
+		</div>
+	</script>
+
+	<script id="cup_tpl_empty" type="text/html">
+		<div class="page-empty empty-text flex dc ac jc">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+	</script>
+
+	<script src="cup/index.js?ver=1.0" async></script>
+</div>

@@ -1,0 +1,252 @@
+.cut-price .ico-back-top {
+	bottom: 2.5rem;
+}
+.cut-price .role-text {
+	width: 5.6rem;
+	height: .56rem !important;
+	line-height: .56rem;
+	padding: 0 .2rem;
+	font-size: .26rem;
+	color: #fff;
+	border-radius: .28rem;
+	background: rgba(0, 0, 0, .5);
+}
+.cut-price .con-top {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+	height: 3rem;
+	background: #ff5050;
+}
+.cut-price .con-top img {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.cut-price .tab-body .con-top p {
+	position: relative;
+	height: .87rem;
+	margin: 0 .3rem;
+	font-size: .26rem;
+	color: #820000;
+}
+.cut-price .con-top .ico-rule {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 1;
+}
+.cut-price .tab-body {
+	overflow: hidden;
+	height: calc(100vh - 1.88rem);
+}
+.sys-app .tab-body {
+	height: calc(100vh - 1rem);
+}
+.sys-ios .tab-body {
+	height: calc(100vh - 1rem - 64px);
+}
+.sys-iosx .tab-body {
+	height: calc(100vh - 1rem - 88px);
+}
+.cut-price .tab-body>.scroll-y {
+	height: 100%;
+}
+
+.cut-price .tab-btn {
+	height: 1rem;
+	border-top: 1px solid #eee;
+	background: #fff;
+	font-size: .32rem;
+}
+.cut-price .tab-btn a {
+	position: relative;
+	height: 100%;
+}
+.cut-price .tab-btn a:before {
+	content: '';
+	width: .34rem;
+	height: .34rem;
+	margin-right: .1rem;
+	background-repeat: no-repeat;
+	background-size: .34rem .8rem;
+}
+.cut-price .tab-btn a.active:before {
+	background-position: 0 bottom;
+}
+.cut-price .tab-btn a.ico-tab1:before {
+	background-image: url(resources/ico-tab1.png);
+}
+.cut-price .tab-btn a.ico-tab2:before {
+	background-image: url(resources/ico-tab2.png);
+}
+.cut-price .tab-btn a:after {
+	position: absolute;
+	top: .2rem;
+	left: 0;
+	content: '';
+	width: 1px;
+	height: .6rem;
+	background: #eee;
+}
+.cut-price .tab-btn a:first-child:after {
+	display: none;
+}
+
+.cut-price .con-list dl {
+	padding: .2rem 0 .2rem .2rem;
+	background: #fff;
+}
+.cut-price .con-1 dl {
+	border-top: 1px solid #eee;
+}
+.cut-price .con-1 dl:first-child {
+	border: none;
+}
+.cut-price .bb1 {
+	border-bottom: 1px solid #eee;
+}
+.cut-price .tab-con dt {
+	overflow: hidden;
+	margin-right: .2rem;
+}
+.cut-price .tab-con h3,
+.cut-price .tab-con p,
+.cut-price .tab-con span {
+	font-size: .3rem;
+}
+.cut-price .tab-con h3 {
+	overflow: hidden;
+	height: .72rem;
+	line-height: .36rem;
+	margin-top: .06rem;
+	word-break: break-all;
+}
+.cut-price .tab-body strong {
+	font-size: .36rem;
+	font-weight: bold;
+}
+
+.cut-price .con-1 dd {
+	padding-right: .2rem;
+}
+.cut-price .con-1 h3 {
+	margin-bottom: .66rem;
+}
+.cut-price .con-1 dd>div,
+.cut-price .con-1 a {
+	height: .6rem;
+}
+.cut-price .con-1 a {
+	width: 1.58rem;
+	padding: 0;
+}
+.cut-price .con-1 dd p {
+	line-height: .26rem;
+}
+.cut-price .con-1 dt {
+	width: 2.4rem;
+	height: 2.4rem;
+}
+.cut-price .con-2 dt {
+	width: 1.8rem;
+	height: 1.8rem;
+}
+.cut-price .con-2 dd h3 {
+	margin-bottom: .34rem;
+	padding-right: .2rem;
+}
+.cut-price .con-2 dd p {
+	height: .68rem;
+	padding-right: .2rem;
+}
+.cut-price .con-1 dd p span:last-child,
+.cut-price .con-2 dd p span:last-child {
+	word-break: keep-all;
+}
+.cut-price .con-2 dd a {
+	width: 1.44rem;
+	height: .56rem;
+	padding: 0;
+}
+.cut-price .con-2 dd .col-2 {
+	position: relative;
+	top: .08rem;
+	height: .56rem;
+	padding-right: .2rem;
+}
+
+.cut-price .page-empty i {
+	width: 5.2rem;
+	height: 2.87rem;
+	background: url(../../../static/images/empty/goods.png) no-repeat;
+	background-size: contain;
+}
+.cut-price .page-empty h4 {
+	font-size: .28rem;
+	margin: .36rem 0 .14rem;
+}
+.cut-price .page-empty p {
+	font-size: .24rem;
+}
+
+.cut-price .con-1 .page-empty {
+	height: calc(100vh - 4.88rem);
+}
+.cut-price .con-2 .page-empty {
+	height: calc(100vh - 1.88rem);
+}
+
+.sys-app .cut-price .con-1 .page-empty {
+	height: calc(100vh - 4.2rem);
+}
+.sys-app .cut-price .con-2 .page-empty {
+	height: calc(100vh - 1rem);
+}
+
+.sys-ios .cut-price .con-1 .page-empty {
+	height: calc(100vh - 4.2rem - 64px);
+}
+.sys-iosx .cut-price .con-1 .page-empty {
+	height: calc(100vh - 4.2rem - 88px);
+}
+
+.sys-ios .cut-price .con-2 .page-empty {
+	height: calc(100vh - 1rem - 64px);
+}
+.sys-iosx .cut-price .con-2 .page-empty {
+	height: calc(100vh - 1rem - 88px);
+}
+
+.popup-rule-cut .con p {
+	font-size: .28rem;
+}
+
+.cut-price .spe-h2 {
+	height: 1.1rem;
+	font-size: .36rem;
+	font-weight: bold;
+	background: #fff;
+}
+.cut-price .spe-h2:after,
+.cut-price .spe-h2:before {
+	content: '';
+	width: .38rem;
+	height: .04rem;
+	background: #000;
+	margin: 0 .3rem;
+}
+.cut-price .spe-h2 {
+	height: 1.1rem;
+	font-size: .36rem;
+	font-weight: bold;
+	background: #fff;
+}
+.cut-price .spe-h2:after,
+.cut-price .spe-h2:before {
+	content: '';
+	width: .38rem;
+	height: .04rem;
+	background: #000;
+	margin: 0 .3rem;
+}

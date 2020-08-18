@@ -1,0 +1,61 @@
+
+/*header*/
+#header{ height: 115px; overflow: hidden; clear: both;}
+#headerRight{height: 115px; margin-top: -115px;}
+#headerRight .steps{ position: relative; z-index: 10; margin-top: 30px;}
+
+/*nav*/
+#nav,.nav{height: 40px; clear: both;}
+.nav{line-height: 40px; font-family: "Microsoft Yahei",Hiragino Sans GB,Arial; position: relative;}
+.textNav li,.textNav p{float: left;}
+.textNav a,.site-nav a{display: block; padding: 0 15px; font-size: 14px; white-space: nowrap; color: #fff; max-width: 84px; overflow: hidden; -ms-text-overflow: ellipsis; text-overflow: ellipsis;}
+
+.site-nav{ margin-left: 210px;}
+.site-nav-item{ float: left; font-size: 14px; white-space: nowrap;}
+.site-nav-layer{ display: none; top: 40px; position: absolute; z-index: 99; padding: 14px 0 14px 228px; width: 410px; background: #fff; *zoom:1; border: 1px solid #d2d2d2; -webkit-box-shadow:1px 1px 4px rgba(0, 0, 0, .2); -moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, .2); box-shadow:1px 1px 4px rgba(0, 0, 0, .2);}
+.site-nav-layer:after{ clear: both; height: 0; content: ""; display: block;}
+.snav-side{ float: left; width: 200px; padding-right: 14px; border-right: 1px solid #d0d0d0; overflow: hidden; display: inline; margin-left: -214px;}
+.snav-side img{ width: 200px;}
+.snav-main{ float: left; width: 409px; border-left: 1px solid #d0d0d0; margin-left: -1px; display: inline;}
+.site-nav-layer-noimg{ padding-left: 0;}
+.site-nav-layer-noimg .snav-main{border-left: 0; margin-left: 0;}
+
+.navwrap{width: 100%; height: 40px;}
+.nav-nocat .global-catalog{ display: none;}
+.nav-nocat .site-nav{ margin-left: 0;}
+.global-nav-fix {position: fixed; top: 0; z-index: 1000; _position: absolute; _top: expression(documentElement.scrollTop); }
+
+.global-catalog {width: 1200px; margin: auto;}
+.gbc-wrap{position: absolute; width: 210px; border: 0; z-index:1000;}
+.gbc-title { height: 40px; line-height: 40px;padding: 0 20px;font-size: 14px;font-family: "Microsoft Yahei","Hiragino Sans GB"; cursor: pointer;}
+.gbc-title span { display: block;}
+.gbc-blockcon { display: none; background: #ffffff; position: relative; overflow: visible; border: 1px solid #dedcda; border-top: 0; *zoom:1;}
+.gbc-blockcon-horizontal{ width: 1198px; height:400px; overflow: auto;}
+.gbc-blockcon-wrap{ overflow: hidden; margin-left: -1px; min-height: 100%;}
+.gbc-column{ float: left; width: 235px; border-left: 1px solid #ddd; padding-bottom: 99999px; margin-bottom: -99999px;}
+
+.gbc-tree{}
+.gbc-treetitle, .gbc-treeitem {display: block;padding-left: 0;line-height: 22px;zoom: 1; }
+.gbc-treeli { border-top: 1px dotted #d9d6d4; clear: both; *zoom:1;}
+.gbc-treeli:after{content: ""; display: block; clear: both; }
+.gbc-treetitle{font-size: 14px; font-family: "Hiragino Sans GB", "Microsoft Yahei"; font-weight: bold;}
+.gbc-treeli:first-child{border-top: 0;}
+.gbc-treelitem{padding: 8px 20px; *zoom:1;}
+.gbc-subtree ul{ margin-left: -12px; overflow: hidden; *zoom:1;}
+.gbc-subtree li { float: left; margin-left: 12px; _display: inline; }
+.gbc-subtree li a{ display: inline-block; white-space: nowrap; color: #3d3c3b;}
+.gbc-subtree .gbc-treeitem { float: left; }
+
+.sublayer { display: none; position: absolute; left: 209px; top: 0; min-height: 100%; width: 535px; border: 1px solid #dedcdb; -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, .2); -moz-box-shadow: 0 0 2px rgba(0, 0, 0, .2); box-shadow: 0 0 2px rgba(0, 0, 0, .2); background: #fff; background: rgba(255,255,255,.95); filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, StartColorStr='#F2FFFFFF', EndColorStr='#F2FFFFFF'); font-size: 0;}
+.sublayer-item { display: inline-block; *display: inline; *zoom: 1; margin: 0 4% 12px; width: 42%; overflow: hidden; vertical-align: top; }
+.sublayer-item dt { height: 32px; line-height: 32px; border-bottom: 1px dotted #dbd8d6; font-size: 14px;  font-family: "Hiragino Sans GB", "Microsoft Yahei"; color: #000; font-weight: bold; margin-bottom: 8px;}
+.sublayer-item dt a{ color: #000;}
+.sublayer-item dd { overflow: hidden; font-size: 12px;}
+.sublayer-item, .sublayer-item a { }
+.sublayer-item ul { margin-left: -7px; }
+.sublayer-item li { float: left; border-left: 2px solid #d0cece; line-height: 13px; padding: 0 5px; margin-bottom: 8px;}
+.sublayer-item li a{ display: inline-block; white-space: nowrap; color: #626262;}
+.tree-hover .gbc-treelitem{ position: relative; *zoom:1; z-index: 99; background: #f2f0ef;}
+.tree-hover .sublayer { display: block; }
+
+.sublayer-small{ width: 250px;}

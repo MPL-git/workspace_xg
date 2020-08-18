@@ -1,0 +1,139 @@
+::-webkit-input-placeholder {
+	color: #999;
+}
+body {
+	overflow-x: hidden;
+}
+img[src=''] {
+	display: none;
+}
+input, textarea {
+	width: 100%;
+	border: none;
+	outline: none;
+}
+textarea {
+	height: 1.28rem;
+	min-height: .68rem;
+	resize: vertical;
+}
+
+article {
+	padding: 0 .3rem .6rem;
+	font-size: .3rem;
+}
+figcaption {
+	height: .8rem;
+	margin-top: .4rem;
+	font-size: .44rem;
+	font-weight: bold;
+}
+figcaption em {
+	margin-left: .1rem;
+	font-size: .36rem;
+	color: #ff5050;
+}
+.flex {
+	width: 100%;
+}
+html, body, form {
+	height: 100%;
+}
+
+.con {
+	border-bottom: .02rem solid #666;
+}
+.con.no-border {
+	border: none;
+}
+
+input {
+	height: .68rem;
+}
+dl {
+	margin: .23rem .4rem .2rem 0;
+}
+dt {
+	position: relative;
+	width: 2rem;
+	height: 2rem;
+	border: 1px dashed #bbb;
+	box-sizing: border-box;
+	border-radius: .03rem;
+}
+dt:before,
+dt:after {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	content: '';
+	width: .6rem;
+	height: .02rem;
+	margin: auto;
+	background: #999;
+}
+dt:after {
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+dt .img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+}
+dt input[type=file] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+}
+dd {
+	height: .63rem;
+	font-size: .26rem;
+}
+
+input[type=submit] {
+	height: 1rem;
+	background: #ff5050;
+	color: #fff;
+	font-size: .36rem;
+	text-align: center;
+}
+
+.con.zb input,
+select {
+	width: 2.16rem;
+	height: .5rem;
+	border-radius: .03rem;
+	box-sizing: border-box;
+	border: 1px solid #bbb;
+}
+.con.zb input {
+	margin-right: .1rem;
+	padding-left: .15rem;
+}
+.con.zb select {
+	margin-left: .2rem;
+}
+
+select {
+	padding-left: .1rem;
+	margin-right: .2rem;
+}
+select[data-val=""] {
+	color: #999;
+}
+select option {
+	color: #333;
+}
+select option[data-code=""] {
+	color: #999;
+}

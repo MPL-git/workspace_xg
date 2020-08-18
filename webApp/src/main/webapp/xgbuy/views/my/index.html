@@ -1,0 +1,356 @@
+<div class="page my flex dc bgf4" data-title="个人中心" data-id="my">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="my/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn hide" onclick="back()"></i></div>
+		<p class="ellipsis bold">个人中心</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="main scroll-y fg"></div>
+
+	<div class="popup popup-dynamic" onclick="closeSelf(this)"></div>
+	<div class="popup popup-share-reduce" onclick="closeSelf(this)">
+		<div class="popup-bottom" onclick="stopSelf()">
+			<div class="popup-top flex ac jc h4">分享到</div>
+			<div class="popup-con flex ja">
+				<a class="share-bt flex jc ac dc" onclick="myApi.getShareWx()"><img class="wx-ico" src="../static/images/share-wx.png"><span>微信</span></a>
+				<a class="share-bt flex jc ac dc" onclick="myApi.getShare()"><img class="wx-ico" src="../static/images/share-dynamic.png" width="90px"><span>醒购动态</span></a>
+			</div>
+			<a class="close-share flex ac jc foot" onclick="closeSelf(this)">取消分享</a>
+		</div>
+	</div>
+
+	<script id="my_tpl" type="text/html">
+		<div class="row my-top flex ac mb20">
+			<a onclick="getUrl('my/set/index.html')" class="flex ac jb">
+				<dl class="flex fg">
+					<dt class="fn img-cover">
+						<img src="{{pic ? pic : '../static/images/def-head.png'}}">
+					</dt>
+					<dd class="flex dc jc fg">
+						<h3 class="elps">{{nick}}</h3>
+						<div class="flex ac">
+							<span class="iflex ac jc">{{levelName}}</span>
+							{{if invitationCode}}
+							<div class="novaplan-yq" data-clipboard-text="{{invitationCode}}" onclick="stopSelf(event)">邀请码:
+								{{invitationCode}}</div>
+							{{/if}}
+						</div>
+					</dd>
+				</dl>
+				<i class="ico-btn arrow-r fn"></i>
+			</a>
+		</div>
+
+		<div class="row row-1 mb20">
+			<a class="flex ac jb my-order" onclick="myOrder('')">
+				<div class="flex ac">我的订单</div>
+				<span>
+					查看全部订单
+					<i class="ico-btn arrow-r"></i>
+				</span>
+			</a>
+
+			<div class="flex my-order-more">{{include 'my_tpl_order'}}</div>
+		</div>
+
+		<div class="row row-2 mb20 flex fw">
+			<a onclick="getUrl('integral')" class="flex ac jc">
+				<div class="pos-r flex dc ac integral">
+					可抵用积分
+					{{if memberintegral}}
+					<i class="ico-radius flex ac jc">{{memberintegral > 99 ? '99+' : memberintegral}}</i>
+					{{/if}}
+				</div>
+			</a>
+			<a onclick="getUrl('coupon/index.html', true)" class="flex ac jc">
+				<div class="pos-r flex dc ac coupon">
+					优惠券
+					{{if memberCounponNum}}
+					<i class="ico-radius flex ac jc">{{memberCounponNum > 99 ? '99+' : memberCounponNum}}</i>
+					{{/if}}
+				</div>
+			</a>
+			<a onclick="getUrl('my/collect/index.html', 'self')" class="flex ac jc">
+				<div class="flex dc ac remind">
+					我的收藏
+				</div>
+			</a>
+			<a onclick="getUrl('history', 'self')" class="flex ac jc">
+				<div class="flex dc ac history">
+					浏览记录
+				</div>
+			</a>
+			<a onclick="getUrl('address')" class="flex ac jc">
+				<div class="flex dc ac address">
+					收货地址
+				</div>
+			</a>
+		</div>
+
+		<div class="row row-2 mb20 flex fw">
+			<a onclick="myApi.getMyUrlServer()" class="flex ac jc">
+				<div class="flex dc ac server">
+					平台客服
+				</div>
+			</a>
+			<a href="tel:400-8088-776" class="flex ac jc" onclick="traffic.setPv(myApi.data, {pageType: '47', noTime: 1})">
+				<div class="flex dc ac customer">
+					平台热线
+				</div>
+			</a>
+			<a onclick="getUrl('help', 'self')" class="flex ac jc">
+				<div class="flex dc ac help">
+					帮助中心
+				</div>
+			</a>
+			<a onclick="getUrl('my/opinion/index.html', 'self')" class="flex ac jc">
+				<div class="flex dc ac my-opinion">
+					投诉与建议
+				</div>
+			</a>
+			<a onclick="getUrl('rule')" class="flex ac jc">
+				<div class="flex dc ac rule">
+					醒购规则
+				</div>
+			</a>
+			{{if novaPlanOpen === '1'}}
+			<a onclick="getUrl('activity/novaplan/index.html', 'self')" class="flex ac jc">
+				<div class="flex dc ac novaplan">
+					新星计划
+				</div>
+			</a>
+			{{else if novaPlanOpen === '3'}}
+			<a onclick="getUrl('activity/shopowner/index.html', 'self')" class="flex ac jc">
+				<div class="flex dc ac novaplan">
+					醒购店长
+				</div>
+			</a>
+			{{/if}}
+			<a onclick="getUrl('my/share/index.html')" class="flex ac jc">
+				<div class="flex dc ac app">
+					分享APP
+				</div>
+			</a>
+			<a onclick="getUrl('settled/index.html', 'self')" class="flex ac jc">
+				<div class="flex dc ac settled">
+					商家入驻
+				</div>
+			</a>
+			<a onclick="getUrl('about')" class="flex ac jc">
+				<div class="flex dc ac about">
+					关于醒购
+				</div>
+			</a>
+			<a onclick="getUrl('my/set/index.html')" class="flex ac jc">
+				<div class="flex dc ac set">
+					设置
+				</div>
+			</a>
+		</div>
+		{{if novaPlanOpen === '1' || novaPlanOpen === '3'}}
+		<div class="my-nova mt20">
+			<div class="tab-top flex jc">
+				<a class="flex dc ac" onclick="myApi.main(1, 1)">
+					<span class="fg flex ac">推荐</span>
+				</a>
+				<a class="flex dc ac" onclick="myApi.main(2, 1)">
+					<span class="fg flex ac">关注</span>
+				</a>
+			</div>
+
+			<ul class="tab-body w75"></ul>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="my_tpl_order" type="text/html">
+		<a onclick="myOrder(0)" class="fg pay">
+			待付款
+			{{if unpaidCount}}
+			<i class="ico-radius flex ac jc">{{unpaidCount > 99 ? '99+' : unpaidCount}}</i>
+			{{/if}}
+		</a>
+
+		<a onclick="myOrder(1)" class="fg deliver">
+			待发货
+			{{if shipmentPendingCount}}
+			<i class="ico-radius flex ac jc">{{shipmentPendingCount > 99 ? '99+' : shipmentPendingCount}}</i>
+			{{/if}}
+		</a>
+
+		<a onclick="myOrder(2)" class="fg received">
+			待收货
+			{{if afterReceivingCount}}
+			<i class="ico-radius flex ac jc">{{afterReceivingCount > 99 ? '99+' : afterReceivingCount}}</i>
+			{{/if}}
+		</a>
+
+		<a onclick="myOrder(3)" class="fg evalua">
+			待评价
+			{{if unCommentCount}}
+			<i class="ico-radius flex ac jc">{{unCommentCount > 99 ? '99+' : unCommentCount}}</i>
+			{{/if}}
+		</a>
+
+		<a onclick="myApi.myApp()" class="fg refunds">
+			售后
+			{{if customerServiceCount}}
+			<i class="ico-radius flex ac jc">{{customerServiceCount > 99 ? '99+' : customerServiceCount}}</i>
+			{{/if}}
+		</a>
+	</script>
+
+	<script id="my_tpl_novaplan_con" type="text/html">
+		{{if dataList.length}}
+		{{each dataList item}}
+		<li class="mb20" data-obj="{{item}}">
+			<div>
+				<dl class="cursor flex ac"
+					onclick="getUrl('activity/novaplan/pages/newsfeed/index.html?type={{item.type}}&id={{item.id}}', 'self')">
+					<dt class="fn img-cover">
+						<img src="{{item.pic}}" onerror="imgErrorHead(this)">
+					</dt>
+					<dd class="fg flex dc jb" style="min-width:0">
+						<h3 class="flex ac" style="min-width:0">
+							<span class="elps">{{item.type == 1 ? item.nick : item.shopName}}</span>
+						</h3>
+						<div class="flex ac jb">
+							<span class="c9">{{item.publishDate}}</span>
+						</div>
+					</dd>
+					<dd class="flex je ac fn {{item.type == 1?'bg-head-sec-f':'bg-head-sec'}}">
+						{{if item.type == 1}}
+						<p class="flex turn-from">转发自<span class="f50 elps"
+								onclick="stopSelf(event), getUrl('seller/index.html?mchtId={{item.mchtId}}', 'self');">{{item.shopName}}</span>
+						</p>
+						{{else}}
+						<div class="btn-1 flex jc" onclick="myApi.getShop(event,'{{item.mchtId}}')">进店</div>
+						{{/if}}
+
+						<div class="btn-2 flex ac" onclick="myApi.showPopupDynamic(event)">
+							<img src="https://mtest.xgbuy.cc/webApp/applet/image/coupon/down.png" alt="">
+						</div>
+					</dd>
+				</dl>
+				<div class="col-2 cursor "
+					onclick="getUrl('activity/novaplan/pages/newsfeed/index.html?type={{item.type}}&id={{item.id}}', 'self')">
+					{{item.content}}</div>
+				<div class="btn-row-1 hide"
+					onclick="getUrl('activity/novaplan/pages/newsfeed/index.html?type={{item.type}}&id={{item.id}}', 'self')">
+					查看全文</div>
+				<div class="col-3 flex fw">
+					{{each item.productList value}}
+					<a onclick="getUrlGoods('{{value.productId}}')">
+						<img src="{{value.productPic}}">
+					</a>
+					{{/each}}
+				</div>
+			</div>
+			<div class="footer bt1 flex ac jb">
+				<div class="btn-group-left">
+					{{item.readCount}} 阅读
+				</div>
+				<div class="btn-group-right flex ac">
+					<a class="flex ac jc" data-type="{{item.type}}" data-id="{{item.id}}"
+						data-mcht="{{item.mchtShopDynamicId}}"
+						onclick="myApi.showForward(this)"><i></i><b>{{item.forwardCount}}</b></a>
+					<a class="flex ac jc fabulous bl1{{item.likeStatus === '1' ? ' fabulous-1' : ''}}"
+						data-type="{{item.type}}" data-id="{{item.id}}" data-mcht="{{item.mchtShopDynamicId}}"
+						onclick="myApi.getFabulous(this)"><i
+							style="width: .27rem; height: .3rem;"></i><b>{{item.likeCount}}</b></a>
+				</div>
+
+			</div>
+		</li>
+		{{/each}}
+		{{else}}
+		<div class="page-empty empty-text flex dc ac jc fg">
+			<i></i>
+			<p>当前暂无动态</p>
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="my_tpl_popup_dynamic" type="text/html">
+		<span class="popup-bottom" onclick="stopSelf()">
+			<span class="popup-con">
+				<div class="flex ac jc head" onclick="closeSelf(this)">
+					<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/take-back.png" />
+				</div>
+				<span class="con">
+					{{if (source == 1 && hasCollectionMcht == 1 && shieldingDynamics == 0) || (source == 2 && hasFocusOnFriends == 1 && shieldingDynamics == 0) }}
+					<div class="flex li" onclick="myApi.updateSd()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/shielding-dynamics.png" />
+						<div class="flex dc fg">
+							<span class="t1">屏蔽动态</span>
+							<span class="t2">屏蔽TA的内容，不在醒购动态收到</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if (source == 1 && hasCollectionMcht == 1 && shieldingDynamics == 1) ||(source == 2 && hasFocusOnFriends == 1 && shieldingDynamics == 1) }}
+					<span class="flex li" onclick="myApi.updateSd()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/dynamics.png" />
+						<span class="flex dc fg">
+							<span class="t1">接收动态</span>
+							<span class="t2">接收TA的内容，可在醒购动态查看</span>
+						</span>
+					</span>
+					{{/if}}
+					{{if source == 1 && hasCollectionMcht == 1 }}
+					<div class="flex li reminded" onclick="myApi.addCollect(event)" data-type="3" data-id="{{mchtId}}">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/cancel-collection.png" />
+						<div class="flex dc fg">
+							<span class="t1">取消收藏</span>
+							<span class="t2">不再收藏店铺</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if source == 1 && hasCollectionMcht == 0}}
+					<div class="flex li" onclick="myApi.addCollect(event)" data-type="3" data-id="{{mchtId}}">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/collection.png" />
+						<div class="flex dc fg">
+							<span class="t1">收藏店铺</span>
+							<span class="t2">可在个人中心-推荐查看TA的动态</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if source == 2 && hasFocusOnFriends == 1 }}
+					<div class="flex li" onclick="myApi.getFollow()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/remove-concerns.png" />
+						<div class="flex dc fg">
+							<span class="t1">取消关注</span>
+							<span class="t2">不再关注TA</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if source == 2 && hasFocusOnFriends == 0}}
+					<div class="flex li" onclick="myApi.getFollow()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/concerns.png" />
+						<div class="flex dc fg">
+							<span class="t1">关注好友</span>
+							<span class="t2">可在个人中心-关注查看TA的动态</span>
+						</div>
+					</div>
+					{{/if}}
+					{{if source == 3}}
+					<div class="flex li" onclick="myApi.deteleDynamic()">
+						<img src="https://mtest.xgbuy.cc/webApp/applet/image/user/detele-dynamics.png" />
+						<div class="flex dc fg">
+							<span class="t1">删除动态</span>
+							<span class="t2">删除已发布动态，不在展示</span>
+						</div>
+					</div>
+					{{/if}}
+				</span>
+				<div class="flex ac jc foot">
+					<button onclick="closeSelf(this)">取消</button>
+				</div>
+			</span>
+		</span>
+	</script>
+
+	<script src="my/index.js?var=1.1" async></script>
+</div>

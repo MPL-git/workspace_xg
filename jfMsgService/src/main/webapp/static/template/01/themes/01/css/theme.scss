@@ -1,0 +1,177 @@
+@charset "utf-8";
+@import "var";
+
+/*common*/
+body{
+  background: $body_bg;
+}
+.btn{
+  &,span{
+    background: $btn_bg;
+  }
+}
+.btn-action{
+  background: $btn_action_bg;
+}
+.btn-action2{
+  background: $btn_action2_bg;
+}
+a:hover{ color: $theme_color;}
+
+/*top*/
+.topbar{
+  background: #dedad7 url("../images/barbg.png") repeat-x; color: $theme_color2;
+}
+.linkfav{
+  position: relative; padding-left: 20px;
+  i{position: absolute; left: 0; top: 0; width: 16px; height: 20px; background: url(../images/topbar_fav.png) no-repeat;}
+}
+.topnotify span{background-image: $notify_bg;}
+
+/*header*/
+#header{background: $header_bg;}
+
+#headerSearch{width: 443px;}
+.search-panel-fields{
+  width: auto; padding: 0; overflow: hidden;
+  label{position: absolute; left: 10px; top: 0; z-index: 2; line-height: 30px; color: #949494; cursor: text;}
+  input{float: left; width: 370px; height: 30px; *line-height: 30px; margin: 0; padding: 0 10px;  background: url("../images/barbg.png") repeat-x; -webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none; border: 0;}
+  button{float: left; position: static; width: 53px; height: 30px; background:$title_color url(../images/topsearch.png) no-repeat center; border: 0; text-indent: -9999em; cursor: pointer;}
+}
+.hotsearch{
+  position: relative; height: 30px; overflow: hidden; line-height: 30px;
+  a{margin-left: 5px; color: #b1a8a3;}
+}
+
+#headerCart{}
+.cartbtn{
+  float: left; padding:0 5px 0 45px; display: block; height: 30px; line-height: 30px; color: $theme_color2; background: url("../images/barbg.png") repeat-x;
+  i{position: absolute; left: 8px; top: 0; width: 30px; height: 30px; background: url(../images/topcart.png) no-repeat;}
+  span{display: inline-block;}
+  .cartcount{display: inline-block; padding-right: 20px; background: url("../images/topcart.png") no-repeat 100% -30px;}
+}
+
+.mini-cart-menu{border: 1px solid $theme_color2; right: -1px;}
+.mini-cart-view .mini-cart-btn{background: $theme_color2; border: 1px solid $theme_color2; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff;}
+
+/*nav*/
+.nav{
+  &,.layout{background: $nav_bg;}
+  .textNav,.site-nav{
+    a{
+      color: #fff;
+      .current,&:hover{color: $theme_color; text-decoration: none;}
+    }
+  }
+}
+.gbc-treetitle .c{ padding-right: 15px; background: url("../images/cat-arrow.png") no-repeat right;}
+
+.gbc-title{background: $nav_bg;}
+.gbc-title span{background: url("../images/gbctitle-arrow.gif") no-repeat 100% 0; padding-right: 30px; color: #fff;}
+.global-catalog-open .gbc-title span{background-position: 100% 100%;}
+
+.gbc-treetitle,
+.gbc-subtree li a:hover,
+.sublayer-item li a:hover,
+.sublayer-item dt a:hover{ color: $theme_color2;}
+
+/*footer*/
+.footer{background: $theme_color2;}
+.footwarranty{background: $title_color;}
+.footwarranty td{text-align: center;}
+.ftconlist p{ background: url("../images/ftlistico.gif") no-repeat 0 5px;}
+.ftfriends{clear: both; margin-top: 25px; zoom:1; line-height: 30px; height: 30px; background: url("../images/barbg.png") repeat-x; padding-left: 20px;}
+.ftfriends h3{color: $theme_color2; float: left;}
+.ftfriends p{float: left; margin-left: 10px; _display:inline;}
+.ftfriends a{color: #333;}
+
+/*login*/
+.loginbox{border-top: 3px solid $theme_color;}
+
+/*sidebar*/
+.sideblock .blocktitle{ border-top: 3px solid $theme_color; margin: 0 -1px;}
+
+/*main*/
+.filter-sort .sort-on{border-color: $theme_color; background-color: $theme_color; color: #fff;}
+.pagination .page-cur,.page-go button{background: $theme_color; border:1px solid darken($theme_color,10); color: #fff;}
+
+/*page*/
+.block .blocktitle{
+  border-bottom-color: $title_bottom_line; color: $title_color; background: $title_bg;
+  span{ margin-bottom: -2px; border-bottom: 2px solid $theme_color;}
+}
+.commentblock h3{
+  border-color: $theme_color;
+}
+
+
+/*goodslist*/
+.m-itemslist .type-grid{
+  .item-hover{border-color: $theme_color;}
+  .goodsname a:hover{color: $theme_color;}
+  .thumbslist li.selected{border-color: $theme_color;}
+}
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected{border-color: $theme_color;}
+.goodspromotion .promote i{ background: $promote_color;}
+.btn-buy a,.btn-buy a span{background: $btn_buy_bg;}
+.btn-cart a,.btn-cart a span{background: $btn_cart_bg;}
+.detail-tabbar{
+  border-color: $detail_tab_border_color; background: $detail_tab_bg;
+  a{color: $detail_tab_text_color;}
+  .selected{
+    border-top: 3px solid $theme_color; margin-top: -3px; background: $detail_tab_active_bg;
+    a{color: $detail_tab_active_text_color;}
+  }
+}
+.detail-bd .hd{background: $detail_title_bg; color: $detail_title_color;}
+.review-rate span{color: $theme_color;}
+.sumratebar span{background: $theme_color;}
+
+/*goods-set*/
+.combobuy-hd h3,.combobuy-ft h3{ color: $theme_color;}
+
+/*step*/
+.stepind{background-image: $step_bg_img;}
+.steps{
+  .step-active{ background-color: $step_active_line_color;}
+  .step-active .stepname{color: $step_active_color;}
+}
+.orderstate{
+  .stepind{background-image: $step_large_bg_img;}
+  .steps{
+    .step-active{ background-color: $step_large_active_line_color;}
+    .step-active .stepname{color: $step_large_active_color;}
+  }
+}
+
+/*payment*/
+.tabbar .selected{margin-top: -3px; border-top: 3px solid $theme_color;}
+.payment .tabbar .selected a{border-top: 3px solid $theme_color; padding-top: 0;}
+
+/*refund*/
+.tabnav li a.current{color: #fff; background: $theme_color;}
+
+/*news*/
+.newslist h3{border-bottom: 2px solid $theme_color;}
+.newslist .title a:hover{color: $theme_color;}
+.newstop{border-bottom: 2px solid $theme_color;}
+
+.newsbox .title{ background: url("../images/barbg.png") repeat-x #dedad7;}
+.newsbox .title span{display: block; margin-right: 12px; padding: 0 20px 0 10px; background: url("../images/arrow-down-brown.png") no-repeat right;}
+
+/*mycenter*/
+.mcmenu-home{ margin-bottom: 10px; background-color: $theme_color;}
+.mcmenu{border-top: 4px solid $theme_color;}
+.mctitle span{margin-bottom: -2px; border-bottom: 2px solid $theme_color;}
+.mcmenu dd a.current{ background-image: $mc_menu_arrow_img;}
+.link-back{background: $theme_color;}
+
+.pswstrength-low, .pswstrength-mid, .pswstrength-high{ background-image: $psw_strength_bg_img;}
+.link{color: $link_color;}
+.deliverstatus li.itemactive s{background: $deliver_status_line;}
+.deliverstatus li p, .deliverstatus li p span{background-image: $deliver_status_bg_img;}
+
+/*brand*/
+.brandextra a{background: $theme_color2;}

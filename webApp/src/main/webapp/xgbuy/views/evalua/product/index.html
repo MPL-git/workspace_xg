@@ -1,0 +1,88 @@
+<div class="page evalua evalua-list evalua-product flex dc bgf4" data-title="评价列表" data-id="evalua_product">
+	<link rel="stylesheet" href="evalua/index.css">
+	<link rel="stylesheet" href="evalua/list/index.css">
+	<style>
+		.evalua-product .list-con {
+			padding-top: 0;
+		}
+		.evalua-product .evalua-goods dt {
+			border-radius: 100%;
+		}
+	</style>
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">评价列表</p>
+		<div class="fn">
+			<i class="fn ico-btn share" onclick="evaluaProductApi.share()"></i>
+		</div>
+	</header>
+
+	<div class="content fg scroll-y scroll-more">
+		<div class="touchfix w75"></div>
+	</div>
+
+	<script id="evalua_product_tpl" type="text/html">
+		{{each dataList value}}
+		<div class="main mb20">
+			<div class="evalua-goods">
+				<dl class="flex">
+					<dt class="fn img-cover">
+						<img src="{{value.memberPic ? value.memberPic : '../static/images/def-head.png'}}">
+					</dt>
+					<dd class="fg flex ac">
+						<h3 class="fn">{{value.memberNick}}</h3>
+					</dd>
+					<dd class="flex ac score star-{{value.productScore}}">
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+						<i></i>
+					</dd>
+				</dl>
+			</div>
+
+			<div class="list-con">
+				<p class="list-spec flex ac c9">{{value.productPropDesc}}</p>
+
+				<div class="list-text">{{value.content}}</div>
+
+				{{if value.commentPics.length}}
+				<div class="list-pic">
+					{{each value.commentPics val}}
+					<div class="img-pre img-cover" onclick="previewPic(this)">
+						<img src="{{val}}">
+					</div>
+					{{/each}}
+				</div>
+				{{/if}}
+
+				{{if value.appendDataList.length}}
+					{{each value.appendDataList valu}}
+				<h4 class="f50">{{valu.appendCommentDay}}</h4>
+				<div class="list-text">{{valu.appendContent}}</div>
+
+						{{if valu.appendCommentPics.length}}
+				<div class="list-pic">
+							{{each valu.appendCommentPics val}}
+					<div class="img-pre img-cover" onclick="previewPic(this)">
+						<img src="{{val}}">
+					</div>
+							{{/each}}
+				</div>
+						{{/if}}
+					{{/each}}
+				{{/if}}
+
+				{{if value.mchtReply}}
+				<h4 class="f50">商家回复</h4>
+				<div class="list-text">{{value.mchtReply}}</div>
+				{{/if}}
+			</div>
+		</div>
+		{{/each}}
+	</script>
+
+	<script src="evalua/product/index.js?var=1.0" async></script>
+</div>

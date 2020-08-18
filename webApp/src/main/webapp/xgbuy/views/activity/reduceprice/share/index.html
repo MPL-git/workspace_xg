@@ -1,0 +1,206 @@
+<div class="page reduceprice free-share cut-price flex dc" data-title="助力大减价" data-id="activity_reduceprice_share">
+	<link rel="stylesheet" href="activity/reduceprice/share/share.css?ver=1.0">
+	<link rel="stylesheet" href="activity/cutprice/cutprice.css?ver=1.0">
+	<link rel="stylesheet" href="activity/reduceprice/reduceprice.css?ver=1.1">
+
+	<header class="flex ac jb fn hide">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">助力大减价</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-more fg pos-r scroll-decorate">
+		<span class="ico-btn free-share-rule" onclick="popupShow('.popup-rule-share')"></span>
+		<div class="touchfix"></div>
+	</div>
+
+	<script id="reduceprice_share_tpl_row1" type="text/html">
+		<div class="row-1">
+			<dl class="col-1 flex">
+				<dt class="img-cover fn">
+					<img src="{{skuPic}}">
+				</dt>
+				<dd class="fg flex dc jb">
+					<h3 class="clampself">{{productName}}</h3>
+					<div class="flex ac jb">
+						<span>
+							<strong class="f50">{{salePrice}}</strong>
+							<s class="c9">{{(1000 * salePrice - 1000 * assistanceNum * fixedAmount) / 1000}}</s>
+						</span>
+					</div>
+				</dd>
+			</dl>
+
+			<div class="col-2">
+				{{if taskStatus == 1}}
+				<h4 class="flex ac jc">已邀请{{assistanceNum}}好友，已减{{assistanceNum * fixedAmount}}</h4>
+					{{if timer > 0}}
+				<p class="flex ac jc c9"><time data-timer="{{timer}}"></time>将失效</p>
+					{{/if}}
+				<a class="col-3 flex ac jc btn-red" onclick="reducepriceShare.share()">继续邀请</a>
+				{{else if taskStatus == 2}}
+				<h4 class="flex ac jc">已邀请{{assistanceNum}}好友，已减{{assistanceNum * fixedAmount}}</h4>
+				<p class="flex ac jc c9">助力已过期可{{(1000 * salePrice - 1000 * assistanceNum * fixedAmount) / 1000}}购买</p>
+				<a class="col-3 flex ac jc btn-red btn-gray">任务结束</a>
+				{{else if taskStatus == 3}}
+				<h4 class="flex ac jc">邀请已达上限，快去下单吧</h4>
+				<p class="flex ac jc c9">已减{{assistanceNum * fixedAmount}}，可{{(1000 * salePrice - 1000 * assistanceNum * fixedAmount) / 1000}}进行购买</p>
+				<a class="col-3 flex ac jc btn-red" onclick="reducepriceShare.buyNow('{{productId}}', '{{productItemId}}', '{{quantity}}', '{{(1000 * salePrice - 1000 * assistanceNum * fixedAmount) / 1000}}', '{{cutOrderId}}')">前往下单</a>
+				{{else if taskStatus == 4}}
+				<h4 class="flex ac jc">已邀请{{assistanceNum}}好友，已减{{assistanceNum * fixedAmount}}</h4>
+				<p class="flex ac jc c9">已减{{assistanceNum * fixedAmount}}，可{{(1000 * salePrice - 1000 * assistanceNum * fixedAmount) / 1000}}进行购买</p>
+				<a class="col-3 flex ac jc btn-red btn-gray">超时未下单</a>
+				{{else if taskStatus == 5}}
+				<h4 class="flex ac jc">邀请已达上限，快去下单吧</h4>
+				<p class="flex ac jc c9">已减{{assistanceNum * fixedAmount}}，可{{(1000 * salePrice - 1000 * assistanceNum * fixedAmount) / 1000}}进行购买</p>
+				<a class="col-3 flex ac jc btn-red btn-gray">下单成功</a>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class="row-2 row-21"></div>
+
+		<div class="row-3s"></div>
+	</script>
+
+	<script id="reduceprice_share_tpl_row2" type="text/html">
+		<h2 class="flex ac jc">助力记录</h2>
+		{{if returnData.length}}
+		<div class="scroll-y show3{{returnData.length < 5 ? ' jc' : ''}}">
+			{{include 'reduceprice_share_tpl_row2_list'}}
+		</div>
+			{{if returnData.length > 3}}
+		<a class="free-more-share" onclick="reducepriceShare.more(this)"></a>
+			{{/if}}
+		{{else}}
+		<div class="flex ac jc no-help">当前还没有成功邀请好友助力</div>
+		{{/if}}
+	</script>
+
+	<script id="reduceprice_share_tpl_row2_list" type="text/html">
+		{{each returnData value i}}
+		<dl class="flex ac fn">
+			<dt class="fn img-cover">
+				<img src="{{value.weixinHead}}">
+			</dt>
+			<dd class="fg flex jb">
+				<p class="ellipsis fg">{{value.memberNick}}</p>
+				<em class="fn btn-f50 flex ac jc">{{value.content}}</em>
+			</dd>
+		</dl>
+		{{/each}}
+	</script>
+
+	<div class="popup free-share-help" onclick="closeSelf(this)"></div>
+
+	<script id="reduceprice_share_tpl_help" type="text/html">
+		<div class="popup-main" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+			<div>
+				<h3>{{returnMsg}}</h3>
+			</div>
+		</div>
+	</script>
+
+	<script id="reduceprice_share_tpl_row1s" type="text/html">
+		<div class="contents">
+			<div class="cons">
+				<div class="row-1s">
+					<h2 class="flex ac jc">看上一件好货，助力可减<span class="f50 bold">{{fixedAmount}}</span>元</h2>
+					<div class="col-img"><img src="{{headPic || '../static/images/def-head.png'}}"></div>
+					<dl class="flex">
+						<dt>
+							<img src="{{skuPic}}">
+						</dt>
+						<dd>
+							<h3>{{productName}}</h3>
+							<p>助力最低可<span class="f50 bold">{{(1000 * salePrice - 1000 * maxInviteTimes * fixedAmount) / 1000}}</span>购买</p>
+						</dd>
+					</dl>
+				</div>
+
+				<div class="row-2s">
+					{{if memberAssistanceStatus == 1}}
+					<a class="flex ac jc btn-red" onclick="reducepriceShare.load()">立即帮他助力减价</a>
+						{{if timer > 0}}
+					<p class="flex ac jc c9" style="margin: .2rem 0 -.2rem;">还剩<time data-timer="{{timer}}"></time>，快来助力帮好友减价吧</p>
+						{{/if}}
+					{{else if memberAssistanceStatus == 2}}
+					<a class="flex ac jc btn-red" onclick="getUrl('my/download/index.html')">立即下载完成助力</a>
+					{{else if memberAssistanceStatus == 3}}
+					<a class="flex ac jc btn-red">助力已完成</a>
+					{{else if memberAssistanceStatus == 4}}
+					<a class="flex ac jc btn-red">助力已成功</a>
+					{{else if memberAssistanceStatus == 5}}
+					<a class="flex ac jc btn-red">任务已超时</a>
+					{{else if memberAssistanceStatus == 6}}
+					<a class="flex ac jc btn-red" onclick="getUrl('my/download/index.html')">我也要助力减价拿</a>
+					{{/if}}
+				</div>
+			</div>
+		</div>
+
+		<div class="row-2 row-21 row-21s"></div>
+
+		<div class="row-3s"></div>
+	</script>
+
+	<script id="reduceprice_share_tpl_row3" type="text/html">
+		<h2 class="flex ac jc spe-h2">助力减价商品</h2>
+		<div class="con-list con-1 tab-con">
+			{{include 'reduceprice_share_tpl_row3_list'}}
+		</div>
+	</script>
+
+	<script id="reduceprice_share_tpl_row3_list" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+				<div class="reduce-main flex ac jc" onclick="getUrl('my/download/index.html')">
+					<div class="main-left">
+						<img src="{{value.productPic}}">
+					</div>
+					<div class="main-right">
+						<div class="right-title">{{value.productName}}</div>
+						<div class="right-main flex ac">
+							<p class="f7b">￥{{value.salePrice}}</p>
+							<div class="img-jiantou">
+								<div class="jiantou-top flex ac jc">每邀1人</div>
+								<div class="jiantou-bottom flex ac jc">立减{{value.fixedAmount}}</div>
+							</div>
+							<p class="f50 f50s">￥{{value.minPayAmount}}</p>
+						</div>
+						{{if value.status == 1}}
+							<a class="getprice flex ac jc" onclick="reducePrice.getPrice('{{value.productId}}')">减价拿</a>
+						{{/if}}
+						{{if value.status == 2}}
+							<div class="btn-gray flex ac jc">名额已满</div>
+						{{/if}}
+						{{if value.status == 3}}
+							<div class="btn-gray flex ac jc">已抢光</div>
+						{{/if}}
+					</div>
+				</div>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<div class="popup popup-rule popup-rule-share" onclick="closeSelf(this)">
+		<div class="popup-rule-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">
+				助力大减价规则
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</div>
+
+			<div class="con scroll-y f28">
+				<div class="touchfix">
+					<p class="mb20">1、每个新用户可助力一次，同一个设备、微信号、视为同一个用户。</p>
+					<p class="mb20">2、若发现用户存在刷单、虚假用户助力等违规行为、平台有权利判定任务失效。</p>
+					<p class="mb20">3、每个商品设置邀请人数上限和所减的价格不同，每个商品均有最低价，减到最低价视为任务完成。</p>
+					<p class="mb20">4、任务完成后，平台将为您保留24小时，24小时不下单视为放弃本次任务。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="activity/reduceprice/share/share.js?ver=1.4" async></script>
+</div>

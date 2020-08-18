@@ -1,0 +1,804 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+            var globalNav = $("#nav .navwrap");
+            var navheight = globalNav.height(),navtop = globalNav.offset().top;
+            $(window).on("scroll",function(){
+                var scrolltop = $(this).scrollTop();
+                globalNav.removeAttr("style");
+                if(scrolltop > navtop){
+                    globalNav.addClass("global-nav-fix");
+                }else{
+                    globalNav.removeClass("global-nav-fix");
+                }
+            });
+
+            $(".global-catalog").hover(function(){
+                showGlobalCat();
+            }, function(){
+                hideGlobalCat();
+            });
+            var globalCatalog = $('.global-catalog'),
+                    globalCatCon = $('.gbc-blockcon'),
+                    gbcDuration = 200;
+            function showGlobalCat(){
+                globalCatCon.stop().slideDown(gbcDuration);
+                globalCatalog.addClass('global-catalog-open');
+            }
+            function hideGlobalCat(){
+                globalCatCon.stop().slideUp(gbcDuration);
+                globalCatalog.removeClass('global-catalog-open');
+            }
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+
+            $('#intabs').switchable({
+                triggers: $("#intabs .switchable-tab-title li"),
+                effect: 'none',
+                easing: 'ease-in-out',
+                panels:'.switchable-tab-item',
+                onSwitch: function(event, currentIndex) {}
+            });
+            $('#intabs .switchable-tab-item').each(function(){
+                var item = $(this);
+                item.switchable({
+                    triggers: false,
+                    panels: 'li',
+                    easing: 'ease-in-out',
+                    effect: 'scrollLeft',
+                    steps: 3,
+                    visible: 3,
+                    end2end: false,
+                    autoplay: true,
+                    prev: item.find('.prev'),
+                    next: item.find('.next')
+                });
+            })
+        });
+    </script>
+</head>
+<body class="page-index">
+<div id="topbar">
+	<div class="topbar">
+        <div class="layout">
+	        <div class="toptools"></div>
+			<div class="toplinks">
+                <p><a href="#"><img src="images/ico-account.png" alt=""/>我的帐号</a></p>
+                <p><a href="#"><img src="images/ico-mobile.png" alt=""/>手机商城</a></p>
+			</div>
+	        <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+	        </div>
+		</div>
+    </div>
+</div>
+<div id="header">
+	<div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/logo.png" alt=""></a>
+                    </td>
+                    <td id="logoExtra">
+                        <a href="#"><img src="images/logo-extra.png" alt=""/></a>
+                    </td>
+                </tr>
+            </table>
+		</div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerSearchRight">
+        <div class="hdsearch-right">
+
+        </div>
+    </div>
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">我的购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+        <div class="hotsearch">
+            <a href="#">初夏T恤</a>
+            <a href="#">新款凉鞋</a>
+            <a href="#">夏季防晒衫</a>
+            <a href="#">开衫</a>
+            <a href="#">男T恤</a>
+        </div>
+    </div>
+</div>
+<div id="nav">
+    <div class="navwrap">
+        <div class="global-catalog">
+            <div class="gbc-wrap">
+                <h2 class="gbc-title"><span>全部商品分类</span></h2>
+                <div class="gbc-blockcon">
+                    <ul class="gbc-tree">
+                        <li class="gbc-treeli tree-hover">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul></ul>
+                                </div>
+                            </div>
+                            <div class="sublayer">
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                                <dl class="sublayer-item">
+                                    <dt><a href="#">休闲裤</a></dt>
+                                    <dd>
+                                        <ul>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                            <li><a href="#">直筒休闲裤</a></li>
+                                        </ul>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="gbc-treeli">
+                            <div class="gbc-treelitem">
+                                <a class="gbc-treetitle" href="#"><span class="c">一级分类</span></a>
+                                <div class="gbc-subtree">
+                                    <ul>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                        <li><a href="#" class="gbc-treeitem"><span class="c">二级分类</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="nav">
+            <div class="layout">
+                <div class="textNav">
+                    <p><a class="current" href="http://www.genanx.com/">首页</a></p>
+                    <p><a href="http://www.genanx.com/products/0.html">新品上架</a></p>
+                    <p><a href="http://www.genanx.com/products/3-10.html">T恤</a></p>
+                    <p><a href="http://www.genanx.com/products/3-12.html">POLO衫</a></p>
+                    <p><a href="http://www.genanx.com/products/3-22.html">衬衫</a></p>
+                    <p><a href="http://www.genanx.com/products/0-26.html">夹克</a></p>
+                    <p><a href="http://www.genanx.com/products/3-28.html">皮衣</a></p>
+                    <p><a href="http://www.genanx.com/products/4-18.html">五分裤</a></p>
+                    <p><a href="http://www.genanx.com/products/0-19.html">休闲裤</a></p>
+                    <p><a href="http://www.genanx.com/products/0-20.html">牛仔裤</a></p>
+                    <p><a href="http://www.genanx.com/Login.html">会员中心</a></p>
+                    <p><a href="http://fx.genanx.com/fenxiao/CustomPage.aspx?pageid=1">代理加盟</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_2.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">上一张</a>
+            <a id="inslide_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+
+    <div id="intabs">
+        <div class="switchable-tab-title">
+            <ul>
+                <li><span>新品上市</span></li>
+                <li><span>本周热卖</span></li>
+                <li><span>精品推荐</span></li>
+                <li><span>超值抢购</span></li>
+            </ul>
+        </div>
+        <div class="switchable-tab-content">
+            <div class="switchable-tab-item">
+                <div class="switchable-tab-item-wrap">
+                    <ul>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                    </ul>
+                </div>
+                <div class="switchable-nav-item prev"><i>上页</i></div>
+                <div class="switchable-nav-item next"><i>下页</i></div>
+            </div>
+            <div class="switchable-tab-item">
+                <div class="switchable-tab-item-wrap">
+                    <ul>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                    </ul>
+                </div>
+                <div class="switchable-nav-item prev"><i>上页</i></div>
+                <div class="switchable-nav-item next"><i>下页</i></div>
+            </div>
+            <div class="switchable-tab-item">
+                <div class="switchable-tab-item-wrap">
+                    <ul>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                    </ul>
+                </div>
+                <div class="switchable-nav-item prev"><i>上页</i></div>
+                <div class="switchable-nav-item next"><i>下页</i></div>
+            </div>
+            <div class="switchable-tab-item">
+                <div class="switchable-tab-item-wrap">
+                    <ul>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_1.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_2.jpg"/></a></li>
+                        <li><a href="#"><img src="../06/images/pic/tab_pic_3.jpg"/></a></li>
+                    </ul>
+                </div>
+                <div class="switchable-nav-item prev"><i>上页</i></div>
+                <div class="switchable-nav-item next"><i>下页</i></div>
+            </div>
+        </div>
+    </div>
+<style>
+.topbar{ position: absolute; width: 100%;}
+.toptools,.toplinks,.toplogin{ clear: right; line-height: 40px; padding: 0;}
+.toplogin{width:80px; font-size:0; line-height:0;}
+.loginlink{ line-height: 40px;}
+.toptools p,.toplinks p,.toplogin p{ float: none; display: block; padding: 0; margin: 0;}
+.toptools a,.toplinks a,.toplogin a{color: #fff; background: #afd360; font-size:12px; display: inline-block;line-height: 40px; width: 80px; text-align: center; margin-bottom: 1px;}
+.header{background: none; margin-bottom: 15px;}
+.headertb{ height: 110px; border-collapse: separate; position: relative; z-index: 103; background: url("images/pic/logobg.png") no-repeat;}
+.headertb td{border-bottom:5px solid #afd360; padding: 0;}
+#headerRight{ position: absolute; top: 744px; left: 50%; margin-left: -600px; z-index: auto;}
+.hotsearch{ display: none;}
+#nav,.nav,.navwrap{height: auto;}
+.nav{background: none; padding: 540px 0 0; margin-bottom: 10px;}
+.nav .layout{ background: #2fb5e7; position: relative; width: 750px; padding: 0 450px 0 0; z-index: 9;}
+.nav .textNav{ height: 56px; overflow: hidden; line-height: 56px;}
+.global-nav-fix{ position: static;}
+.gbc-wrap{ z-index: 103; width: 236px;}
+.sublayer{ left: 234px;}
+#inslides{ position: absolute; width: 1200px; top:0; left: 50%; margin-left: -600px;}
+#inslides,.switchable-slides,.switchable-slides li{ height: 670px;}
+#inslides .switchable-triggers{ width: 48px; position: absolute; bottom: 34px; left: 0; text-align: center;}
+#inslides .switchable-triggers li{ display: block; line-height: 26px;}
+.search-panel-fields{border: 1px solid #fff; background: rgba(238,238,238,.35); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#59EEEEEE,endColorstr=#59EEEEEE);}
+.search-panel-fields label,.search-panel-fields input{ color: #fff;}
+.search-panel-fields button{background: url("images/pic/ico-search.png") center no-repeat;}
+.cartbtn{color: #fff; border: 1px solid #fff; background: rgba(238,238,238,.35); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#59EEEEEE,endColorstr=#59EEEEEE);}
+.cartbtn a{ color: #fff;}
+.cartbtn i{background: url("images/pic/ico-shopcart.png") no-repeat center;}
+</style>
+<br/>
+<table align="center" width="1186" height="120" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><a href="/products/1200.html"><img src="images/pic/innav_01.png" width="120" height="120" alt=""></a></td>
+        <td width="13" height="120">&nbsp;</td>
+        <td><a href="/products/1201.html"><img src="images/pic/innav_03.png" width="120" height="120" alt=""></a></td>
+        <td width="14" height="120">&nbsp;</td>
+        <td><a href="/products/1203.html"><img src="images/pic/innav_05.png" width="120" height="120" alt=""></a></td>
+        <td width="13" height="120">&nbsp;</td>
+        <td><a href="/products/1202.html"><img src="images/pic/innav_07.png" width="120" height="120" alt=""></a></td>
+        <td width="13" height="120">&nbsp;</td>
+        <td><a href="/products/1204.html"><img src="images/pic/innav_09.png" width="120" height="120" alt=""></a></td>
+        <td width="13" height="120">&nbsp;</td>
+        <td><a href="/products/1206.html"><img src="images/pic/innav_11.png" width="120" height="120" alt=""></a></td>
+        <td width="14" height="120">&nbsp;</td>
+        <td><a href="/products/1207.html"><img src="images/pic/innav_13.png" width="120" height="120" alt=""></a></td>
+        <td width="13" height="120">&nbsp;</td>
+        <td><a href="/products/1208.html"><img src="images/pic/innav_15.png" width="120" height="120" alt=""></a></td>
+        <td width="13" height="120">&nbsp;</td>
+        <td><a href="#"><img src="images/pic/innav_17.png" width="120" height="120" alt=""></a></td>
+    </tr>
+</table>
+<br/>
+<table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td colspan="5">
+            <img src="images/pic/khl1_01.png" width="1200" height="162" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <a href="/products/1406.html"><img src="images/pic/khl1_02.jpg" width="1200" height="488" alt=""></a></td>
+    </tr>
+    <tr>
+        <td width="1200" height="10" colspan="5"></td>
+    </tr>
+    <tr>
+        <td><img src="images/pic/khl1_04.jpg" width="394" height="466" alt=""></td>
+        <td width="9" height="466">&nbsp;</td>
+        <td>
+            <img src="images/pic/khl1_06.jpg" width="394" height="466" alt=""></td>
+        <td width="9" height="466">&nbsp;</td>
+        <td><img src="images/pic/khl1_08.jpg" width="394" height="466" alt=""></td>
+    </tr>
+</table>
+<br/>
+<table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><img src="images/pic/khlb1_01.png" alt=""/></td>
+    </tr>
+    <tr>
+        <td><img src="images/pic/khl_banner1.jpg" alt=""/></td>
+    </tr>
+</table>
+<br/>
+<table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td colspan="3">
+            <img src="images/pic/khl2_01.png" width="1200" height="162" alt=""></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="images/pic/khl2_02.jpg" width="300" height="288" alt=""></td>
+        <td>
+            <img src="images/pic/khl2_03.jpg" width="300" height="288" alt=""></td>
+        <td rowspan="2">
+            <img src="images/pic/khl2_04.jpg" width="600" height="538" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <img src="images/pic/khl2_05.jpg" width="600" height="250" alt=""></td>
+    </tr>
+</table>
+<br/>
+<table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><img src="images/pic/khl_banner2.jpg" alt=""/></td>
+    </tr>
+</table>
+<br/>
+<table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td colspan="5">
+            <img src="images/pic/khl3_01.png" width="1200" height="162" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="5">
+            <img src="images/pic/khl3_02.jpg" width="1200" height="538" alt=""></td>
+    </tr>
+    <tr>
+        <td width="1200" height="10" colspan="5"></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="images/pic/khl3_04.jpg" width="394" height="466" alt=""></td>
+        <td width="9" height="466">&nbsp;</td>
+        <td>
+            <img src="images/pic/khl3_06.jpg" width="394" height="466" alt=""></td>
+        <td width="9" height="466">&nbsp;</td>
+        <td>
+            <img src="images/pic/khl3_08.jpg" width="394" height="466" alt=""></td>
+    </tr>
+</table>
+<br/>
+<table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><img src="images/pic/khl_banner3.jpg" alt=""/></td>
+    </tr>
+</table>
+<br/>
+<table align="center" width="1200" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td colspan="5">
+            <img src="images/pic/khl4_01.png" width="1200" height="150" alt=""></td>
+    </tr>
+    <tr>
+        <td width="1200" height="10" colspan="5"></td>
+    </tr>
+    <tr>
+        <td>
+            <img src="images/pic/khl4_03.jpg" width="394" height="466" alt=""></td>
+        <td width="9" height="466">&nbsp;</td>
+        <td>
+            <img src="images/pic/khl4_05.jpg" width="394" height="466" alt=""></td>
+        <td width="9" height="466">&nbsp;</td>
+        <td>
+            <img src="images/pic/khl4_07.jpg" width="394" height="466" alt=""></td>
+    </tr>
+</table>
+
+<br/>
+<table align="center" width="1200" height="140" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td>
+            <img src="images/pic/honor_01.png" width="220" height="140" alt=""></td>
+        <td width="25" height="140">&nbsp;</td>
+        <td>
+            <img src="images/pic/honor_03.png" width="220" height="140" alt=""></td>
+        <td width="25" height="140">&nbsp;</td>
+        <td>
+            <img src="images/pic/honor_05.png" width="220" height="140" alt=""></td>
+        <td width="25" height="140">&nbsp;</td>
+        <td>
+            <img src="images/pic/honor_07.png" width="220" height="140" alt=""></td>
+        <td width="25" height="140">&nbsp;</td>
+        <td>
+            <img src="images/pic/honor_09.png" width="220" height="140" alt=""></td>
+    </tr>
+</table>
+
+    <div class="layout">
+        <div class="newsblock">
+            <div class="newsbox">
+                <h3 class="title"><span>电商资讯</span></h3>
+                <div class="newscon">
+                    <ul>
+                        <li><a href="/view/9bcbe350-36b9-4a81-92d5-6b9fc4b5bd2e.html" target="_blank">闽南电商频道网站上线开通仪式<span class="ico-new"></span></a></li>
+                        <li><a href="/view/23b1c0c4-1c11-4730-a4ec-6832ac5f0499.html" target="_blank">心系云南 格男仕男装携手东南早报暖冬公益在行动<span class="ico-new"></span></a></li>
+                        <li><a href="/view/88c9d2f2-6d02-4ebf-8851-ff153204169f.html" target="_blank">淘品牌的另类企业文化</a></li>
+                        <li><a href="/view/49bbfbd3-0620-41b7-80f7-b7ef83ab2598.html" target="_blank">我是吴志超，我为wo代言</a></li>
+                        <li><a href="/view/f15f459b-74f5-48c0-a9b2-ed653bb5dd23.html" target="_blank">格男仕男装荣膺年度“最佳商业价值”奖</a></li>
+                        <li><a href="/view/35d64c11-e9fe-4950-8b69-4090d346b0a3.html" target="_blank">网络男装品牌格男仕预计年底线下店超20家 </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="newsbox">
+                <h3 class="title"><span>电商资讯</span></h3>
+                <div class="newscon">
+                    <ul>
+                        <li><a href="/view/9bcbe350-36b9-4a81-92d5-6b9fc4b5bd2e.html" target="_blank">闽南电商频道网站上线开通仪式<span class="ico-new"></span></a></li>
+                        <li><a href="/view/23b1c0c4-1c11-4730-a4ec-6832ac5f0499.html" target="_blank">心系云南 格男仕男装携手东南早报暖冬公益在行动<span class="ico-new"></span></a></li>
+                        <li><a href="/view/88c9d2f2-6d02-4ebf-8851-ff153204169f.html" target="_blank">淘品牌的另类企业文化</a></li>
+                        <li><a href="/view/49bbfbd3-0620-41b7-80f7-b7ef83ab2598.html" target="_blank">我是吴志超，我为wo代言</a></li>
+                        <li><a href="/view/f15f459b-74f5-48c0-a9b2-ed653bb5dd23.html" target="_blank">格男仕男装荣膺年度“最佳商业价值”奖</a></li>
+                        <li><a href="/view/35d64c11-e9fe-4950-8b69-4090d346b0a3.html" target="_blank">网络男装品牌格男仕预计年底线下店超20家 </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+<style>
+.footwarranty{ padding: 1px 0 0; height: 60px; margin-top: 50px; overflow: visible;}
+.footwarranty .layout{ padding: 20px 0; margin-top: -34px; background: url("images/pic/foot-top.png") no-repeat top;}
+.khl_fttb{color: #fff; background: #00a8e6;}
+.khl_fttb a{color: #fff;}
+.khl_fttb_l{ padding: 20px;}
+.khl_fttb_r{ padding: 0 20px 10px 0; vertical-align: top; text-align: right; color: #fff;}
+.khl_ftqrcode{ float: right; text-align: center; margin: 20px 0;}
+.khl_fttb_l td{width: 164px; text-align: center; line-height: 34px; vertical-align: top;}
+.khl_bt{ color: #fff; background: #0190cf; line-height: 40px;}
+.khl_bt_l a{ margin-left: 20px; color: #fff;}
+.khl_copyright{ padding: 0 20px; text-align: right;}
+</style>
+
+    <div class="footwarranty" style="height: 60px;">
+        <div class="layout">
+            <table width="100%" height="55" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td><img src="../../../../images/ftw_01.png"/></td>
+                    <td class="ftw-line"></td>
+                    <td><img src="../../../../images/ftw_02.png"/></td>
+                    <td class="ftw-line"></td>
+                    <td><img src="../../../../images/ftw_03.png"/></td>
+                    <td class="ftw-line"></td>
+                    <td><img src="../../../../images/ftw_04.png"/></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="khl_fttb">
+        <table width="1200" border="0" cellspacing="0" cellpadding="0" align="center">
+            <tr>
+                <td class="khl_fttb_l">
+                    <table>
+                        <tr>
+                            <td><img src="images/pic/ftico-1.png" alt=""/></td>
+                            <td><img src="images/pic/ftico-2.png" alt=""/></td>
+                            <td><img src="images/pic/ftico-3.png" alt=""/></td>
+                            <td><img src="images/pic/ftico-4.png" alt=""/></td>
+                        </tr>
+                        <tr>
+                            <td><p><a href="/view/1111.html" target="_self" title="" _href="/view/1111.html" textvalue="关于我们">关于我们</a></p><p><a href="/view/1150.html" target="_self" title="" _href="/view/1150.html" textvalue="购物流程">购物流程</a></p><p><a href="/view/1100.html" target="_self" title="" _href="/view/1100.html" textvalue="会员政策">会员政策</a></p><p dir="ltr"><a href="/view/1112.html" target="_self" title="" _href="/view/1112.html" textvalue="联系方式">联系方式</a></p></td>
+                            <td><p><a href="/view/1105.html" target="_self" title="" _href="/view/1105.html" textvalue="配送服务">配送服务</a></p><p><a href="/view/1103.html" target="_self" title="" _href="/view/1103.html" textvalue="验货及签收">验货及签收</a></p><p><a href="/view/1101.html" target="_self" title="" _href="/view/1101.html">订单配送查询</a></p></td>
+                            <td><p><a href="/view/1109.html" target="_self" title="" _href="/view/1109.html" textvalue="货到付款">货到付款</a></p><p><a href="#">在线支付</a></p><p><a href="/view/1151.html" target="_self" title="" _href="/view/1151.html" textvalue="其他支付方式">其他支付方式</a></p><p><br></p></td>
+                            <td><p><a href="/view/1152.html" target="_self" title="" _href="/view/1152.html" textvalue="退换货流程">退换货流程</a><br></p><p><a href="/view/1153.html" target="_self" title="" _href="/view/1153.html" textvalue="退款说明">退款说明</a></p></td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="khl_fttb_r">
+                    <div class="khl_ftqrcode"><img src="images/pic/qrcode.png" alt=""/>
+
+                        <p>手机商城</p></div>
+                    <div style="clear: both;"></div>
+                    福建省鑫森炭业股份有限公司<br/>
+                    XINSEN CARBON INDUSTRY CO., LTD FUJIAN<br/><br/>
+                    地址：福建省邵武市城郊工业区<br/>
+                    电话：0599-6301180,6301179<br/>
+                    传真：0599-6304988-601
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="khl_bt">
+        <table width="1200" align="center" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td class="khl_bt_l">
+                    <a href="#">关于我们</a><a href="#">品牌介绍</a><a href="#">企业荣誉</a><a href="#">专利认证</a><a href="#">销售网络</a><a href="#">公司动态</a>
+                </td>
+                <td class="khl_copyright">Copyright(c) 2014 www.khlhome.com, All Rights Reserved 闽ICP备06004881号</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<style>
+.khl_sideservice{ position: relative; margin: 10px 0 30px; height: 132px; color: #fff;}
+.khl_sideservice-box{ display: none; position: absolute; width: 120px; bottom: 0; right: 0; padding: 10px 0; text-align: center; background: rgba(0,162,230,.7); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#B200A2E6,endColorstr=#B200A2E6); -webkit-border-radius: 10px 0 0 10px; -moz-border-radius: 10px 0 0 10px; border-radius: 10px 0 0 10px;}
+.khl_sservice-tit{ width: 95px; margin: auto; padding-bottom: 5px; border-bottom: 1px solid #fff; font-size: 14px; font-family:"Hiragino Sans GB", "Microsoft YaHei";}
+.khl_sservice-tit .en{ margin-top: 5px; font-size: 16px; line-height: 1.2;}
+.khl_sservice-list li{ padding: 10px 0;}
+.khl_sservice-list p{ margin-bottom: 5px;}
+.khl_sservice-list a{color: #fff;}
+.khl_sservice-time{ padding: 20px 0 10px;}
+.bdshare-button-style0-16 .bds_more{ width: 35px; height: 102px; background: url("images/pic/share_btn.png") no-repeat; padding: 0; margin: 10px 0 0;}
+.khl_mobile{ position: relative; height: 125px;}
+.hkl_qrcode{ display: none; position: absolute; bottom: 0; right: 0; background: #fff; padding: 10px; -webkit-border-radius: 10px 0 0 10px; -moz-border-radius: 10px 0 0 10px; border-radius: 10px 0 0 10px;}
+.hkl_qrcode img{ height: 105px; width: 105px;}
+</style>
+<script>
+$(function(){
+    var ssbox = $('.khl_sideservice-box');
+    $('.khl_sideservice').hover(function(){
+        ssbox.css({right:-120}).show().animate({right:0},100);
+    },function(){
+        ssbox.animate({right:-120},100,function(){ssbox.hide();});
+    });
+
+    var qrbox = $('.hkl_qrcode');
+    $('.khl_mobile').hover(function(){
+        qrbox.css({right:-105}).show().animate({right:0},100);
+    },function(){
+        qrbox.animate({right:-105},100,function(){qrbox.hide();});
+    });
+});
+</script>
+<div id="gotop">
+<div class="khl_mobile">
+    <div class="khl_mobile-btn"><img src="images/pic/mobile_btn.png" alt=""/></div>
+    <div class="hkl_qrcode"><img src="images/pic/mobileqrcode.png" alt=""/></div>
+</div>
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdPopupOffsetLeft":"-83","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<div class="khl_sideservice">
+    <div class="khl_sideservice-btn"><img src="images/pic/ss_btn.png" alt=""/></div>
+    <div class="khl_sideservice-box">
+        <div class="khl_sservice-tit">
+            <div class="cn">客服中心</div>
+            <div class="en">CUSTOMER<br>SERVICE</div>
+        </div>
+        <div class="khl_sservice-list">
+            <ul>
+                <li><a href="#"><p>客服01</p><img src="images/pic/qq.png" alt=""/></a></li>
+                <li><a href="#"><p>客服02</p><img src="images/pic/qq.png" alt=""/></a></li>
+            </ul>
+        </div>
+        <div class="khl_sservice-time">工作时间<br>周一至周五<br>09:00～18:00</div>
+    </div>
+</div>
+<div><a href="#top"><img src="images/pic/st_btn.png" alt=""/></a></div>
+</div>
+</body>
+</html>

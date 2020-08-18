@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtShopDynamicCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtShopDynamic" extends="com.jf.dao.MchtShopDynamicMapper.BaseResultMap" >
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, top_cover, content, product_ids, weight, audit_status, audit_date, audit_by, 
+    rejection_reason, forward_count, like_count, read_count, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtShopDynamicCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_shop_dynamic t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_shop_dynamic t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.MchtShopDynamicCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_shop_dynamic t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_mcht_shop_dynamic t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.topCover != null" >
+        top_cover = #{record.topCover,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+        content = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productIds != null" >
+        product_ids = #{record.productIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditStatus != null" >
+        audit_status = #{record.auditStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.auditDate != null" >
+        audit_date = #{record.auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.auditBy != null" >
+        audit_by = #{record.auditBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.rejectionReason != null" >
+        rejection_reason = #{record.rejectionReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.readCount != null" >
+        read_count = #{record.readCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <update id="updateReadCount" parameterType="java.lang.Integer" >
+  	update bu_mcht_shop_dynamic t set t.read_count = t.read_count + 1 where t.del_flag = '0' and t.audit_status = '1' and t.id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="getRecommendList" parameterType="java.util.Map" resultType="java.util.Map" >
+    SELECT
+		1 type,
+		msd.id,
+		msd.id mcht_shop_dynamic_id,
+		msd.content,
+		msd.product_ids,
+		msd.weight,
+		msd.audit_date publish_date,
+		msd.forward_count,
+		msd.like_count,
+		mi.id mcht_id,
+		mi.shop_name,
+		'' nick,
+		mi.shop_logo pic,
+		ifnull(
+			(
+				SELECT
+					mdl. STATUS
+				FROM
+					bu_member_dynamic_like mdl
+				WHERE
+					mdl.del_flag = '0'
+				AND mdl.type = '0'
+				AND mdl.dynamic_id = msd.id
+				AND mdl.member_id = #{memberId}
+				ORDER BY
+					mdl.id DESC
+				LIMIT 1
+			),
+			'0'
+		) like_status,
+		msd.read_count,
+		1 source,
+		0 attention_member_id,
+		msd.top_cover
+	FROM
+		bu_mcht_shop_dynamic msd,
+		bu_mcht_info mi
+	WHERE
+		msd.mcht_id = mi.id
+	AND msd.del_flag = '0'
+	AND mi.del_flag = '0'
+	AND msd.audit_status = '1'
+	AND mi. STATUS = '1'
+	AND mi.shop_status = '1'
+	AND mi.id NOT IN (
+		SELECT 
+			mr.remind_id 
+		FROM 
+			bu_member_remind mr 
+		WHERE 
+			mr.del_flag='0' AND mr.member_id=#{memberId} AND mr.remind_type='3' AND mr.shielding_dynamics = '1')
+	ORDER BY
+		msd.weight DESC,
+		msd.audit_date DESC
+	<choose>
+		<when test="currentPage != null and pageSize != null">
+			LIMIT #{currentPage}, #{pageSize}
+		</when>
+		<otherwise>
+			LIMIT 0, 10
+		</otherwise>
+	</choose>
+  </select>
+  
+  <select id="getAttentionList" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		*
+	FROM
+		(
+			SELECT
+				1 type,
+				msd.id,
+				msd.id mcht_shop_dynamic_id,
+				msd.content,
+				msd.product_ids,
+				msd.weight,
+				msd.audit_date publish_date,
+				msd.forward_count,
+				msd.like_count,
+				mi.id mcht_id,
+				mi.shop_name,
+				NULL nick,
+				mi.shop_logo pic,
+				ifnull(
+					(
+						SELECT
+							mdl. STATUS
+						FROM
+							bu_member_dynamic_like mdl
+						WHERE
+							mdl.del_flag = '0'
+						AND mdl.type = '0'
+						AND mdl.dynamic_id = msd.id
+						AND mdl.member_id = #{memberId}
+						ORDER BY
+							mdl.id DESC
+						LIMIT 1
+					),
+					'0'
+				) like_status,
+				msd.read_count,
+				1 source,
+				0 attention_member_id,
+				msd.top_cover
+			FROM
+				bu_member_remind mr,
+				bu_mcht_shop_dynamic msd,
+				bu_mcht_info mi
+			WHERE
+				mr.remind_id = mi.id
+			AND msd.mcht_id = mi.id
+			AND mr.del_flag = '0'
+			AND msd.del_flag = '0'
+			AND mi.del_flag = '0'
+			AND mr.remind_type = '3'
+			AND msd.audit_status = '1'
+			AND mi. STATUS = '1'
+			AND mi.shop_status = '1'
+			AND mr.member_id = #{memberId}
+			AND mr.shielding_dynamics = '0'
+			UNION ALL
+				SELECT
+					2 type,
+					md.id,
+					msd.id mcht_shop_dynamic_id,
+					msd.content,
+					msd.product_ids,
+					msd.weight,
+					md.create_date publish_date,
+					md.forward_count,
+					md.like_count,
+					mi.id mcht_id,
+					mi.shop_name,
+					m.nick,
+					m.pic,
+					ifnull(
+						(
+							SELECT
+								mdl. STATUS
+							FROM
+								bu_member_dynamic_like mdl
+							WHERE
+								mdl.del_flag = '0'
+							AND mdl.type = '1'
+							AND mdl.dynamic_id = md.id
+							AND mdl.member_id = #{memberId}
+							ORDER BY
+								mdl.id DESC
+							LIMIT 1
+						),
+						'0'
+					) like_status,
+					msd.read_count,
+					2 source,
+					ma.attention_member_id,
+					msd.top_cover
+				FROM
+					bu_member_attention ma,
+					bu_member_dynamic md,
+					bu_mcht_shop_dynamic msd,
+					bu_mcht_info mi,
+					bu_member_info m
+				WHERE
+					ma.attention_member_id = md.member_id
+				AND md.mcht_shop_dynamic_id = msd.id
+				AND msd.mcht_id = mi.id
+				AND md.member_id = m.id
+				AND ma.del_flag = '0'
+				AND md.del_flag = '0'
+				AND msd.del_flag = '0'
+				AND mi.del_flag = '0'
+				AND m.del_flag = '0'
+				AND msd.audit_status = '1'
+				AND mi. STATUS = '1'
+				AND mi.shop_status = '1'
+				AND ma.member_id = #{memberId}
+				AND ma.shielding_dynamics = '0'
+				UNION ALL
+					SELECT
+						2 type,
+						md.id,
+						msd.id mcht_shop_dynamic_id,
+						msd.content,
+						msd.product_ids,
+						msd.weight,
+						md.create_date publish_date,
+						md.forward_count,
+						md.like_count,
+						mi.id mcht_id,
+						mi.shop_name,
+						m.nick,
+						m.pic,
+						ifnull(
+							(
+								SELECT
+									mdl. STATUS
+								FROM
+									bu_member_dynamic_like mdl
+								WHERE
+									mdl.del_flag = '0'
+								AND mdl.type = '1'
+								AND mdl.dynamic_id = md.id
+								AND mdl.member_id = #{memberId}
+								ORDER BY
+									mdl.id DESC
+								LIMIT 1
+							),
+							'0'
+						) like_status,
+						msd.read_count,
+						3 source,
+						0 attention_member_id,
+						msd.top_cover
+					FROM
+						bu_member_dynamic md,
+						bu_mcht_shop_dynamic msd,
+						bu_mcht_info mi,
+						bu_member_info m
+					WHERE
+						md.mcht_shop_dynamic_id = msd.id
+					AND msd.mcht_id = mi.id
+					AND md.member_id = m.id
+					AND md.del_flag = '0'
+					AND msd.del_flag = '0'
+					AND mi.del_flag = '0'
+					AND m.del_flag = '0'
+					AND msd.audit_status = '1'
+					AND mi. STATUS = '1'
+					AND mi.shop_status = '1'
+					AND md.member_id = #{memberId}
+		) A
+	ORDER BY
+		A.weight ASC,
+		A.publish_date DESC
+	<choose>
+		<when test="currentPage != null and pageSize != null">
+			LIMIT #{currentPage}, #{pageSize}
+		</when>
+		<otherwise>
+			LIMIT 0, 10
+		</otherwise>
+	</choose>
+  </select>
+  
+  <select id="getMemberDynamicList" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		md.id member_dynamic_id,
+		msd.id mcht_shop_dynamic_id,
+		msd.content,
+		msd.product_ids,
+		msd.weight,
+		md.create_date publish_date,
+		md.forward_count,
+		md.like_count,
+		mi.id mcht_id,
+		mi.shop_name,
+		m.nick,
+		m.pic,
+		ifnull(
+			(
+				SELECT
+					mdl. STATUS
+				FROM
+					bu_member_dynamic_like mdl
+				WHERE
+					mdl.del_flag = '0'
+				AND mdl.type = '1'
+				AND mdl.dynamic_id = md.id
+				AND mdl.member_id = #{memberId}
+				ORDER BY
+					mdl.id DESC
+				LIMIT 1
+			),
+			'0'
+		) like_status,
+		msd.read_count,
+		msd.top_cover
+	FROM
+		bu_member_dynamic md,
+		bu_mcht_shop_dynamic msd,
+		bu_mcht_info mi,
+		bu_member_info m
+	WHERE
+		md.mcht_shop_dynamic_id = msd.id
+	AND msd.mcht_id = mi.id
+	AND md.member_id = m.id
+	AND md.del_flag = '0'
+	AND msd.del_flag = '0'
+	AND mi.del_flag = '0'
+	AND m.del_flag = '0'
+	AND msd.audit_status = '1'
+	AND mi. STATUS = '1'
+	AND mi.shop_status = '1'
+	AND md.member_id = #{friendMemberId}
+	ORDER BY
+		md.create_date DESC
+	<choose>
+		<when test="currentPage != null and pageSize != null">
+			LIMIT #{currentPage}, #{pageSize}
+		</when>
+		<otherwise>
+			LIMIT 0, 10
+		</otherwise>
+	</choose>
+  </select>
+  
+</mapper>

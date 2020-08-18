@@ -1,0 +1,80 @@
+<div class="activity-single-day decorate bgfa">
+	<link rel="stylesheet" href="activity/templet/css/single-day.css?var=1.0">
+	<link rel="stylesheet" href="activity/templet/css/brand-decorate.css?var=1.0">
+
+	<div class="nest-seller no-padding"></div>
+
+	<!-- 商品 -->
+	<script id="seller_decorate_product_tpl" type="text/html">
+		{{if conmonProduct.length}}
+		<div class="product clearfix w75">
+			{{each conmonProduct value i}}
+			<a class="mb20"
+				onclick="getUrlGoods('{{value.productId}}')">
+				<div class="con-1 h345">
+					<img src="{{value.pic}}">
+					{{if value.stockSum == 0}}
+					<div class="flex jc ac">已售罄</div>
+					<i class="no-goods-mask"></i>
+					{{/if}}
+				</div>
+				<div class="con-2">
+					<p title="{{value.productName}}">{{value.productName}}</p>
+					<div class="flex ac jb scroll-x">
+						<span>
+							<strong class="f50">{{value.salePrice}}</strong>
+							<s class="c9">{{value.tagPrice}}</s>
+						</span>
+						{{if value.discount}}
+						<mark class="btn-f50">{{value.discount}}折</mark>
+						{{/if}}
+					</div>
+				</div>
+			</a>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 特卖 -->
+	<script id="seller_decorate_brand_tpl" type="text/html">
+		{{if conmonBrand.length}}
+		<div class="con-brand con-brand2">
+			{{each conmonBrand value i}}
+			<a class="mb20 w75"
+				onclick="getUrlActive(this)"
+				data-url="{{value.areaUrl}}"
+				data-activityid="{{value.activityId}}"
+				data-activityareaid="{{value.activityAreaId}}"
+				data-source="{{value.source}}">
+				<dl>
+					<dt>
+						<img src="{{value.areaEntryPic}}">
+					</dt>
+
+					<dd>
+						<div class="row-1 flex ac jb">
+							<div class="flex ac">
+								<p class="ellipsis" title="{{value.activityAreaName}}">{{value.activityAreaName}}</p>
+							</div>
+							<time class="flex ac"><p class="ellipsis f50">{{value.activityRemainingTime}}</p></time>
+						</div>
+						<div class="row-2">{{value.benefitPoint}}</div>
+					</dd>
+				</dl>
+			</a>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="activity/nest/seller/index.js?var=1.0"></script>
+
+	<script>
+		(function () {
+			postNest(getStorage('nest_seller'), function (e) {
+				$('.nest-seller').append(e);
+			});
+		})();
+	</script>
+</div>

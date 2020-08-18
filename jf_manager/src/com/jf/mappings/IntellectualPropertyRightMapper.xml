@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.IntellectualPropertyRightMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.IntellectualPropertyRight" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="obligee_id" property="obligeeId" jdbcType="INTEGER" />
+    <result column="property_right_type" property="propertyRightType" jdbcType="CHAR" />
+    <result column="property_right_belong" property="propertyRightBelong" jdbcType="CHAR" />
+    <result column="property_right_name" property="propertyRightName" jdbcType="VARCHAR" />
+    <result column="obligee_name" property="obligeeName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="audit_remarks" property="auditRemarks" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, obligee_id, property_right_type, property_right_belong, property_right_name, 
+    obligee_name, status, audit_remarks, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.IntellectualPropertyRightExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_intellectual_property_right
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_intellectual_property_right
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_intellectual_property_right
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.IntellectualPropertyRightExample" >
+    delete from bu_intellectual_property_right
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.IntellectualPropertyRight" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_intellectual_property_right (obligee_id, property_right_type, property_right_belong, 
+      property_right_name, obligee_name, status, 
+      audit_remarks, create_by, create_date, 
+      update_by, update_date, remarks, 
+      del_flag)
+    values (#{obligeeId,jdbcType=INTEGER}, #{propertyRightType,jdbcType=CHAR}, #{propertyRightBelong,jdbcType=CHAR}, 
+      #{propertyRightName,jdbcType=VARCHAR}, #{obligeeName,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, 
+      #{auditRemarks,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.IntellectualPropertyRight" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_intellectual_property_right
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="obligeeId != null" >
+        obligee_id,
+      </if>
+      <if test="propertyRightType != null" >
+        property_right_type,
+      </if>
+      <if test="propertyRightBelong != null" >
+        property_right_belong,
+      </if>
+      <if test="propertyRightName != null" >
+        property_right_name,
+      </if>
+      <if test="obligeeName != null" >
+        obligee_name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="obligeeId != null" >
+        #{obligeeId,jdbcType=INTEGER},
+      </if>
+      <if test="propertyRightType != null" >
+        #{propertyRightType,jdbcType=CHAR},
+      </if>
+      <if test="propertyRightBelong != null" >
+        #{propertyRightBelong,jdbcType=CHAR},
+      </if>
+      <if test="propertyRightName != null" >
+        #{propertyRightName,jdbcType=VARCHAR},
+      </if>
+      <if test="obligeeName != null" >
+        #{obligeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.IntellectualPropertyRightExample" resultType="java.lang.Integer" >
+    select count(*) from bu_intellectual_property_right
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_intellectual_property_right
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.obligeeId != null" >
+        obligee_id = #{record.obligeeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.propertyRightType != null" >
+        property_right_type = #{record.propertyRightType,jdbcType=CHAR},
+      </if>
+      <if test="record.propertyRightBelong != null" >
+        property_right_belong = #{record.propertyRightBelong,jdbcType=CHAR},
+      </if>
+      <if test="record.propertyRightName != null" >
+        property_right_name = #{record.propertyRightName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.obligeeName != null" >
+        obligee_name = #{record.obligeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.auditRemarks != null" >
+        audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_intellectual_property_right
+    set id = #{record.id,jdbcType=INTEGER},
+      obligee_id = #{record.obligeeId,jdbcType=INTEGER},
+      property_right_type = #{record.propertyRightType,jdbcType=CHAR},
+      property_right_belong = #{record.propertyRightBelong,jdbcType=CHAR},
+      property_right_name = #{record.propertyRightName,jdbcType=VARCHAR},
+      obligee_name = #{record.obligeeName,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=CHAR},
+      audit_remarks = #{record.auditRemarks,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.IntellectualPropertyRight" >
+    update bu_intellectual_property_right
+    <set >
+      <if test="obligeeId != null" >
+        obligee_id = #{obligeeId,jdbcType=INTEGER},
+      </if>
+      <if test="propertyRightType != null" >
+        property_right_type = #{propertyRightType,jdbcType=CHAR},
+      </if>
+      <if test="propertyRightBelong != null" >
+        property_right_belong = #{propertyRightBelong,jdbcType=CHAR},
+      </if>
+      <if test="propertyRightName != null" >
+        property_right_name = #{propertyRightName,jdbcType=VARCHAR},
+      </if>
+      <if test="obligeeName != null" >
+        obligee_name = #{obligeeName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="auditRemarks != null" >
+        audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.IntellectualPropertyRight" >
+    update bu_intellectual_property_right
+    set obligee_id = #{obligeeId,jdbcType=INTEGER},
+      property_right_type = #{propertyRightType,jdbcType=CHAR},
+      property_right_belong = #{propertyRightBelong,jdbcType=CHAR},
+      property_right_name = #{propertyRightName,jdbcType=VARCHAR},
+      obligee_name = #{obligeeName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=CHAR},
+      audit_remarks = #{auditRemarks,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

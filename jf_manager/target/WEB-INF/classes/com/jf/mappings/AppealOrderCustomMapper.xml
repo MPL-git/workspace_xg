@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.AppealOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.AppealOrderCustom"  extends="com.jf.dao.AppealOrderMapper.BaseResultMap">
+  	<result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+  	<result column="appeal_type_desc" property="appealTypeDesc" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="service_status_desc" property="serviceStatusDesc" jdbcType="VARCHAR" />
+  	<result column="liability_desc" property="liabilityDesc" jdbcType="VARCHAR" />
+  	<result column="user_type_desc" property="userTypeDesc" jdbcType="VARCHAR" />
+  	<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+  	<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  	<result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+  	<result column="activity_id" property="activityId" jdbcType="VARCHAR" />
+  	<result column="member_info_status" property="memberInfoStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_code, user_id, user_type, user_name, mcht_id, sub_order_id, order_dtl_id, 
+    appeal_type, status, service_status, platform_processor, service_sponsor_type, contact_name, 
+    contact_phone, liability, platform_remarks, mcht_remarks, create_by, create_date, 
+    update_by, update_date, remarks, del_flag,
+    (select b.sub_order_code from bu_sub_order b where b.id=t.sub_order_id) sub_order_code,
+    FUN_GET_STATUS_DESC("BU_APPEAL_ORDER","APPEAL_TYPE", appeal_type) appeal_type_desc,
+    FUN_GET_STATUS_DESC("BU_APPEAL_ORDER","STATUS", status) status_desc,
+    FUN_GET_STATUS_DESC("BU_APPEAL_ORDER","SERVICE_STATUS", service_status) service_status_desc,
+    FUN_GET_STATUS_DESC("BU_APPEAL_ORDER","LIABILITY", liability) liability_desc,
+    FUN_GET_STATUS_DESC("BU_APPEAL_ORDER","USER_TYPE", user_type) user_type_desc,
+    (select b.mcht_code from bu_mcht_info b where b.id=t.mcht_id) mcht_code,
+   	(select b.company_name from bu_mcht_info b where b.id=t.mcht_id) company_name,
+   	(select c.name from bu_order_dtl b,bu_activity c where b.id=t.order_dtl_id and b.activity_id=c.id) activity_name,
+   	(select b.activity_id from bu_order_dtl b where b.id=t.order_dtl_id) activity_id,
+   	(select b.STAFF_NAME from sys_staff_info b where b.STAFF_ID=t.platform_processor) staffName,
+   	(select mi.status from bu_sub_order so, bu_combine_order co, bu_member_info mi where so.del_flag = '0' and so.id = t.sub_order_id and so.combine_order_id = co.id and co.member_id = mi.id) member_info_status 
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.AppealOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_appeal_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" resultType="java.lang.Integer" parameterType="com.jf.entity.AppealOrderCustomExample" >
+    select count(*) from bu_appeal_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <!-- 获取90天内的处理人 -->
+  <select id="getPlatformProcessorList" resultType="java.util.Map">
+  	SELECT DISTINCT
+		ao.platform_processor,
+		(
+			SELECT
+				ss.staff_name
+			FROM
+				sys_staff_info ss
+			WHERE
+				ss.staff_id = ao.platform_processor
+		) platform_processor_name
+	FROM
+		bu_appeal_order ao
+	WHERE
+		ao.del_flag = '0'
+	AND ao.platform_processor IS NOT NULL
+	AND ao.create_date >= DATE_SUB(CURDATE(), INTERVAL 90 DAY)
+  </select>
+  
+  
+  
+</mapper>

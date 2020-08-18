@@ -1,0 +1,1116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSettledApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtSettledApply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="is_manage_self" property="isManageSelf" jdbcType="CHAR" />
+    <result column="settled_type" property="settledType" jdbcType="CHAR" />
+    <result column="source_type" property="sourceType" jdbcType="CHAR" />
+    <result column="source_remark" property="sourceRemark" jdbcType="VARCHAR" />
+    <result column="client_type" property="clientType" jdbcType="CHAR" />
+    <result column="customer_source" property="customerSource" jdbcType="CHAR" />
+    <result column="isimport" property="isimport" jdbcType="CHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="reg_capital" property="regCapital" jdbcType="DECIMAL" />
+    <result column="reg_fee_type" property="regFeeType" jdbcType="VARCHAR" />
+    <result column="corporation_name" property="corporationName" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="county" property="county" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="contact_job" property="contactJob" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="qq" property="qq" jdbcType="VARCHAR" />
+    <result column="company_tel" property="companyTel" jdbcType="VARCHAR" />
+    <result column="tmall_shop" property="tmallShop" jdbcType="VARCHAR" />
+    <result column="taobao_shop" property="taobaoShop" jdbcType="VARCHAR" />
+    <result column="jd_shop" property="jdShop" jdbcType="VARCHAR" />
+    <result column="vips_shop" property="vipsShop" jdbcType="VARCHAR" />
+    <result column="other_shop" property="otherShop" jdbcType="VARCHAR" />
+    <result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+    <result column="product_type_main" property="productTypeMain" jdbcType="VARCHAR" />
+    <result column="product_brand_main" property="productBrandMain" jdbcType="VARCHAR" />
+    <result column="shop_type" property="shopType" jdbcType="CHAR" />
+    <result column="zs_product_type_ids" property="zsProductTypeIds" jdbcType="VARCHAR" />
+    <result column="platform_contact_id" property="platformContactId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="mcht_type" property="mchtType" jdbcType="CHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="product_situation" property="productSituation" jdbcType="VARCHAR" />
+    <result column="other_channel_link" property="otherChannelLink" jdbcType="VARCHAR" />
+    <result column="logistics" property="logistics" jdbcType="VARCHAR" />
+    <result column="team_situation" property="teamSituation" jdbcType="VARCHAR" />
+    <result column="company_situation" property="companySituation" jdbcType="VARCHAR" />
+    <result column="info_confirm_date" property="infoConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="info_confirm_by" property="infoConfirmBy" jdbcType="INTEGER" />
+    <result column="contract_deposit" property="contractDeposit" jdbcType="DECIMAL" />
+    <result column="brand_deposit" property="brandDeposit" jdbcType="DECIMAL" />
+    <result column="select_contract_deposit" property="selectContractDeposit" jdbcType="CHAR" />
+    <result column="select_brand_deposit" property="selectBrandDeposit" jdbcType="CHAR" />
+    <result column="deposit_type" property="depositType" jdbcType="CHAR" />
+    <result column="deposit_confirm_status" property="depositConfirmStatus" jdbcType="CHAR" />
+    <result column="deposit_confirm_date" property="depositConfirmDate" jdbcType="TIMESTAMP" />
+    <result column="deposit_confirm_by" property="depositConfirmBy" jdbcType="INTEGER" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="wechat" property="wechat" jdbcType="VARCHAR" />
+    <result column="used_express" property="usedExpress" jdbcType="VARCHAR" />
+    <result column="fee_rate" property="feeRate" jdbcType="DECIMAL" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, is_manage_self, settled_type, source_type, source_remark, client_type, customer_source, 
+    isimport, company_name, reg_capital, reg_fee_type, corporation_name, province, city, 
+    county, address, contact_name, contact_job, phone, email, qq, company_tel, tmall_shop, 
+    taobao_shop, jd_shop, vips_shop, other_shop, product_type_id, product_type_main, 
+    product_brand_main, shop_type, zs_product_type_ids, platform_contact_id, status, 
+    mcht_type, mcht_id, product_situation, other_channel_link, logistics, team_situation, 
+    company_situation, info_confirm_date, info_confirm_by, contract_deposit, brand_deposit, 
+    select_contract_deposit, select_brand_deposit, deposit_type, deposit_confirm_status, 
+    deposit_confirm_date, deposit_confirm_by, ip, wechat, used_express, fee_rate, product_name, 
+    create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtSettledApplyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_settled_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_mcht_settled_apply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_mcht_settled_apply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.MchtSettledApplyExample" >
+    delete from bu_mcht_settled_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.MchtSettledApply" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_settled_apply (is_manage_self, settled_type, source_type, 
+      source_remark, client_type, customer_source, 
+      isimport, company_name, reg_capital, 
+      reg_fee_type, corporation_name, province, 
+      city, county, address, 
+      contact_name, contact_job, phone, 
+      email, qq, company_tel, 
+      tmall_shop, taobao_shop, jd_shop, 
+      vips_shop, other_shop, product_type_id, 
+      product_type_main, product_brand_main, shop_type, 
+      zs_product_type_ids, platform_contact_id, status, 
+      mcht_type, mcht_id, product_situation, 
+      other_channel_link, logistics, team_situation, 
+      company_situation, info_confirm_date, info_confirm_by, 
+      contract_deposit, brand_deposit, select_contract_deposit, 
+      select_brand_deposit, deposit_type, deposit_confirm_status, 
+      deposit_confirm_date, deposit_confirm_by, 
+      ip, wechat, used_express, 
+      fee_rate, product_name, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{isManageSelf,jdbcType=CHAR}, #{settledType,jdbcType=CHAR}, #{sourceType,jdbcType=CHAR}, 
+      #{sourceRemark,jdbcType=VARCHAR}, #{clientType,jdbcType=CHAR}, #{customerSource,jdbcType=CHAR}, 
+      #{isimport,jdbcType=CHAR}, #{companyName,jdbcType=VARCHAR}, #{regCapital,jdbcType=DECIMAL}, 
+      #{regFeeType,jdbcType=VARCHAR}, #{corporationName,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
+      #{city,jdbcType=INTEGER}, #{county,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{contactName,jdbcType=VARCHAR}, #{contactJob,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{companyTel,jdbcType=VARCHAR}, 
+      #{tmallShop,jdbcType=VARCHAR}, #{taobaoShop,jdbcType=VARCHAR}, #{jdShop,jdbcType=VARCHAR}, 
+      #{vipsShop,jdbcType=VARCHAR}, #{otherShop,jdbcType=VARCHAR}, #{productTypeId,jdbcType=INTEGER}, 
+      #{productTypeMain,jdbcType=VARCHAR}, #{productBrandMain,jdbcType=VARCHAR}, #{shopType,jdbcType=CHAR}, 
+      #{zsProductTypeIds,jdbcType=VARCHAR}, #{platformContactId,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, 
+      #{mchtType,jdbcType=CHAR}, #{mchtId,jdbcType=INTEGER}, #{productSituation,jdbcType=VARCHAR}, 
+      #{otherChannelLink,jdbcType=VARCHAR}, #{logistics,jdbcType=VARCHAR}, #{teamSituation,jdbcType=VARCHAR}, 
+      #{companySituation,jdbcType=VARCHAR}, #{infoConfirmDate,jdbcType=TIMESTAMP}, #{infoConfirmBy,jdbcType=INTEGER}, 
+      #{contractDeposit,jdbcType=DECIMAL}, #{brandDeposit,jdbcType=DECIMAL}, #{selectContractDeposit,jdbcType=CHAR}, 
+      #{selectBrandDeposit,jdbcType=CHAR}, #{depositType,jdbcType=CHAR}, #{depositConfirmStatus,jdbcType=CHAR}, 
+      #{depositConfirmDate,jdbcType=TIMESTAMP}, #{depositConfirmBy,jdbcType=INTEGER}, 
+      #{ip,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{usedExpress,jdbcType=VARCHAR}, 
+      #{feeRate,jdbcType=DECIMAL}, #{productName,jdbcType=VARCHAR}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.MchtSettledApply" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_mcht_settled_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="isManageSelf != null" >
+        is_manage_self,
+      </if>
+      <if test="settledType != null" >
+        settled_type,
+      </if>
+      <if test="sourceType != null" >
+        source_type,
+      </if>
+      <if test="sourceRemark != null" >
+        source_remark,
+      </if>
+      <if test="clientType != null" >
+        client_type,
+      </if>
+      <if test="customerSource != null" >
+        customer_source,
+      </if>
+      <if test="isimport != null" >
+        isimport,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="regCapital != null" >
+        reg_capital,
+      </if>
+      <if test="regFeeType != null" >
+        reg_fee_type,
+      </if>
+      <if test="corporationName != null" >
+        corporation_name,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="county != null" >
+        county,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="contactName != null" >
+        contact_name,
+      </if>
+      <if test="contactJob != null" >
+        contact_job,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="qq != null" >
+        qq,
+      </if>
+      <if test="companyTel != null" >
+        company_tel,
+      </if>
+      <if test="tmallShop != null" >
+        tmall_shop,
+      </if>
+      <if test="taobaoShop != null" >
+        taobao_shop,
+      </if>
+      <if test="jdShop != null" >
+        jd_shop,
+      </if>
+      <if test="vipsShop != null" >
+        vips_shop,
+      </if>
+      <if test="otherShop != null" >
+        other_shop,
+      </if>
+      <if test="productTypeId != null" >
+        product_type_id,
+      </if>
+      <if test="productTypeMain != null" >
+        product_type_main,
+      </if>
+      <if test="productBrandMain != null" >
+        product_brand_main,
+      </if>
+      <if test="shopType != null" >
+        shop_type,
+      </if>
+      <if test="zsProductTypeIds != null" >
+        zs_product_type_ids,
+      </if>
+      <if test="platformContactId != null" >
+        platform_contact_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="mchtType != null" >
+        mcht_type,
+      </if>
+      <if test="mchtId != null" >
+        mcht_id,
+      </if>
+      <if test="productSituation != null" >
+        product_situation,
+      </if>
+      <if test="otherChannelLink != null" >
+        other_channel_link,
+      </if>
+      <if test="logistics != null" >
+        logistics,
+      </if>
+      <if test="teamSituation != null" >
+        team_situation,
+      </if>
+      <if test="companySituation != null" >
+        company_situation,
+      </if>
+      <if test="infoConfirmDate != null" >
+        info_confirm_date,
+      </if>
+      <if test="infoConfirmBy != null" >
+        info_confirm_by,
+      </if>
+      <if test="contractDeposit != null" >
+        contract_deposit,
+      </if>
+      <if test="brandDeposit != null" >
+        brand_deposit,
+      </if>
+      <if test="selectContractDeposit != null" >
+        select_contract_deposit,
+      </if>
+      <if test="selectBrandDeposit != null" >
+        select_brand_deposit,
+      </if>
+      <if test="depositType != null" >
+        deposit_type,
+      </if>
+      <if test="depositConfirmStatus != null" >
+        deposit_confirm_status,
+      </if>
+      <if test="depositConfirmDate != null" >
+        deposit_confirm_date,
+      </if>
+      <if test="depositConfirmBy != null" >
+        deposit_confirm_by,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="wechat != null" >
+        wechat,
+      </if>
+      <if test="usedExpress != null" >
+        used_express,
+      </if>
+      <if test="feeRate != null" >
+        fee_rate,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="isManageSelf != null" >
+        #{isManageSelf,jdbcType=CHAR},
+      </if>
+      <if test="settledType != null" >
+        #{settledType,jdbcType=CHAR},
+      </if>
+      <if test="sourceType != null" >
+        #{sourceType,jdbcType=CHAR},
+      </if>
+      <if test="sourceRemark != null" >
+        #{sourceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="clientType != null" >
+        #{clientType,jdbcType=CHAR},
+      </if>
+      <if test="customerSource != null" >
+        #{customerSource,jdbcType=CHAR},
+      </if>
+      <if test="isimport != null" >
+        #{isimport,jdbcType=CHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="regCapital != null" >
+        #{regCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="regFeeType != null" >
+        #{regFeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationName != null" >
+        #{corporationName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="county != null" >
+        #{county,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null" >
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactJob != null" >
+        #{contactJob,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTel != null" >
+        #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="tmallShop != null" >
+        #{tmallShop,jdbcType=VARCHAR},
+      </if>
+      <if test="taobaoShop != null" >
+        #{taobaoShop,jdbcType=VARCHAR},
+      </if>
+      <if test="jdShop != null" >
+        #{jdShop,jdbcType=VARCHAR},
+      </if>
+      <if test="vipsShop != null" >
+        #{vipsShop,jdbcType=VARCHAR},
+      </if>
+      <if test="otherShop != null" >
+        #{otherShop,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeId != null" >
+        #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeMain != null" >
+        #{productTypeMain,jdbcType=VARCHAR},
+      </if>
+      <if test="productBrandMain != null" >
+        #{productBrandMain,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        #{shopType,jdbcType=CHAR},
+      </if>
+      <if test="zsProductTypeIds != null" >
+        #{zsProductTypeIds,jdbcType=VARCHAR},
+      </if>
+      <if test="platformContactId != null" >
+        #{platformContactId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="mchtType != null" >
+        #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="mchtId != null" >
+        #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="productSituation != null" >
+        #{productSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="otherChannelLink != null" >
+        #{otherChannelLink,jdbcType=VARCHAR},
+      </if>
+      <if test="logistics != null" >
+        #{logistics,jdbcType=VARCHAR},
+      </if>
+      <if test="teamSituation != null" >
+        #{teamSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="companySituation != null" >
+        #{companySituation,jdbcType=VARCHAR},
+      </if>
+      <if test="infoConfirmDate != null" >
+        #{infoConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoConfirmBy != null" >
+        #{infoConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="contractDeposit != null" >
+        #{contractDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="brandDeposit != null" >
+        #{brandDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="selectContractDeposit != null" >
+        #{selectContractDeposit,jdbcType=CHAR},
+      </if>
+      <if test="selectBrandDeposit != null" >
+        #{selectBrandDeposit,jdbcType=CHAR},
+      </if>
+      <if test="depositType != null" >
+        #{depositType,jdbcType=CHAR},
+      </if>
+      <if test="depositConfirmStatus != null" >
+        #{depositConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="depositConfirmDate != null" >
+        #{depositConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="depositConfirmBy != null" >
+        #{depositConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="usedExpress != null" >
+        #{usedExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRate != null" >
+        #{feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.MchtSettledApplyExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_settled_apply
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_mcht_settled_apply
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.isManageSelf != null" >
+        is_manage_self = #{record.isManageSelf,jdbcType=CHAR},
+      </if>
+      <if test="record.settledType != null" >
+        settled_type = #{record.settledType,jdbcType=CHAR},
+      </if>
+      <if test="record.sourceType != null" >
+        source_type = #{record.sourceType,jdbcType=CHAR},
+      </if>
+      <if test="record.sourceRemark != null" >
+        source_remark = #{record.sourceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clientType != null" >
+        client_type = #{record.clientType,jdbcType=CHAR},
+      </if>
+      <if test="record.customerSource != null" >
+        customer_source = #{record.customerSource,jdbcType=CHAR},
+      </if>
+      <if test="record.isimport != null" >
+        isimport = #{record.isimport,jdbcType=CHAR},
+      </if>
+      <if test="record.companyName != null" >
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regCapital != null" >
+        reg_capital = #{record.regCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="record.regFeeType != null" >
+        reg_fee_type = #{record.regFeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.corporationName != null" >
+        corporation_name = #{record.corporationName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=INTEGER},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=INTEGER},
+      </if>
+      <if test="record.county != null" >
+        county = #{record.county,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactName != null" >
+        contact_name = #{record.contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactJob != null" >
+        contact_job = #{record.contactJob,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null" >
+        phone = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qq != null" >
+        qq = #{record.qq,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyTel != null" >
+        company_tel = #{record.companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tmallShop != null" >
+        tmall_shop = #{record.tmallShop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.taobaoShop != null" >
+        taobao_shop = #{record.taobaoShop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jdShop != null" >
+        jd_shop = #{record.jdShop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.vipsShop != null" >
+        vips_shop = #{record.vipsShop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otherShop != null" >
+        other_shop = #{record.otherShop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productTypeId != null" >
+        product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productTypeMain != null" >
+        product_type_main = #{record.productTypeMain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productBrandMain != null" >
+        product_brand_main = #{record.productBrandMain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopType != null" >
+        shop_type = #{record.shopType,jdbcType=CHAR},
+      </if>
+      <if test="record.zsProductTypeIds != null" >
+        zs_product_type_ids = #{record.zsProductTypeIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.platformContactId != null" >
+        platform_contact_id = #{record.platformContactId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtType != null" >
+        mcht_type = #{record.mchtType,jdbcType=CHAR},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productSituation != null" >
+        product_situation = #{record.productSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.otherChannelLink != null" >
+        other_channel_link = #{record.otherChannelLink,jdbcType=VARCHAR},
+      </if>
+      <if test="record.logistics != null" >
+        logistics = #{record.logistics,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teamSituation != null" >
+        team_situation = #{record.teamSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companySituation != null" >
+        company_situation = #{record.companySituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infoConfirmDate != null" >
+        info_confirm_date = #{record.infoConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.infoConfirmBy != null" >
+        info_confirm_by = #{record.infoConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractDeposit != null" >
+        contract_deposit = #{record.contractDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.brandDeposit != null" >
+        brand_deposit = #{record.brandDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.selectContractDeposit != null" >
+        select_contract_deposit = #{record.selectContractDeposit,jdbcType=CHAR},
+      </if>
+      <if test="record.selectBrandDeposit != null" >
+        select_brand_deposit = #{record.selectBrandDeposit,jdbcType=CHAR},
+      </if>
+      <if test="record.depositType != null" >
+        deposit_type = #{record.depositType,jdbcType=CHAR},
+      </if>
+      <if test="record.depositConfirmStatus != null" >
+        deposit_confirm_status = #{record.depositConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.depositConfirmDate != null" >
+        deposit_confirm_date = #{record.depositConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.depositConfirmBy != null" >
+        deposit_confirm_by = #{record.depositConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wechat != null" >
+        wechat = #{record.wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usedExpress != null" >
+        used_express = #{record.usedExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.feeRate != null" >
+        fee_rate = #{record.feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_mcht_settled_apply
+    set id = #{record.id,jdbcType=INTEGER},
+      is_manage_self = #{record.isManageSelf,jdbcType=CHAR},
+      settled_type = #{record.settledType,jdbcType=CHAR},
+      source_type = #{record.sourceType,jdbcType=CHAR},
+      source_remark = #{record.sourceRemark,jdbcType=VARCHAR},
+      client_type = #{record.clientType,jdbcType=CHAR},
+      customer_source = #{record.customerSource,jdbcType=CHAR},
+      isimport = #{record.isimport,jdbcType=CHAR},
+      company_name = #{record.companyName,jdbcType=VARCHAR},
+      reg_capital = #{record.regCapital,jdbcType=DECIMAL},
+      reg_fee_type = #{record.regFeeType,jdbcType=VARCHAR},
+      corporation_name = #{record.corporationName,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=INTEGER},
+      city = #{record.city,jdbcType=INTEGER},
+      county = #{record.county,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR},
+      contact_name = #{record.contactName,jdbcType=VARCHAR},
+      contact_job = #{record.contactJob,jdbcType=VARCHAR},
+      phone = #{record.phone,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      qq = #{record.qq,jdbcType=VARCHAR},
+      company_tel = #{record.companyTel,jdbcType=VARCHAR},
+      tmall_shop = #{record.tmallShop,jdbcType=VARCHAR},
+      taobao_shop = #{record.taobaoShop,jdbcType=VARCHAR},
+      jd_shop = #{record.jdShop,jdbcType=VARCHAR},
+      vips_shop = #{record.vipsShop,jdbcType=VARCHAR},
+      other_shop = #{record.otherShop,jdbcType=VARCHAR},
+      product_type_id = #{record.productTypeId,jdbcType=INTEGER},
+      product_type_main = #{record.productTypeMain,jdbcType=VARCHAR},
+      product_brand_main = #{record.productBrandMain,jdbcType=VARCHAR},
+      shop_type = #{record.shopType,jdbcType=CHAR},
+      zs_product_type_ids = #{record.zsProductTypeIds,jdbcType=VARCHAR},
+      platform_contact_id = #{record.platformContactId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=CHAR},
+      mcht_type = #{record.mchtType,jdbcType=CHAR},
+      mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      product_situation = #{record.productSituation,jdbcType=VARCHAR},
+      other_channel_link = #{record.otherChannelLink,jdbcType=VARCHAR},
+      logistics = #{record.logistics,jdbcType=VARCHAR},
+      team_situation = #{record.teamSituation,jdbcType=VARCHAR},
+      company_situation = #{record.companySituation,jdbcType=VARCHAR},
+      info_confirm_date = #{record.infoConfirmDate,jdbcType=TIMESTAMP},
+      info_confirm_by = #{record.infoConfirmBy,jdbcType=INTEGER},
+      contract_deposit = #{record.contractDeposit,jdbcType=DECIMAL},
+      brand_deposit = #{record.brandDeposit,jdbcType=DECIMAL},
+      select_contract_deposit = #{record.selectContractDeposit,jdbcType=CHAR},
+      select_brand_deposit = #{record.selectBrandDeposit,jdbcType=CHAR},
+      deposit_type = #{record.depositType,jdbcType=CHAR},
+      deposit_confirm_status = #{record.depositConfirmStatus,jdbcType=CHAR},
+      deposit_confirm_date = #{record.depositConfirmDate,jdbcType=TIMESTAMP},
+      deposit_confirm_by = #{record.depositConfirmBy,jdbcType=INTEGER},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      wechat = #{record.wechat,jdbcType=VARCHAR},
+      used_express = #{record.usedExpress,jdbcType=VARCHAR},
+      fee_rate = #{record.feeRate,jdbcType=DECIMAL},
+      product_name = #{record.productName,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtSettledApply" >
+    update bu_mcht_settled_apply
+    <set >
+      <if test="isManageSelf != null" >
+        is_manage_self = #{isManageSelf,jdbcType=CHAR},
+      </if>
+      <if test="settledType != null" >
+        settled_type = #{settledType,jdbcType=CHAR},
+      </if>
+      <if test="sourceType != null" >
+        source_type = #{sourceType,jdbcType=CHAR},
+      </if>
+      <if test="sourceRemark != null" >
+        source_remark = #{sourceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="clientType != null" >
+        client_type = #{clientType,jdbcType=CHAR},
+      </if>
+      <if test="customerSource != null" >
+        customer_source = #{customerSource,jdbcType=CHAR},
+      </if>
+      <if test="isimport != null" >
+        isimport = #{isimport,jdbcType=CHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="regCapital != null" >
+        reg_capital = #{regCapital,jdbcType=DECIMAL},
+      </if>
+      <if test="regFeeType != null" >
+        reg_fee_type = #{regFeeType,jdbcType=VARCHAR},
+      </if>
+      <if test="corporationName != null" >
+        corporation_name = #{corporationName,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="county != null" >
+        county = #{county,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="contactName != null" >
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactJob != null" >
+        contact_job = #{contactJob,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="companyTel != null" >
+        company_tel = #{companyTel,jdbcType=VARCHAR},
+      </if>
+      <if test="tmallShop != null" >
+        tmall_shop = #{tmallShop,jdbcType=VARCHAR},
+      </if>
+      <if test="taobaoShop != null" >
+        taobao_shop = #{taobaoShop,jdbcType=VARCHAR},
+      </if>
+      <if test="jdShop != null" >
+        jd_shop = #{jdShop,jdbcType=VARCHAR},
+      </if>
+      <if test="vipsShop != null" >
+        vips_shop = #{vipsShop,jdbcType=VARCHAR},
+      </if>
+      <if test="otherShop != null" >
+        other_shop = #{otherShop,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeId != null" >
+        product_type_id = #{productTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="productTypeMain != null" >
+        product_type_main = #{productTypeMain,jdbcType=VARCHAR},
+      </if>
+      <if test="productBrandMain != null" >
+        product_brand_main = #{productBrandMain,jdbcType=VARCHAR},
+      </if>
+      <if test="shopType != null" >
+        shop_type = #{shopType,jdbcType=CHAR},
+      </if>
+      <if test="zsProductTypeIds != null" >
+        zs_product_type_ids = #{zsProductTypeIds,jdbcType=VARCHAR},
+      </if>
+      <if test="platformContactId != null" >
+        platform_contact_id = #{platformContactId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="mchtType != null" >
+        mcht_type = #{mchtType,jdbcType=CHAR},
+      </if>
+      <if test="mchtId != null" >
+        mcht_id = #{mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="productSituation != null" >
+        product_situation = #{productSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="otherChannelLink != null" >
+        other_channel_link = #{otherChannelLink,jdbcType=VARCHAR},
+      </if>
+      <if test="logistics != null" >
+        logistics = #{logistics,jdbcType=VARCHAR},
+      </if>
+      <if test="teamSituation != null" >
+        team_situation = #{teamSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="companySituation != null" >
+        company_situation = #{companySituation,jdbcType=VARCHAR},
+      </if>
+      <if test="infoConfirmDate != null" >
+        info_confirm_date = #{infoConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoConfirmBy != null" >
+        info_confirm_by = #{infoConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="contractDeposit != null" >
+        contract_deposit = #{contractDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="brandDeposit != null" >
+        brand_deposit = #{brandDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="selectContractDeposit != null" >
+        select_contract_deposit = #{selectContractDeposit,jdbcType=CHAR},
+      </if>
+      <if test="selectBrandDeposit != null" >
+        select_brand_deposit = #{selectBrandDeposit,jdbcType=CHAR},
+      </if>
+      <if test="depositType != null" >
+        deposit_type = #{depositType,jdbcType=CHAR},
+      </if>
+      <if test="depositConfirmStatus != null" >
+        deposit_confirm_status = #{depositConfirmStatus,jdbcType=CHAR},
+      </if>
+      <if test="depositConfirmDate != null" >
+        deposit_confirm_date = #{depositConfirmDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="depositConfirmBy != null" >
+        deposit_confirm_by = #{depositConfirmBy,jdbcType=INTEGER},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null" >
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="usedExpress != null" >
+        used_express = #{usedExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRate != null" >
+        fee_rate = #{feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtSettledApply" >
+    update bu_mcht_settled_apply
+    set is_manage_self = #{isManageSelf,jdbcType=CHAR},
+      settled_type = #{settledType,jdbcType=CHAR},
+      source_type = #{sourceType,jdbcType=CHAR},
+      source_remark = #{sourceRemark,jdbcType=VARCHAR},
+      client_type = #{clientType,jdbcType=CHAR},
+      customer_source = #{customerSource,jdbcType=CHAR},
+      isimport = #{isimport,jdbcType=CHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      reg_capital = #{regCapital,jdbcType=DECIMAL},
+      reg_fee_type = #{regFeeType,jdbcType=VARCHAR},
+      corporation_name = #{corporationName,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      county = #{county,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      contact_job = #{contactJob,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      qq = #{qq,jdbcType=VARCHAR},
+      company_tel = #{companyTel,jdbcType=VARCHAR},
+      tmall_shop = #{tmallShop,jdbcType=VARCHAR},
+      taobao_shop = #{taobaoShop,jdbcType=VARCHAR},
+      jd_shop = #{jdShop,jdbcType=VARCHAR},
+      vips_shop = #{vipsShop,jdbcType=VARCHAR},
+      other_shop = #{otherShop,jdbcType=VARCHAR},
+      product_type_id = #{productTypeId,jdbcType=INTEGER},
+      product_type_main = #{productTypeMain,jdbcType=VARCHAR},
+      product_brand_main = #{productBrandMain,jdbcType=VARCHAR},
+      shop_type = #{shopType,jdbcType=CHAR},
+      zs_product_type_ids = #{zsProductTypeIds,jdbcType=VARCHAR},
+      platform_contact_id = #{platformContactId,jdbcType=INTEGER},
+      status = #{status,jdbcType=CHAR},
+      mcht_type = #{mchtType,jdbcType=CHAR},
+      mcht_id = #{mchtId,jdbcType=INTEGER},
+      product_situation = #{productSituation,jdbcType=VARCHAR},
+      other_channel_link = #{otherChannelLink,jdbcType=VARCHAR},
+      logistics = #{logistics,jdbcType=VARCHAR},
+      team_situation = #{teamSituation,jdbcType=VARCHAR},
+      company_situation = #{companySituation,jdbcType=VARCHAR},
+      info_confirm_date = #{infoConfirmDate,jdbcType=TIMESTAMP},
+      info_confirm_by = #{infoConfirmBy,jdbcType=INTEGER},
+      contract_deposit = #{contractDeposit,jdbcType=DECIMAL},
+      brand_deposit = #{brandDeposit,jdbcType=DECIMAL},
+      select_contract_deposit = #{selectContractDeposit,jdbcType=CHAR},
+      select_brand_deposit = #{selectBrandDeposit,jdbcType=CHAR},
+      deposit_type = #{depositType,jdbcType=CHAR},
+      deposit_confirm_status = #{depositConfirmStatus,jdbcType=CHAR},
+      deposit_confirm_date = #{depositConfirmDate,jdbcType=TIMESTAMP},
+      deposit_confirm_by = #{depositConfirmBy,jdbcType=INTEGER},
+      ip = #{ip,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      used_express = #{usedExpress,jdbcType=VARCHAR},
+      fee_rate = #{feeRate,jdbcType=DECIMAL},
+      product_name = #{productName,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

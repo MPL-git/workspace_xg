@@ -1,0 +1,477 @@
+.carts {
+	background: #f4f4f4;
+}
+.carts .m38 {
+	max-width: 3.8rem;
+}
+.carts .mark {
+	padding: .04rem .08rem;
+	line-height: .22rem;
+	margin-right: .2rem;
+	font-size: .2rem;
+	color: #fff;
+	background: #ff5050;
+	border-radius: .04rem;
+	white-space: nowrap;
+	word-break: keep-all;
+}
+.carts .empty {
+	height: auto;
+	min-height: 100vh;
+}
+.carts .empty .list-decorate {
+	margin-top: .3rem;
+}
+
+.carts .section {
+	height: calc(100vh - 2.77rem);
+	font-size: .28rem;
+}
+.carts .section .header {
+	height: .8rem;
+	padding: 0 .3rem;
+}
+.carts .section .li {
+	overflow: hidden;
+	margin-top: .2rem;
+	background: #fff;
+}
+.carts .section .li:first-child {
+	margin: 0;
+}
+.carts .section .dl {
+	padding: .3rem .3rem 0;
+	border-top: 1px solid #eee;
+	font-size: .24rem;
+}
+.carts .section .h200,
+.carts .section .dt {
+	height: 2rem;
+}
+.carts .section .dt {
+	position: relative;
+	width: 2rem;
+	margin-right: .2rem;
+}
+.carts .section .h3 {
+	overflow: hidden;
+	height: .52rem;
+	line-height: .26rem;
+}
+.carts .section .p {
+	height: .34rem;
+	padding: 0 .09rem;
+	margin-top: .2rem;
+	background: #f6f6f6;
+	border-radius: .02rem;
+}
+.carts .section .p div {
+	max-width: 4rem;
+}
+.carts .section .sale {
+	margin-right: .1rem;
+	font-size: .32rem;
+}
+.carts .section .ticksp {
+	margin-right: .3rem;
+}
+
+.carts .limit-quantity .ticksp {
+	background: #eee;
+}
+.carts .limit-quantity .get-quantity {
+	pointer-events: none;
+}
+
+.carts .section .col-1 {
+	padding-bottom: .3rem;
+}
+.carts .section .col-2 {
+	height: .44rem;
+}
+.carts .section .col-3 {
+	height: .54rem;
+}
+
+.carts .footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 3;
+	width: 100%;
+	height: .91rem;
+	font-size: .3rem;
+	background: #fff;
+}
+.carts .footer .sale {
+	font-size: .4rem;
+	font-weight: normal;
+}
+.carts .footer>div {
+	padding-left: .3rem;
+	white-space: nowrap;
+	border-top: 1px solid #eee;
+}
+.carts .footer button {
+	width: 2.2rem;
+	height: 100%;
+}
+.carts .footer .f-ticksp {
+	font-size: .24rem;
+	margin-right: .1rem;
+}
+.carts .footer .f-ticksp .ticksp {
+	margin-right: .1rem;
+}
+
+.carts .count {
+	height: 1.21rem;
+	padding: 0 .2rem;
+	font-size: .36rem;
+	border-top: 1px solid #eee;
+}
+.carts .count .sale {
+	color: #333;
+	font-weight: normal;
+}
+.carts .count .sym {
+	margin-right: .1rem;
+}
+
+.carts .row-coupon {
+	height: .81rem;
+	padding: 0 .2rem;
+	background: #fff;
+	position: relative;
+}
+
+.carts .header .title.fg-max {
+	max-width: 3.2rem;
+}
+.carts .coupon-header {
+	max-width: 3rem;
+	font-size: .24rem;
+}
+.carts .coupon-less {
+	max-width: 2rem;
+}
+.carts .coupon-header span {
+	color: #ff5050;
+	margin: 0 .2rem 0 .05rem;
+	white-space: nowrap;
+}
+
+.carts .popup-con {
+	position: relative;
+	width: 100%;
+	background: #fff;
+}
+
+/*售罄*/
+.carts .out {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .1);
+}
+.carts .out:after {
+	display: block;
+	content: '已售罄';
+	width: 1.2rem;
+	height: 1.2rem;
+	line-height: 1.2rem;
+	text-align: center;
+	border-radius: 100%;
+	background: rgba(0, 0, 0, .5);
+	font-size: .26rem;
+	color: #fff;
+}
+
+/*平台优惠券*/
+.carts .row-plat {
+	display: none;
+	position: absolute;
+	bottom: .91rem;
+	left: 0;
+	width: 100%;
+	height: .81rem;
+	padding: 0 .2rem;
+	background: #fff;
+	box-sizing: border-box;
+}
+.carts .row-plat .em {
+	height: .24rem;
+	padding: 0 .04rem;
+	margin-left: .1rem;
+	font-size: .16rem;
+	color: #ff5050;
+	border: 1px solid #ff5050;
+	border-radius: .04rem;
+}
+.carts .row-plat span {
+	padding-right: .1rem;
+}
+.carts .has-plat {
+	height: calc(100vh - 3.58rem);
+}
+.carts .has-plat~.row-plat {
+	display: -webkit-flex;
+	display: flex;
+}
+
+.carts .coupon-plat .h4 {
+	height: .9rem;
+	font-size: .3rem;
+}
+.carts .coupon-plat .scroll-y,
+.carts .coupon-plat .empty-coupon {
+	height: 6.44rem;
+	max-height: calc(100vh - 2.81rem);
+}
+.carts .coupon-plat .empty-coupon i {
+	width: 3.8rem;
+}
+.carts .coupon-plat .empty-coupon p {
+	color: #333;
+	font-size: .24rem;
+}
+.carts .coupon-plat .scroll-y {
+	font-size: .28rem;
+}
+
+.carts .coupon-plat .tab {
+	height: 1rem;
+	font-size: .26rem;
+}
+.carts .coupon-plat .tab a {
+	width: 3.36rem;
+}
+
+.carts .coupon-plat .verbose {
+	height: .36rem;
+	padding: 0 .3rem;
+	font-size: .2rem;
+	color: #999;
+	background: #f2f2f2;
+}
+
+.carts .coupon-plat .li {
+	position: relative;
+	width: 7.02rem;
+	height: 2.76rem;
+	margin: 0 auto .27rem;
+	padding: 0 .37rem;
+	background: url(resource/coupon.png) no-repeat;
+	background-size: contain;
+	box-sizing: border-box;
+}
+.carts .coupon-plat .li:first-child {
+	margin-top: .27rem;
+}
+.carts .coupon-plat .li:after {
+	position: absolute;
+	bottom: .05rem;
+	left: 0;
+	right: 0;
+	content: '';
+	width: 6.9rem;
+	height: .06rem;
+	margin: 0 auto;
+	background: #ff5050;
+}
+.carts .coupon-plat .h2 {
+	height: .67rem;
+	font-size: .34rem;
+	line-height: .34rem;
+}
+.carts .coupon-plat .h2 div {
+	line-height: .22rem;
+	margin-left: .1rem;
+}
+.carts .coupon-plat .h2 span {
+	white-space: nowrap;
+}
+.carts .coupon-plat .dl {
+	height: 1.5rem;
+}
+.carts .coupon-plat .dt {
+	width: 5.9rem;
+}
+.carts .coupon-plat .c9 {
+	line-height: .22rem;
+}
+.carts .coupon-plat .h3 {
+	margin-bottom: .1rem;
+	font-size: .26rem;
+}
+.carts .coupon-plat .h3 div {
+	margin-right: .2rem;
+	line-height: .5rem;
+	font-size: .6rem;
+}
+.carts .coupon-plat .h3 .sale {
+	font-weight: normal;
+}
+.carts .coupon-plat .h3 .sale:before {
+	font-size: .26rem;
+}
+.carts .coupon-plat .h3 .discount:before {
+	display: none;
+}
+.carts .coupon-plat .h3 .discount:after {
+	content: '折';
+	margin-left: .03rem;
+	font-size: .26rem;
+}
+
+.carts .unavail .li:after {
+	background: #53b4ff;
+}
+.carts .unavail .h3 div {
+	color: #53b4ff;
+}
+
+/*商家优惠券*/
+.carts .popup-mcht .h3 {
+	height: 1rem;
+	font-size: .3rem;
+}
+.carts .popup-mcht .scroll-y {
+	max-height: 4rem;
+	box-sizing: border-box;
+}
+.carts .popup-mcht .con {
+	padding: 0 .3rem;
+}
+.carts .popup-mcht .con>div {
+	height: .8rem;
+	font-size: .28rem;
+}
+.carts .popup-mcht button {
+	width: 100%;
+	height: .9rem;
+	font-size: .3rem;
+}
+.carts .popup-mcht .c9:after {
+	content: '（其他商品已减）';
+}
+.carts .popup-mcht .dis:after {
+	content: '（不可用）';
+}
+
+.carts .plat-footer {
+	height: .91rem;
+}
+.carts .plat-footer div {
+	padding-left: .2rem;
+	border-top: 1px solid #eee;
+	font-size: .3rem;
+}
+.carts .plat-footer button {
+	width: 2.2rem;
+	font-size: .32rem;
+}
+.carts .plat-footer .sale {
+	margin-left: .06rem;
+	font-size: .4rem;
+}
+.carts .plat-footer .span {
+	margin-top: .1rem;
+	font-size: .22rem;
+}
+
+/* 清空购物车 || 全选*/
+.carts .popup-clear-con {
+	position: relative;
+	width: 6rem;
+	background-color: #fff;
+	border-radius: .16rem;
+	font-size: .32rem;
+}
+.carts .tab-head {
+	padding-top: .5rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+.carts .tab-body {
+	width: auto;
+	min-height: .8rem;
+	line-height: .4rem;
+	padding: .2rem;
+	color: #666;
+	word-break: break-all;
+	text-align: center;
+}
+.carts .clear-btn {
+	width: 100%;
+	border-top: 1px solid #ddd;
+}
+.carts .clear-btn a {
+	width: 50%;
+	height: .8rem;
+}
+.carts .bdrg {
+	border-right: 1px solid #ddd;
+}
+
+.carts .sale {
+	color: #ff5050;
+	font-weight: bold;
+}
+.carts .sale:before {
+	content: '¥';
+	font-size: .75em;
+	line-height: 1.1em;
+}
+.tab .carts .section {
+	height: calc(100vh - 1.79rem);
+}
+.tab .carts .has-plat {
+	height: calc(100vh - 2.6rem);
+}
+
+/* 特殊商品 */
+.platformCouponUsable {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: .36rem;
+	background: rgba(255, 218, 44, 0.5);;
+}
+.platformCouponUsable:after {
+	display: block;
+	content: '不支持平台券';
+	width: 100%;
+	height: .36rem;
+	line-height: .36rem;
+	text-align: center;
+	border-radius: 100%;
+	font-size: .22rem;
+	color: #222;
+}
+.special-check{
+	padding: 0 .3rem .3rem .3rem;
+	line-height: .3rem;	
+}
+
+.special-check>div {
+	background: url("https://mtest.xgbuy.cc/webApp/applet/image/tick_f.png") no-repeat;
+	background-size: contain;
+	width: .3rem;
+	height: .3rem;
+	display: inline-block;
+	margin-right: .1rem;
+	vertical-align: middle;
+	margin-top: -1px;
+	
+	}
+.special-check-active>div{
+		background: url(https://mtest.xgbuy.cc/webApp/applet/image/ticksped_f.png) no-repeat;
+		background-size: contain;
+}
+	

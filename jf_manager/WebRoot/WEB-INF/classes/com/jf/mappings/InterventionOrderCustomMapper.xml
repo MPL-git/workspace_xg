@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.InterventionOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.InterventionOrderCustom" extends="com.jf.dao.InterventionOrderMapper.BaseResultMap" >
+    <result column="customer_service_order_code" property="customerServiceOrderCode" jdbcType="VARCHAR" />
+    <result column="customer_service_type_desc" property="customerServiceTypeDesc" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="reason_desc" property="reasonDesc" jdbcType="VARCHAR" />
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+    <result column="reject_reason_desc" property="rejectReasonDesc" jdbcType="VARCHAR" />
+    <result column="win_type_desc" property="winTypeDesc" jdbcType="VARCHAR" />
+    <result column="client_result_reason_desc" property="clientResultReasonDesc" jdbcType="VARCHAR" />
+    <result column="mcht_result_reason_desc" property="mchtResultReasonDesc" jdbcType="VARCHAR" />
+    <result column="platform_processor_name" property="platformProcessorName" jdbcType="VARCHAR" />
+    <result column="mcht_type_desc" property="mchtTypeDesc" jdbcType="VARCHAR" />
+    <result column="contact_name" property="contactName" jdbcType="VARCHAR" />
+    <result column="member_info_status" property="memberInfoStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, service_order_id, mcht_id, intervention_code, pro_status, reason, contacts, tel, 
+    message, status, platform_processor, reject_reason, platform_remarks, director_reason, 
+    director_remarks, win_type, client_result_reason, mcht_result_reason, record_of_cases, 
+    is_initiate_violate, is_comment, create_by, create_date, update_by, update_date, 
+    remarks, del_flag,
+    (select cso.order_code from bu_customer_service_order cso where cso.del_flag = '0' and cso.id = t.service_order_id ) customer_service_order_code,
+    FUN_GET_STATUS_DESC("BU_CUSTOMER_SERVICE_ORDER","SERVICE_TYPE", (select cso.service_type from bu_customer_service_order cso where cso.del_flag = '0' and cso.id = t.service_order_id )) customer_service_type_desc,
+    (select mi.mcht_code from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id) mcht_code,
+    (select mi.shop_name from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id) shop_name,
+    (select mi.company_name from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id) company_name,
+     FUN_GET_STATUS_DESC("BU_MCHT_INFO","MCHT_TYPE", (select mi.mcht_type from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id)) mcht_type_desc,
+     FUN_GET_STATUS_DESC("BU_INTERVENTION_ORDER","REASON", t.reason) reason_desc,
+     FUN_GET_STATUS_DESC("BU_INTERVENTION_ORDER","STATUS", t.status) status_desc,
+     FUN_GET_STATUS_DESC("BU_INTERVENTION_ORDER","REJECT_REASON", t.reject_reason) reject_reason_desc,
+     FUN_GET_STATUS_DESC("BU_INTERVENTION_ORDER","WIN_TYPE", t.win_type) win_type_desc,
+     FUN_GET_STATUS_DESC("BU_INTERVENTION_ORDER","CLIENT_RESULT_REASON", t.client_result_reason) client_result_reason_desc,
+     FUN_GET_STATUS_DESC("BU_INTERVENTION_ORDER","MCHT_RESULT_REASON", t.mcht_result_reason) mcht_result_reason_desc,
+     (select si.staff_name from sys_staff_info si where si.staff_id = t.platform_processor ) platform_processor_name,
+     (select pc.contact_name from bu_mcht_platform_contact mpc, bu_platform_contact pc where mpc.del_flag = '0' and pc.del_flag = '0' and mpc.status = '1' and pc.status = '0' and pc.contact_type = '2' and mpc.platform_contact_id = pc.id and mpc.mcht_id = t.mcht_id limit 1) contact_name,
+     (select mi.status from bu_customer_service_order cso, bu_sub_order so, bu_combine_order co, bu_member_info mi where cso.del_flag = '0' and cso.id = t.service_order_id and cso.sub_order_id = so.id and so.combine_order_id = co.id and co.member_id = mi.id) member_info_status
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.InterventionOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_intervention_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKeyCustom" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_intervention_order t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.InterventionOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_intervention_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <!-- 获取100天内平台处理人  -->
+  <select id="getPlatformProcessorList" resultType="java.util.Map" >
+  		SELECT DISTINCT
+		  t.platform_processor,
+		  (select ss.staff_name from sys_staff_info ss where ss.staff_id = t.platform_processor ) platform_processor_name
+		from bu_intervention_order t
+		WHERE t.del_flag = '0'
+			AND t.platform_processor IS NOT NULL
+		    AND t.create_date >= DATE_SUB(CURDATE(), INTERVAL 100 DAY)
+  </select> 
+  
+  
+</mapper>

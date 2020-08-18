@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CouponCustomMapper">
+
+	<select id="getCouponListByModuleTime" parameterType="map" resultType="com.jf.entity.CouponCustom">
+		select 
+			c.*,
+			(SELECT mc.rec_date FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND mc.coupon_id = c.id AND mc.del_flag='0' ORDER BY mc.rec_date DESC LIMIT 1)recDate,
+			(SELECT IFNULL(GROUP_CONCAT(mc.id),'') FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND mc.coupon_id = c.id AND mc.del_flag='0')memberCouponIds,
+			(SELECT GROUP_CONCAT(pt.`name` separator '、') FROM bu_product_type pt WHERE pt.del_flag='0' AND pt.status='1' AND FIND_IN_SET(pt.id,c.type_ids)) productTypeNames
+		from 
+			bu_coupon c 
+		where 
+			c.del_flag='0' 
+		and c.status = #{status} 
+		and c.activity_type = #{activityType}
+		and c.rec_begin_date BETWEEN  #{minTodayTime} AND #{maxDayTime}
+		AND c.is_integral_turntable = '0'
+		order by c.preferential_type desc,c.discount asc,c.money desc
+	</select>
+	
+	<select id="getCouponListByCouponModuleTime" parameterType="map" resultType="com.jf.entity.CouponCustom">
+		select 
+			c.*,
+			(SELECT mc.rec_date FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND mc.coupon_id = c.id AND mc.del_flag='0' ORDER BY mc.rec_date DESC LIMIT 1)recDate,
+			(SELECT IFNULL(GROUP_CONCAT(mc.id),'') FROM bu_member_coupon mc WHERE mc.member_id=#{memberId} AND mc.coupon_id = c.id AND mc.del_flag='0')memberCouponIds,
+			(SELECT GROUP_CONCAT(pt.`name` separator '、') FROM bu_product_type pt WHERE pt.del_flag='0' AND pt.status='1' AND FIND_IN_SET(pt.id,c.type_ids)) productTypeNames
+		from 
+			bu_coupon c 
+		where 
+			c.del_flag='0' 
+		and c.status = #{status} 
+		and c.activity_type = #{activityType}
+		and c.rec_begin_date = #{recBeginDate}
+		AND c.is_integral_turntable = '0'
+		order by c.preferential_type desc,c.discount asc,c.money desc
+	</select>
+
+	<select id="findProductRelativeCoupon" parameterType="java.util.Map" resultType="com.jf.entity.Coupon">
+		select c.*
+		from bu_coupon c
+		where c.mcht_id = #{mchtId} and c.status = '1' and c.del_flag = '0'
+		and c.rec_begin_date &lt;= now() and c.expiry_end_date &gt;= now() and c.rang = '4' AND c.is_integral_turntable = '0'
+		and (
+				(c.coupon_type = '4' and c.type_ids = #{productId}) or (c.coupon_type = '1')
+			)
+		and c.rec_quantity &lt; c.grant_quantity
+		order by c.discount desc,c.money desc
+	</select>
+
+	<select id="popOneLotteryCoupon" parameterType="java.util.Map" resultType="com.jf.entity.Coupon">
+		select *
+		from bu_coupon
+		where coupon_type = '4' and status = '1' and is_integral_turntable = '1'
+		and rec_begin_date &lt;= now() and expiry_end_date &gt;= now()
+		and money &gt;= #{minAmount} and money &lt;= #{maxAmount}
+		and rec_quantity &lt; grant_quantity
+		and del_flag = '0'
+		order by rand()
+		limit 1
+	</select>
+
+</mapper>

@@ -1,0 +1,124 @@
+<div class="page history flex dc" data-title="浏览过的商品" data-id="history">
+	<link rel="stylesheet" href="../static/css/common-tabTop.css">
+	<link rel="stylesheet" href="../static/css/cart.css?var=1.7">
+	<link rel="stylesheet" href="../static/css/common-goods.css">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+	<link rel="stylesheet" href="history/index.css?var=1.0">
+	
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('my')"></i></div>
+		<p class="ellipsis">浏览记录</p>
+		<div class="fn">
+			<a onclick="historyApi.showClear()">清空</a>
+		</div>
+	</header>
+
+	<div class="tab-top flex fn">
+		<a class="brand flex fg dc ac active" data-type="1" onclick="historyApi.goods(this)"><p class="fg flex ac">商品</p></a>
+		<a class="goods flex fg dc ac" data-type="2" onclick="historyApi.spsell(this)"><p class="fg flex ac">特卖</p></a>
+		<a class="goods flex fg dc ac" data-type="3" onclick="historyApi.shop(this)"><p class="fg flex ac">店铺</p></a>
+	</div>
+
+	<div class="fg flex dc scroll-y scroll-more scroll-fix">
+		<div class="touchfix w75 tab1"></div>
+	</div>
+	<div class="fg flex dc scroll-y scroll-more scroll-fix hide">
+		<div class="touchfix w75 tab2"></div>
+	</div>
+	<div class="fg flex dc scroll-y scroll-more scroll-fix hide">
+		<div class="touchfix w75 tab3"></div>
+	</div>
+
+	<!-- 清空 -->
+	<div class="popup activity-brand cart popup-clear" onclick="closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">温馨提示</div>
+			<div class="tab-body">确定要清空所有商品足迹吗？</div>
+			<div class="flex clear-btn">
+				<a class="flex ac jc c9 bdrg" onclick="closeSelf(this)">取消</a>
+				<a class="flex ac jc f50" onclick="historyApi.clear()">确定</a>
+			</div>
+		</div>
+	</div>
+
+	<script id="history_tpl_con" type="text/html">
+		{{if returnData.length}}
+		<div class="con-goods">
+			{{if type == 1}}
+				{{each returnData value i}}
+			<dl class="flex corsor" onclick="getUrlGoods('{{value.productId}}')">
+				<dt class="fn">
+					<img src="{{value.pic}}">
+				</dt>
+				<dd class="flex jb dc">
+					<p>{{value.name}}</p>
+					<div class="flex ac">
+						<strong>{{value.productPrice}}</strong>
+						<s>{{value.originalPrice}}</s>
+						{{if value.discount}}
+						<mark>{{value.discount}}折</mark>
+						{{/if}}
+					</div>
+				</dd>
+			</dl>
+				{{/each}}
+			{{/if}}
+			{{if type == 3}}
+				{{each returnData value i}}
+			<a class="mb20 flex specal"
+			onclick="getUrlActive(this)"
+			data-id="{{value.activityAreaId}}"
+			data-name="{{value.activityName}}"
+			data-url="{{value.areaUrl}}"
+			data-activityid="{{value.activityId}}"
+			data-activityareaid="{{value.activityAreaId}}">
+				<dl class="fg">
+					<dt>
+						<img src="{{value.entryPic}}">
+					</dt>
+
+					<dd>
+						<div class="row-1 flex ac jb">
+							<div class="flex ac">
+								<p class="ellipsis flex ac" title="{{value.activityName}}">{{value.activityName}}</p>
+							</div>
+							<p class="ellipsis f50 famate-time" data-time="{{value.activityTime}}">{{value.activityTime}}</p>
+						</div>
+						<div class="row-2">{{value.benefitPoint}}</div>
+					</dd>
+				</dl>
+			</a>
+				{{/each}}
+			{{/if}}
+			{{if type == 2}}
+				{{each returnData value i}}
+			<a onclick="getUrlShop(this)"
+				data-id="{{value.mchtId}}"
+				data-name="{{value.shopName}}">
+				<dl class="flex fg ac">
+					<dt class="fn flex ac jc shopsell">
+						<img src="{{value.shopLogo ? value.shopLogo : '../static/images/seller.png'}}">
+					</dt>
+					<dd class="fg flex ac jb">
+						<h3>{{value.shopName}}</h3>
+						<i class="ico-btn arrow-r"></i>
+					</dd>
+				</dl>
+			</a>
+				{{/each}}
+			{{/if}}
+		</div>
+		{{else}}
+			{{include 'history_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="history_tpl_empty" type="text/html">
+		<div class="page-empty empty-history flex dc ac jc fg">
+			<i></i>
+			<p>竟然一个脚印都没有留下~</p>
+		</div>
+	</script>
+
+	<script src="history/index.js?var=1.0" async></script>
+</div>

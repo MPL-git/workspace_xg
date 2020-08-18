@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberFeedbackCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberFeedbackCustom"  extends="com.jf.dao.MemberFeedbackMapper.BaseResultMap">
+    <result column="type_desc" property="typeDesc" jdbcType="VARCHAR" />
+    <result column="phone_system_name" property="phoneSystemName" jdbcType="VARCHAR" />
+    <result column="pic_quantity" property="picQuantity" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, member_id, type, content, phone_model, phone_system, system_version, app_version, proces_by, process_date, deal_status, deal_opinion, related_order, deal_date,mcht_code,mcht_company_name,create_by, 
+    create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_MEMBER_FEEDBACK", "TYPE", a.type) type_desc,
+    FUN_GET_STATUS_DESC("BU_MEMBER_FEEDBACK", "PHONE_SYSTEM", a.phone_system) phone_system_name,
+    (select b.mobile from bu_member_info b where b.id=a.member_id) mobile,
+    (select b.nick from bu_member_info b where b.id=a.member_id) nick,
+    (select count(1) from bu_member_feedback_pic b where b.feedback_id=a.id and b.del_flag='0') pic_quantity,
+    (select b.STAFF_NAME from sys_staff_info b where b.STAFF_ID=a.proces_by) staffName
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MemberFeedbackExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_member_feedback a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_member_feedback a
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.MemberFeedbackExample" resultType="java.lang.Integer" >
+    select count(*) from bu_member_feedback a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <!-- 获取100天内的处理人 -->
+  <select id="getMemberfeedbackList" resultType="java.util.Map">
+  	SELECT DISTINCT
+		a.proces_by,
+		(
+			SELECT
+				s.staff_name
+			FROM
+				sys_staff_info s
+			WHERE
+				s.staff_id = a.proces_by
+		) proces_by_name
+	FROM
+		bu_member_feedback a
+	WHERE
+		a.del_flag = '0'
+	AND a.proces_by IS NOT NULL
+	AND a.process_date >= DATE_SUB(CURDATE(), INTERVAL 100 DAY)
+  </select>
+</mapper>

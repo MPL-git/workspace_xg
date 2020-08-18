@@ -1,0 +1,187 @@
+/*顶部*/
+.malls .head-search {
+	height: .88rem;
+	padding-left: .3rem;
+	background: #fff;
+}
+.malls .head-search div {
+	overflow: hidden;
+	position: relative;
+	width: 6.9rem;
+	height: .6rem;
+	background: #f4f4f4;
+	border-radius: .3rem;
+	font-size: .28rem;
+	-webkit-transition: width .3s linear;
+	transition: width .3s linear;
+}
+.malls .head-search div.back-search {
+	width: 6.4rem;
+}
+.malls .head-search form {
+	height: 100%;
+}
+.malls .head-search label {
+	position: absolute;
+	top: 50%;
+	left: .2rem;
+	z-index: 1;
+	width: .26rem;
+	height: .26rem;
+	margin-top: -.13rem;
+	background: url(resources/ico-search-sp1.png) no-repeat;
+	background-size: contain;
+}
+.malls .head-search input {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	padding: 0 .2rem 0 .66rem;
+	background: none;
+	/*color: #ffa4a4;*/
+}
+/*.malls .head-search input:focus {
+	color: #fff;
+}*/
+.malls .head-search input::-webkit-input-placeholder {
+	color: #7a7a7a;
+}
+.malls .head-search a {
+	-webkit-transition: .3s linear;
+	transition: .3s linear;
+}
+.malls .head-search .cancel {
+	overflow: hidden;
+	width: 0;
+	/*color: #fff;*/
+	font-size: .28rem;
+	word-break: keep-all;
+	opacity: 0;
+}
+.malls .head-search .back {
+	margin-right: .28rem;
+}
+
+.malls .content {
+	height: calc(100% - .88rem);
+}
+.malls .page-empty {
+	height: 100%;
+}
+
+/*热词*/
+.malls .mask-search {
+	display: none;
+	position: absolute;
+	top: .88rem;
+	left: 0;
+	z-index: 3;
+	width: 100%;
+	height: calc(100% - .88rem);
+	min-height: calc(100% - .88rem);
+	background: #f4f4f4;
+}
+.malls .mask-search .row-1,
+.malls .mask-search .row-2 {
+	background: #fff;
+}
+.malls .mask-search h3 {
+	height: .86rem;
+}
+.malls .mask-search .row-1 {
+	padding: 0 .3rem .2rem;
+	margin-bottom: .2rem;
+}
+.malls .mask-search .scroll-x {
+	padding-bottom: .1rem;
+}
+.malls .mask-search .row-1 a {
+	display: inline-block;
+	height: .4rem;
+	line-height: .36rem;
+	margin: 0 .2rem .2rem 0;
+	padding: 0 .24rem;
+	color: #ff5050;
+	font-size: .24rem;
+	border: 1px solid #ff5050;
+	border-radius: .24rem;
+}
+.malls .mask-search .row-1 .ofhide {
+	max-height: 1.6rem;
+	overflow: hidden;
+}
+.malls .mask-search .row-2 ul {
+	overflow: hidden;
+}
+.malls .mask-search .row-2 a,
+.malls .mask-search .row-2 li,
+.malls .mask-search h3 {
+	height: .9rem;
+	font-size: .28rem;
+}
+.malls .mask-search .row-2 a,
+.malls .mask-search .row-2 li {
+	border-top: 1px solid #eee;
+}
+.malls .mask-search .row-2 a {
+	font-size: .26rem;
+}
+.malls .mask-search .row-2 li,
+.malls .mask-search .row-2 h3 {
+	padding-left: .3rem;
+}
+.malls .mask-search .row-2 li {
+	position: relative;
+	cursor: default;
+	-webkit-user-select: none;
+}
+.malls .mask-search .row-2 li:before {
+	width: .3rem;
+	height: .3rem;
+	content: '';
+	margin-right: .2rem;
+	background: url(resources/time.png) no-repeat;
+	background-size: contain;
+	-webkit-flex: none;
+	flex: none;
+}
+.malls .mask-search .row-2 li.trans {
+	-webkit-transition: .3s ease-out;
+	transition: .3s ease-out;
+}
+.malls .mask-search .row-2 span {
+	position: absolute;
+	top: 0;
+	right: -1.2rem;
+	z-index: 1;
+	width: 1.2rem;
+	height: 100%;
+	background: #ff5050;
+	color: #fff;
+	cursor: pointer;
+}
+
+/*聚焦*/
+.mallf .mask-search {
+	display: block;
+}
+.mallf .mask-search {
+	display: block;
+}
+.mallf .head-search div {
+	width: 6.1rem;
+}
+.mallf .head-search .cancel {
+	-webkit-display: flex;
+	display: flex;
+	opacity: 1;
+	width: 1.1rem;
+}
+.mallf .head-search .back {
+	width: 0;
+	margin: 0;
+	opacity: 0;
+}

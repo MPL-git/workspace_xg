@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.TypeColumnPvStatisticalCustomMapper" >
+    <resultMap id="BaseResultCustomMap" type="com.jf.entity.TypeColumnPvStatisticalCustom"  extends="com.jf.dao.TypeColumnPvStatisticalMapper.BaseResultMap" >
+
+    </resultMap>
+  
+  
+  <select id="getProductColumnPvStatistical" resultMap="BaseResultCustomMap" parameterType="java.util.Map" >
+            SELECT
+                statistical_date,
+                value_id,
+                column_type,
+                sum(member_visitors_num) AS total_visitor_count,
+                sum(unmember_visitors_num) AS total_visitor_count_tourist,
+                sum(member_page_view) AS total_pv_count,
+                sum(unmember_page_view) AS total_pv_count_tourist,
+                sum(add_product_amount) AS shopping_cart_count,
+                sum(submit_order_amount) AS sub_product_count,
+                sum(payment_amount) AS pay_product_count,
+                sum(pay_money) AS pay_amount_count
+            FROM
+                (
+                    SELECT
+                        DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                        bmp.column_type AS column_type,
+                        bmp.value_id AS value_id,
+                        count(DISTINCT bmp.member_id) AS member_visitors_num,
+                        0 AS unmember_visitors_num,
+                        count(bmp.member_id) AS member_page_view,
+                        0 AS unmember_page_view,
+                        0 AS add_product_amount,
+                        0 AS submit_order_amount,
+                        0 AS payment_amount,
+                        0 AS pay_money
+                    FROM
+                        bu_member_pv bmp
+                    WHERE
+                        bmp.page_classify = '10'
+                    AND value_id IS NOT NULL
+                    AND bmp.member_id IS NOT NULL
+                    AND bmp.create_date BETWEEN #{beginDate}
+				    AND #{endDate}
+                    GROUP BY
+                        bmp.value_id,
+                        bmp.column_type,
+                        statistical_date
+
+                    UNION
+
+                        SELECT
+                            DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                            bmp.column_type AS column_type,
+                            bmp.value_id AS value_id,
+                            0 AS member_visitors_num,
+                            count(
+                                DISTINCT (bmp.device_number)
+                            ) AS unmember_visitors_num,
+                            0 AS member_page_view,
+                            count(bmp.device_number) AS unmember_page_view,
+                            0 AS add_product_amount,
+                            0 AS submit_order_amount,
+                            0 AS payment_amount,
+                            0 AS pay_money
+                        FROM
+                            bu_member_pv bmp
+                        WHERE
+                            bmp.page_classify = '10'
+                        AND value_id IS NOT NULL
+                        AND bmp.member_id IS NULL
+                        AND bmp.del_flag = '0'
+                        AND bmp.create_date BETWEEN #{beginDate}
+				        AND #{endDate}
+                        GROUP BY
+                            bmp.value_id,
+                            bmp.column_type,
+                             statistical_date
+
+                        UNION
+
+                            SELECT
+                                DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                                bmp.column_type AS column_type,
+                                bmp.value_id AS value_id,
+                                0 AS member_visitors_num,
+                                0 AS unmember_visitors_num,
+                                0 AS member_page_view,
+                                0 AS unmember_page_view,
+                                SUM(bsc.quantity) AS add_product_amount,
+                                0 AS submit_order_amount,
+                                0 AS payment_amount,
+                                0 AS pay_money
+                            FROM
+                                bu_member_pv bmp,
+                                bu_member_action bma,
+                                bu_shopping_cart bsc
+                            WHERE
+                                bmp.page_classify = '10'
+                            AND value_id IS NOT NULL
+                            AND bmp.pv_id = bma.member_pv_id
+                            AND bma.action_item_id = bsc.id
+                            AND action_type = '14'
+                            AND bmp.del_flag = '0'
+                            AND bma.del_flag = '0'
+                            AND bmp.create_date BETWEEN #{beginDate}
+				            AND #{endDate}
+                            GROUP BY
+                                bmp.value_id,
+                                bmp.column_type,
+                                statistical_date
+
+                            UNION
+
+                                SELECT
+                                    DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                                    bmp.column_type AS column_type,
+                                    bmp.value_id AS value_id,
+                                    0 AS member_visitors_num,
+                                    0 AS unmember_visitors_num,
+                                    0 AS member_page_view,
+                                    0 AS unmember_page_view,
+                                    0 AS add_product_amount,
+                                    sum(bod.quantity) AS submit_order_amount,
+                                    0 AS payment_amount,
+                                    0 AS pay_money
+                                FROM
+                                    bu_member_pv bmp,
+                                    bu_member_action bma,
+                                    bu_shopping_cart bsc,
+                                    bu_order_dtl bod
+                                WHERE
+                                    bmp.page_classify = '10'
+                                AND value_id IS NOT NULL
+                                AND bmp.pv_id = bma.member_pv_id
+                                AND bma.action_item_id = bsc.id
+                                AND bsc.order_dtl_id = bod.id
+                                AND action_type IN ('14', '15')
+                                AND bmp.del_flag = '0'
+                                AND bma.del_flag = '0'
+                                AND bsc.del_flag = '0'
+                                AND bod.del_flag = '0'
+                                AND bmp.create_date BETWEEN #{beginDate}
+				                AND #{endDate}
+                                GROUP BY
+                                    bmp.value_id,
+                                    bmp.column_type,
+                                    statistical_date
+
+                                UNION
+
+                                    SELECT
+                                        DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                                        bmp.column_type AS column_type,
+                                        bmp.value_id AS value_id,
+                                        0 AS member_visitors_num,
+                                        0 AS unmember_visitors_num,
+                                        0 AS member_page_view,
+                                        0 AS unmember_page_view,
+                                        0 AS add_product_amount,
+                                        0 AS submit_order_amount,
+                                        sum(bod.quantity) AS payment_amount,
+                                        sum(bod.pay_amount) AS pay_money
+                                    FROM
+                                        bu_member_pv bmp,
+                                        bu_member_action bma,
+                                        bu_shopping_cart bsc,
+                                        bu_order_dtl bod,
+                                        bu_sub_order bso,
+                                        bu_combine_order bco
+                                    WHERE
+                                        bmp.pv_id = bma.member_pv_id
+                                    AND bma.action_item_id = bsc.id
+                                    AND bsc.order_dtl_id = bod.id
+                                    AND bod.sub_order_id = bso.id
+                                    AND bso.combine_order_id = bco.id
+                                    AND bmp.page_classify = '10'
+                                    AND value_id IS NOT NULL
+                                    AND action_type IN ('14', '15')
+                                    AND bco.pay_status = '1'
+                                    AND bco. STATUS = '1'
+                                    AND bmp.del_flag = '0'
+                                    AND bma.del_flag = '0'
+                                    AND bsc.del_flag = '0'
+                                    AND bod.del_flag = '0'
+                                    AND bso.del_flag = '0'
+                                    AND bco.del_flag = '0'
+                                    AND bmp.create_date BETWEEN #{beginDate}
+				                    AND #{endDate}
+                                    GROUP BY
+                                        bmp.value_id,
+                                        bmp.column_type,
+                                        statistical_date
+                ) m
+            GROUP BY
+                m.value_id,
+                m.column_type,
+              m.statistical_date
+
+   </select>
+  
+   <select id="getMchtColumnPvStatistical" resultMap="BaseResultCustomMap" parameterType="java.util.Map" >
+             SELECT
+                statistical_date,
+                m.mcht_id as value_id,
+                column_type,
+                sum(member_visitors_num) AS total_visitor_count,
+                sum(unmember_visitors_num) AS total_visitor_count_tourist,
+                sum(member_page_view) AS total_pv_count,
+                sum(unmember_page_view) AS total_pv_count_tourist,
+                sum(add_product_amount) AS shopping_cart_count,
+                sum(submit_order_amount) AS sub_product_count,
+                sum(payment_amount) AS pay_product_count,
+                sum(pay_money) AS pay_amount_count
+            FROM
+                (
+                    SELECT
+                        DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                        bmp.column_type AS column_type,
+                        bmp.mcht_id AS mcht_id,
+                        count(DISTINCT bmp.member_id) AS member_visitors_num,
+                        0 AS unmember_visitors_num,
+                        count(bmp.member_id) AS member_page_view,
+                        0 AS unmember_page_view,
+                        0 AS add_product_amount,
+                        0 AS submit_order_amount,
+                        0 AS payment_amount,
+                        0 AS pay_money
+                    FROM
+                        bu_member_pv bmp
+                    WHERE
+                       bmp.mcht_id IS NOT NULL
+                    AND bmp.member_id IS NOT NULL
+                    AND bmp.create_date BETWEEN #{beginDate}
+				     AND #{endDate}
+                    GROUP BY
+                        bmp.mcht_id,
+                        bmp.column_type,
+                        statistical_date
+
+                    UNION
+
+                        SELECT
+                            DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                            bmp.column_type AS column_type,
+                            bmp.mcht_id AS mcht_id,
+                            0 AS member_visitors_num,
+                            count(
+                                DISTINCT (bmp.device_number)
+                            ) AS unmember_visitors_num,
+                            0 AS member_page_view,
+                            count(bmp.device_number) AS unmember_page_view,
+                            0 AS add_product_amount,
+                            0 AS submit_order_amount,
+                            0 AS payment_amount,
+                            0 AS pay_money
+                        FROM
+                            bu_member_pv bmp
+                        WHERE
+                            bmp.mcht_id IS NOT NULL
+                        AND bmp.member_id IS NULL
+                        AND bmp.del_flag = '0'
+                        AND bmp.create_date BETWEEN #{beginDate}
+				        AND #{endDate}
+                        GROUP BY
+                            bmp.mcht_id,
+                            bmp.column_type,
+                            statistical_date
+
+                        UNION
+
+                            SELECT
+                                DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                                bmp.column_type AS column_type,
+                                bmp.mcht_id AS mcht_id,
+                                0 AS member_visitors_num,
+                                0 AS unmember_visitors_num,
+                                0 AS member_page_view,
+                                0 AS unmember_page_view,
+                                SUM(bsc.quantity) AS add_product_amount,
+                                0 AS submit_order_amount,
+                                0 AS payment_amount,
+                                0 AS pay_money
+                            FROM
+                                bu_member_pv bmp,
+                                bu_member_action bma,
+                                bu_shopping_cart bsc
+                            WHERE
+                                 bmp.mcht_id IS NOT NULL
+                            AND bmp.pv_id = bma.member_pv_id
+                            AND bma.action_item_id = bsc.id
+                            AND action_type = '14'
+                            AND bmp.del_flag = '0'
+                            AND bma.del_flag = '0'
+                             AND bmp.create_date BETWEEN #{beginDate}
+				             AND #{endDate}
+                            GROUP BY
+                                bmp.mcht_id,
+                                bmp.column_type,
+                                statistical_date
+
+                            UNION
+
+                                SELECT
+                                    DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                                    bmp.column_type AS column_type,
+                                    bmp.mcht_id AS mcht_id,
+                                    0 AS member_visitors_num,
+                                    0 AS unmember_visitors_num,
+                                    0 AS member_page_view,
+                                    0 AS unmember_page_view,
+                                    0 AS add_product_amount,
+                                    sum(bod.quantity) AS submit_order_amount,
+                                    0 AS payment_amount,
+                                    0 AS pay_money
+                                FROM
+                                    bu_member_pv bmp,
+                                    bu_member_action bma,
+                                    bu_shopping_cart bsc,
+                                    bu_order_dtl bod
+                                WHERE
+                                     bmp.mcht_id IS NOT NULL
+                                AND bmp.pv_id = bma.member_pv_id
+                                AND bma.action_item_id = bsc.id
+                                AND bsc.order_dtl_id = bod.id
+                                AND action_type IN ('14', '15')
+                                AND bmp.del_flag = '0'
+                                AND bma.del_flag = '0'
+                                AND bsc.del_flag = '0'
+                                AND bod.del_flag = '0'
+                                 AND bmp.create_date BETWEEN #{beginDate}
+                                 AND #{endDate}
+                                GROUP BY
+                                    bmp.mcht_id,
+                                    bmp.column_type,
+                                    statistical_date
+
+                                UNION
+
+                                    SELECT
+                                        DATE_FORMAT(bmp.create_date, '%Y-%m-%d') as statistical_date,
+                                        bmp.column_type AS column_type,
+                                        bmp.mcht_id AS mcht_id,
+                                        0 AS member_visitors_num,
+                                        0 AS unmember_visitors_num,
+                                        0 AS member_page_view,
+                                        0 AS unmember_page_view,
+                                        0 AS add_product_amount,
+                                        0 AS submit_order_amount,
+                                        sum(bod.quantity) AS payment_amount,
+                                        sum(bod.pay_amount) AS pay_money
+                                    FROM
+                                        bu_member_pv bmp,
+                                        bu_member_action bma,
+                                        bu_shopping_cart bsc,
+                                        bu_order_dtl bod,
+                                        bu_sub_order bso,
+                                        bu_combine_order bco
+                                    WHERE
+                                        bmp.pv_id = bma.member_pv_id
+                                    AND bma.action_item_id = bsc.id
+                                    AND bsc.order_dtl_id = bod.id
+                                    AND bod.sub_order_id = bso.id
+                                    AND bso.combine_order_id = bco.id
+                                  AND bmp.mcht_id IS NOT NULL
+                                    AND action_type IN ('14', '15')
+                                    AND bco.pay_status = '1'
+                                    AND bco. STATUS = '1'
+                                    AND bmp.del_flag = '0'
+                                    AND bma.del_flag = '0'
+                                    AND bsc.del_flag = '0'
+                                    AND bod.del_flag = '0'
+                                    AND bso.del_flag = '0'
+                                    AND bco.del_flag = '0'
+                                     AND bmp.create_date BETWEEN #{beginDate}
+                                     AND #{endDate}
+                                    GROUP BY
+                                        bmp.mcht_id,
+                                        bmp.column_type,
+                                        statistical_date
+                ) m
+            GROUP BY
+                m.mcht_id,
+                m.column_type,
+                m.statistical_date
+
+   </select>
+
+
+    <insert id="batchInsertTypeColumnPvStatistical">
+        insert into bu_type_column_pv_statistical (type, value_id, statistical_date,column_type,
+        total_visitor_count, total_visitor_count_tourist,
+        total_pv_count, total_pv_count_tourist, shopping_cart_count,
+        sub_product_count, pay_product_count,pay_amount_count,
+        create_by, create_date, del_flag
+        ) values
+        <foreach collection="dataList" item="TypeColumnPvStatistical"  separator="," >
+            (#{type,jdbcType=CHAR}, #{TypeColumnPvStatistical.valueId,jdbcType=INTEGER}, #{TypeColumnPvStatistical.statisticalDate,jdbcType=CHAR},
+            #{TypeColumnPvStatistical.columnType,jdbcType=CHAR},#{TypeColumnPvStatistical.totalVisitorCount,jdbcType=INTEGER}, #{TypeColumnPvStatistical.totalVisitorCountTourist,jdbcType=INTEGER},
+            #{TypeColumnPvStatistical.totalPvCount,jdbcType=INTEGER}, #{TypeColumnPvStatistical.totalPvCountTourist,jdbcType=INTEGER}, #{TypeColumnPvStatistical.shoppingCartCount,jdbcType=INTEGER},
+            #{TypeColumnPvStatistical.subProductCount,jdbcType=INTEGER}, #{TypeColumnPvStatistical.payProductCount,jdbcType=INTEGER},#{TypeColumnPvStatistical.payAmountCount,jdbcType=DECIMAL},
+            1, NOW(), "0"
+            )
+        </foreach>
+    </insert>
+   
+  
+  
+</mapper>

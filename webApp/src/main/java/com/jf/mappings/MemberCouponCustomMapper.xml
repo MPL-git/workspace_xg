@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberCouponCustomMapper">
+	<resultMap id="BaseResultCustomMap" type="com.jf.entity.dto.MemberCouponDTO" extends="com.jf.dao.MemberCouponMapper.BaseResultMap">
+		<result column="templet_suffix" property="templetSuffix" jdbcType="VARCHAR" />
+		<result column="activityAreaType" property="activityAreaType" jdbcType="VARCHAR" />
+		<result column="max_discount_money" property="maxDiscountMoney" jdbcType="DECIMAL" />
+		<result column="condition_type" property="conditionType" jdbcType="CHAR" />
+		<result column="care_shop_can_rec" property="careShopCanRec" jdbcType="CHAR" />
+		<result column="coupon_type" property="couponType" jdbcType="CHAR" />
+		<result column="type_ids" property="typeIds" jdbcType="CHAR" />
+	</resultMap>
+	<select id="getMemberCouponList" parameterType="java.util.Map" resultType="com.jf.entity.MemberCouponCustom">
+		select
+		bmc.id,
+		bmc.expiry_begin_date as expiryBeginDate,
+		bmc.expiry_end_date as expiryEndDate,
+		bmc.receive_type as receiveType,
+		bc.*
+		from bu_member_coupon bmc,bu_coupon bc
+		where bmc.coupon_id = bc.id
+		and bmc.member_id = #{memberId}
+		and bmc.del_flag = '0'
+		<choose>
+			<when test="type != null and type != '' and type == '2'.toString()">
+				and bmc.status = '1'
+				and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)<!-- 只展示已结束后180天以内的优惠券 -->
+			</when>
+			<when test="type != null and type != '' and type == '3'.toString()">
+				and bmc.status = '0'
+				and bmc.expiry_end_date &lt;= now() <!-- #已结束 -->
+				and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)<!-- 只展示已结束后180天以内的优惠券 -->
+			</when>
+			<otherwise>
+				and bmc.status = '0'
+				and bmc.expiry_end_date &gt; now()
+			</otherwise>
+		</choose>
+		order by bmc.id desc
+		<if test="currentPage != null and currentPage>=0" >
+	    	limit #{currentPage} , #{pageSize}
+	    </if>
+	</select>
+
+	<select id="getMemberCouponCount" parameterType="java.lang.Integer" resultType="com.jf.entity.dto.MemberCouponDTO">
+		select sum(unUsedCoupon) unUsedCouponCount,sum(usedCoupon) usedCouponCount,sum(expiredCoupon) expiredCouponCount from(
+		select
+		count(*) as unUsedCoupon,
+		0 as usedCoupon,
+		0 as expiredCoupon
+		from bu_member_coupon bmc
+		left join bu_coupon bc on bmc.coupon_id = bc.id
+		where bmc.member_id = #{memberId}
+		and bmc.status = '0'
+		and bmc.expiry_end_date &gt; now()
+		and bmc.del_flag = '0'
+
+		union all
+
+		select
+		0 as unUsedCoupon,
+		count(*) as usedCoupon,
+		0 as expiredCoupon
+		from bu_member_coupon bmc
+		left join bu_coupon bc on bmc.coupon_id = bc.id
+		where bmc.member_id = #{memberId}
+		and bmc.status = '1'
+		and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)
+		and bmc.del_flag = '0'
+
+		union all
+
+		select
+		0 as unUsedCoupon,
+		0 as usedCoupon,
+		count(*) as expiredCoupon
+		from bu_member_coupon bmc
+		left join bu_coupon bc on bmc.coupon_id = bc.id
+		where bmc.member_id = #{memberId}
+		and bmc.status = '0'
+		and bmc.expiry_end_date &lt;= now()
+		and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)
+		and bmc.del_flag = '0'
+		) t
+	</select>
+
+	<select id="countMemberCoupon" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(*)
+		from bu_member_coupon bmc
+		left join bu_coupon bc on bmc.coupon_id = bc.id
+		where bmc.member_id = #{memberId}
+		and bmc.del_flag = '0'
+		<choose>
+			<when test="type==1"> <!-- 平台券 -->
+				and bc.rang = '1'
+			</when>
+			<when test="type==2"> <!-- 专场券 -->
+				and  bc.rang in ('2','3')
+			</when>
+			<when test="type==3"> <!-- 商家券（包含店铺券和商品券） -->
+				and bc.rang = '4'
+			</when>
+		</choose>
+
+		<choose>
+			<when test="status == 2"> <!-- 已使用 -->
+				and bmc.status = '1'
+				and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)<!-- 只展示已结束后180天以内的优惠券 -->
+			</when>
+			<when test="status == 3"> <!-- 已过期 -->
+				and bmc.status = '0'
+				and bmc.expiry_end_date &lt;= now()
+				and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)<!-- 只展示已结束后180天以内的优惠券 -->
+			</when>
+			<otherwise> <!-- 未使用 -->
+				and bmc.status = '0'
+				and bmc.expiry_end_date &gt; now()
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findMemberCoupon" parameterType="java.util.Map" resultType="com.jf.entity.MemberCouponCustom">
+		select
+		bmc.id,
+		bmc.expiry_begin_date as expiryBeginDate,
+		bmc.expiry_end_date as expiryEndDate,
+		bmc.receive_type as receiveType,
+		(select max(mcl.create_date) from bu_member_coupon_log mcl where mcl.member_coupon_id = bmc.id and bmc.status = '1' and mcl.log_type = '1' and mcl.del_flag = '0' ) useDate,
+		bmc.is_give as isGive,
+		bc.*
+		from bu_member_coupon bmc
+		left join bu_coupon bc on bmc.coupon_id = bc.id
+		where bmc.member_id = #{memberId}
+		and bmc.del_flag = '0'
+		<choose>
+			<when test="type==1"> <!-- 平台券 -->
+				and bc.rang = '1'
+			</when>
+			<when test="type==2"> <!-- 专场券 -->
+				and  bc.rang in ('2','3')
+			</when>
+			<when test="type==3"> <!-- 商家券（包含店铺券和商品券） -->
+				and bc.rang = '4'
+			</when>
+		</choose>
+
+		<choose>
+			<when test="status == 2"> <!-- 已使用 -->
+				and bmc.status = '1'
+				and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)<!-- 只展示已结束后180天以内的优惠券 -->
+			</when>
+			<when test="status == 3"> <!-- 已过期 -->
+				and bmc.status = '0'
+				and bmc.expiry_end_date &lt;= now()
+				and bmc.expiry_end_date &gt;= date_add(now(), interval -180 day)<!-- 只展示已结束后180天以内的优惠券 -->
+			</when>
+			<otherwise> <!-- 未使用 -->
+				and bmc.status = '0'
+				and bmc.expiry_end_date &gt; now()
+			</otherwise>
+		</choose>
+		order by bmc.rec_date desc
+		limit #{offset} , #{fetchSize}
+	</select>
+
+	<select id="countMemberNotUsedCoupon" parameterType="java.lang.Integer" resultType="com.jf.entity.dto.MemberCouponCountDTO">
+		select 	sum(case c.rang when 1 then 1 else 0 end) as platformCouponCount,
+				sum(case c.rang when 2 then 1 when 3 then 1 else 0 end) as areaCouponCount,
+				sum(case c.rang when 4 then 1 else 0 end) as shopCouponCount
+		from bu_member_coupon bmc
+		left join bu_coupon c on bmc.coupon_id = c.id
+		where bmc.member_id = #{memberId} and bmc.del_flag = '0' and bmc.status = '0'and bmc.expiry_end_date &gt; now()
+	</select>
+
+	<select id="getMemberUsebleActivityAreaCoupons" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		select mc.id memberCouponId,mc.expiry_begin_date
+		expiryBeginDate,mc.expiry_end_date expiryEndDate, c.`name` couponName
+		,c.money,c.minimum from bu_member_coupon mc LEFT JOIN bu_coupon c on
+		mc.coupon_id=c.id where mc.del_flag='0' and c.del_flag='0' and
+		mc.member_id=#{memberId,jdbcType=INTEGER} and
+		c.activity_area_id=#{activityAreaId,jdbcType=INTEGER} and
+		mc.expiry_begin_date<![CDATA[ <= ]]>SYSDATE() and mc.expiry_end_date<![CDATA[ >= ]]>SYSDATE() and
+		c.`status`='1' and mc.`status`='0'
+	</select>
+	
+	<select id="getMemberUsebleMchtShopCoupons" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+			mc.id memberCouponId,
+			mc.expiry_begin_date expiryBeginDate,
+			mc.expiry_end_date expiryEndDate,
+			c.`name` couponName,
+			c.money,
+			c.minimum,
+			c.preferential_type as preferentialType,
+			c.discount,
+			c.minicount,
+			c.condition_type AS conditionType,
+			c.max_discount_money AS maxDiscountMoney
+		FROM
+			bu_member_coupon mc
+		LEFT JOIN bu_coupon c ON mc.coupon_id = c.id
+		WHERE
+			mc.del_flag = '0'
+		AND c.del_flag = '0'
+		AND mc.member_id = #{memberId,jdbcType=INTEGER} 
+		AND c.mcht_id = #{mchtId,jdbcType=INTEGER} 
+		AND mc.expiry_begin_date &lt;= SYSDATE()
+		AND mc.expiry_end_date &gt;= SYSDATE()
+		AND mc.`status` = '0'
+		AND c.rang = '4'
+		AND c.coupon_type != '4'
+	</select>
+	
+	<select id="getMemberUseblePlatformCoupons" parameterType="java.util.Map" resultType="com.jf.entity.MemberCouponCustom">
+		select
+		bmc.id,
+		bmc.coupon_id as couponId,
+		bmc.expiry_begin_date,
+		bmc.expiry_end_date,
+		bc.rang,
+		bc.name,
+		bc.money,
+		bc.minimum,
+		bc.coupon_type as couponType,
+		bc.type_ids as typeIds,
+		bc.can_superpose as canSuperpose,
+		bc.preferential_type,
+		bc.discount,
+		bc.max_discount_money,
+		bc.condition_type,
+		bc.minicount,
+		bc.care_shop_can_rec,
+		bc.definition_prefix
+		from bu_member_coupon bmc,bu_coupon bc
+		where bmc.coupon_id = bc.id
+		and bmc.member_id = #{memberId}
+		and bmc.status = 0 
+		and bmc.del_flag='0' 
+		and bc.rang='1'
+		and bc.coupon_type in ('1','2','3')
+		and bc.del_flag='0'
+		and bmc.expiry_end_date &gt; now()
+		order by bc.money desc
+	</select>
+	
+	<select id ="addMemberCouponBatch" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select FUN_INSERT_MEMBER_COUPON(#{insertData}) from dual
+	</select>
+	
+	<select id ="getExchangeCouponCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select count(1) from bu_coupon_exchange_code ex,bu_member_coupon mc
+		where ex.member_coupon_id = mc.id and ex.del_flag = '0'
+		and mc.del_flag = '0'
+		and mc.member_id = #{memberId}
+	</select>
+	
+	<select id ="getActivityMemberCouponInfo618" parameterType="java.util.Map" resultType="com.jf.entity.dto.MemberCouponDTO">
+		select
+		t.coupon_id,
+		count(1) as memberCouponNum
+		from bu_member_coupon t where t.coupon_id in (3986,3987,3988,3989) 
+		and t.create_date &gt;= #{begin}
+		and t.create_date &lt;= #{end}
+		group by t.coupon_id
+	</select>
+	
+	<update id ="updateRecCouponInfo" parameterType="int">
+		update bu_coupon t set t.rec_quantity = t.rec_quantity + 1 where t.id = #{couponId} and t.rec_quantity + 1 &lt;= t.grant_quantity and t.del_flag = '0'
+	</update>
+	
+	<insert id="insertBatchMemberCoupon">
+      	insert into bu_member_coupon (member_id,coupon_id,rec_date,expiry_begin_date,expiry_end_date,status,receive_type,create_by,create_date,del_flag)
+      	values
+      		<foreach collection="list" item="item" separator=",">
+      			(
+      			#{item.memberId,jdbcType=INTEGER},
+      			#{item.couponId,jdbcType=INTEGER},
+      			#{item.recDate,jdbcType=TIMESTAMP},
+      			#{item.expiryBeginDate,jdbcType=TIMESTAMP},
+      			#{item.expiryEndDate,jdbcType=TIMESTAMP},
+      			#{item.status,jdbcType=CHAR},
+      			#{item.receiveType,jdbcType=CHAR},
+      			#{item.createBy,jdbcType=INTEGER},
+      			#{item.createDate,jdbcType=TIMESTAMP},
+      			#{item.delFlag,jdbcType=CHAR}
+      			)
+      		</foreach>
+      </insert>
+      
+      <select id ="findProductCouponList" parameterType="map" resultType="com.jf.entity.dto.MemberCouponDTO">
+		SELECT
+			mc.id,
+			c.money,
+			c.minimum
+		FROM
+			bu_member_coupon mc,
+			bu_coupon c
+		WHERE
+			mc.coupon_id = c.id
+		AND c.del_flag = '0'
+		AND c.coupon_type = '4'
+		AND C.type_ids = #{productId}
+		AND mc.del_flag = '0'
+		AND mc.`status` = '0'
+		AND mc.expiry_begin_date &lt;= NOW()
+		AND mc.expiry_end_date &gt;= NOW()
+		AND mc.member_id = #{memberId}
+		order by c.money desc,mc.id desc
+	</select>
+	
+	<select id="getMemberMchtCouponByMchtIdOrMemberId" parameterType="java.util.Map" resultType="com.jf.entity.MemberCoupon">
+		select 
+		mc.* 
+		from bu_member_coupon mc,bu_coupon c
+		where mc.coupon_id = c.id
+		and c.coupon_type != '4'
+		and c.rang = '4'
+		and mc.`status` = '0'
+		and mc.del_flag = '0'
+		and mc.expiry_begin_date &lt;= now()
+		and mc.expiry_end_date > now()
+		and mc.member_id = #{memberId}
+		<if test="mchtId != null and mchtId != '' ">
+			and c.mcht_id = #{mchtId}
+		</if>
+		<if test="couponIdList != null and couponIdList.size() > 0">
+			and mc.coupon_id in
+			<foreach collection="couponIdList" item="couponId" open="(" close=")" separator="," >
+            	#{couponId}
+            </foreach>
+        </if>
+	</select>
+
+	<select id="countMemberRecQuantity"  parameterType="java.util.Map" resultType="java.util.Map">
+		select 	c.id,
+		(select count(1) from bu_member_coupon mc where mc.member_id = #{memberId} and mc.coupon_id = c.id and (
+		(c.rec_limit_type = 1 and mc.create_date &gt;= #{startOfCurrentDay})
+		or c.rec_limit_type = 2
+		or c.rec_limit_type = 3
+		or (c.rec_limit_type = 4 and mc.create_date &gt;= #{startOfCurrentMonth})
+		) and mc.del_flag = '0') as qty
+		from bu_coupon c where c.id in
+		<foreach collection="couponIds" item="id" open="(" close=")" separator="," >
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="findMemberActiveCoupon"  parameterType="java.util.Map" resultType="com.jf.entity.MemberCoupon">
+		select mc.*
+		from bu_member_coupon mc
+		left join bu_coupon c on mc.coupon_id = c.id
+		where mc.member_id = #{memberId} and mc.status = '0' and mc.expiry_end_date &gt; now() and mc.del_flag = '0' and c.del_flag = '0' and mc.coupon_id in
+		<foreach collection="couponIdList" item="id" open="(" close=")" separator="," >
+			#{id}
+		</foreach>
+		order by c.preferential_type desc,c.discount desc,c.money desc
+		<if test="fetchSize!=null">
+			limit #{fetchSize}
+		</if>
+	</select>
+
+</mapper>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductPriceChangeLogCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductPriceChangeLogCustom" extends="com.jf.dao.ProductPriceChangeLogMapper.BaseResultMap" >
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="brand_id" property="brandId" jdbcType="INTEGER" />
+    <result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+    <result column="art_no" property="artNo" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="STAFF_NAME" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, product_id, min_mall_price, min_mall_price_item_id, min_sale_price, min_sale_price_item_id, 
+    create_by, create_date, update_by, update_date, remarks, del_flag,
+    (select mi.mcht_code from bu_product bp, bu_mcht_info mi where bp.del_flag = '0' and mi.del_flag = '0' and bp.mcht_id = mi.id and bp.id = t.product_id) mcht_code,
+    (select mi.shop_name from bu_product bp, bu_mcht_info mi where bp.del_flag = '0' and mi.del_flag = '0' and bp.mcht_id = mi.id and bp.id = t.product_id) shop_name,
+    (select bp.name from bu_product bp where bp.del_flag = '0' and bp.id = t.product_id) product_name,
+    (select bp.brand_id from bu_product bp where bp.del_flag = '0' and bp.id = t.product_id) brand_id,
+    (select pb.name from bu_product bp, bu_product_brand pb where bp.del_flag = '0' and pb.del_flag = '0' and bp.brand_id = pb.id and bp.id = t.product_id) brand_name,
+    (select bp.art_no from bu_product bp where bp.del_flag = '0' and bp.id = t.product_id) art_no,
+    (select bp.code from bu_product bp where bp.del_flag = '0' and bp.id = t.product_id) product_code,
+    (select ssi.STAFF_NAME  from sys_staff_info ssi where ssi.STAFF_ID=t.create_by) staffName
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ProductPriceChangeLogCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_product_price_change_log t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_product_price_change_log t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.ProductPriceChangeLogCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_product_price_change_log t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_product_price_change_log t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.minMallPrice != null" >
+        min_mall_price = #{record.minMallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.minMallPriceItemId != null" >
+        min_mall_price_item_id = #{record.minMallPriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.minSalePrice != null" >
+        min_sale_price = #{record.minSalePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.minSalePriceItemId != null" >
+        min_sale_price_item_id = #{record.minSalePriceItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+</mapper>

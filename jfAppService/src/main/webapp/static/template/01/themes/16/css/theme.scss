@@ -1,0 +1,168 @@
+@charset "utf-8";
+@import "var";
+
+/*common*/
+body{
+  background: $body_bg;
+}
+
+.btn{
+  &,span{
+    background: $btn_bg;
+  }
+}
+.btn-action{
+  background: $btn_action_bg;
+}
+.btn-action2{
+  background: $btn_action2_bg;
+}
+a:hover{ color: $theme_color;}
+
+/*top*/
+.topnotify span{background-image: $notify_bg;}
+
+/*header*/
+#header{background: $header_bg;}
+
+#headerSearch{width: 408px; margin-right: 20px;}
+.search-panel-fields{
+  width: auto; overflow: hidden; padding: 0;
+  label{position: absolute; left: 10px; top: 0; z-index: 2; line-height: 30px; color: #949494; cursor: text;}
+  input{float: left; width: 330px; height: 26px; *line-height: 26px; margin: 0; padding: 0 10px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; border: 2px solid $theme_color; background: #fff;}
+  button{float: left; position: static; width: 53px; height: 30px; border: 0; color: #fff; cursor: pointer; background:$theme_color url("../images/btn-search.png") center no-repeat; text-indent: -9999px;}
+}
+.hotsearch{
+  position: relative; height: 30px; overflow: hidden; line-height: 30px;
+  a{margin-left: 5px; color: #a1a1a1;}
+}
+
+.cartbtn{
+  float: left; padding:0 10px 0 38px; display: block; height: 30px; line-height: 30px; color: #fff; background: #ff0000;
+  a{color: #fff;}
+  i{position: absolute; left: 5px; top: 0; width: 30px; height: 30px; background: url("../images/ico-shopcart.png") no-repeat center;}
+  span{display: inline-block;}
+  .cartcount{display: inline-block;}
+}
+
+.mini-cart-menu{border: 1px solid #d4d4d4; top: 30px;}
+.mini-cart-view .mini-cart-btn{background: $theme_color; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff;}
+
+/*nav*/
+.nav{
+  &,.layout{background: $nav_bg;}
+  .textNav,.site-nav{
+    color: #fff;
+    a{
+      color: #fff;
+      .current,&:hover{background: $theme_color2; text-decoration: none;}
+    }
+  }
+}
+
+.gbc-title{background: $theme_color2;}
+.gbc-title span{background: url("../images/gbc-titlearrow.png") no-repeat 100% 0; padding-right: 30px; color: #fff;}
+.global-catalog-open .gbc-title span{background-position: 100% 100%;}
+
+.gbc-treetitle,
+.gbc-subtree li a:hover,
+.sublayer-item li a:hover,
+.sublayer-item dt a:hover{ color: $theme_color;}
+
+/*footer*/
+.footwarranty{background: none; border: solid #dddcdc; border-width: 1px 0;}
+.footer{ background: none; color: #333333;
+  a{ color: #707070;}
+}
+.ftw-line{ background: $theme_color;}
+.ftconlist{
+  dt{ color: #333; font-size: 14px; font-weight: bold; margin-left: 16px;}
+  p{ background-image: url(../images/ftlisticon.gif);}
+}
+.ftqrcode h3 span{ background-image: url(../images/footmobile.png);}
+.ftfriends{ background: #fff; border: 1px solid #dadada;}
+
+/*login*/
+.loginbox{border-top: 3px solid $theme_color;}
+
+/*main*/
+.filter-sort .sort-on{border-color: $theme_color; background-color: $theme_color; color: #fff;}
+.pagination .page-cur,.page-go button{background: $theme_color; border:1px solid darken($theme_color,10); color: #fff;}
+
+/*page*/
+.block .blocktitle{
+  border-bottom-color: $title_bottom_line; color: $title_color; background: $title_bg;
+  span{ margin-bottom: -2px; border-bottom: 2px solid $theme_color;}
+}
+.commentblock h3{
+  border-color: $theme_color;
+}
+.sideblock .blocktitle{border-top: 3px solid $theme_color; margin: 0 -1px;}
+
+/*goodslist*/
+.m-itemslist .type-grid {
+  .item-hover{border-color: $theme_color;}
+  .goodsname a:hover{color: $theme_color;}
+  .thumbslist li.selected{border-color: $theme_color;}
+}
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected{border-color: $theme_color;}
+.goodspromotion .promote i{ background: $promote_color;}
+.btn-buy a,.btn-buy a span{background: $btn_buy_bg;}
+.btn-cart a,.btn-cart a span{background: $btn_cart_bg;}
+.detail-tabbar{
+  border-color: $detail_tab_border_color; background: $detail_tab_bg;
+  a{color: $detail_tab_text_color; border-color:$detail_tab_border_color;}
+  .selected{
+    border-top: 3px solid $theme_color; margin-top: -3px; background: $detail_tab_active_bg;
+    a{color: $detail_tab_active_text_color;}
+  }
+}
+.detail-bd .hd{background: $detail_title_bg; color: $detail_title_color;}
+.review-rate span{color: $theme_color;}
+.sumratebar span{background: $theme_color;}
+
+/*goods-set*/
+.combobuy-hd h3,.combobuy-ft h3{ color: $theme_color;}
+
+/*step*/
+.stepind{background-image: $step_bg_img;}
+.steps{
+  .step-active{ background-color: $step_active_line_color;}
+  .step-active .stepname{color: $step_active_color;}
+}
+.orderstate{
+  .stepind{background-image: $step_large_bg_img;}
+  .steps{
+    .step-active{ background-color: $step_large_active_line_color;}
+    .step-active .stepname{color: $step_large_active_color;}
+  }
+}
+
+/*payment*/
+.tabbar .selected{margin-top: -3px; border-top: 3px solid $theme_color;}
+.payment .tabbar .selected a{border-top: 3px solid $theme_color; padding-top: 0;}
+
+/*refund*/
+.tabnav li a.current{color: #fff; background: $theme_color;}
+
+/*news*/
+.newslist h3{border-bottom: 2px solid $theme_color;}
+.newslist .title a:hover{color: $theme_color;}
+.newstop{border-bottom: 2px solid $theme_color;}
+
+/*mycenter*/
+.mcmenu-home{ margin-bottom: 10px; background-color: $theme_color;}
+.mcmenu{border-top: 4px solid $theme_color;}
+.mctitle span{margin-bottom: -2px; border-bottom: 2px solid $theme_color;}
+.mcmenu dd a.current{ background-image: $mc_menu_arrow_img;}
+.link-back{background: $theme_color;}
+
+.pswstrength-low, .pswstrength-mid, .pswstrength-high{ background-image: $psw_strength_bg_img;}
+.link{color: $link_color;}
+.deliverstatus li.itemactive s{background: $deliver_status_line;}
+.deliverstatus li p, .deliverstatus li p span{background-image: $deliver_status_bg_img;}
+
+/*brand*/
+.brandextra a{background: $theme_color2;}

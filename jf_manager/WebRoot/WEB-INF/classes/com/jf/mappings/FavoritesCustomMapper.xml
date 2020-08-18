@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.FavoritesCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.FavoritesCustom"  extends="com.jf.dao.FavoritesMapper.BaseResultMap">
+    <result column="first_product_type_id" property="firstProductTypeId" jdbcType="INTEGER" />
+    <result column="second_product_type_id_group" property="secondProductTypeIdGroup" jdbcType="VARCHAR" />
+    <result column="second_product_type_name_group" property="secondProductTypeNameGroup" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, pic, seq_no, status, create_by, create_date, update_by, update_date, remarks, 
+    del_flag,
+    (SELECT b.first_product_type_id from bu_favorites_product_type b where b.favorites_id=a.id and b.del_flag='0' limit 1) first_product_type_id,
+    (SELECT GROUP_CONCAT(b.second_product_type_id separator ',') from bu_favorites_product_type b where b.favorites_id=a.id and b.del_flag='0') second_product_type_id_group,
+	(SELECT GROUP_CONCAT(c.name separator '、') from bu_favorites_product_type b, bu_product_type c where b.favorites_id=a.id and b.del_flag='0' and c.id=b.second_product_type_id and c.del_flag='0') second_product_type_name_group
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.FavoritesExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_favorites a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_favorites a
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.FavoritesExample" resultType="java.lang.Integer" >
+    select count(*) from bu_favorites a
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="updateFavoritesSeqNo" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+	select FUN_UPDATE_FAVORITES_SEQ_NO(#{seqData},#{staffId}) from dual;
+  </select>
+</mapper>

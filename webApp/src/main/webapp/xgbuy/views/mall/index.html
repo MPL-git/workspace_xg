@@ -1,0 +1,127 @@
+<div class="page mall malls" data-title="商城" data-id="mall">
+	<link rel="stylesheet" href="mall/mall.css">
+	<link rel="stylesheet" href="mall/malls.css?var=1.0">
+
+	<div class="head-search flex ac">
+		<div>
+			<form onsubmit="mallsApi.submit()">
+				<label></label>
+				<input type="search" onfocus="mallsApi.focus(this)" autocomplete="off">
+			</form>
+		</div>
+		<a class="cancel ac jc" onclick="mallsApi.blur()">取消</a>
+	</div>
+
+	<div class="mask-search scroll-y"></div>
+
+	<div class="content flex">
+		<div class="nav scroll-y fn">
+			<div class="touchfix"></div>
+		</div>
+		<div class="main scroll-y fg">
+			<div class="touchfix"></div>
+		</div>
+	</div>
+
+	<script id="mall_search_tpl" type="text/html">
+		{{if dataList.length || cacheList.length}}
+			{{if dataList.length}}
+		<div class="row-1">
+			<h3 class="flex ac">热搜</h3>
+			<div class="ofhide">
+				{{each dataList value i}}
+				<a class="flex ac jc fn" onclick="mallsApi.submit('{{value.searchName}}')">{{value.searchName}}</a>
+				{{/each}}
+			</div>
+		</div>
+			{{/if}}
+
+			{{if cacheList.length}}
+		<div class="row-2">
+			<h3 class="flex ac">搜索历史</h3>
+			<ul>
+				{{include 'mall_search_tpl_cache'}}
+			</ul>
+			<a class="flex ac jc" onclick="mallsApi.update()">清空搜索记录</a>
+		</div>
+			{{/if}}
+		{{else}}
+			{{include 'mall_search_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="mall_search_tpl_cache" type="text/html">
+		{{each cacheList value i}}
+			{{if i < 20}}
+		<li class="flex ac" onclick="mallsApi.submit('{{value.searchName}}')">
+			<p class="elps">{{value.searchName}}</p>
+			<span class="flex ac jc" onclick="mallsApi.update(this)">删除</span>
+		</li>
+			{{/if}}
+		{{/each}}
+	</script>
+
+	<script id="mall_search_tpl_empty" type="text/html">
+		<div class="page-empty empty-order flex dc ac jc fg">
+			<i></i>
+			<p>当前数据为空</p>
+		</div>
+	</script>
+
+	<script id="mall_nav_tpl" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+		<a class="flex ac jc{{activeId ? (value.categoryId == activeId ? ' active' : '') : (!i ? ' active' : '')}}" onclick="mallApi.nav('{{value.categoryId}}')">{{value.categoryName}}</a>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="mall_tpl_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p class="m3">您访问的页面已失效~</p>
+			<a class="flex ac jc btn-red ico-btn fn" onclick="getUrl('home')">返回首页</a>
+		</div>
+	</script>
+
+	<script id="mall_main_tpl" type="text/html">
+		{{if adList.length}}
+		<div class="row-1">
+			{{each adList value i}}
+			<a onclick="mallApi.adLink(this)" data-type="{{value.linkType}}" data-link="{{value.linkValue}}">
+				<img src="{{value.pic}}">
+			</a>
+			{{/each}}
+		</div>
+		{{/if}}
+
+		{{if categoryList.length}}
+		<div class="row-2">
+			{{each categoryList value i}}
+			<div class="col-1">
+				<h3 class="flex ac">{{value.categoryModuleName}}</h3>
+
+				{{if value.categoryItemList.length}}
+				<ul class="flex fw">
+					{{each value.categoryItemList valu i}}
+					<li onclick="mallApi.categoryItemLink(this,'{{valu.categoryItemName}}')" data-type="{{valu.categoryItemLinkType}}" data-id="{{valu.categoryItemId}}" data-link="{{valu.categoryItemLinkValue}}" data-name="{{valu.categoryItemName}}">
+						{{if valu.categoryItemPic}}
+						<img src="{{valu.categoryItemPic}}">
+						{{/if}}
+
+						{{if valu.categoryItemName}}
+						<p class="flex ac jc">{{valu.categoryItemName}}</p>
+						{{/if}}
+					</li>
+					{{/each}}
+				</ul>
+				{{/if}}
+			</div>
+			{{/each}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script src="mall/malls.js?ver=1.1"></script>
+	<script src="mall/mall.js?ver=1.3" async></script>
+</div>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberControlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberControlCustom" extends="com.jf.dao.MemberControlMapper.BaseResultMap">
+  
+  </resultMap>
+  
+  <update id="updateLastSignInDateModel" parameterType="com.jf.entity.MemberControlCustom">
+  		update 
+  			bu_member_control
+		set 
+			last_sign_in_date = #{lastSignInDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate} 
+		where 
+			id = #{id}
+			and ( ( last_sign_in_date not BETWEEN #{beginDate} and #{endDate} ) or (last_sign_in_date is null) )
+			and del_flag = '0'
+  	</update>
+  	
+  	<update id="updateSignBeHelpedDateModel" parameterType="com.jf.entity.MemberControlCustom">
+  	  		update 
+			bu_member_control
+		set 
+			sign_be_helped_count =
+			IF (
+				sign_be_helped_date &gt;= #{beginDate} <![CDATA[ && ]]> sign_be_helped_date &lt;= #{endDate},
+				help_cut_price_count + 1,
+				1
+			),
+			sign_be_helped_date = #{signBeHelpedDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate} 
+		WHERE
+			sign_be_helped_count &lt;
+			IF (
+				sign_be_helped_date &gt;= #{beginDate} <![CDATA[ && ]]> sign_be_helped_date &lt;= #{endDate},
+				6,
+				6+1
+			) 
+			and id = #{id}
+			and del_flag = '0'
+  	</update>
+  	
+  	<update id="updateLastHelpCutPriceDateModel" parameterType="com.jf.entity.MemberControlCustom">
+  		update 
+			bu_member_control
+		set 
+			help_cut_price_count =
+			IF (
+				last_help_cut_price_date &gt;= #{beginDate} <![CDATA[ && ]]> last_help_cut_price_date &lt;= #{endDate},
+				help_cut_price_count + 1,
+				1
+			),
+			last_help_cut_price_date = #{lastHelpCutPriceDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate} 
+		WHERE
+			help_cut_price_count &lt;
+			IF (
+				last_help_cut_price_date &gt;= #{beginDate} <![CDATA[ && ]]> last_help_cut_price_date &lt;= #{endDate},
+				2,
+				2+1
+			) 
+			and id = #{id}
+			and del_flag = '0'
+  	</update>
+  	
+  	<update id="updateLastCutPriceDateModel" parameterType="com.jf.entity.MemberControlCustom">
+  		update 
+			bu_member_control
+		set 
+			cut_price_count =
+			IF (
+				last_cut_price_date &gt;= #{beginDate} <![CDATA[ && ]]> last_cut_price_date &lt;= #{endDate},
+				cut_price_count + 1,
+				1
+			),
+			last_cut_price_date = #{lastCutPriceDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate} 
+		WHERE
+			cut_price_count &lt;
+			IF (
+				last_cut_price_date &gt;= #{beginDate} <![CDATA[ && ]]> last_cut_price_date &lt;= #{endDate},
+				1,
+				1+1
+			) 
+			and id = #{id}
+			and del_flag = '0'
+  	</update>
+  	
+  	<update id="updateLastInviteDateModel" parameterType="com.jf.entity.MemberControlCustom">
+  		update 
+			bu_member_control
+		set 
+			invite_count =
+			IF (
+				last_invite_date &gt;= #{beginDate} <![CDATA[ && ]]> last_invite_date &lt;= #{endDate},
+				invite_count + 1,
+				1
+			),
+			last_invite_date = #{lastInviteDate},
+			update_by = #{updateBy},
+			update_date = #{updateDate} 
+		WHERE
+			invite_count &lt;
+			IF (
+				last_invite_date &gt;= #{beginDate} <![CDATA[ && ]]> last_invite_date &lt;= #{endDate},
+				1,
+				1+1
+			) 
+			and id = #{id}
+			and del_flag = '0'
+  	</update>
+  	
+</mapper>

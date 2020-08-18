@@ -1,0 +1,163 @@
+.newsign-firm .popup-bot {
+	position: relative !important;
+}
+.newsign-firm .no-addr {
+	padding: .23rem 0 .23rem .2rem;
+	text-align: center;
+}
+.newsign-firm .row-2 {
+	margin: 0;
+}
+.newsign-firm .row-4 {
+	height: auto !important;
+	padding: 0 0 0 .2rem;
+	line-height: initial;
+}
+.newsign-firm .row-4 div {
+	height: .8rem;
+	padding-right: .2rem;
+	margin: 0;
+}
+
+.newsign-firm .more-goods {
+	height: .32rem;
+	cursor: pointer;
+}
+
+.newsign-firm .popup-pay {
+	position: static;
+}
+
+.newsign-firm .message {
+	height: 1rem;
+	padding-left: .2rem;
+	font-size: .26rem;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+}
+.newsign-firm .message input {
+	width: 5.8rem;
+	height: .6rem;
+	padding-left: .08rem;
+	background: #f8f8f8;
+	border: 1px solid #ddd;
+	outline: none;
+}
+
+.newsign-firm .popup-set-address .popup-center {
+	overflow: hidden;
+	width: 5.6rem;
+	height: 6rem;
+	border-radius: .1rem;
+	background: transparent;
+}
+.newsign-firm .popup-set-address .popup-header {
+	height: 1.6rem;
+	background: url(resources/popup-header.png) no-repeat;
+	background-size: 100% 100%;
+	font-size: .42rem;
+	font-weight: bold;
+	color: #fff;
+	border: none;
+}
+.newsign-firm .popup-set-address .popup-con {
+	height: auto;
+	padding-top: .09rem;
+	background: #fff;
+}
+.newsign-firm .popup-set-address .popup-con p {
+	height: .88rem;
+	font-size: .3rem;
+}
+.newsign-firm .popup-set-address .popup-con img {
+	width: 2.16rem;
+	margin: 0 auto;
+}
+.newsign-firm .popup-set-address .popup-con img {
+	height: .9rem;
+	font-size: .32rem;
+	background: #fff;
+	border-top: 1px solid #ddd;
+}
+.newsign-firm .popup-set-address .popup-footer a {
+	height: 100%;
+}
+
+.newsign-firm .order-detail-footer div.con-2 {
+	border-top: 1px solid #eee;
+}
+.newsign-firm .order-detail-footer .con-1 {
+	display: none;
+}
+.newsign-firm .order-detail-footer .con-1 p {
+	height: .6rem;
+	line-height: .6rem;
+	padding: 0 .2rem;
+	background: #fff6b8;
+	font-size: .24rem;
+}
+
+/*失效宝贝*/
+.newsign-firm .con-invalid h4 {
+	height: .8rem;
+	padding: 0 .3rem;
+	font-size: .3rem;
+	background: #fff;
+}
+.newsign-firm .con-invalid dl {
+	background: #fffafa;
+}
+.newsign-firm .con-invalid dd p:first-child {
+	color: #666;
+}
+.newsign-firm .con-invalid strong {
+	margin-right: .2rem;
+}
+
+/*运费*/
+.newsign-firm .wenhao {
+	width: .22rem;
+	height: .22rem;
+	border-radius: 100%;
+	border: .02rem solid #ff5050;
+	font-size: .32rem;
+	color: #ff5050;
+	font-weight: bold;
+}
+.newsign-firm .wenhao:after {
+	content: '?';
+	-webkit-transform: scale(.5);
+	transform: scale(.5);
+}
+.newsign-firm .popup-freight .scroll-y {
+	max-height: 6rem;
+}
+
+.newsign-firm .popup-freight h3 {
+	height: 1.1rem;
+	font-size: .3rem;
+	color: #999;
+	border-bottom: 1px solid #eee;
+}
+.newsign-firm .popup-freight .close-x {
+	top: .33rem;
+}
+.newsign-firm .popup-freight .bot {
+	height: 1rem;
+	padding: 0 .2rem;
+	color: #ff5050;
+	font-size: .34rem;
+	border-top: 1px solid #eee;
+}
+.newsign-firm .popup-freight .bot strong,
+.newsign-firm .popup-freight .bot b {
+	font-weight: bold;
+}
+
+.newsign-firm .popup-freight .bot b {
+	font-size: .4rem;
+}
+.newsign-firm .popup-freight .bot span {
+	color: #999;
+	font-size: .24rem;
+}

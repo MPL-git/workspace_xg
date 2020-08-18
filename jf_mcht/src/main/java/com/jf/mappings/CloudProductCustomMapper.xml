@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CloudProductCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CloudProductCustom"  extends="com.jf.dao.CloudProductMapper.BaseResultMap">
+  	<result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+  	<result column="prop_values" property="propValues" jdbcType="VARCHAR" />
+  	<result column="sale_price_min" property="salePriceMin" jdbcType="DECIMAL" />
+    <result column="mall_price_min" property="mallPriceMin" jdbcType="DECIMAL" />
+    <result column="sale_price_max" property="salePriceMax" jdbcType="DECIMAL" />
+    <result column="mall_price_max" property="mallPriceMax" jdbcType="DECIMAL" />
+  	<result column="product_ids" property="productIds" jdbcType="VARCHAR" />
+  	<result column="stock" property="stock" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+      	t.*,
+      	(select pb.name from jybao.bu_supplier_product_brand spb,bu_product_brand pb where t.supplier_product_brand_id = spb.id and spb.product_brand_id = pb.id and spb.status='1' and spb.del_flag='0')brand_name,
+    	(select GROUP_CONCAT(cppv.prop_value) from jybao.bu_cloud_product_item cpi,jybao.bu_cloud_product_prop_value cppv where cpi.cloud_product_id = t.id and cpi.prop_val_id = cppv.id)prop_values,
+    	(select min(a.sale_price) from jybao.bu_cloud_product_item cpi,bu_product_item a where cpi.cloud_product_id = t.id and cpi.id = a.cloud_product_item_id and a.del_flag='0') sale_price_min,
+	    (select min(a.mall_price) from jybao.bu_cloud_product_item cpi,bu_product_item a where cpi.cloud_product_id = t.id and cpi.id = a.cloud_product_item_id and a.del_flag='0') mall_price_min,
+	    (select max(a.sale_price) from jybao.bu_cloud_product_item cpi,bu_product_item a where cpi.cloud_product_id = t.id and cpi.id = a.cloud_product_item_id and a.del_flag='0') sale_price_max,
+	    (select max(a.mall_price) from jybao.bu_cloud_product_item cpi,bu_product_item a where cpi.cloud_product_id = t.id and cpi.id = a.cloud_product_item_id and a.del_flag='0') mall_price_max,
+	    (select GROUP_CONCAT(p.id) from bu_product p,bu_product_item pi,jybao.bu_cloud_product_item cpi where p.id = pi.product_id and pi.cloud_product_item_id = cpi.id and cpi.cloud_product_id = t.id AND p.mcht_id=#{mchtId} AND p.del_flag='0')product_ids,
+	    (select IFNULL(SUM(cpi.stock),0) from jybao.bu_cloud_product_item cpi where cpi.del_flag='0' and cpi.cloud_product_id=t.id) stock
+    from 
+    	jybao.bu_cloud_product t
+    where 
+    	t.del_flag='0'
+    	AND EXISTS(select id FROM jybao.sp_office a WHERE a.id = t.sp_office_id and a.status = '1')	
+    	AND t.sp_office_id in (select a.sp_office_id FROM bu_mcht_supplier_user a WHERE a.mcht_id = #{mchtId} and a.status = '1' and a.del_flag='0')
+    	<if test="productBrandId != null" >
+    		AND EXISTS(select id FROM jybao.bu_supplier_product_brand spb where t.supplier_product_brand_id = spb.id and spb.product_brand_id=#{productBrandId} and spb.status='1' and spb.del_flag='0')
+    	</if>
+    	<if test="artNo != null" >
+    		AND t.art_no like #{artNo}
+    	</if>
+    	<if test="status != null" >
+    		AND t.status = #{status}
+    	</if>
+    	<if test="supplierUserId != null" >
+    		AND t.sp_office_id = #{supplierUserId}
+    	</if>
+      order by t.id desc
+      limit #{limitStart} , #{limitSize}
+  </select>
+  
+  <select id="countByExample" parameterType="java.util.HashMap" resultType="java.lang.Integer" >
+    select
+    	count(*)
+    from 
+    	jybao.bu_cloud_product t
+    where 
+    	t.del_flag='0'
+    	AND EXISTS(select id FROM jybao.sp_office a WHERE a.id = t.sp_office_id and a.status = '1')	
+    	AND t.sp_office_id in (select a.sp_office_id FROM bu_mcht_supplier_user a WHERE a.mcht_id = #{mchtId} and a.status = '1' and a.del_flag='0')
+    	<if test="productBrandId != null" >
+    		AND EXISTS(select id FROM jybao.bu_supplier_product_brand spb where t.supplier_product_brand_id = spb.id and spb.product_brand_id=#{productBrandId} and spb.status='1' and spb.del_flag='0')
+    	</if>
+    	<if test="artNo != null" >
+    		AND t.art_no like #{artNo}
+    	</if>
+    	<if test="status != null" >
+    		AND t.status = #{status}
+    	</if>
+    	<if test="supplierUserId != null" >
+    		AND t.sp_office_id = #{supplierUserId}
+    	</if>
+  </select>
+  
+  <select id="selectCustomById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+  		t.*,
+  		(select pb.name from jybao.bu_supplier_product_brand spb,bu_product_brand pb where t.supplier_product_brand_id = spb.id and spb.product_brand_id = pb.id and spb.status='1' and spb.del_flag='0')brand_name 
+  	from 
+  		jybao.bu_cloud_product t 
+  	where t.id=#{id}
+  </select>
+  
+  <select id="getRelatedProduct" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+    SELECT DISTINCT
+		p.id,
+		p.code,
+		p.`name`
+	FROM
+		bu_product p,
+		bu_product_item pi
+	WHERE
+		p.id = pi.product_id
+	AND p.mcht_id=#{mchtId}	
+	AND pi.cloud_product_item_id IN (
+		SELECT
+			cpi.id
+		FROM
+			jybao.bu_cloud_product_item cpi
+		WHERE
+			cpi.cloud_product_id=#{cloudProductId}
+	)
+  </select>
+  
+</mapper>

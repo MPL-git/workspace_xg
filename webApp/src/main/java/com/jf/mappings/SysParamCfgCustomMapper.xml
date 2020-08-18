@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SysParamCfgCustomMapper" >
+
+	<update id="increasePoolIntegral" parameterType="java.util.Map" >
+    	update sys_param_cfg set param_value = param_value + #{increment}
+    	where param_code = #{code} and param_name = #{name}
+    	<if test="currentPoolIntegral != null">
+			and param_value = #{currentPoolIntegral}
+		</if>
+  </update>
+
+	<update id="resetPoolIntegral" parameterType="java.util.Map" >
+		update sys_param_cfg set param_value = 0
+		where param_code = #{code} and param_name = #{name}
+	</update>
+</mapper>

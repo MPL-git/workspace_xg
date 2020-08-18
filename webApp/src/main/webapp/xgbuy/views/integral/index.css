@@ -1,0 +1,79 @@
+.integral .row-1 {
+	overflow: hidden;
+	height: 2.2rem;
+	background: url(resources/header.jpg) no-repeat;
+	background-size: contain;
+	color: #fff;
+	text-align: center;
+}
+.integral .row-2 a {
+	height: 1.2rem;
+	padding: 0 .2rem;
+	background: #fff;
+	font-size: .32rem;
+	border-bottom: 1px solid #ddd;
+}
+.integral .row-2 a:last-child {
+	border: none;
+}
+.integral .row-2 span {
+	font-size: .22rem;
+}
+
+.integral .row-1 .con-1 {
+	position: relative;
+	height: .86rem;
+	margin-top: .42rem;
+	font-size: .36rem;
+}
+.integral .row-1 .con-1 a {
+	position: absolute;
+	top: 0;
+	right: .3rem;
+	font-size: .32rem;
+}
+.integral .row-1 .con-1 a:first-child {
+	right: auto;
+	left: .3rem;
+}
+.integral .row-1 .con-2 {
+	height: 1.26rem;
+	font-size: .9rem;
+}
+.integral .row-1 p {
+	font-size: .24rem;
+}
+
+.integral .row-3 {
+	background: #fff;
+}
+.integral .row-3 a {
+	height: .81rem;
+	padding: 0 .2rem;
+	border-bottom: 1px solid #eee;
+	font-size: .3rem;
+}
+.integral .row-3 a span:before {
+	content: '';
+	width: .37rem;
+	height: .39rem;
+	margin-right: .2rem;
+	background: url(resources/super.png) no-repeat;
+	background-size: contain;
+}
+.integral .row-3 .scroll-x {
+	height: 2.28rem;
+	padding-top: .2rem;
+}
+.integral .row-3 li {
+	width: 1.5rem;
+	margin-left: .2rem;
+}
+.integral .row-3 li img {
+	height: 1.5rem;
+}
+.integral .row-3 li p {
+	line-height: .56rem;
+	font-size: .24rem;
+	text-align: center;
+}

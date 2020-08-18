@@ -1,0 +1,1541 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductCustom" extends="com.jf.dao.ProductMapper.BaseResultMap">
+    <result column="prop_val_id" property="propValId" jdbcType="VARCHAR" />
+    <result column="locked_amount" property="lockedAmount" jdbcType="INTEGER" />
+    <result column="stock" property="stock" jdbcType="INTEGER" />
+    <result column="mall_price" property="mallPrice" jdbcType="DECIMAL" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL" />
+    <result column="tag_price" property="tagPrice" jdbcType="DECIMAL" />
+    <result column="propName" property="propName" jdbcType="VARCHAR" />
+    <result column="propId" property="propId" jdbcType="INTEGER" />
+    <result column="prop_value" property="propValue" jdbcType="VARCHAR" />
+    <result column="propValueId" property="propValueId" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="brandName" property="brandName" jdbcType="VARCHAR" />
+    <result column="productBuyNum" property="productBuyNum" jdbcType="INTEGER" />
+    <result column="good_product_score_count" property="goodProductScoreCount" jdbcType="INTEGER" />
+    <result column="total_comment_count" property="totalCommentCount" jdbcType="INTEGER" />
+    <result column="mcht_type" property="mchtType" jdbcType="VARCHAR" />
+  </resultMap>
+  	<select id="getProductInfoListByShare" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select 
+		pro.id,
+		pro.name,
+		pro.product_desc,
+		pro.product_type_id,
+		pro.mcht_id,
+		pro.limit_buy,
+		pro.status,
+		pro.is_single_prop,
+		pro.code,
+		pro.art_no,
+		pro.suit_sex,
+		pro.suit_group,
+		pro.season,
+		pro.is_show,
+		brand.name as brandName,
+		proItem.stock,
+		proItem.locked_amount,
+		proItem.tag_price,
+		proItem.sale_price,
+		proItem.prop_val_id,
+		proItem.pic
+		from bu_product pro
+		left join bu_product_item proItem on proItem.product_id = pro.id
+		left join bu_product_brand brand on brand.id = pro.brand_id
+		where pro.del_flag = '0'
+		and proItem.del_flag = '0'
+		and pro.code = #{code}
+		order by proItem.sale_price
+  	</select>
+  	
+  	<select id="getProductInfoList" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select 
+		pro.id,
+		pro.name,
+		pro.product_desc,
+		pro.product_type_id,
+		pro.mcht_id,
+		pro.limit_buy,
+		pro.status,
+		pro.is_single_prop,
+		pro.code,
+		pro.art_no,
+		pro.suit_sex,
+		pro.suit_group,
+		pro.season,
+		pro.brand_id,
+		brand.name as brandName,
+		proItem.stock,
+		proItem.locked_amount,
+		proItem.tag_price,
+		proItem.sale_price,
+		proItem.mall_price,
+		proItem.prop_val_id,
+		proItem.pic
+		from bu_product pro
+		left join bu_product_item proItem on proItem.product_id = pro.id
+		left join bu_product_brand brand on brand.id = pro.brand_id
+		where pro.del_flag = '0'
+		and proItem.del_flag = '0'
+		and pro.id = #{id}
+		order by proItem.sale_price
+  	</select>
+  	
+  	<select id="getStandardById" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select
+  		prop.id AS propId,
+		prop.name AS propName,
+		propValue.prop_value,
+		propValue.id AS propValueId
+		from bu_product_prop_value propValue
+		left join bu_product_prop prop on prop.id = propValue.prop_id
+		where propValue.del_flag = 0
+		and prop.del_flag = 0
+		<if test="propValIdList !=null and propValIdList.size() > 0">
+			and propValue.id in
+			<foreach collection="propValIdList" index="index" item="item" open="(" separator="," close=")">
+	             #{item}
+	        </foreach>
+		</if>
+		<if test="propId !=null and propId != ''">
+			and prop.id = #{propId}
+		</if>
+		<if test="sorfType !=null and sorfType == '1'.toString()">
+			order by prop.id
+		</if>
+		<if test="sorfType !=null and sorfType == '2'.toString()">
+			order by ifnull(propValue.seq_no,99999),propValue.id
+		</if>
+  	</select>
+  	
+  	
+  	
+  	<select id="getProductItemsById" parameterType="java.util.Map" resultType="com.jf.entity.ProductItem">
+  		select
+  		item.id,
+		item.prop_val_id,
+		item.stock,
+		item.sale_price,
+		item.mall_price,
+		item.tag_price,
+		item.locked_amount,
+		item.pic
+		from bu_product_item item
+		where item.product_id = #{id}
+		and item.del_flag = 0
+		<!-- propIdList条件查询唯一规格是否存在 -->
+		<if test="propValIdsList !=null and propValIdsList.size() > 0">
+			<foreach collection="propValIdsList" index="index" item="item" >
+				and FIND_IN_SET(#{item},item.prop_val_id)
+	        </foreach>
+		</if>
+		
+		<!-- propId条件查询包含改规格的所有规格 -->
+		<if test="propValId !=null and propValId != ''">
+				and FIND_IN_SET(#{propValId},item.prop_val_id)
+		</if>
+		and item.stock- item.locked_amount &gt; 0
+		<choose>
+			<when test="isActivity == '0'.toString()">order by item.mall_price</when>
+			<otherwise>order by item.sale_price</otherwise>
+		</choose>
+  	</select>
+  	
+  	<select id="getHasStockList" parameterType="java.util.Map" resultType="com.jf.entity.ProductItem">
+  		select 
+  		item.prop_val_id,
+  		item.stock 
+  		from bu_product_item item 
+		where item.product_id = #{id} 
+		and item.del_flag = 0
+		<if test="propValIdList !=null and propValIdList.size() > 0">
+		and(
+			<foreach collection="propValIdList" index="index" item="item" >
+				FIND_IN_SET(#{item},item.prop_val_id) or
+	        </foreach>
+	        FIND_IN_SET(999999999999,item.prop_val_id))
+		</if>
+		and item.stock- item.locked_amount &gt; 0
+  	</select>
+  	<select id="getProductInfo" parameterType="java.lang.Integer" resultType="com.jf.entity.ProductCustom">
+  		select
+  		product.id,
+  		product.code,
+		product.name,
+		product.mcht_id,
+		product.art_no,
+		product.status,
+		brand.name as brandName,
+		pic.pic
+		from bu_product product
+		left join bu_product_brand brand on brand.id = product.brand_id
+		left join bu_product_pic pic on product.id = pic.product_id
+		where product.id = #{productId}
+		and product.del_flag = '0'
+		and brand.del_flag = '0'
+		and pic.del_flag = '0'
+		and pic.is_default = '1'
+		limit 1
+  	</select>
+  	
+  	<select id="getUserBuyCount" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select 
+  		ifnull(sum(dtl.quantity),0) as productBuyNum,
+  		product.limit_buy,
+  		product.mcht_id
+		from bu_product product
+		left join bu_order_dtl dtl on dtl.product_id = product.id
+		left join bu_sub_order sub on sub.id = dtl.sub_order_id
+		left join bu_combine_order combineOrder on combineOrder.id = sub.combine_order_id
+		where combineOrder.status in (0,1)
+		and combineOrder.member_id = #{memberId}
+		and dtl.product_id = #{productId}
+		<if test="productItemId != null and productItemId != ''">
+			and dtl.product_item_id = #{productItemId}
+		</if>
+		<if test="activityId != null and activityId != ''">
+			and dtl.activity_id = #{activityId}
+		</if>
+		and product.del_flag = '0'
+		and dtl.del_flag = '0'
+		and (dtl.product_status is null or dtl.product_status not in ('2','3'))
+		and sub.del_flag = '0'
+		and combineOrder.del_flag = '0'
+		and combineOrder.create_date &gt;= date_add(now(), interval -7 day); 
+  	</select>
+  	
+  	<select id="getShoppingCartProductNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+  		select ifnull(sum(cart.quantity),0) from bu_shopping_cart cart,bu_product_item item
+		where cart.product_item_id = item.id
+		and cart.del_flag = '0'
+		and item.del_flag = '0'
+		and cart.del_flag = '0'
+		and cart.status = '0'
+		and cart.member_id = #{memberId}
+		and cart.activity_type != '3'
+		and item.product_id = #{productId}
+		<if test="productItemId != null and productItemId != ''">
+			and cart.product_item_id = #{productItemId}
+		</if>
+		<if test="activityId != null and activityId != ''">
+			and cart.activity_id = #{activityId}
+		</if>
+  	</select>
+  	
+  	<select id="getProductModeById" parameterType="java.lang.Integer" resultType="com.jf.entity.ProductCustom">
+  		select 
+		pro.id,
+		pro.name,
+		pro.mcht_id,
+		pro.code,
+		proItem.sale_price,
+		proItem.prop_val_id,
+		pic.pic as pic
+		from bu_product pro
+		left join bu_product_item proItem on proItem.product_id = pro.id
+		left join bu_product_pic pic on pic.product_id = pro.id
+		where pro.del_flag = '0'
+		and pic.del_flag = '0'
+		and proItem.del_flag = '0'
+		and pic.is_default = '1'
+		and pro.id = #{id}
+		order by proItem.sale_price
+		limit 1
+  	</select>
+  	
+  	<select id="getUserBuyCountBySingleActivityType" parameterType="java.util.Map" resultType="int">
+		  	SELECT
+			IFNULL(sum(od_tmp.quantity),0) total_quantity
+		FROM
+			(
+				SELECT
+					od.quantity,
+					od.activity_area_id,
+					od.single_product_activity_id,
+					od.activity_id
+				FROM
+					(
+						SELECT
+							co.id
+						FROM
+							bu_combine_order co
+						WHERE 
+						co.member_id IN 
+						<foreach collection="memberIds" item="listItem" open="(" close=")" separator="," >
+                          #{listItem}
+                       </foreach>
+						<if test="limitDate != null" >
+					        AND  co.create_date <![CDATA[ >= ]]> #{limitDate,jdbcType=TIMESTAMP}
+					    </if>
+						
+					) bco
+				LEFT JOIN bu_sub_order so ON bco.id = so.combine_order_id
+				LEFT JOIN bu_order_dtl od ON so.id = od.sub_order_id
+				WHERE
+					so.`status` NOT IN (4, 5)
+			) od_tmp
+		JOIN bu_single_product_activity spa ON od_tmp.single_product_activity_id = spa.id
+		WHERE 
+			spa.type = #{activityType,jdbcType=VARCHAR}
+  	</select>
+  	
+	<select id="getUserShoppingCartCountBySingleActivityType" parameterType="java.util.Map" resultType="int">
+		SELECT
+			IFNULL(sum(sc_tmp.quantity), 0) total_quantity
+		FROM
+			(
+				SELECT
+					sc.quantity,
+					sc.single_product_activity_id
+				FROM
+					bu_shopping_cart sc
+				WHERE
+					sc.member_id IN 
+				<foreach collection="memberIds" item="listItem" open="(" close=")" separator="," >
+                          #{listItem}
+                </foreach>
+				AND sc.`status` = '0'
+				AND sc.del_flag = '0'
+			) sc_tmp
+		JOIN bu_single_product_activity spa ON sc_tmp.single_product_activity_id = spa.id
+		WHERE
+			spa.type = #{activityType,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<select id="getProductactivityStatus" parameterType="java.lang.Integer" resultType="java.lang.String">
+  		 select FUN_GET_PRODUCT_ACTIVITY_STATUS(#{id,jdbcType=INTEGER}) from dual 
+  	</select>
+  	
+  	<select id="getProductByModuleItem" parameterType="java.util.List" resultType="com.jf.entity.ProductCustom">
+  		SELECT
+	t.*,
+	(
+		SELECT
+			pic.pic
+		FROM
+			bu_product_pic pic
+		WHERE
+			pic.product_id = t.id
+		AND pic.del_flag = '0'
+		AND pic.is_default = '1'
+		LIMIT 1
+	) AS pic,
+	(
+		SELECT
+			sum(
+				item.stock - item.locked_amount
+			)
+		FROM
+			bu_product_item item
+		WHERE
+			item.product_id = t.id
+		AND item.del_flag = '0'
+	) AS stockSum
+FROM
+	(
+		SELECT
+			p.id,
+			p.NAME,
+			p.min_sale_price,
+			p.min_mall_price,
+			p.min_tag_price,
+			p.svip_discount,
+			p.sale_type,
+			(select is_manage_self from bu_mcht_info where id = p.mcht_id and del_flag = '0') isManageSelf,
+			moduleItem.id AS moduleItemId
+		FROM
+			bu_module_item moduleItem,
+			bu_product p
+		WHERE
+			p.id = moduleItem.item_id
+		AND moduleItem.decorate_module_id = #{decorateModuleId}
+		AND moduleItem.item_type = '1'
+		AND moduleItem.del_flag = '0'
+		AND p.del_flag = '0'
+        <!-- AND p. STATUS = '1' -->
+        <!-- AND p.audit_status = '2' -->
+        <!-- AND p.sale_type = '1' -->
+		<if test="productModuleTypeId != null and productModuleTypeId != 0">
+		AND moduleItem.product_module_type_id = #{productModuleTypeId}
+		</if>
+		ORDER BY
+			ifnull(moduleItem.seq_no, 99999),ifnull(p.weights,0) DESC
+		<if test="pageSize != null and pageSize != 0 and pageSize != ''">
+			limit #{pageSize}
+		</if>
+	) t
+  	</select>
+  	
+  	<select id="getProductByParamsMap" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		SELECT
+		t.*, (
+			SELECT
+				pic.pic
+			FROM
+				bu_product_pic pic
+			WHERE
+				pic.product_id = t.id
+			AND pic.del_flag = '0'
+			AND pic.is_default = '1'
+			LIMIT 1
+		) AS pic,
+		(
+			SELECT
+				sum(
+					item.stock - item.locked_amount
+				)
+			FROM
+				bu_product_item item
+			WHERE
+				item.product_id = t.id
+			AND item.del_flag = '0'
+		) AS stockSum
+	FROM
+		(
+			SELECT
+				p.id,
+				p.NAME,
+				p.min_sale_price,
+				p.min_mall_price,
+				p.min_tag_price,
+				p.svip_discount
+			FROM
+				bu_product p
+			WHERE
+				p.del_flag = '0'
+			AND p.STATUS = '1'
+			AND p.audit_status = '2'
+			AND p.sale_type = '1'
+			AND (p.source = '0' or p.source is null)
+			<if test="productType1IdList !=null and productType1IdList.size() > 0">
+				AND p.product_type1_id in 
+				<foreach collection="productType1IdList" index="index" item="productType1Id" open="(" separator="," close=")">
+		             #{productType1Id}
+		        </foreach>
+			</if>
+			<if test="productType2IdList !=null and productType2IdList.size() > 0">
+				AND p.product_type2_id in 
+				<foreach collection="productType2IdList" index="index" item="productType2Id" open="(" separator="," close=")">
+		             #{productType2Id}
+		        </foreach>
+			</if>
+			<if test="productBrandIdList !=null and productBrandIdList.size() > 0">
+				and p.brand_id in 
+				<foreach collection="productBrandIdList" index="index" item="productBrandId" open="(" separator="," close=")">
+		             #{productBrandId}
+		        </foreach>
+			</if>
+			ORDER BY
+				ifnull(p.weights,0) DESC,p.id DESC
+			<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</if>
+		) t
+  	</select>
+  	
+  	<select id="getShoppingMallProductData" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select T1.*,
+  		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = T1.id and item.del_flag = '0') as stockSum,
+		(select brand.name from bu_product_brand brand where brand.id = T1.brand_id and brand.del_flag = '0') as brandName,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T1.id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS pic
+  		from(
+	  		select 
+			p.name,
+			p.id,
+			p.mcht_id,
+			p.brand_id,
+			p.min_mall_price as mallPrice,
+			p.min_tag_price as tagPrice
+			from 
+			bu_product p force index (index_product_3),
+			bu_mcht_info mcht,bu_product_type productType3,
+			bu_product_type productType2
+			where p.product_type_id = productType3.id 
+			and productType3.parent_id = productType2.id 
+			and productType3.del_flag = '0'
+			and productType2.del_flag = '0'
+			and mcht.id = p.mcht_id
+			and mcht.del_flag = '0'
+			and mcht.shop_status = '1'
+			and mcht.status = '1'
+			and p.del_flag = '0'
+			and p.status = '1' 
+			and p.audit_status = '2'
+			and p.sale_type = '1'
+			and productType3.status = '1'
+			and productType2.status = '1'
+	
+			<if test="productTypeOne != null and productTypeOne != ''">and productType2.parent_id = #{productTypeOne}</if>
+			<if test="productTypeTwoList != null and productTypeTwoList.size() > 0">
+				and productType2.id in
+				<foreach collection="productTypeTwoList" item="productTypeTwo" open="(" close=")" separator="," >
+	            	#{productTypeTwo}
+	            </foreach>
+			</if>
+			<if test="brandIdList != null and brandIdList.size() > 0">
+				and p.brand_id in
+				<foreach collection="brandIdList" item="brandId" open="(" close=")" separator="," >
+	            	#{brandId}
+	            </foreach>
+			</if>
+			order by p.weights desc,p.id desc
+			<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</if>
+		) T1
+		
+  	</select>
+  	
+  	<select id="getMchtShoppingProductList" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select T1.*,
+	  	(select sum(pi.stock-pi.locked_amount) from bu_product_item pi where pi.product_id = T1.id and pi.del_flag = '0') as stockSum,
+		(select brand.name from bu_product_brand brand where brand.id = T1.brand_id and brand.del_flag = '0') as brandName,
+	  	(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T1.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic 
+	  	from(
+	  		select 
+			p.weights,
+			p.id,
+			p.name,
+			p.brand_id,
+			p.min_mall_price as mallPrice,
+			p.min_sale_price as salePrice,
+			p.min_tag_price as tagPrice
+			from bu_product p
+			where p.del_flag = '0'
+			and p.status = '1'
+			and p.audit_status = '2'
+			and p.sale_type = '1'
+			and p.mcht_id = #{mchtId}
+			<if test="shopProductTypeId != null and shopProductTypeId != ''">
+				and FIND_IN_SET(#{shopProductTypeId},p.shop_product_custom_type_id_group)
+			</if>
+			<choose>
+				<when test="newProduct != null and newProduct != ''">order by p.id desc</when>
+				<when test="mallPrice != null and mallPrice != ''">order by p.min_mall_price ${mallPrice}</when>
+				<otherwise>order by p.weights desc,p.id asc</otherwise>
+			</choose>
+			<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</if>
+		) T1
+  	</select>
+  	
+  	<select id="getActivityCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		select 
+  		count(1)
+		from bu_activity_area area,bu_activity ac,bu_activity_product acProduct
+		where ac.activity_area_id = area.id 
+		and acProduct.activity_id = ac.id
+		and area.del_flag = '0'
+		and ac.del_flag = '0'
+		and acProduct.del_flag = '0' 
+		and area.activity_end_time &gt;= now()
+		and area.status = '1'
+		and ac.status = '6'
+		and ac.coo_audit_status = '2'
+		and acProduct.coo_audit_status = '2'
+		and acProduct.refuse_flag = 0
+		and acProduct.product_id = #{productId}
+  	</select>
+  	
+  	<select id="getSingleActivityCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		 select count(1) 
+  		 from bu_single_product_activity t where t.del_flag = '0'
+		 and t.is_close = '0' and t.audit_status = '3' 
+		 and t.end_time &gt;= now()
+		 and t.product_id = #{productId}
+  	</select>
+  	
+  	<select id="getProductBaseInfo" parameterType="map" resultType="com.jf.entity.ProductCustom">
+  		select
+		p.id,
+		p.art_no,
+		p.brand_id,
+		p.suit_sex,
+		p.suit_group,
+		p.season,
+		p.name,
+		p.mcht_id,
+		p.code,
+		p.is_show,
+		p.limit_buy,
+		p.is_single_prop,
+		P.product_type_id,
+		p.status,
+		p.sale_type,
+		p.product_desc,
+		p.is_return_7days,
+		p.shelf_life,
+		p.ccc_no,
+		p.product_type1_id,
+		p.product_type2_id,
+		p.product_type_id,
+		p.svip_discount,
+		brand.name as brandName,
+		mi.shop_name,
+		mi.shop_logo,
+		mi.shop_status,
+		mi.is_manage_self,
+		((select ifnull(sum(od.quantity), 0) from bu_order_dtl od where od.del_flag = '0' and od.product_id = p.id)  + ifnull(p.virtual_sales,0)) product_sale_quantity,
+		(select count(1) from bu_comment c where c.del_flag = '0' and c.product_score in(4,5) and (c.is_show is null or c.is_show = '1') and c.product_id = p.id) good_product_score_count,
+		(SELECT pt1.`name` from bu_product_type pt1 where pt1.del_flag = '0' and pt1.id = p.product_type1_id) as productType1Name,
+		(SELECT pt2.`name` from bu_product_type pt2 where pt2.del_flag = '0' and pt2.id = p.product_type2_id) as productType2Name,
+		(SELECT pt3.`name` from bu_product_type pt3 where pt3.del_flag = '0' and pt3.id = p.product_type_id) as productTypeName
+		from bu_product p,bu_product_brand brand,bu_mcht_info mi,bu_mcht_product_brand mpb
+		where p.mcht_id = mi.id and brand.id = p.brand_id and mpb.mcht_id = mi.id and mpb.product_brand_id = brand.id
+		<if test="id != null and id != ''">and p.id = #{id}</if>
+		<if test="code != null and code != ''">and p.code = #{code}</if>
+		and p.del_flag = '0'
+		and p.`status` = '1'
+		and p.audit_status = '2'
+		and brand.del_flag = '0'
+		and brand.`status` = '1'
+		and mi.`status` = '1'
+		and mi.del_flag = '0'
+		and mi.shop_status = '1'
+		and mpb.del_flag = '0'
+		and mpb.status = '1'
+		and mpb.audit_status = '3'
+  	</select>
+  	
+  	<select id="getStoreActivityRecommend" parameterType="map" resultType="com.jf.entity.ProductCustom">
+  		select 
+		p.name,
+		p.id,
+		p.mcht_id,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+		(select item.mall_price from bu_product_item item where item.del_flag = '0' and item.stock-item.locked_amount >0 and item.product_id = p.id order by item.mall_price limit 1) as mall_price
+		from bu_product p ,bu_mcht_info mcht
+		where  mcht.id = p.mcht_id
+		and mcht.del_flag = '0'
+		and p.del_flag = '0'
+		and mcht.shop_status = '1'
+		and mcht.status = '1'
+		and p.status = '1' 
+		and p.audit_status = '2'
+		and p.is_activity = '0'
+		and p.is_show = '1'
+	    and p.mcht_id = #{mchtId}
+		order by mall_price
+		limit #{limit}
+  	</select>
+  	
+  	<select id="getProductAndItemInfo" parameterType="map" resultType="com.jf.entity.ProductCustom">
+  		select
+		p.id,
+		p.name,
+		p.svip_discount,
+		item.sale_price,
+		item.mall_price,
+		item.tag_price,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic
+		from bu_product p,bu_product_item item
+		where p.min_price_item_id = item.id
+		and p.del_flag = '0'
+		and item.del_flag = '0'
+		and p.id in
+		<foreach collection="productList" item="productId" open="(" close=")" separator="," >
+           	#{productId}
+        </foreach>
+  	</select>
+  	
+  	<!-- 新版本商城商品列表页查询数据默认排序集合 -->
+  	<select id="getShopMallProductListDefaultSort" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select T1.*, 
+  		(select brand.name from bu_product_brand brand where brand.id = T1.brand_id and brand.del_flag = '0') as brandName,
+		(select sum(pi.stock-pi.locked_amount) from bu_product_item pi where pi.product_id = T1.id and pi.del_flag = '0') as stockSum,
+	    (SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T1.id AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS pic,
+	    (select count(1) from bu_comment c where c.del_flag = '0' and c.product_score in(4,5) and (c.is_show is null or c.is_show = '1') and c.product_id = T1.id) good_product_score_count
+	  		from(
+	  		select 
+			p.id,
+			p.name,
+			p.mcht_id,
+			p.brand_id,
+			p.min_mall_price as mallPrice,
+			p.min_sale_price as salePrice,
+			p.min_tag_price as tagPrice,
+			p.source,
+			p.ref_id,
+			(select is_manage_self from bu_mcht_info where id = p.mcht_id and del_flag = '0') isManageSelf,
+			p.third_platform_coupon_info
+			from
+				bu_product p ignore index (index_product_2) 
+			<choose>
+				<when test="saleWeightSorf != null and saleWeightSorf != ''">
+					<choose>
+						<when test="brandIdList != null and brandIdList.size() > 0">
+							force index (index_product_7)
+						</when>
+						<otherwise>
+							<if test="productTypeThreeIdList != null and productTypeThreeIdList.size() > 0">
+								force index (index_product_10)
+							</if>
+						</otherwise>
+					</choose>
+				</when>
+				<when test="salePriceSorf != null and salePriceSorf != ''">
+					<choose>
+						<when test="brandIdList != null and brandIdList.size() > 0">
+							force index (index_product_8)
+						</when>
+						<otherwise>
+							<if test="productTypeThreeIdList != null and productTypeThreeIdList.size() > 0">
+								force index (index_product_11)
+							</if>
+						</otherwise>
+					</choose>
+				</when>
+				<otherwise>
+					<choose>
+						<when test="brandIdList != null and brandIdList.size() > 0">
+							force index (index_product_6)
+						</when>
+						<otherwise>
+							<if test="productTypeThreeIdList != null and productTypeThreeIdList.size() > 0">
+								force index (index_product_9)
+							</if>
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>,
+				bu_mcht_info mi
+			where p.mcht_id = mi.id
+			and p.del_flag = '0'
+			and p.status = '1'
+			and p.audit_status = '2'
+			and p.sale_type = '1'
+			and mi.`status` = '1'
+			and mi.shop_status = '1'
+			and mi.del_flag = '0'
+			AND exists (select mpb.id from bu_mcht_product_brand mpb where mpb.product_brand_id = p.brand_id and mpb.mcht_id = mi.id AND mpb.`status` = '1' and mpb.audit_status = '3' and mpb.del_flag = '0')
+			and (p.source = '0' or p.source is null)
+			<if test="suitGroup != null and suitGroup != ''">and p.suit_group like #{suitGroup}</if>
+			<if test="priceMin != null and priceMin != ''">and p.min_mall_price &gt;= #{priceMin}</if>
+			<if test="priceMax != null and priceMax != ''">and p.min_mall_price &lt;= #{priceMax}</if>
+			<if test="suitSexList != null and suitSexList.size() > 0">
+				<foreach collection="suitSexList" item="suitSex" separator=" " >
+	            	and p.suit_sex like #{suitSex}
+	            </foreach>
+			</if>
+			<if test="productTypeThreeIdList != null and productTypeThreeIdList.size() > 0">
+				and p.product_type_id in
+				<foreach collection="productTypeThreeIdList" item="pt3" open="(" close=")" separator="," >
+	            	#{pt3}
+	            </foreach>
+			</if>
+			<if test="brandIdList != null and brandIdList.size() > 0">
+				and p.brand_id in
+				<foreach collection="brandIdList" item="brandId" open="(" close=")" separator="," >
+	            	#{brandId}
+	            </foreach>
+			</if>
+			<if test="seasonList != null and seasonList.size() > 0">
+				and p.season in
+				<foreach collection="seasonList" item="season" open="(" close=")" separator="," >
+	            	#{season}
+	            </foreach>
+			</if>
+			<if test="wordList != null and wordList.size() > 0">
+				<foreach collection="wordList" item="word" separator=" " >
+				   	and p.search_fields like concat('%',#{word},'%')
+				</foreach>
+			</if>
+			<if test="hiddenMchtCodeList!=null and hiddenMchtCodeList.size() >0">
+				and mi.mcht_code not in
+				<foreach collection="hiddenMchtCodeList" item="mchtCode" open="(" close=")" separator="," >
+					#{mchtCode}
+				</foreach>
+			</if>
+			<if test="hiddenTypeList!=null and hiddenTypeList.size() >0">
+				and p.product_type1_id not in
+				<foreach collection="hiddenTypeList" item="typeId" open="(" close=")" separator="," >
+					#{typeId}
+				</foreach>
+				and p.product_type2_id not in
+				<foreach collection="hiddenTypeList" item="typeId" open="(" close=")" separator="," >
+					#{typeId}
+				</foreach>
+				and p.product_type_id not in
+				<foreach collection="hiddenTypeList" item="typeId" open="(" close=")" separator="," >
+					#{typeId}
+				</foreach>
+			</if>
+	
+			<choose>
+				<when test="saleWeightSorf != null and saleWeightSorf != ''">order by p.sale_weight ${saleWeightSorf} ,p.id DESC</when>
+				<when test="salePriceSorf != null and salePriceSorf != ''">order by p.min_mall_price ${salePriceSorf} ,p.id DESC</when>
+				<otherwise>order by p.weights DESC,p.id DESC</otherwise>
+			</choose>
+	
+			<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</if>
+		) T1
+  	</select>
+  	
+  	
+  	<!-- 新版本商城商品品牌聚合集合 -->
+  	<select id="getShopMallProductBrandList" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select 
+		DISTINCT brand.id as brandId,
+		brand.name as brandName,
+		brand.letter_index as letterIndex
+		from bu_product p,
+		bu_product_type type3,
+		bu_product_type type2,
+		bu_product_brand brand
+		where p.product_type_id = type3.id 
+		and type3.parent_id = type2.id 
+		and brand.id = p.brand_id
+		and p.del_flag = '0'
+		and p.status = '1'
+		and p.audit_status = '2'
+		and p.sale_type = '1'
+		and type3.`status` = '1'
+		and type3.del_flag = '0'
+		and type2.`status` = '1'
+		and type2.del_flag = '0'
+		<if test="searchName != null and searchName != ''"> and p.name like #{searchName}</if>
+		<if test="suitSex != null and suitSex != ''"> and p.suit_sex like #{suitSex}</if>
+		<if test="productTypeOneIdList != null and productTypeOneIdList.size() > 0">
+			and type2.parent_id in
+			<foreach collection="productTypeOneIdList" item="pt1" open="(" close=")" separator="," >
+            	#{pt1}
+            </foreach>
+		</if>
+		<if test="productTypeTwoIdList != null and productTypeTwoIdList.size() > 0">
+			and type2.id in
+			<foreach collection="productTypeTwoIdList" item="pt2" open="(" close=")" separator="," >
+            	#{pt2}
+            </foreach>
+		</if>
+		<if test="productTypeThreeIdList != null and productTypeThreeIdList.size() > 0">
+			and type3.id in
+			<foreach collection="productTypeThreeIdList" item="pt3" open="(" close=")" separator="," >
+            	#{pt3}
+            </foreach>
+		</if>
+		<if test="brandIdList != null and brandIdList.size() > 0">
+			and p.brand_id in
+			<foreach collection="brandIdList" item="brandId" open="(" close=")" separator="," >
+            	#{brandId}
+            </foreach>
+		</if>
+		<!--
+ 		<if test="wordList != null and wordList != '' and wordList.size() > 0"> 
+			<foreach collection="wordList" item="word" separator=" " >
+			   	and p.name like concat('%',#{word},'%')
+			</foreach>
+		</if>
+		-->
+		<if test="orderByType != null and orderByType == '2'.toString()">
+			order by brand.letter_index,brand.id desc
+		</if>
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getSignGiftProduct" parameterType="map" resultType="com.jf.entity.ProductCustom">
+  		select 
+		p.`name`,
+		p.id,
+		(select sum(item.stock-item.locked_amount) from bu_product_item item where item.product_id = p.id and item.del_flag = '0') as stockSum,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic
+		from bu_product p
+		WHERE 
+		<choose>
+			<when test="productCode != null  and productCode != ''"> p.`code` = #{productCode}</when>
+			<otherwise>p.id = #{productId}</otherwise>
+		</choose>
+		and p.del_flag = '0'
+  	</select>
+  	
+  	<!-- 新版本店铺商品列表2019-01-03 -->
+  	<select id="getShopProductList" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select T1.*,
+	  	(select sum(pi.stock-pi.locked_amount) from bu_product_item pi where pi.product_id = T1.id and pi.del_flag = '0') as stockSum,
+		(select brand.name from bu_product_brand brand where brand.id = T1.brand_id and brand.del_flag = '0') as brandName,
+	  	(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T1.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+	  	(select count(1) from bu_comment c where c.del_flag = '0' and c.product_score in(4,5) and (c.is_show is null or c.is_show = '1') and c.product_id = T1.id) good_product_score_count
+	  	from(
+	  		select 
+			p.id,
+			p.name,
+			p.brand_id,
+			p.min_mall_price as mallPrice,
+			p.min_sale_price as salePrice,
+			p.min_tag_price as tagPrice
+			from bu_product p
+			left join (select id,mcht_code from bu_mcht_info) partMchtInfo on p.mcht_id = partMchtInfo.id
+			where p.del_flag = '0'
+			and p.status = '1'
+			and p.audit_status = '2'
+			and p.sale_type = '1'
+			and p.mcht_id = #{mchtId}
+			<if test="wordList != null and wordList.size() > 0">
+				<foreach collection="wordList" item="word" separator=" " >
+				   	and p.search_fields like concat('%',#{word},'%')
+				</foreach>
+			</if>
+			<if test="brandId != null and brandId != ''">
+				and p.brand_id = #{brandId}
+			</if>
+			<if test="classId != null and classId != ''">
+				and FIND_IN_SET(#{classId},p.shop_product_custom_type_id_group)
+			</if>
+			<if test="productTypeId != null and productTypeId != ''">
+				and p.product_type_id = #{productTypeId}
+			</if>
+			<if test="hiddenTypeList!=null and hiddenTypeList.size() >0">
+				and p.product_type1_id not in
+				<foreach collection="hiddenTypeList" item="typeId" open="(" close=")" separator="," >
+					#{typeId}
+				</foreach>
+				and p.product_type2_id not in
+				<foreach collection="hiddenTypeList" item="typeId" open="(" close=")" separator="," >
+					#{typeId}
+				</foreach>
+				and p.product_type_id not in
+				<foreach collection="hiddenTypeList" item="typeId" open="(" close=")" separator="," >
+					#{typeId}
+				</foreach>
+			</if>
+			<if test="hiddenMchtCodeList!=null and hiddenMchtCodeList.size() >0">
+				and partMchtInfo.mcht_code not in
+				<foreach collection="hiddenMchtCodeList" item="mchtCode" open="(" close=")" separator="," >
+					#{mchtCode}
+				</foreach>
+			</if>
+			<choose>
+				<when test="type != null and type == '1'.toString()">order by ifnull(p.sort, 99999),ifnull(p.weights ,0) desc,id desc</when>
+				<when test="type != null and type == '3'.toString()">order by id desc</when>
+				<otherwise>order by ifnull(p.weights ,0) desc,id desc</otherwise>
+			</choose>
+			<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</if>
+		) T1
+  	</select>
+  	
+  	<select id="getShopProductBrandConverge" parameterType="int" resultType="com.jf.entity.ProductCustom">
+  		SELECT
+		brand.id as brandId,
+		brand.NAME as brandName
+	FROM
+		bu_product_brand brand
+	WHERE
+		brand.id IN (
+			SELECT DISTINCT
+				p.brand_id
+			FROM
+				bu_product p
+			WHERE
+				p.del_flag = '0'
+			AND p. STATUS = '1'
+			AND p.audit_status = '2'
+			AND p.sale_type = '1'
+			AND p.brand_id != 0
+			AND p.mcht_id = #{mchtId}
+		)
+		order by id desc
+  	</select>
+  	
+  	<select id="getShopProductCategoryConverge" parameterType="int" resultType="com.jf.entity.ProductCustom">
+  		SELECT
+		pt.id as productTypeId,
+		pt. NAME as productTypeName,
+		pt.parent_id as productType2Id,
+		(
+			SELECT
+				pt2. NAME
+			FROM
+				bu_product_type pt2
+			WHERE
+				pt2.id = pt.parent_id
+		) AS productType2Name
+	FROM
+		bu_product_type pt
+	WHERE
+		pt.id IN (
+			SELECT DISTINCT
+				p.product_type_id
+			FROM
+				bu_product p
+			WHERE
+				p.del_flag = '0'
+			AND p. STATUS = '1'
+			AND p.audit_status = '2'
+			AND p.sale_type = '1'
+			AND p.mcht_id = #{mchtId}
+		)
+		order by ifnull(pt.seq_no,99999),id desc
+  	</select>
+  	
+  	<select id="getShopProductClassConverge" parameterType="int" resultType="com.jf.entity.ProductCustom">
+  		<![CDATA[
+  		SELECT DISTINCT
+		p.shop_product_custom_type_id_group
+		FROM
+			bu_product p
+		WHERE
+			p.del_flag = '0'
+		AND p. STATUS = '1'
+		AND p.audit_status = '2'
+		AND p.sale_type = '1'
+		AND p.shop_product_custom_type_id_group IS NOT NULL
+		AND p.shop_product_custom_type_id_group <> ''
+		AND p.mcht_id = #{mchtId}
+		]]>
+  	</select>
+  	
+  	<select id="getNormalOperationProduct" parameterType="java.lang.Integer" resultType="com.jf.entity.ProductCustom">
+  		select
+  		p.id,
+		p.sale_type,
+		p.limit_buy,
+		p.is_single_prop,
+		p.mcht_id,
+		mi.shop_status
+		from bu_product p,bu_mcht_info mi,bu_mcht_product_brand pBrand
+		where p.mcht_id = mi.id and pBrand.product_brand_id = p.brand_id and pBrand.mcht_id = p.mcht_id
+		and mi.`status` = '1'
+		and mi.del_flag = '0'
+		and pBrand.del_flag = '0'
+		and pBrand.`status` = '1'
+		and pBrand.audit_status = '3'
+		and p.del_flag = '0'
+		and p.`status` = '1'
+		and p.audit_status = '2'
+		and p.id = #{productId}
+  	</select>
+  	
+  	<select id="getGoodsBasicsInfo" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  		select
+		p.name,
+		p.art_no,
+		p.mcht_id,
+		p.brand_id,
+		p.product_type1_id,
+		p.product_type2_id,
+		p.product_type_id,
+		item.tag_price,
+		item.sale_price,
+		item.mall_price,
+		item.cost_price,
+		item.pic,
+		item.sku,
+		mi.mcht_type,
+		(select FUN_GET_PRODUCT_ITEM_PROP_DESC(#{productItemId},' ')) as productPropdesc,
+		(select brand.name from bu_product_brand brand where brand.id = p.brand_id and brand.del_flag = '0') as brandName,
+		(select ac.fee_rate from bu_activity ac where ac.id = #{activityId}) as feeRate
+		from bu_product_item item,bu_product p,bu_mcht_info mi
+		where p.id = item.product_id
+		and p.mcht_id = mi.id
+		and p.del_flag = '0'
+		and item.id = #{productItemId}
+		and item.del_flag = '0'
+		and item.stock - item.locked_amount > 0
+		and mi.del_flag = '0'
+  	</select>
+  	
+  	<select id="getEveryDayProductList" parameterType="map" resultType="com.jf.entity.ProductCustom">
+	 SELECT
+	t.*, (
+		SELECT
+			pic.pic
+		FROM
+			bu_product_pic pic
+		WHERE
+			pic.product_id = t.id
+		AND pic.del_flag = '0'
+		AND pic.is_default = '1'
+	) AS pic
+	FROM
+	(
+		SELECT
+			sn.id as sourceNicheId,
+			sn.support_quantity AS supportQuantity,
+			P.id,
+			p.`name`,
+			p.sale_type,
+			p.recommend_remarks,
+			p.min_mall_price,
+			p.min_tag_price,
+			p.min_sale_price_item_id,
+			p.mcht_id,
+			p.brand_id,
+			p.product_type1_id,
+			p.product_type2_id,
+			p.product_type_id
+		FROM
+			bu_source_niche sn,
+			bu_product p,
+			bu_mcht_info mi
+		WHERE
+			sn.link_id = p.id
+		AND p.mcht_id = mi.id
+		AND sn.type = #{type}
+		AND sn.del_flag = '0'
+		AND sn.status = '0'
+		<if test="type != '3'.toString()">
+			AND sn.audit_status = '1'
+			AND sn.up_date &lt;= NOW()
+		</if>
+		AND p.`status` = '1'
+		AND p.audit_status = '2'
+		AND p.sale_type = '1'
+		AND p.del_flag = '0'
+		<if test="productType1Id != null and productType1Id != ''">
+			AND p.product_type1_id = #{productType1Id}
+		</if>
+		<if test="productType2Ids != null and productType2Ids.size() > 0">
+			and p.product_type2_id in
+			<foreach collection="productType2Ids" item="productType2Id" open="(" close=")" separator="," >
+            	#{productType2Id}
+            </foreach>
+		</if>
+		AND mi.`status` = '1'
+		AND mi.shop_status = '1'
+		AND mi.del_flag = '0'
+		AND EXISTS (
+			SELECT
+				mpb.id
+			FROM
+				bu_mcht_product_brand mpb
+			WHERE
+				mpb.product_brand_id = p.brand_id
+			AND mpb.mcht_id = mi.id
+			AND mpb.`status` = '1'
+			AND mpb.audit_status = '3'
+			AND mpb.del_flag = '0'
+		)
+		ORDER BY
+			IFNULL(sn.seq_no, 99999),
+			p.weights DESC
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+	) t
+  	</select>
+  	
+  	<select id="getEveryDayShopProduct" parameterType="map" resultType="com.jf.entity.ProductCustom">
+	 SELECT
+		p.id,
+		(
+			SELECT
+				pic.pic
+			FROM
+				bu_product_pic pic
+			WHERE
+				pic.product_id = p.id
+			AND pic.del_flag = '0'
+			AND pic.is_default = '1'
+		) AS pic
+	FROM
+		bu_product p,
+		bu_mcht_product_brand mpb
+	WHERE
+		p.mcht_id = mpb.mcht_id
+	AND p.brand_id = mpb.product_brand_id
+	AND mpb.`status` = '1'
+	AND mpb.audit_status = '3'
+	AND mpb.del_flag = '0'
+	AND p. STATUS = '1'
+	AND p.audit_status = '2'
+	AND p.del_flag = '0'
+	AND p.sale_type = '1'
+	AND p.mcht_id = #{mchtId}
+	ORDER BY
+		p.weights DESC,
+		p.id DESC
+	LIMIT #{showNum}
+  	</select>
+  	
+  	<!-- 获取店铺动态绑定商品 -->
+  	<select id="getProductDynamicList" parameterType="java.util.Map" resultType="java.util.Map">
+  		SELECT
+			p.id,
+			p.`name`,
+			p.sale_type,
+			p.min_sale_price_item_id,
+			p.min_mall_price,
+			p.min_tag_price,
+			mi.id mcht_id,
+			ifnull((SELECT sum(pi.stock - pi.locked_amount) FROM bu_product_item pi WHERE pi.product_id = p.id AND pi.del_flag = '0'), 0) stock_sum,
+			(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' LIMIT 1) pic
+		FROM
+			bu_product p,
+			bu_mcht_info mi
+		WHERE
+			p.mcht_id = mi.id
+		AND p.del_flag = '0'
+		AND p.STATUS = '1'
+		AND p.audit_status = '2'
+		AND p.sale_type = '1'
+		AND mi.del_flag = '0'
+		AND mi.`status` = '1'
+		AND mi.shop_status = '1'
+		AND EXISTS (SELECT mpb.id FROM bu_mcht_product_brand mpb WHERE mpb.product_brand_id = p.brand_id AND mpb.mcht_id = mi.id AND mpb.`status` = '1' AND mpb.audit_status = '3' AND mpb.del_flag = '0')
+		<if test="productIdList != null and productIdList.size() > 0">
+			AND p.id IN
+			<foreach collection="productIdList" item="productId" open="(" close=")" separator="," >
+               #{productId}
+            </foreach>
+		</if>
+		<if test="orderByClause != null">
+			order by #{orderByClause}
+		</if>
+  	</select>
+  	
+  	<select id="getBaranGroupProducts" parameterType="map" resultType="com.jf.entity.ProductCustom">
+		select
+		p.id,
+		p.name,
+		p.svip_discount,
+		(select item.sale_price from bu_product_item item where item.id = p.min_sale_price_item_id and item.del_flag = '0') AS salePrice,
+		(select item.tag_price from bu_product_item item where item.id = p.min_sale_price_item_id and item.del_flag = '0') AS tagPrice,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic
+		from bu_activity_product acProduct, bu_product p
+		where p.id = acProduct.product_id 
+		and acProduct.del_flag = '0'
+		and acProduct.refuse_flag = '0'
+		and acProduct.coo_audit_status = '2'
+		and acProduct.activity_id = #{activityId}
+		and p.del_flag = '0'
+		and p.status = '1'
+		and p.audit_status = '2'
+		AND p.sale_type = '1'
+		order by ifnull(acProduct.seq_no,99999),salePrice
+		limit #{showNum}
+  	</select>
+  	
+  	<select id="getLoginRecommendProductList" parameterType="map" resultType="com.jf.entity.ProductCustom">
+  		SELECT 
+  			p.id,
+  			p.mcht_id as mchtId,
+			p.name,
+			p.brand_id as brandId,
+			(<![CDATA[
+				SELECT
+					CONCAT(bpi.sale_price,",",bpi.mall_price,",",bpi.tag_price,",",a.id,",",aa.benefit_point)
+				FROM
+					bu_activity_product ap,
+					bu_activity a,
+					bu_activity_area aa,
+					bu_product_item bpi
+				WHERE
+					ap.product_id = p.id
+				AND ap.activity_id = a.id
+				AND a.activity_area_id = aa.id
+				AND ap.product_id = bpi.product_id
+				AND bpi.id = p.min_sale_price_item_id
+				AND ap.del_flag = '0'
+				AND a.del_flag = '0'
+				AND aa.del_flag = '0'
+				AND bpi.del_flag = '0'
+				AND aa. STATUS = '1'
+				AND aa.activity_begin_time <= now()
+				AND aa.activity_end_time >= now()
+				AND a. STATUS = '6'
+				AND ap.coo_audit_status = '2'
+				AND ap.refuse_flag = 0
+				limit 1
+			]]>	
+			) as activityInfo,
+			(<![CDATA[
+				SELECT
+					fc.rule
+				FROM
+					bu_shop_preferential_info spi,
+					bu_full_cut fc
+				WHERE
+					spi.type = '2'
+				AND spi.begin_date <= NOW()
+				AND spi.end_date > NOW()
+				AND spi.`status` = '1'
+				AND spi.del_flag = '0'
+				AND spi.mcht_id = p.mcht_id
+				AND spi.preferential_id = fc.id
+				AND fc.del_flag = '0'
+			]]>		
+			) as fullCutRule,
+			p.min_mall_price as mallPrice,
+			p.min_sale_price as salePrice,
+			p.min_tag_price as tagPrice,
+			p.svip_discount as svipDiscount,
+			<![CDATA[(select 
+				max(c.money) 
+			from 
+				bu_coupon c 
+			where 
+				c.type_ids = p.id AND c.del_flag='0' AND c.coupon_type='4' AND c.preferential_type='1' AND c.mcht_id = p.mcht_id
+				AND c.status='1' AND c.rec_begin_date <= now() AND c.rec_end_date >= now() AND c.is_integral_turntable = '0'
+			)]]> as couponAmount,
+			(select sum(pi.stock-pi.locked_amount) from bu_product_item pi where pi.product_id = p.id AND pi.del_flag = '0') as stockSum,
+			(select brand.name from bu_product_brand brand where brand.id = p.brand_id AND brand.del_flag = '0') as brandName,
+		  	(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+		  	(select count(1) from bu_comment c where c.del_flag = '0' AND c.product_score in(4,5) AND (c.is_show is null or c.is_show = '1') AND c.product_id = p.id) goodProductScoreCount,
+		  	(select count(1) from bu_comment c where c.del_flag = '0' AND c.is_append_comment='0' AND c.is_show='1' AND c.product_id = p.id) totalCommentCount 
+  		FROM 
+			(
+			<foreach collection="productType3IdList" item="type3Id" open="(" separator=" union " close=")">
+				(
+				SELECT id as product_id
+				FROM bu_product
+				WHERE STATUS = '1' AND audit_status= '2'  AND sale_type = '1' AND del_flag = '0' AND product_type_id = #{type3Id}
+				ORDER BY weights
+				DESC LIMIT 40
+				)
+			</foreach>
+		)t_all,bu_product p,bu_mcht_info mi
+		WHERE
+			t_all.product_id = p.id
+			AND p.mcht_id = mi.id
+			AND p.del_flag = '0'
+			AND p.status = '1'
+			AND p.audit_status = '2'
+			AND p.sale_type = '1'
+			AND mi.del_flag = '0'
+			AND mi.status = '1'
+			AND mi.shop_status = '1'
+			AND EXISTS (
+				SELECT
+					mpb.id
+				FROM
+					bu_mcht_product_brand mpb
+				WHERE
+					mpb.product_brand_id = p.brand_id
+				AND mpb.mcht_id = mi.id
+				AND mpb.`status` = '1'
+				AND mpb.audit_status = '3'
+				AND mpb.del_flag = '0'
+			)
+			<if test="productIdList != null and productIdList.size() > 0">
+				AND p.id NOT IN 
+				<foreach collection="productIdList" item="productId" open="(" close=")" separator="," >
+		        	#{productId}
+		        </foreach>
+			</if>
+			order by p.weights desc
+			<if test="currentPage != null and pageSize != null">
+					limit #{currentPage} , #{pageSize} 
+			</if>
+  	</select>
+  	
+  	<select id="getNotLoginRecommendProductList" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+  	SELECT 
+  		p.id,
+  		p.mcht_id as mchtId,
+		p.name,
+		p.brand_id as brandId,
+		(<![CDATA[
+			SELECT
+				CONCAT(bpi.sale_price,",",bpi.mall_price,",",bpi.tag_price,",",a.id,",",aa.benefit_point)
+			FROM
+				bu_activity_product ap,
+				bu_activity a,
+				bu_activity_area aa,
+				bu_product_item bpi
+			WHERE
+				ap.product_id = p.id
+			AND ap.activity_id = a.id
+			AND a.activity_area_id = aa.id
+			AND ap.product_id = bpi.product_id
+			AND bpi.id = p.min_sale_price_item_id
+			AND ap.del_flag = '0'
+			AND a.del_flag = '0'
+			AND aa.del_flag = '0'
+			AND bpi.del_flag = '0'
+			AND aa. STATUS = '1'
+			AND aa.activity_begin_time <= now()
+			AND aa.activity_end_time >= now()
+			AND a. STATUS = '6'
+			AND ap.coo_audit_status = '2'
+			AND ap.refuse_flag = 0
+			limit 1
+		]]>	
+		) as activityInfo,
+		(<![CDATA[
+			SELECT
+				fc.rule
+			FROM
+				bu_shop_preferential_info spi,
+				bu_full_cut fc
+			WHERE
+				spi.type = '2'
+			AND spi.begin_date <= NOW()
+			AND spi.end_date > NOW()
+			AND spi.`status` = '1'
+			AND spi.del_flag = '0'
+			AND spi.mcht_id = p.mcht_id
+			AND spi.preferential_id = fc.id
+			AND fc.del_flag = '0'
+		]]>		
+		) as fullCutRule,
+		p.min_mall_price as mallPrice,
+		p.min_sale_price as salePrice,
+		p.min_tag_price as tagPrice,
+		p.svip_discount as svipDiscount,
+		<![CDATA[(select 
+			max(c.money) 
+		from 
+			bu_coupon c 
+		where 
+			c.type_ids = p.id AND c.del_flag='0' AND c.coupon_type='4' AND c.preferential_type='1' AND c.mcht_id = p.mcht_id
+			AND c.status='1' AND c.rec_begin_date <= now() AND c.rec_end_date >= now() AND c.is_integral_turntable = '0'
+		)]]> as couponAmount,
+		(select sum(pi.stock-pi.locked_amount) from bu_product_item pi where pi.product_id = p.id AND pi.del_flag = '0') as stockSum,
+		(select brand.name from bu_product_brand brand where brand.id = p.brand_id AND brand.del_flag = '0') as brandName,
+	  	(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+	  	(select count(1) from bu_comment c where c.del_flag = '0' AND c.product_score in(4,5) AND (c.is_show is null or c.is_show = '1') AND c.product_id = p.id) goodProductScoreCount,
+	  	(select count(1) from bu_comment c where c.del_flag = '0' AND c.is_append_comment='0' AND c.is_show='1' AND c.product_id = p.id) totalCommentCount
+	FROM
+	(
+		<foreach collection="productType1IdList" item="type1Id" open="(" separator=" union " close=")">
+			(
+			SELECT id as product_id
+			FROM bu_product
+			WHERE STATUS = '1' AND audit_status= '2'  AND sale_type = '1' AND del_flag = '0' AND product_type1_id = #{type1Id}
+			ORDER BY weights
+			DESC LIMIT 20
+			)
+		</foreach>
+	) tt,bu_product p,bu_mcht_info mi
+	WHERE
+		tt.product_id = p.id
+		AND p.mcht_id = mi.id
+		AND p.del_flag = '0'
+		AND p.status = '1'
+		AND p.audit_status = '2'
+		AND p.sale_type = '1'
+		AND mi.del_flag = '0'
+		AND mi.status = '1'
+		AND mi.shop_status = '1'
+		AND EXISTS (
+			SELECT
+				mpb.id
+			FROM
+				bu_mcht_product_brand mpb
+			WHERE
+				mpb.product_brand_id = p.brand_id
+			AND mpb.mcht_id = mi.id
+			AND mpb.`status` = '1'
+			AND mpb.audit_status = '3'
+			AND mpb.del_flag = '0'
+		)
+		<if test="productIdList != null and productIdList.size() > 0">
+			AND p.id NOT IN 
+			<foreach collection="productIdList" item="productId" open="(" close=")" separator="," >
+	        	#{productId}
+	        </foreach>
+		</if>
+		order by p.weights desc
+		<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+
+	<select id="findHotRecommendProduct" parameterType="map" resultType="com.jf.entity.ProductCustom">
+		select 	t.*,
+		p.id,
+		p.`name`,
+		p.sale_type,
+		p.min_mall_price,
+		p.min_tag_price,
+		p.min_sale_price_item_id,
+		(select pic.pic from bu_product_pic pic where pic.product_id = p.id and pic.del_flag = '0' and pic.is_default = '1') AS pic
+		from (
+			select	sn.id as sourceNicheId,
+					sn.link_id AS product_id,
+					sn.mcht_id,
+					ps.sold_count_90_days as orderCount90Days
+			from bu_source_niche sn,bu_mcht_info mi,bu_product_statistics ps
+			where sn.link_id = ps.product_id and sn.mcht_id = mi.id
+				and sn.id in (
+				SELECT a.* FROM (
+					SELECT id
+					FROM bu_source_niche
+					WHERE `type` = #{type}  AND `status` = '0' AND del_flag = '0' LIMIT 10000
+					) a
+				)
+			and ps.del_flag = '0'
+			and mi.`status` = '1' and mi.shop_status = '1' and mi.del_flag = '0'
+			and exists (select 1 from bu_product_item item where item.product_id = sn.link_id and (item.stock-item.locked_amount) > 0 and item.del_flag = '0')
+			order by sn.weight desc,ifnull(ps.applause_rate,0) desc,sn.id
+			) t,
+		bu_product p
+		where t.product_id = p.id
+			and p.`status` = '1'and p.audit_status = '2'and p.sale_type = '1'and p.del_flag = '0'
+			<if test="productType1Id != null and productType1Id != ''">
+				and p.product_type1_id = #{productType1Id}
+			</if>
+			<if test="productType2Ids != null and productType2Ids.size() > 0">
+				and p.product_type2_id in
+				<foreach collection="productType2Ids" item="productType2Id" open="(" close=")" separator="," >
+					#{productType2Id}
+				</foreach>
+			</if>
+			and exists (select mpb.id from bu_mcht_product_brand mpb where mpb.product_brand_id = p.brand_id and mpb.mcht_id = t.mcht_id and mpb.`status` = '1' and mpb.audit_status = '3' and mpb.del_flag = '0')
+		limit #{offset} , #{fetchSize}
+	</select>
+
+	<select id="findMchtShopProductType" parameterType="java.util.Map" resultType="com.jf.entity.ProductType">
+		select pt.* from
+		(
+		<choose>
+			<when test="productType2 != null">
+				select distinct(p.product_type_id) as typeId
+				from bu_product p
+				left join bu_mcht_product_brand mpb on mpb.product_brand_id = p.brand_id and mpb.mcht_id = p.mcht_id
+				where p.mcht_id = #{mchtId} and p.status = '1' and p.product_type2_id = #{productType2} and p.del_flag = '0'
+			</when>
+			<otherwise>
+				select distinct(p.product_type2_id) as typeId
+				from bu_product p
+				left join bu_mcht_product_brand mpb on mpb.product_brand_id = p.brand_id and mpb.mcht_id = p.mcht_id
+				where p.mcht_id = #{mchtId} and p.status = '1' and p.del_flag = '0'
+			</otherwise>
+		</choose>
+			and mpb.`status` = '1' and mpb.audit_status = '3' and mpb.del_flag = '0'
+		) a
+		left join bu_product_type pt on a.typeId = pt.id
+		where pt.status = '1' and pt.del_flag = '0'
+		order by ifnull(pt.seq_no,99999)
+	</select>
+
+	<select id="findMchtShopProduct" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+		select T1.*,
+		(select sum(pi.stock-pi.locked_amount) from bu_product_item pi where pi.product_id = T1.id and pi.del_flag = '0') as stockSum,
+		(select brand.name from bu_product_brand brand where brand.id = T1.brand_id and brand.del_flag = '0') as brandName,
+		(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = T1.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic
+		from(
+		select
+		p.weights,
+		p.id,
+		p.name,
+		p.brand_id,
+		p.min_mall_price as mallPrice,
+		p.min_sale_price as salePrice,
+		p.min_tag_price as tagPrice
+		from bu_product p
+		left join bu_mcht_product_brand mpb on mpb.product_brand_id = p.brand_id and mpb.mcht_id = p.mcht_id
+		where p.mcht_id = #{mchtId} and p.status = '1' and p.del_flag = '0'
+		<if test="productType3 != null">
+			and p.product_type_id = #{productType3}
+		</if>
+		and mpb.`status` = '1' and mpb.audit_status = '3' and mpb.del_flag = '0'
+		<choose>
+			<when test="orderType == 1">order by p.id desc</when>
+			<when test="orderType == 2">order by p.min_mall_price asc</when>
+			<when test="orderType == 3">order by p.min_mall_price desc</when>
+			<otherwise>order by p.weights desc,p.id asc</otherwise>
+		</choose>
+		limit #{offset} , #{fetchSize}
+		) T1
+	</select>
+</mapper>

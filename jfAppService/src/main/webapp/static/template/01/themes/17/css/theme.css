@@ -1,0 +1,124 @@
+/*common*/
+body { background: #f7f7f7; }
+
+.btn-action { background: #68ccfe; }
+
+a:hover { color: #68ccfe; }
+
+/*top*/
+/*header*/
+#header { background: #fff; }
+
+#headerSearch { width: 408px; margin-right: 20px; }
+
+.search-panel-fields { width: auto; overflow: hidden; padding: 0; }
+.search-panel-fields label { position: absolute; left: 10px; top: 0; z-index: 2; line-height: 30px; color: #949494; cursor: text; }
+.search-panel-fields input { float: left; width: 330px; height: 26px; *line-height: 26px; margin: 0; padding: 0 10px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; border: 2px solid #009de0; background: #fff; }
+.search-panel-fields button { float: left; position: static; width: 53px; height: 30px; border: 0; color: #fff; cursor: pointer; background: #009de0 url("../images/btn-search.png") center no-repeat; text-indent: -9999px; }
+
+.hotsearch { position: relative; height: 30px; overflow: hidden; line-height: 30px; }
+.hotsearch a { margin-left: 5px; color: #a1a1a1; }
+
+.cartbtn { float: left; padding: 0 10px 0 38px; display: block; height: 30px; line-height: 30px; color: #fff; background: #009de0; }
+.cartbtn a { color: #fff; }
+.cartbtn i { position: absolute; left: 5px; top: 0; width: 30px; height: 30px; background: url("../images/ico-shopcart.png") no-repeat center; }
+.cartbtn span { display: inline-block; }
+.cartbtn .cartcount { display: inline-block; }
+
+.mini-cart-menu { border: 1px solid #d4d4d4; top: 30px; }
+
+.mini-cart-view .mini-cart-btn { background: #68ccfe; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; }
+
+/*nav*/
+.nav, .nav .layout { background: #68ccfe; }
+.nav .textNav, .nav .site-nav { color: #fff; }
+.nav .textNav a, .nav .site-nav a { color: #fff; }
+.nav .textNav a .current, .nav .textNav a:hover, .nav .site-nav a .current, .nav .site-nav a:hover { background: #009de0; text-decoration: none; }
+
+.gbc-title { background: #68ccfe; }
+
+.gbc-title span { background: url("../images/gbc-titlearrow.png") no-repeat 100% 0; padding-right: 30px; color: #fff; }
+
+.global-catalog-open .gbc-title span { background-position: 100% 100%; }
+
+.gbc-treetitle, .gbc-subtree li a:hover, .sublayer-item li a:hover, .sublayer-item dt a:hover { color: #009de0; }
+
+/*footer*/
+.footer { background: #fff; color: #707070; }
+.footer a { color: #707070; }
+
+.footwarranty { background: #68ccfe; }
+
+.ftconlist dt { color: #333; font-size: 14px; font-weight: bold; margin-left: 16px; }
+.ftconlist p { background-image: url(../images/ftlisticon.gif); }
+
+.ftqrcode h3 span { background-image: url(../images/footmobile.png); }
+
+.ftfriends { background: #fff; border: 1px solid #ababab; }
+
+/*login*/
+.loginbox { border-top: 3px solid #68ccfe; }
+
+/*main*/
+.filter-sort .sort-on { border-color: #68ccfe; background-color: #68ccfe; color: #fff; }
+
+.pagination .page-cur, .page-go button { background: #68ccfe; border: 1px solid #35bbfe; color: #fff; }
+
+/*page*/
+.block .blocktitle { background: #ffffff; }
+.block .blocktitle span { margin-bottom: -2px; border-bottom: 2px solid #68ccfe; }
+
+.commentblock h3 { border-color: #68ccfe; }
+
+.sideblock .blocktitle { border-top: 3px solid #68ccfe; margin: 0 -1px; }
+
+/*goodslist*/
+.m-itemslist .type-grid .item-hover { border-color: #68ccfe; }
+.m-itemslist .type-grid .goodsname a:hover { color: #68ccfe; }
+.m-itemslist .type-grid .thumbslist li.selected { border-color: #68ccfe; }
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected { border-color: #68ccfe; }
+
+.detail-tabbar .selected { border-top: 3px solid #68ccfe; margin-top: -3px; }
+
+.detail-bd .hd { background: #68ccfe; color: #ffffff; }
+
+.review-rate span { color: #68ccfe; }
+
+.sumratebar span { background: #68ccfe; }
+
+/*goods-set*/
+.combobuy-hd h3, .combobuy-ft h3 { color: #68ccfe; }
+
+/*step*/
+/*payment*/
+.tabbar .selected { margin-top: -3px; border-top: 3px solid #68ccfe; }
+
+.payment .tabbar .selected a { border-top: 3px solid #68ccfe; padding-top: 0; }
+
+/*refund*/
+.tabnav li a.current { color: #fff; background: #68ccfe; }
+
+/*news*/
+.newslist h3 { border-bottom: 2px solid #68ccfe; }
+
+.newslist .title a:hover { color: #68ccfe; }
+
+.newstop { border-bottom: 2px solid #68ccfe; }
+
+/*mycenter*/
+.mcmenu-home { margin-bottom: 10px; background-color: #68ccfe; }
+
+.mcmenu { border-top: 4px solid #68ccfe; }
+
+.mctitle span { margin-bottom: -2px; border-bottom: 2px solid #68ccfe; }
+
+.link-back { background: #68ccfe; }
+
+.link { color: #68ccfe; }
+
+/*brand*/
+.brandextra a { background: #009de0; }
+
+/*# sourceMappingURL=theme.css.map */

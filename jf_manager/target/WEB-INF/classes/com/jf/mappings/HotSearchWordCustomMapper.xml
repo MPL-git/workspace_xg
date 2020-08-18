@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.HotSearchWordCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.HotSearchWordCustom" extends="com.jf.dao.HotSearchWordMapper.BaseResultMap" >
+  	<result column="source_desc" property="sourceDesc" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="searchLogCount" property="searchLogCount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, word, status, seq_no, source, create_by, create_date, update_by, search_count_100_days,
+    update_date, remarks, del_flag,tag,hot_search_page,
+    FUN_GET_STATUS_DESC("BU_HOT_SEARCH_WORD","SOURCE", source) source_desc,
+    FUN_GET_STATUS_DESC("BU_HOT_SEARCH_WORD","STATUS", status) status_desc
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.HotSearchWordCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_hot_search_word hsw
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+  <sql id="Base_Column_List_New" >
+    id, word, status, seq_no, source, create_by, create_date, update_by, search_count_100_days,
+    update_date, remarks, del_flag,tag,hot_search_page,
+    FUN_GET_STATUS_DESC("BU_HOT_SEARCH_WORD","SOURCE", source) source_desc,
+    FUN_GET_STATUS_DESC("BU_HOT_SEARCH_WORD","STATUS", status) status_desc,
+    (select count(1) from bu_search_log sl where sl.hot_search_word_id = hsw.id and sl.del_flag = '0' and sl.create_date <![CDATA[ >= ]]> #{start} and sl.create_date <![CDATA[ <= ]]> #{date}) searchLogCount
+  </sql>
+
+  <select id="selectByCustomExampleNew" resultMap="BaseResultMap" parameterType="Map" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List_New" />
+    from bu_hot_search_word hsw
+    where
+    hsw.del_flag = '0'
+    and hsw.hot_search_page = '1'
+    <if test="word != null" >
+    and hsw.word like CONCAT('%',#{word},'%')
+    </if>
+    <if test="status != null" >
+      and hsw.status = #{status}
+    </if>
+    <if test="beginSearchLogCount != null" >
+      and hsw.search_count_100_days <![CDATA[ >= ]]> #{beginSearchLogCount}
+    </if>
+    <if test="endSearchLogCount != null" >
+      and hsw.search_count_100_days <![CDATA[ <= ]]> #{endSearchLogCount}
+    </if>
+    order by hsw.create_date desc
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_hot_search_word t
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.HotSearchWordCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_hot_search_word t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_hot_search_word t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.word != null" >
+        word = #{record.word,jdbcType=VARCHAR},
+      </if>
+      <if test="record.searchCount != null" >
+        search_count = #{record.searchCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.seqNo != null" >
+        seq_no = #{record.seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

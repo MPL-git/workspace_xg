@@ -1,0 +1,190 @@
+@charset "utf-8";
+@import "var";
+
+/*common*/
+body{
+  background: $body_bg;
+}
+.btn{
+  &,span{
+    background: $btn_bg;
+  }
+}
+.btn-action{
+  background: $btn_action_bg;
+}
+.btn-action2{
+  background: $btn_action2_bg;
+}
+a:hover{ color: $link_color;}
+
+/*top*/
+.topnotify span{background-image: $notify_bg;}
+
+/*header*/
+#header{background: $header_bg;}
+
+#headerSearch{ width: 323px;}
+.search-panel-fields{
+  width: auto; padding: 0; overflow: hidden;
+  label{position: absolute; left: 10px; top: 0; z-index: 2; line-height: 30px; color: #949494; cursor: text;}
+  input{float: left; width: 248px; height: 28px; *line-height: 28px; margin: 0; padding: 0 10px;}
+  button{float: left; position: static; width: 53px; height: 30px; background:$theme_color; border: 0; color: #fff; text-indent: 0; cursor: pointer;}
+}
+.hotsearch{
+  position: relative; height: 30px; overflow: hidden; line-height: 30px;
+  a{margin-left: 5px; color: #b1a8a3;}
+}
+
+#headerCart{border: 1px solid $theme_color;}
+.cartbtn{
+  background: $theme_color2;color: #fff;
+  a{color: #fff;}
+  i{position: absolute; left: 5px; top: 0; width: 28px; height: 28px; background: url(../images/topcart.png) no-repeat;}
+  .cartcount{display: inline-block; padding-right: 20px; background: url("../images/topcart.png") no-repeat 100% 100%; color: #fff;}
+}
+.cart-hover .cartbtn{ background:$theme_color2;}
+
+.mini-cart-menu{border: 1px solid $theme_color; right: -1px;}
+.mini-cart-view .mini-cart-btn{background: $theme_color; border: 1px solid $theme_color; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff;}
+
+/*nav*/
+.nav{
+  &,.layout{background: $nav_bg;}
+  .textNav,.site-nav{
+    a{
+      color: #fff;
+      .current,&:hover{color: $link_color; text-decoration: none;}
+    }
+  }
+}
+.gbc-title{background: $theme_color; color: #fff;}
+.gbc-title span{background: url("../images/gbctitle-arrow.gif") no-repeat 100% 0; padding-right: 30px; color: #fff;}
+.global-catalog-open .gbc-title span{background-position: 100% 100%;}
+.gbc-treetitle .c{ background: url("../images/arrow_right.gif") no-repeat right; padding-right: 15px;}
+
+.gbc-treetitle,
+.gbc-subtree li a:hover,
+.sublayer-item li a:hover,
+.sublayer-item dt a:hover{ color: $theme_color;}
+
+/*footer*/
+.footer{border-top: 12px solid #5a0c10; background: #1f1713;color: #fff;}
+.ftconlist p{ padding-left: 20px; background: url("../images/ft_list_ico.gif") no-repeat 0 5px;}
+.ftcopyright{margin-top: 10px;line-height: 25px; text-align: center;}
+
+/*login*/
+.loginbox{border-top: 3px solid $theme_color;}
+
+/*main*/
+.filter-sort .sort-on{border-color: $theme_color; background-color: $theme_color; color: #fff;}
+.pagination .page-cur,.page-go button{background: $theme_color; border:1px solid darken($theme_color,10); color: #fff;}
+
+/*page*/
+.page-index #page{
+  padding-bottom: 10px;
+  .layout{background: none; min-height: 0; _height:auto; padding: 0;}
+}
+.block .blocktitle{
+  border-bottom-color: $title_bottom_line; color: $title_color; background: $title_bg;
+  span{ margin-bottom: -2px; border-bottom: 2px solid $theme_color;}
+}
+.commentblock h3{
+  border-color: $theme_color;
+}
+.sideblock .blocktitle{border-top: 3px solid $theme_color; margin: 0 -1px;}
+
+/*slides*/
+#inslides{
+  height: 414px; background: #000000;
+  .switchable-slides{
+    height: 414px;
+    li{
+      position: absolute; height: 414px;
+    }
+  }
+  .switchable-nav{display: none;}
+  .switchable-triggers{
+    li{float: left; color: $theme_color2; font-size: 40px; line-height: 20px; cursor: pointer; margin-left: 10px;}
+    .current{color: $theme_color;}
+  }
+}
+
+
+/*tabs*/
+#intabs{
+  .switchable-tab-title{ height: 30px; line-height: 30px; border-bottom: 2px solid #d4d4d4;
+    .current{ border-bottom: 2px solid $theme_color; margin-bottom: -2px;}
+  }
+  .switchable-nav-item i{ display: block; margin-top: 70px; width: 0; height: 0; border:15px dashed transparent; text-indent: -9999px; line-height: 0;}
+  .prev i{border-right: 15px solid $theme_color;}
+  .next i{border-left: 15px solid $theme_color; margin-left: 10px;}
+}
+
+/*goodslist*/
+.m-itemslist .type-grid {
+  .item-hover{border-color: $theme_color;}
+  .goodsname a:hover{color: $theme_color;}
+  .thumbslist li.selected{border-color: $theme_color;}
+}
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected{border-color: $theme_color;}
+.goodspromotion .promote i{ background: $promote_color;}
+.btn-buy a,.btn-buy a span{background: $btn_buy_bg;}
+.btn-cart a,.btn-cart a span{background: $btn_cart_bg;}
+.detail-tabbar{
+  border-color: $detail_tab_border_color; background: $detail_tab_bg;
+  a{color: $detail_tab_text_color; border-color:$detail_tab_border_color;}
+  .selected{
+    border-top: 3px solid $theme_color; margin-top: -3px; background: $detail_tab_active_bg;
+    a{color: $detail_tab_active_text_color;}
+  }
+}
+.detail-bd .hd{background: $detail_title_bg; color: $detail_title_color;}
+.review-rate span{color: $theme_color;}
+.sumratebar span{background: $theme_color;}
+
+/*goods-set*/
+.combobuy-hd h3,.combobuy-ft h3{ color: $theme_color;}
+
+/*step*/
+.stepind{background-image: $step_bg_img;}
+.steps{
+  .step-active{ background-color: $step_active_line_color;}
+  .step-active .stepname{color: $step_active_color;}
+}
+.orderstate{
+  .stepind{background-image: $step_large_bg_img;}
+  .steps{
+    .step-active{ background-color: $step_large_active_line_color;}
+    .step-active .stepname{color: $step_large_active_color;}
+  }
+}
+
+/*payment*/
+.tabbar .selected{margin-top: -3px; border-top: 3px solid $theme_color;}
+.payment .tabbar .selected a{border-top: 3px solid $theme_color; padding-top: 0;}
+
+/*refund*/
+.tabnav li a.current{color: #fff; background: $theme_color;}
+
+/*news*/
+.newslist h3{border-bottom: 2px solid $theme_color;}
+.newslist .title a:hover{color: $theme_color;}
+.newstop{border-bottom: 2px solid $theme_color;}
+
+/*mycenter*/
+.mcmenu-home{ margin-bottom: 10px; background-color: $theme_color;}
+.mcmenu{border-top: 4px solid $theme_color;}
+.mctitle span{margin-bottom: -2px; border-bottom: 2px solid $theme_color;}
+.mcmenu dd a.current{ background-image: $mc_menu_arrow_img;}
+.link-back{background: $theme_color;}
+
+.pswstrength-low, .pswstrength-mid, .pswstrength-high{ background-image: $psw_strength_bg_img;}
+.link{color: $link_color;}
+.deliverstatus li.itemactive s{background: $deliver_status_line;}
+.deliverstatus li p, .deliverstatus li p span{background-image: $deliver_status_bg_img;}
+
+/*brand*/
+.brandextra a{background: $theme_color2;}

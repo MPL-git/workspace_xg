@@ -1,0 +1,20 @@
+.cup-points dl {
+	height: 1rem;
+	padding: 0 .3rem;
+	background: #fff;
+	font-size: .3rem;
+	border-bottom: 1px solid #eee;
+}
+.cup-points dd {
+	width: 1.2rem;
+	height: .5rem;
+	border-radius: .25rem;
+	font-size: .24rem;
+	color: #ff5050;
+	border: 1px solid #ff5050;
+}
+.cup-points dd.on {
+	border: none;
+	background: #ff5050;
+	color: #fff;
+}

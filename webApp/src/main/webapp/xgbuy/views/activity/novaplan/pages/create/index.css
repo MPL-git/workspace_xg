@@ -1,0 +1,89 @@
+.novaplan-create header>div {
+	width: 1.4rem;
+}
+.novaplan-create .row-1 {
+	padding: 0.3rem;
+	font-size: .26rem;
+	color: #666;
+}
+.novaplan-create .mb20 {
+	margin-bottom: 0.2rem;
+}
+.novaplan-create .foot-table {
+	bottom: 0;
+	margin-bottom: .43rem;
+	background: #fff;
+}
+.novaplan-create .footer {
+	height: 2.4rem;
+	width: 6.9rem;
+	height: 0.9rem;
+	margin: .4rem auto;
+	border-radius: .45rem;
+	background: #ff5050;
+	color: #fff;
+	font-size: .3rem;
+}
+.novaplan-create .ccc {
+	background: #ccc;
+}
+.novaplan-create .checkbox-item {
+	width: 6.9rem;
+	margin-bottom: .64rem;
+	font-size: .24rem;
+	cursor: default;
+	-webkit-user-select: none;
+}
+.novaplan-create .checkbox-item .tick {
+	width: .3rem;
+	height: .3rem;
+	background-image: url('./image/tick.png');
+	background-size: 100% auto;
+	margin-right: .1rem;
+}
+.novaplan-create .checkbox-item .ticked {
+	width: .3rem;
+	height: .3rem;
+	background-image: url('./image/ticked.png');
+	background-size: 100% auto;
+	margin-right: .1rem;
+}
+.novaplan-create .h110 {
+	height: 1.1rem;
+	border-radius: .55rem;
+}
+.novaplan-create .pt13 {
+	padding-top: 0.13rem;
+}
+.novaplan-create .popup-clear-con {
+	position: relative;
+	width: 6rem;
+	background-color: #fff;
+	border-radius: .16rem;
+	font-size: .32rem;
+}
+.novaplan-create .tab-head {
+	padding-top: .5rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+.novaplan-create .tab-body {
+	width: auto;
+	min-height: 1.2rem;
+	line-height: .4rem;
+	padding: .2rem;
+	color: #666;
+	word-break: break-all;
+	text-align: center;
+}
+.novaplan-create .clear-btn {
+	width: 100%;
+	border-top: 1px solid #ddd;
+}
+.novaplan-create .clear-btn a {
+	width: 50%;
+	height: .8rem;
+}
+.novaplan-create .bdrg {
+	border-right: 1px solid #ddd;
+}

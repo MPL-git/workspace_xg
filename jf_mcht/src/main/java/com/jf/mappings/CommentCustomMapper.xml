@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CommentCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CommentCustom"  extends="com.jf.dao.CommentMapper.BaseResultMap">
+  	<result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+  	<result column="order_create_date" property="orderCreateDate" jdbcType="VARCHAR" />
+  	<result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+  	<result column="sku_pic" property="skuPic" jdbcType="VARCHAR" />
+  	<result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+  	<result column="art_no" property="artNo" jdbcType="VARCHAR" />
+  	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+  	<result column="product_prop_desc" property="productPropDesc" jdbcType="VARCHAR" />
+  	<result column="sku" property="sku" jdbcType="VARCHAR" />
+  	<result column="is_allow_modify_comment" property="isAllowModifyComment" jdbcType="VARCHAR" />
+  	<result column="mcht_score" property="mchtScore" jdbcType="INTEGER" />
+  	<result column="wuliu_score" property="wuliuScore" jdbcType="INTEGER" />
+  	<result column="append_content" property="appendContent" jdbcType="VARCHAR" />
+  	<result column="append_comment_id" property="appendCommentId" jdbcType="VARCHAR" />
+  	<result column="append_create_date" property="appendCreateDate" jdbcType="TIMESTAMP" />
+    <result column="impeach_status" property="impeachStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, sub_order_id, order_dtl_id, product_id, member_id, is_append_comment, 
+    product_score, content, mcht_reply, mcht_reply_date, is_draw, comment_weight, comment_source, 
+    is_show, create_by, create_date, update_by, update_date, remarks, del_flag,
+    (select so.sub_order_code from bu_sub_order so where so.id = t.sub_order_id and so.del_flag='0')sub_order_code,
+    (select so.create_date from bu_sub_order so where so.id = t.sub_order_id and so.del_flag='0')order_create_date,
+    (select co.receiver_name from bu_sub_order so,bu_combine_order co where so.id = t.sub_order_id and so.combine_order_id = co.id and so.del_flag='0' and co.del_flag='0')receiver_name,
+    (select od.sku_pic from bu_order_dtl od where od.id = t.order_dtl_id and od.del_flag='0')sku_pic,
+    (select od.art_no from bu_order_dtl od where od.id = t.order_dtl_id and od.del_flag='0')art_no,
+    (select od.product_name from bu_order_dtl od where od.id = t.order_dtl_id and od.del_flag='0')product_name,
+    (select od.brand_name from bu_order_dtl od where od.id = t.order_dtl_id and od.del_flag='0')brand_name,
+    (select od.product_prop_desc from bu_order_dtl od where od.id = t.order_dtl_id and od.del_flag='0')product_prop_desc,
+    (select od.sku from bu_order_dtl od where od.id = t.order_dtl_id and od.del_flag='0')sku,
+    (select so.is_allow_modify_comment from bu_sub_order so where so.id = t.sub_order_id and so.del_flag='0')is_allow_modify_comment,
+    (select ss.mcht_score from bu_shop_score ss where ss.sub_order_id = t.sub_order_id and ss.mcht_id = t.mcht_id limit 1)mcht_score,
+    (select ss.wuliu_score from bu_shop_score ss where ss.sub_order_id = t.sub_order_id and ss.mcht_id = t.mcht_id limit 1)wuliu_score,
+    (select c.content from bu_comment c where c.sub_order_id = t.sub_order_id and c.mcht_id = t.mcht_id and c.order_dtl_id = t.order_dtl_id and c.is_append_comment = '1' limit 1)append_content,
+    (select c.id from bu_comment c where c.sub_order_id = t.sub_order_id and c.mcht_id = t.mcht_id and c.order_dtl_id = t.order_dtl_id and c.is_append_comment = '1' limit 1)append_comment_id,
+    (select c.create_date from bu_comment c where c.sub_order_id = t.sub_order_id and c.mcht_id = t.mcht_id and c.order_dtl_id = t.order_dtl_id and c.is_append_comment = '1' limit 1)append_create_date,
+    (select im.status from bu_impeach_member im where im.comment_id = t.id and im.del_flag='0' ) impeach_status
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.RemarksLogCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_comment t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.CommentCustomExample" resultType="java.lang.Integer">
+  	select count(*) from bu_comment t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="getTotalProductScoreByMchtId" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+  	select IFNULL(SUM(c.product_score)/count(c.id),0) as totalProductScore from bu_comment c where c.del_flag='0' and c.is_append_comment='0' and c.mcht_id=#{mchtId}
+  </select>
+  
+  <update id="deleteReply" parameterType="java.lang.Integer">
+  	update bu_comment t SET t.mcht_reply = NULL ,t.mcht_reply_date = NULL  WHERE t.id=#{id} 
+  </update>
+  
+  <select id="countProductScoreByMhctId" parameterType="java.lang.Integer" resultType="java.lang.Double">
+  	SELECT TRUNCATE(IFNULL(AVG(c.product_score),5.00),2) FROM bu_comment c WHERE c.mcht_id=#{mchtId} and c.del_flag = '0' and c.is_append_comment = '0';
+  </select>
+</mapper>

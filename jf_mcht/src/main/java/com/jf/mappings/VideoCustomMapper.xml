@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.VideoCustomMapper">
+
+  <select id="findVideoProduct" resultType="com.jf.entity.dto.VideoProductDTO">
+    select v.id,vp.product_id,p.name,pp.pic as mainImg,p.code as productCode
+    from bu_video_product vp
+    left join bu_video v on vp.video_id = v.id
+    left join bu_product p on vp.product_id = p.id
+    left join bu_product_pic pp on p.id=pp.product_id
+    where vp.del_flag = '0'
+    and v.del_flag = '0'
+    and p.del_flag = '0'
+    and pp.is_default = '1'
+    and pp.del_flag = '0'
+    and v.id in
+    <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+      #{listItem}
+    </foreach>
+    order by vp.seq_no
+  </select>
+
+  <select id="findTipOffVideoIds" resultType="java.lang.Integer">
+    select v.id
+    from bu_video v
+    left join bu_video_tip_off vto
+    on v.id=vto.video_id
+    where vto.del_flag = '0' and vto.audit_status='2'
+    and v.id in
+    <foreach collection="videoIds" item="listItem" open="(" close=")" separator=",">
+      #{listItem}
+    </foreach>
+  </select>
+
+</mapper>

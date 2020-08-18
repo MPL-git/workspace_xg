@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ActivityAreaCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ActivityAreaCustom" extends="com.jf.dao.ActivityAreaMapper.BaseResultMap">
+    <result column="logo" property="logo" jdbcType="VARCHAR" />
+    <result column="activityEntryPic" property="activityEntryPic" jdbcType="VARCHAR" />
+    <result column="activityName" property="activityName" jdbcType="VARCHAR" />
+    <result column="activityId" property="activityId" jdbcType="INTEGER" />
+    
+    <result column="productId" property="productId" jdbcType="INTEGER" />
+    <result column="productName" property="productName" jdbcType="VARCHAR" />
+    <result column="suit_sex" property="suitSex" jdbcType="VARCHAR" />
+    <result column="suit_group" property="suitGroup" jdbcType="VARCHAR" />
+    <result column="product_type_id" property="productTypeId" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="sale_price" property="salePrice" jdbcType="DECIMAL"/>
+    <result column="max_sale_price" property="maxSalePrice" jdbcType="DECIMAL"/>
+	<result column="tag_price" property="tagPrice" jdbcType="DECIMAL"/>
+	<result column="discount" property="discount" jdbcType="DECIMAL"/>
+	<result column="stockSum" property="stockSum" jdbcType="INTEGER"/>
+	<result column="stock" property="stock" jdbcType="INTEGER"/>
+	<result column="locked_amount" property="lockedAmount" jdbcType="INTEGER"/>
+	<result column="is_watermark" property="isWatermark" jdbcType="VARCHAR" />
+  </resultMap>
+  	<select id="getActivity" parameterType="java.util.Map" resultType="com.jf.entity.ActivityAreaCustom">
+  		select
+		acArea.top_pic,
+		acArea.id,
+		acArea.preferential_type,
+		acArea.preferential_id_group,
+		acArea.activity_begin_time,
+		acArea.activity_end_time,
+		acArea.name,
+		ac.id as activityId,
+		ac.name as activityName,
+		ac.entry_pic as activityEntryPic,
+		brand.logo
+		from bu_activity_area acArea
+		left join bu_activity ac on ac.activity_area_id = acArea.id
+		left join bu_product_brand brand on brand.id = ac.product_brand_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and acArea.source = '1'
+		and (acArea.type = '1' or acArea.type = '2')
+		and acArea.id = #{activityAreaId}
+		and ac.status = '6'
+		and ac.coo_audit_status = '2'
+		order by ifnull(ac.seq_no,99999) ASC,ac.id DESC
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+  	</select>
+  	
+  	<select id="getActivityCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  		select
+		count(*)
+		from bu_activity_area acArea
+		left join bu_activity ac on ac.activity_area_id = acArea.id
+		left join bu_product_brand brand on brand.id = ac.product_brand_id
+		where acArea.del_flag = '0'
+		and ac.del_flag = '0'
+		and brand.del_flag = '0'
+		and acArea.source = '1'
+		and acArea.type = '1'
+		and acArea.id = #{activityAreaId}
+		and ac.status = '6'
+		and ac.coo_audit_status = '2'
+  	</select>
+  	
+  	
+  		<select id="getIndividualActivity" parameterType="java.util.Map" resultType="com.jf.entity.ActivityAreaCustom">
+	  	select * from(	
+			select apiA.*,sum(apiA.stock-apiA.locked_amount) as stockSum,
+			(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = apiA.productId AND pic.del_flag = '0' AND pic.is_default = '1' limit 1) AS pic
+			from(		
+				select
+				pro.id as productId,
+				pro.name as productName,
+				pro.suit_sex,
+				pro.suit_group,
+				pro.product_type_id,
+				pro.svip_discount,
+				acArea.top_pic,
+				acArea.id,
+				acArea.preferential_type,
+				acArea.preferential_id_group,
+				acArea.activity_begin_time,
+				acArea.activity_end_time,
+				acArea.name,
+				ac.id as activityId,
+				ac.name as activityName,
+				ac.entry_pic as activityEntryPic,
+				acPro.is_watermark,
+				acPro.seq_no,
+				(SELECT MAX(pi.sale_price) FROM bu_product_item pi WHERE pi.product_id = pro.id AND pi.del_flag='0') as max_sale_price,
+				item.sale_price,
+				item.tag_price,
+				item.stock,
+				item.locked_amount,
+				(item.sale_price/item.tag_price) as discount,
+				(select apd.deduct_amount from bu_activity_product_deposit apd where apd.activity_id = acPro.activity_id and apd.product_id = acPro.product_id and apd.del_flag='0') as deductAmount,
+				(select apd.deposit from bu_activity_product_deposit apd where apd.activity_id = acPro.activity_id and apd.product_id = acPro.product_id and apd.del_flag='0') as deposit
+				from bu_activity_area acArea
+				left join bu_activity ac on ac.activity_area_id = acArea.id
+				left join bu_activity_product acPro on acPro.activity_id = ac.id
+				left join bu_product pro on pro.id = acPro.product_id
+				left join bu_product_item item on item.id = pro.min_sale_price_item_id
+				where acArea.del_flag = '0'
+				and ac.del_flag = '0'
+				and acPro.del_flag = '0'
+				and pro.del_flag = '0'
+				and item.del_flag = '0'
+				and acArea.source = '1'
+				and acArea.id = #{activityAreaId}
+				<if test="activityAreaType != null and activityAreaType != ''">
+					and acArea.type = #{activityAreaType}
+				</if>
+				and ac.status = '6'
+				and ac.coo_audit_status = '2'
+				and acPro.refuse_flag = '0'
+				and acPro.coo_audit_status = '2'
+				and pro.status = '1'
+				) apiA
+			group by apiA.productId) apiB
+			
+			<where>
+				<!-- #性别 -->
+				<if test="suitSex != null and suitSex != ''">
+					and apiB.suit_sex like #{suitSex}
+				</if>
+				<!-- #适合人群 -->
+				<if test="suitGroup != null and suitGroup != ''">
+					and apiB.suit_group like #{suitGroup}
+				</if>
+				<!-- #商品品类 -->
+				<if test="productTypeIdList != null and productTypeIdList.size() > 0">
+					and apiB.product_type_id in
+					<foreach collection="productTypeIdList" index="index" item="productTypeId" open="(" separator="," close=")">
+			             #{productTypeId}
+			        </foreach>
+				</if>
+				<!-- #价格区间 -->
+				<if test="salePriceMin != null and salePriceMin != ''">
+					and apiB.sale_price &gt;= #{salePriceMin}
+				</if>
+				<if test="salePriceMax != null and salePriceMax != ''">
+					and apiB.sale_price &lt;= #{salePriceMax}
+				</if>
+				<!-- #库存 -->
+				<if test="stockMark != null and stockMark != ''">
+					and apiB.stockSum &gt; 0
+				</if>
+			</where>
+			<choose>
+				<!-- #折扣排序 -->
+				<when test="discountSort != null and discountSort != ''">
+					ORDER BY apiB.discount ${discountSort}
+				</when>
+				<!-- #价格排序 -->
+				<when test="salePriceSort != null and salePriceSort != ''">
+					ORDER BY apiB.sale_price ${salePriceSort}
+				</when>
+				<otherwise>
+					order by ifnull(apiB.seq_no,99999) asc,apiB.sale_price asc,apiB.tag_price desc
+				</otherwise>
+			</choose>
+			<!-- #分页 -->
+			<if test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</if>
+  	</select>
+  	
+  	<select id="getH5ProductInfoList" parameterType="java.util.Map" resultType="com.jf.entity.ActivityAreaCustom">
+		select *,sum(apiA.stock-apiA.locked_amount) as stockSum from( 
+		select 
+		product.id as product_id,
+		item.stock, 
+		item.locked_amount, 
+		item.sale_price, 
+		item.tag_price, 
+		(item.sale_price/item.tag_price) as discount, 
+		product.name as productName, 
+		(select pic.pic from bu_product_pic pic where pic.product_id = product.id and pic.del_flag = '0' and pic.is_default = '1' limit 1) as pic
+		from bu_product product
+		left join bu_product_item item on item.product_id = product.id 
+		left join bu_product_pic pic on pic.product_id = product.id 
+		where product.del_flag = '0' 
+		and item.del_flag = '0' 
+		<if test="list != null and list.size() > 0">
+			and product.id in
+			<foreach collection="list" index="index" item="productId" open="(" separator="," close=")">
+	             #{productId}
+	        </foreach>
+		</if>
+		and product.status = '1' 
+		and product.audit_status = '2' 
+		and pic.is_default = '1' 
+		order by product.id desc,item.stock asc,item.locked_amount desc) apiA group by apiA.product_id
+		
+		
+		<!-- select *,sum(apiA.stock-apiA.locked_amount) as stockSum from(
+		select
+		acProduct.product_id,
+		area.id,
+		area.name,
+		acProduct.activity_id,
+		item.stock,
+		item.locked_amount,
+		item.sale_price,
+		item.tag_price,
+		(item.sale_price/item.tag_price) as discount,
+		product.name as productName,
+		pic.pic
+		from bu_activity_area area
+		left join bu_activity ac on ac.activity_area_id = area.id
+		left join bu_activity_product acProduct on acProduct.activity_id = ac.id
+		left join bu_product product on product.id = acProduct.product_id
+		left join bu_product_item item on item.product_id = product.id
+		left join bu_product_pic pic on pic.product_id = product.id
+		where area.del_flag = '0'
+		and ac.del_flag = '0'
+		and acProduct.del_flag = '0'
+		and product.del_flag = '0'
+		and item.del_flag = '0'
+		and pic.del_flag = '0'
+		and area.activity_begin_time &gt; now()
+		and area.activity_end_time &gt; now()
+		and area.status = '1'
+		and ac.status = '6'
+		and ac.coo_audit_status = '2'
+		and acProduct.refuse_flag = '0'
+		and acProduct.coo_audit_status = '2'
+		and product.status = '1'
+		and product.audit_status = '2'
+		and pic.is_default = '1'
+		<if test="list != null and list.size() > 0">
+			and product.id in
+			<foreach collection="list" index="index" item="productId" open="(" separator="," close=")">
+	             #{productId}
+	        </foreach>
+		</if>
+		order by acProduct.id desc,item.stock asc,item.locked_amount desc) apiA
+		group by apiA.product_id -->
+
+  	</select>
+  	
+</mapper>

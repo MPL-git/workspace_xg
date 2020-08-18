@@ -1,0 +1,81 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body{ background-color:#fff;}
+
+.main-content{ margin-left:170px;}
+
+.tb-list{ margin-top:10px; border:solid 1px #ccc;}
+
+.tbmain thead{ background-color:#fff; height:45px; line-height:45px; text-indent:20px; font-size:16px; border-bottom:1px solid #ddd;}
+td.td-title{ width:150px; text-align:right; margin-right:10px;}
+.tbmain td{ padding-left:10px;}
+.tbmain tbody tr{ border:none; line-height:45px;}
+.sel{ width:120px; height:25px; line-height:25px; margin-right:10px; }
+.sel option{ line-height:25px;}
+.star{ background:url(../img/star.png) left center no-repeat; padding-left:10px;}
+
+
+.bg-style{ background-color:#F6F6F6; border:solid 1px #ccc; text-align:center; color:#D3D3D3; line-height:25px; width:500px; }
+.btn-open-style{ background-color:#FD7B35; border:none; color:#fff; font-size:14px; width:160px; height:35px;}
+.bg-style p{ padding-top:10px;} 
+
+.btn-submit{ background-color:#FD7B35; border:none; color:#fff; font-size:14px; width:100px; height:35px;}
+
+.btn-open-style:hover,.btn-submit:hover{ background-color:#E37030;}
+.txt{ border:solid 1px #ccc; height:25px; width:110px;}
+.txt-long{ width:500px; }
+.txt-mini{ width:75px;}
+
+
+.win{ width:650px;}
+.win .win-wrap{ background-color:#fff; border:2px solid #40921E; -webkit-border-radius:2px; -moz-border-radius:2px; border-radius:2px; min-height:300px; padding:10px; position:relative;}
+.win .win-wrap .w-title{ font-size:14px; font-weight:bold; height:30px; line-height:30px; padding-bottom:5px; border-bottom:1px solid #ccc; text-indent:10px;}
+.win .win-wrap .tip{ color:#9D9D9D; margin:10px 0; line-height:20px; padding:0 10px;}
+
+.win .txt-mini{ height:20px; width:70px;} 
+.win .txt{ height:20px; line-height:20px;}
+.tbmain{ border:none;}
+.win .tbmain tr{ height:20px; line-height:20px;}
+.close1{ display:inline-block; background:url(../img/close1.png) no-repeat left center; width:20px; height:20px; text-indent:20px; overflow:hidden;cursor:pointer;}
+.up{ display:inline-block; background:url(../img/up.png) no-repeat left center; width:10px; height:20px; text-indent:25px; overflow:hidden;vertical-align:middle; cursor:pointer;}
+.down{ display:inline-block; background:url(../img/down.png) no-repeat left center; width:10px; height:20px; text-indent:25px; overflow:hidden;vertical-align:middle;cursor:pointer;}
+.colse{ display:inline-block; background:url(../img/close1.png) no-repeat left center; width:10px; height:20px; text-indent:15px; overflow:hidden; vertical-align:middle;cursor:pointer;}
+
+.header2{ background-color:#F8F8F8;}
+.tbmain tbody tr.header2, .tbmain tbody tr.header1{ border:solid 1px #ccc; line-height:30px; height:25px; text-align:center;}
+.tbmain tbody tr.val{ height:30px; line-height:30px;}
+.tbmain tbody tr.blank{ height:10px; line-height:10px;}
+.win-tool{ margin-top:20px; padding:10px; border-top:solid 1px #ccc;}
+.btnAddStyle{ background-color:#fff; border:none;  width:120px; height:30px; padding-left:10px; background:url(../img/plus.png) no-repeat left center; text-align:left; font-size:12px; color:#666;}
+
+.style-sucess{ width:500px;  margin-top:10px; }
+.style-sucess .su-wrap{ background-color:rgb(246,246,246); border:solid 1px #ccc; color:rgb(157,157,157); padding:0 5px;}
+#tb-style{ border:none; width:100%; height:100%; border-collapse:collapse; font-size:12px;}
+#tb-style tr:hover{ background-color:#F6F6F6;}
+#tb-style thead{ background-color:#f6f6f6; height:30px; line-height:30px; font-size:12px; border:none; text-indent:0;}
+#tb-style tbody tr,#tb-style thead tr{ height:20px; line-height:20px; text-align:center;}
+.edittool{ margin:5px 0; padding:5px 0 0 0; border-top:solid 1px #ccc; text-align:center;} 
+.btnEdit{ background-color:#41901D;font-size:14px; width:100px; border:none; height:35px;  color:#fff;}
+.btnCanel{ width:100px;}
+.win-close{ display:block; width:20px; height:20px; background:url(../img/close.png) left center no-repeat; position:absolute; top:5px; right:5px; text-indent:-200px; overflow:hidden; cursor:pointer;}
+.win-close:hover{ background-image:url(../img/close-hover.png);}
+.markItUp{ width:95%;}
+#p-desc{ text-align:left; width:100%;}
+
+.upload-wrap{ border:solid 1px #ccc;}
+.upload-wrap .upload-title{ margin:10px; padding:0; line-height:20px;}
+.upload-wrap .upload-title span{ color:#FB7254;}
+.upload-list li{ display:block; float:left; width:90px; height:105px; border:solid 1px #ccc; margin:10px;}
+.upload-list .thumb:hover{ border:solid 1px #FB7254; margin:-1px;}
+.upload-list .thumb{ margin:0; padding:0; height:90px; width:90px; overflow:hidden; position:relative; }
+.upload-list .def{ position:absolute; display:block; width:55px; height:20px; line-height:20px; background-color:#FB7254; color:#fff; left:0; top:-20px; text-align:center; cursor:pointer; -webkit-transition: -webkit-transform .2s linear;-moz-transition: -moz-transform .2s linear;-o-transition: -o-transform .2s linear;transition: transform .2s linear;}
+.upload-list .thumb:hover .def{ transform:translateY(20px); top:0\9;}
+.upload-list .thumb .def.hover{ top:0;}
+.upload-list  a.delimg{ display:block; height:15px; line-height:15px; background:#F2F2F2 url(../img/close3.png) center center no-repeat; text-indent:-200px; overflow:hidden;}
+.upload-list  a.delimg:hover{ background-image:url(../img/close3-hover.png);}
+
+
+.error{ display:inline-block; color:#F97123; font-size:14px; margin-left:10px;}
+.info{ display:inline-block; color:#999; font-size:14px; margin-left:10px;}
+.hidden{ display:none;}

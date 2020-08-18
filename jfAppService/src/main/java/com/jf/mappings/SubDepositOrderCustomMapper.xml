@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SubDepositOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SubDepositOrderCustom" extends="com.jf.dao.SubDepositOrderMapper.BaseResultMap" >
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="activity_begin_time" property="activityBeginTime" jdbcType="TIMESTAMP" />
+    <result column="activity_end_time" property="activityEndTime" jdbcType="TIMESTAMP" />
+    <result column="quantity_sum" property="quantitySum" jdbcType="INTEGER" />
+    <result column="deposit_sum" property="depositSum" jdbcType="DECIMAL" />
+    <result column="sale_price_sum" property="salePriceSum" jdbcType="DECIMAL" />
+    <result column="deduct_amount_sum" property="deductAmountSum" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, combine_deposit_order_id, sub_deposit_order_code, mcht_id, member_id, activity_pre_sell_product_id, 
+    product_id, product_item_id, sku_pic, product_name, art_no, brand_name, product_prop_desc, 
+    sku, tag_price, sale_price, mall_price, settle_price, deposit, deduct_amount, quantity, 
+    pay_amount, status, order_dtl_id, pop_commission_rate, settle_amount, commission_amount, 
+    member_remarks, mcht_remarks, pay_date, complete_date, create_by, create_date, update_by, 
+    update_date, remarks, del_flag
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SubDepositOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_sub_deposit_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByCustomPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_sub_deposit_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.SubDepositOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_sub_deposit_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_sub_deposit_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.combineDepositOrderId != null" >
+        combine_deposit_order_id = #{record.combineDepositOrderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.subDepositOrderCode != null" >
+        sub_deposit_order_code = #{record.subDepositOrderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtId != null" >
+        mcht_id = #{record.mchtId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.activityPreSellProductId != null" >
+        activity_pre_sell_product_id = #{record.activityPreSellProductId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productItemId != null" >
+        product_item_id = #{record.productItemId,jdbcType=INTEGER},
+      </if>
+      <if test="record.skuPic != null" >
+        sku_pic = #{record.skuPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productName != null" >
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.artNo != null" >
+        art_no = #{record.artNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.brandName != null" >
+        brand_name = #{record.brandName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productPropDesc != null" >
+        product_prop_desc = #{record.productPropDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sku != null" >
+        sku = #{record.sku,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tagPrice != null" >
+        tag_price = #{record.tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.salePrice != null" >
+        sale_price = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mallPrice != null" >
+        mall_price = #{record.mallPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.settlePrice != null" >
+        settle_price = #{record.settlePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deposit != null" >
+        deposit = #{record.deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deductAmount != null" >
+        deduct_amount = #{record.deductAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.quantity != null" >
+        quantity = #{record.quantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.orderDtlId != null" >
+        order_dtl_id = #{record.orderDtlId,jdbcType=INTEGER},
+      </if>
+      <if test="record.popCommissionRate != null" >
+        pop_commission_rate = #{record.popCommissionRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.settleAmount != null" >
+        settle_amount = #{record.settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.commissionAmount != null" >
+        commission_amount = #{record.commissionAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.memberRemarks != null" >
+        member_remarks = #{record.memberRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchtRemarks != null" >
+        mcht_remarks = #{record.mchtRemarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeDate != null" >
+        complete_date = #{record.completeDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <select id="getSubDepositOrderList" parameterType="java.util.Map" resultMap="BaseResultMap">
+  		select 
+  			sdo.*,
+  			a.id activity_id,
+  			aa.activity_begin_time, 
+  			aa.activity_end_time
+  			<if test="groupBy !=null and groupBy != ''">
+	  			,
+	  			sum(sdo.quantity) quantity_sum,
+	  			sum(sdo.sale_price) sale_price_sum,
+	  			sum(sdo.deposit) deposit_sum,
+	  			sum(sdo.deduct_amount) deduct_amount_sum
+  			</if>
+  		from bu_sub_deposit_order sdo 
+	  		left join bu_activity_product_deposit spd on spd.id = sdo.activity_pre_sell_product_id 
+	  		left join bu_activity a on a.id = spd.activity_id
+	  		left join bu_activity_area aa on aa.id = activity_area_id 
+  		where sdo.del_flag = '0'
+  			and spd.del_flag = '0'
+  			and a.del_flag = '0'
+  			and aa.del_flag = '0'
+  		<if test="subDepositOrderStatusList !=null and subDepositOrderStatusList.size() > 0">
+			and sdo.status in
+			<foreach collection="subDepositOrderStatusList" index="index" item="item" open="(" separator="," close=")">
+	             #{item }
+	        </foreach>
+		</if>
+  		<if test="memberId !=null and memberId != ''">
+			and sdo.member_id = #{memberId }
+		</if>
+		<if test="orderDtlId !=null and orderDtlId != ''">
+			and sdo.order_dtl_id = #{orderDtlId }
+		</if>
+  		<if test="groupBy !=null and groupBy != ''">
+			group by sdo.combine_deposit_order_id
+		</if>
+		order by sdo.create_date desc
+  		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage } , #{pageSize } 
+		</if>
+  </select>
+  
+  <select id="selectGroupByCombineDepositOrder" parameterType="com.jf.entity.SubDepositOrderCustomExample" resultMap="BaseResultMap" >
+    select 
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_sub_deposit_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    group by combine_deposit_order_id
+  </select>
+  
+</mapper>

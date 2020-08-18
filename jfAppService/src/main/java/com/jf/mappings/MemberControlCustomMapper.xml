@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberControlCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberControlCustom" extends="com.jf.dao.MemberControlMapper.BaseResultMap">
+  
+  </resultMap>
+  
+  	
+  	<update id="updateLastRecSvipIntegralDateModel" parameterType="com.jf.entity.MemberControlCustom">
+  		UPDATE bu_member_control
+		SET last_rec_svip_integral_date = #{lastRecSvipIntegralDate},
+		update_by = #{updateBy},
+		update_date = #{updateDate}
+		WHERE
+			member_id = #{memberId}
+		AND (
+			(last_rec_svip_integral_date NOT BETWEEN #{beginDate} and #{endDate} ) 
+				or 
+			last_rec_svip_integral_date is null
+		)
+  	</update>
+
+
+</mapper>

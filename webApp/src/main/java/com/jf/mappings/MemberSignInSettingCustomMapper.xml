@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberSignInSettingCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MemberSignInSettingCustom" extends="com.jf.dao.MemberSignInSettingMapper.BaseResultMap" >
+		<result column="reward_name" property="rewardName" jdbcType="VARCHAR" />
+		<result column="reward_type" property="rewardType" jdbcType="CHAR" />
+		<result column="reward_gift" property="rewardGift" jdbcType="VARCHAR" />
+		<result column="sign_in_date" property="signInDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <!-- 获取每月的签到设置 -->
+  <select id="getMonthSignInSetting" parameterType="java.util.Map" resultType="com.jf.entity.MemberSignInSettingCustom">
+  		select 
+  		manage.id as signInManageId,
+		setting.reward_name,
+		setting.reward_type,
+		setting.reward_gift,
+		setting.sign_in_date,
+		setting.id as signInSettingId
+		from bu_sign_in_manage manage,bu_sign_in_setting setting
+		where manage.id = setting.sign_in_manage_id
+		and manage.`year` = #{year} 
+		and manage.`month` = #{month}
+		and manage.del_flag = '0'
+		and setting.del_flag = '0'
+  </select>
+  
+  
+  <!-- 获取新版本签到轮播-->
+  <select id="getNewSignInBroadcastContent"  resultType="com.jf.entity.MemberSignInSettingCustom">
+  		SELECT
+	t.*
+FROM
+	(
+		(
+			SELECT
+				a.create_date,
+				mi.nick,
+				mi.mobile,
+				sis.reward_type,
+				CASE
+			WHEN sis.reward_type = 3 THEN
+				(
+					SELECT
+						c.money
+					FROM
+						bu_coupon c
+					WHERE
+						c.id = sis.reward_gift
+				)
+			WHEN sis.reward_type = 1 THEN
+			(select msid.amount from bu_member_sign_in_dtl msid where msid.member_id = mi.id ORDER BY msid.id desc LIMIT 1)	
+			ELSE
+				sis.reward_gift
+			END reward_gift
+			FROM
+				bu_sign_in_setting sis,
+				bu_member_sign_in_setting a,
+				bu_member_info mi
+			WHERE
+				sis.id = a.sign_in_setting_id
+			AND a.member_id = mi.id
+			AND a.del_flag = '0'
+			AND a.sign_in_date_str = date_format(NOW(), '%Y%m%d')
+			AND sis.del_flag = '0'
+			AND mi.del_flag = '0'
+			ORDER BY
+				a.id DESC
+			LIMIT 150
+		)
+		UNION ALL
+			(
+				SELECT
+					mcsi.create_date,
+					mi.nick,
+					mi.mobile,
+					'4' AS reward_type,
+					csi.cumulative_sign_in_count AS reward_gift
+				FROM
+					bu_member_cumulative_sign_in mcsi,
+					bu_cumulative_sign_in_setting csi,
+					bu_member_info mi
+				WHERE
+					mcsi.cumulative_sign_in_setting_id = csi.id
+				AND mcsi.member_id = mi.id
+				AND mcsi.del_flag = '0'
+				AND mcsi.receive_time >= date_format(NOW(), '%Y-%m-%d 00:00:00')
+				AND mcsi.receive_time &lt;= date_format(NOW(), '%Y-%m-%d 23:23:59')
+				AND csi.del_flag = '0'
+				AND mi.del_flag = '0'
+				ORDER BY
+					mcsi.id DESC
+				LIMIT 50
+			)
+	) t
+ORDER BY
+	t.create_date DESC
+  </select>
+  
+</mapper>

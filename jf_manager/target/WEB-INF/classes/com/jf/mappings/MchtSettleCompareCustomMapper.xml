@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSettleCompareCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtSettleCompareCustom" extends="com.jf.dao.MchtSettleCompareMapper.BaseResultMap" >
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, settle_month, mcht_id, begin_not_settle, current_month_settle, cross_month_settle, 
+    current_month_need_settle, current_month_not_settle, current_settle_order_amount, 
+    current_refund_amount, end_not_settle, create_by, create_date, update_by, update_date, 
+    remarks, del_flag,
+    (select mi.mcht_code from bu_mcht_info mi where mi.del_flag = '0' and mi.id = mcht_id) mcht_code,
+    (select mi.company_name from bu_mcht_info mi where mi.del_flag = '0' and mi.id = mcht_id) company_name,
+    (select mi.shop_name from bu_mcht_info mi where mi.del_flag = '0' and mi.id = mcht_id) shop_name
+    
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtSettleCompareExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_settle_compare
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByCustomExample" parameterType="com.jf.entity.MchtSettleCompareExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_settle_compare
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+</mapper>

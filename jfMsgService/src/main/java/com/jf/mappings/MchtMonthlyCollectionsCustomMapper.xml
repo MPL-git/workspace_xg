@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtMonthlyCollectionsCustomMapper" >
+  <select id="selectNoMonthlyCollectionsOrderDtlList" resultMap="com.jf.dao.OrderDtlCustomMapper.BaseResultMap">
+ SELECT	mi.id mcht_id,	mi.mcht_type,	od_tmp.* FROM	bu_mcht_info mi LEFT JOIN (	SELECT		so.mcht_id mid,		od.*	FROM	bu_combine_order co,		bu_sub_order so,		bu_order_dtl od	WHERE		co.id = so.combine_order_id	AND so.id = od.sub_order_id	AND co.del_flag = '0'	AND so.del_flag = '0'	AND od.del_flag = '0'	AND co.pay_status = '1'	AND od.is_give = '0'	AND DATE_FORMAT(co.pay_date, '%Y-%m') = #{collectionDate,jdbcType=VARCHAR}) od_tmp ON mi.id = od_tmp.mid WHERE	NOT EXISTS (		SELECT			mcc.id		FROM			bu_mcht_monthly_collections mcc		WHERE		mcc.collection_date = #{collectionDate,jdbcType=VARCHAR} and mcc.mcht_id=mi.id) 
+ </select>
+ 
+  <select id="selectCustomServiceOrderDList" resultMap="com.jf.dao.CustomerServiceOrderCustomMapper.BaseResultMap">
+ select cso.*,so.mcht_id ,(select mcht_type from bu_mcht_info mi where mi.id=so.mcht_id) mcht_type from bu_customer_service_order cso,bu_customer_service_status_log cssl,bu_sub_order so where cso.id=cssl.service_order_id and cso.sub_order_id=so.id  and  cso.service_type='D' and cssl.pro_status='D2' and not EXISTS(select mcc.id from bu_mcht_monthly_collections mcc where mcc.collection_date=#{collectionDate,jdbcType=VARCHAR} and mcc.mcht_id=so.mcht_id) and cso.del_flag='0' and cssl.del_flag='0' and  DATE_FORMAT(cssl.create_date,'%Y-%m')=#{collectionDate,jdbcType=VARCHAR}
+ </select>
+ 
+ 
+ 
+  <select id="selectOrderDtlList4CustomServiceOrderAB" resultMap="com.jf.dao.OrderDtlCustomMapper.BaseResultMap">
+		SELECT
+			dtl.*, so.mcht_id
+		FROM
+			bu_order_dtl dtl,
+			bu_sub_order so
+		WHERE
+			dtl.sub_order_id = so.id
+		AND so.del_flag = '0'
+		AND dtl.del_flag = '0'
+		AND dtl.product_status IN ('2', '3')
+		AND DATE_FORMAT(dtl.refund_date, '%Y-%m') = #{collectionDate,jdbcType=VARCHAR}
+		AND so.mcht_id NOT IN (
+			SELECT
+				mmc.mcht_id
+			FROM
+				bu_mcht_monthly_collections mmc
+			WHERE
+				mmc.collection_date = #{collectionDate,jdbcType=VARCHAR}
+		)
+<!-- select dtl.*,so.mcht_id from bu_order_dtl dtl,bu_sub_order so where dtl.sub_order_id=so.id and so.del_flag='0' and dtl.del_flag='0' and dtl.product_status in ('2','3')  and DATE_FORMAT(dtl.refund_date, '%Y-%m')=#{collectionDate,jdbcType=VARCHAR} and not EXISTS(select mmc.id from bu_mcht_monthly_collections mmc where mmc.collection_date=#{collectionDate,jdbcType=VARCHAR} and mmc.mcht_id=so.mcht_id) -->
+ </select>
+
+  <select id="selectPayLogList" resultMap="com.jf.dao.PayToMchtLogMapper.BaseResultMap">
+ select ptml.* from bu_pay_to_mcht_log ptml where ptml.del_flag='0' and  ptml.type in ('1','2')   and not EXISTS(select mss.id from bu_mcht_monthly_collections mss where mss.collection_date=#{collectionDate,jdbcType=VARCHAR} and mss.mcht_id=ptml.mcht_id)  and DATE_FORMAT(ptml.pay_date,'%Y-%m')=#{collectionDate,jdbcType=VARCHAR}
+ </select>
+ 
+</mapper>

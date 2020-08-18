@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SvipProductRecommendCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SvipProductRecommendCustom"  extends="com.jf.dao.SvipProductRecommendMapper.BaseResultMap" >
+  </resultMap>
+  <select id="getProductTypeList" resultType="com.jf.entity.ProductType">
+	select DISTINCT
+		pt.id,
+		pt.name
+	from 
+		bu_svip_product_recommend spr, bu_product p,bu_mcht_product_brand mpb,bu_product_type pt,bu_mcht_info mi
+	where
+		spr.product_id = p.id
+		AND p.mcht_id = mpb.mcht_id
+		AND p.brand_id = mpb.product_brand_id
+		AND p.product_type1_id = pt.id
+		AND p.mcht_id = mi.id
+		AND spr.del_flag='0'
+		AND mpb.`status` = '1'
+		AND mpb.audit_status = '3'
+		AND mpb.del_flag = '0'
+		AND p.STATUS = '1'
+		AND p.audit_status = '2'
+		AND p.del_flag = '0'
+		AND p.sale_type = '1'
+		AND p.svip_discount IS NOT NULL
+		<!-- <![CDATA[
+		AND p.svip_discount <= 0.9
+		]]> -->
+		AND mi.`status` = '1'
+		AND mi.shop_status = '1'
+		AND mi.del_flag = '0'
+		AND pt.del_flag = '0'
+		AND pt.status = '1'
+	ORDER BY
+		IFNULL(pt.seq_no,99999) asc,pt.id desc
+  </select>
+
+	<select id="getSvipProductRecommendList" parameterType="java.util.Map" resultType="com.jf.entity.ProductCustom">
+		select 	p.id,
+				p.name,
+				item.tag_price as minTagPrice,
+				item.sale_price as salePrice,
+				item.mall_price as minMallPrice,
+				(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+				p.svip_discount
+		from bu_svip_product_recommend spr
+		left join bu_product p on spr.product_id = p.id
+		left join bu_mcht_product_brand mpb on p.brand_id = mpb.product_brand_id AND p.mcht_id = mpb.mcht_id
+		left join bu_mcht_info mi on p.mcht_id = mi.id
+		left join bu_product_item item on item.id = p.min_sale_price_item_id
+		where 	spr.del_flag='0'
+				AND mpb.`status` = '1'
+				AND mpb.audit_status = '3'
+				AND mpb.del_flag = '0'
+				AND p.STATUS = '1'
+				AND p.audit_status = '2'
+				AND p.del_flag = '0'
+				AND p.sale_type = '1'
+				AND p.svip_discount IS NOT NULL
+				AND mi.`status` = '1'
+				AND mi.shop_status = '1'
+				AND mi.del_flag = '0'
+				<if test="keywordList != null and keywordList.size() > 0">
+                    and ((
+					<foreach collection="keywordList" item="word" separator=" and ">
+					    p.search_fields like concat('%',#{word},'%')
+					</foreach>
+					)or(
+					<foreach collection="keywordList" item="word" separator=" or ">
+						 spr.keyword like concat('%',#{word},'%')
+					</foreach>
+					))
+				</if>
+		ORDER BY
+		IFNULL(spr.seq_no,99999) asc,p.weights desc,p.id desc
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize}
+		</if>
+	</select>
+
+</mapper>

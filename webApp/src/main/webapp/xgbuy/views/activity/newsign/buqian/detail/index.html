@@ -1,0 +1,224 @@
+<div class="page checkin newsign-buqian newsign-detail flex dc " data-title="邀请详情" data-id="activity_newsign_buqian_detail">
+	<link rel="stylesheet" href="activity/newsign/checkin.css?ver=1.0">
+	<link rel="stylesheet" href="activity/newsign/buqian/detail/detail.css?ver=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('activity/newsign/draw/index.html')"></i></div>
+		<p class="ellipsis">邀请详情</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more scroll-decorate scroll-decorately">
+		<p class="flex ac je mrl30"><span class="ico-btn ico-rule" onclick="popupShow('.popup-rule-free')"></span></p>
+		<div class="m30 checkin-main">
+			<div class="m20 main-header">
+				<div class="cycle-border">
+					<img class="main-img" src="activity/newsign/buqian/resources/buqianka.png" alt="">
+				</div>
+			</div>
+
+			<div class="main-container"></div>
+		</div>
+
+		<div class="detail-footer"></div>
+
+		<div class="popup popup-rule popup-rule-free" onclick="closeSelf(this)">
+			<div class="popup-rule-con" onclick="stopSelf()">
+				<div class="tab-head flex ac jc">
+					邀请得补签卡规则
+					<a class="close-x" onclick="closeSelf(this)"></a>
+				</div>
+
+				<div class="con scroll-y">
+					<div class="touchfix">
+						<p class="mb20">1、每个新用户可助力一次，同一个设备、微信号、视为同一个用户。</p>
+						<p class="mb20">2、若发现用户存在刷单、虚假用户助力等违规行为，平台有权利判定助力失败。</p>
+						<p class="mb20">3、发起后24小时内助力成功后，平台自动发放补签卡。</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+		<!-- 是否分享 -->
+	<div class="popup popup-doyoushare popup-style-sign popup-style-friend" onclick="closeSelf(this)">
+		<div class="popup-checkin-con" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+
+			<h3 class="flex ac jc">取消分享将无法获得额外红包哦</h3>
+
+			<div class="flex jc">
+				<a class="btn-checkin flex ac jc no-share" onclick="closeSelf(this)">不分享</a>
+				<a class="btn-checkin flex ac jc is-share" onclick="detailApi.share()">立即分享</a>
+			</div>
+		</div>
+	</div>
+	
+	<!--累计签到打开的箱子 -->
+	<div class="flex ac jc popup popup-xiangzi popup-xiangzi-notopen" onclick="detailApi.closeSign(this)">
+		<div class="popup-xiangzi-con" onclick="stopSelf()">
+			<div class="dingwei">
+				<a class="close close-right" onclick="detailApi.closeSign(this)"></a>
+			</div>
+			<div class="con-xiangzi"></div>
+		</div>
+	</div>
+
+	<script id="checkin_tpl_xiangzi" type="text/html">
+		<div class="xiangzi-container">
+			<div class="flex ac jc xianzi-title">累计签到{{cumulativeSignInCount}}天可领取</div>
+					<div class="xiangzi-shuju">
+						<div>实物礼品限量{{stock}}送完即止</div>
+							<div class="flex ac scroll-x tab-msg">
+								{{if productMap}}
+									<div class="h155 fn">
+										<div class="show-gift flex ac jc">
+											<img class ="gift-shangpin flex ac jc" src="{{productMap.productPic}}" alt="">
+										</div>
+										<div class="show-button">
+											<div class="product-span">{{productMap.productName}}</div>
+										</div>
+									</div>
+								{{/if}}
+								{{if integral}}
+									<div class="h155 fn">
+										<div class="show-gift">
+											<div class="gift-jifen"></div>
+										</div>
+										<div class="flex ac jc">{{integral}}积分</div>
+									</div>
+								{{/if}}
+								{{if couponList}}
+									{{each couponList arr s}}
+										<div class="h155 fn">
+											<div class="show-gift">
+												<div class="gift-youhuijuan"></div>
+											</div>
+											<div class="show-button">
+												<div class="product-span flex ac jc">{{arr.name}}</div>
+											</div>
+										</div>
+									{{/each}}
+								{{/if}}
+							</div>
+					</div>
+		</div>
+	</script>
+
+	<script id="checkin_detail_tpl_container" type="text/html">
+		{{if currentMemberId == sourceMemberId}}
+			{{if taskStatus == 0}}
+			<div class="flex ac jc container-h3">{{content}}</div>
+			<div class="c9 flex ac jc">
+				<div class="flex ac jc c9 container-span"><time data-timer="{{timer}}">{{time}}</time></div>将失效
+			</div>
+			<div class="flex ac jc container-btn"  onclick="detailApi.share()">继续邀请</div>
+			{{/if}}
+			{{if taskStatus == 1}}
+			<div class="flex ac jc container-h3">{{content}}</div>
+			<div class="c9 flex ac jc">
+				<div class="flex ac jc f50 ft26">超时,已失效</div>
+			</div>
+			<div class="flex ac jc container-graybtn">超时失效</div>
+			{{/if}}
+			{{if taskStatus == 2}}
+			<div class="flex ac jc container-h3">已完成邀请，补签卡已发放</div>
+			<div class="c9 flex ac jc">
+				<div class="flex ac jc f50 ft26"></div>
+			</div>
+			<div class="flex ac jc container-btn">邀请完成</div>
+			{{/if}}
+		{{/if}}
+		{{if currentMemberId != sourceMemberId}}
+			{{if memberAssistanceStatus == 1}}
+				<div class="flex ac jc friendhelp-btn" onclick="detailApi.clickZhuli()">立即助力</div>
+			{{/if}}
+			{{if memberAssistanceStatus == 2}}
+				<div class="flex ac jc friendhelp-btn" onclick="getUrl('my/download/index.html', 'self')">请前往下载登录</div>
+			{{/if}}
+			{{if memberAssistanceStatus == 3}}
+				<div class="flex ac jc friendhelp-btn">已助力成功</div>
+			{{/if}}
+			{{if memberAssistanceStatus == 4}}
+				<div class="flex ac jc friendhelp-btn">已助力完成</div>
+			{{/if}}
+			{{if memberAssistanceStatus == 5}}
+				<div class="flex ac jc friendhelp-btn">任务已超时</div>
+			{{/if}}
+			{{if memberAssistanceStatus == 6}}
+				<div class="flex ac jc friendhelp-btn"  onclick="getUrl('my/download/index.html', 'self')">签到领礼包</div>
+			{{/if}}
+		{{/if}}
+	</script>
+
+	<script id="checkin_detail_tpl_footer" type="text/html">
+		{{if currentMemberId == sourceMemberId}}
+			<div class="flex ac jc footer-title">一 助力记录 一</div>
+			{{if dataList == ""}}
+			<div class="flex ac jc footer-span pt50">目前还没有成功邀请好友助力</div>
+			{{/if}}
+			{{if dataList}}
+				{{each dataList value i}}
+					{{if dataList == ""}}
+					<div class="flex ac jc footer-span pt50">目前还没有成功邀请好友助力</div>
+					{{/if}}
+					<div class="flex footer-relative">
+						<div class="footer-img">
+							{{if value.weixinHead ==""}}
+								<img class="flex ac jc" src="activity/newsign/resources/def-head.png" alt="">
+							{{/if}}
+							{{if value.weixinHead !=""}}
+								<img class="flex ac jc" src="{{value.weixinHead}}" alt="">
+							{{/if}}
+						</div>
+						<div class="flex ac jc footer-span">{{value.nick}}</div>
+						<div class="flex ac jc footer-btn">{{value.proStatusStr}}</div>
+					</div>
+				{{/each}}
+			{{/if}}
+		{{/if}}
+		{{if currentMemberId != sourceMemberId}}
+			<div class="flex ac jc friendhelp-span">前往APP帮好友助力，自己也可以签到领礼包哦</div>
+
+			<div class="friendhelp-footer">
+				<div class="flex ac jc friendhelp-h3">一 本月累签礼包 一</div>
+					<div class="container-total">
+						{{if cumulativeSignInSettingList}}
+							{{each cumulativeSignInSettingList value i}}
+								{{if value.isAchieveRequire == 1}}
+									{{if value.isDrawAwadStatus == 1}}
+									<div class="friendhelp-container friendhelp-content" onclick="detailApi.getGift(i)">
+										<div class="contain-img3"></div>
+										<div class="flex ac jc contain-span">签到{{value.cumulativeSignInCount}}天</div>
+										<div class="show-title1">已领取</div>
+									</div>
+									{{/if}}
+			
+									{{if value.isDrawAwadStatus == 0}}
+										<div class="friendhelp-container friendhelp-content" onclick="detailApi.getGift(i)">
+											<div class="contain-img2"></div>
+											<div class="flex ac jc contain-span">签到{{value.cumulativeSignInCount}}天</div>
+											<div class="show-title1">可领取</div>
+										</div>
+									{{/if}}
+							{{/if}}
+							{{if value.isAchieveRequire == 0}}
+								<div class="friendhelp-container friendhelp-content" onclick="detailApi.getGift(i)">
+									<div class="contain-img1"></div>
+									<div class="flex ac jc contain-span">签到{{value.cumulativeSignInCount}}天</div>
+								</div>
+							{{/if}}
+							{{/each}}
+								<div class="friendhelp-container" onclick="getUrl('my/download/index.html', 'self')">
+									<div class="contain-img1"></div>
+									<div class="flex ac jc contain-span">去签到领取</div>
+								</div>
+						{{/if}}
+					</div>
+				</div>
+			</div>
+		{{/if}}
+
+	</script>
+	
+	<script src="activity/newsign/buqian/detail/detail.js?ver=1.2" async></script>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SourceNicheProductCustomMapper" >
+  <select id="getEveryDayShopProduct" parameterType="map" resultType="com.jf.entity.ProductCustom">
+		select
+			p.id,
+			p.name,
+			(<![CDATA[select 
+				bpi.sale_price 
+			from 
+				bu_activity_product ap,bu_activity a,bu_activity_area aa,bu_product_item bpi 
+			where 
+				ap.product_id = p.id and ap.activity_id = a.id and a.activity_area_id = aa.id and ap.product_id = bpi.product_id
+				and bpi.id = p.min_sale_price_item_id and ap.del_flag='0' and a.del_flag='0' and aa.del_flag='0' and bpi.del_flag='0'
+				and aa.status = '1' and aa.activity_begin_time<=now() and aa.activity_end_time>=now() and a.status = '6' 
+				and ap.coo_audit_status = '2' and ap.refuse_flag = 0
+			]]>)sale_price,
+			p.min_mall_price,
+			p.min_tag_price,
+			(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+			p.mcht_id
+		from 
+			bu_product p,bu_mcht_product_brand mpb
+		where
+			p.mcht_id = mpb.mcht_id
+			AND p.brand_id = mpb.product_brand_id
+			AND p.id in 
+			<foreach collection="idList" item="id" open="(" close=")" separator="," >
+	    		#{id}
+	    	</foreach>
+			AND mpb.`status` = '1'
+			AND mpb.audit_status = '3'
+			AND mpb.del_flag = '0'
+			AND p.STATUS = '1'
+			AND p.audit_status = '2'
+			AND p.del_flag = '0'
+			AND p.sale_type = '1'
+			AND EXISTS(select pi.id from bu_product_item pi where pi.del_flag = '0' and pi.product_id = p.id and pi.stock - pi.locked_amount > 0)
+		ORDER BY
+			p.weights DESC,p.id DESC
+  	</select>
+  
+  	<select id="getCollegeStudentProductList" parameterType="java.lang.String" resultType="com.jf.entity.ProductCustom">
+  	
+		select
+			p.id,
+			p.name,
+			(<![CDATA[select 
+				bpi.sale_price 
+			from 
+				bu_activity_product ap,bu_activity a,bu_activity_area aa,bu_product_item bpi 
+			where 
+				ap.product_id = p.id and ap.activity_id = a.id and a.activity_area_id = aa.id and ap.product_id = bpi.product_id
+				and bpi.id = p.min_sale_price_item_id and ap.del_flag='0' and a.del_flag='0' and aa.del_flag='0' and bpi.del_flag='0'
+				and aa.status = '1' and aa.activity_begin_time<=now() and aa.activity_end_time>=now() and a.status = '6' 
+				and ap.coo_audit_status = '2' and ap.refuse_flag = 0
+			]]>)sale_price,
+			p.min_mall_price,
+			p.min_tag_price,
+			(SELECT pic.pic FROM bu_product_pic pic WHERE pic.product_id = p.id AND pic.del_flag = '0' AND pic.is_default = '1' ) AS pic,
+			p.mcht_id
+		from 
+			bu_product p,bu_mcht_product_brand mpb
+		where
+			p.mcht_id = mpb.mcht_id
+			AND p.brand_id = mpb.product_brand_id
+			AND p.id in 
+			<foreach collection="idList" item="id" open="(" close=")" separator="," >
+	    		#{id}
+	    	</foreach>
+			AND mpb.`status` = '1'
+			AND mpb.audit_status = '3'
+			AND mpb.del_flag = '0'
+			AND p.STATUS = '1'
+			AND p.audit_status = '2'
+			AND p.del_flag = '0'
+			AND p.sale_type = '1'
+			AND EXISTS(select pi.id from bu_product_item pi where pi.del_flag = '0' and pi.product_id = p.id and pi.stock - pi.locked_amount > 0)
+		ORDER BY
+			p.weights DESC,p.id DESC
+  	</select>
+  	
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CloudProductItemCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CloudProductItemCustom"  extends="com.jf.dao.CloudProductItemMapper.BaseResultMap">
+    <result column="bind_count" property="bindCount" jdbcType="INTEGER" />
+    <result column="prop_value" property="propValue" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    t.*,
+    (select count(pi.id) from bu_product_item pi where pi.cloud_product_item_id = t.id)bind_count,
+    (select cppv.prop_value from jybao.bu_cloud_product_prop_value cppv where cppv.id = t.prop_val_id)prop_value
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.CloudProductItemCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from jybao.bu_cloud_product_item t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="countByExample" parameterType="com.jf.entity.CloudProductItemCustomExample" resultType="java.lang.Integer" >
+    select count(*) from jybao.bu_cloud_product_item t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="getSupplierStatusByItemId" parameterType="java.lang.Integer" resultType="java.lang.String" >
+  	SELECT a.`status`,a.id FROM jybao.bu_cloud_product_item cpi,jybao.bu_cloud_product cp,jybao.sp_office a WHERE cpi.cloud_product_id = cp.id AND cp.sp_office_id = a.id AND cp.del_flag='0' AND a.del_flag='0' AND cpi.id=#{id};
+  </select>
+  
+  <select id="getMchtSupplierStatus" parameterType="java.util.HashMap" resultType="java.lang.String">
+  	SELECT 
+  		msu.`status` 
+  	FROM 
+  		jybao.bu_cloud_product_item cpi,jybao.bu_cloud_product cp,bu_mcht_supplier_user msu 
+  	WHERE 
+  		cpi.cloud_product_id = cp.id AND cp.sp_office_id = msu.sp_office_id 
+  		AND cp.del_flag='0' AND msu.del_flag='0' AND cpi.id=#{id} AND msu.mcht_id=#{mchtId};
+  </select>
+</mapper>

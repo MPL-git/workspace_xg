@@ -1,0 +1,57 @@
+<div class="page operation bgf4" data-title="经营许可证" data-id="seller_operation">
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">经营许可证</p>
+		<div class="fn"></div>
+	</header>
+	
+	<div class="main"></div>
+
+	<script id="operation_con_tpl" type="text/html">
+		<div style="position: relative; overflow: hidden;">
+			<img src="seller/image/cover.png" style="opacity: 0.3; position: absolute;">
+			<img src="{{businessLicensePic}}">
+		</div>
+	</script>
+	
+	<script async>
+		var sellerOperation = $('.page[data-id="seller_operation"]:visible'),
+			sellerOperation_main = sellerOperation.find('.main');
+	
+		var sellerOperationApi = {
+			data: {
+				mchtId: ''
+			},
+		
+			init: function () {
+				var _ts = this,
+					_td = _ts.data;
+			
+				if (search_url) {
+					for (var i = 0; i < search_url.length; i++) {
+						var _a = search_url[i].split('='),
+							_b = _a[1];
+			
+						switch (_a[0]) {
+							case 'mchtId': _td.mchtId = _b; break;
+						}
+					}
+				}
+			
+				new ajax(getApi.getMchtShopInfo, {
+					data: {
+						mchtId: _td.mchtId
+					},
+					success: function (res) {
+						var _list = res.returnData;
+						sellerOperation_main.html(template('operation_con_tpl', _list));
+					}
+				});
+			}
+		};
+		
+		getTpl(function () {
+			sellerOperationApi.init();
+		});
+	</script>
+</div>

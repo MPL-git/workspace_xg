@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SignInCnfCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SignInCnfCustom" extends="com.jf.dao.SignInCnfMapper.BaseResultMap" >
+    <result column="sq_begin_rate" property="sqBeginRate" jdbcType="DECIMAL" />
+    <result column="sq_end_rate" property="sqEndRate" jdbcType="DECIMAL" />
+    <result column="lj_begin_rate" property="ljBeginRate" jdbcType="DECIMAL" />
+    <result column="lj_end_rate" property="ljEndRate" jdbcType="DECIMAL" />
+    <result column="syq_begin_rate" property="syqBeginRate" jdbcType="DECIMAL" />
+    <result column="syq_end_rate" property="syqEndRate" jdbcType="DECIMAL" />
+    <result column="xyq_begin_rate" property="xyqBeginRate" jdbcType="DECIMAL" />
+    <result column="xyq_end_rate" property="xyqEndRate" jdbcType="DECIMAL" />
+    <result column="lyq_begin_rate" property="lyqBeginRate" jdbcType="DECIMAL" />
+    <result column="lyq_end_rate" property="lyqEndRate" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, base_amount, invite_limit, popup_limit, is_effect, create_by, create_date, 
+    update_by, update_date, remarks, del_flag,
+    (SELECT sicd.begin_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '2' AND sicd.sign_in_cnf_id = t.id ) sq_begin_rate,
+    (SELECT sicd.end_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '2' AND sicd.sign_in_cnf_id = t.id ) sq_end_rate,
+    (SELECT sicd.begin_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '3' AND sicd.accumulation_day = '7' AND sicd.sign_in_cnf_id = t.id ) lj_begin_rate,
+    (SELECT sicd.end_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '3' AND sicd.accumulation_day = '7' AND sicd.sign_in_cnf_id = t.id ) lj_end_rate,
+    (SELECT sicd.begin_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '5' AND sicd.sign_in_cnf_id = t.id ) syq_begin_rate,
+    (SELECT sicd.end_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '5' AND sicd.sign_in_cnf_id = t.id ) syq_end_rate,
+    (SELECT sicd.begin_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '6' AND sicd.sign_in_cnf_id = t.id ) xyq_begin_rate,
+    (SELECT sicd.end_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '6' AND sicd.sign_in_cnf_id = t.id ) xyq_end_rate,
+    (SELECT sicd.begin_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '7' AND sicd.sign_in_cnf_id = t.id ) lyq_begin_rate,
+    (SELECT sicd.end_rate FROM bu_sign_in_cnf_dtl sicd WHERE sicd.del_flag = '0' AND sicd.rate_type = '7' AND sicd.sign_in_cnf_id = t.id ) lyq_end_rate
+  </sql>
+  <select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SignInCnfCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_sign_in_cnf t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByCustomExample" parameterType="com.jf.entity.SignInCnfCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_sign_in_cnf t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectByPrimaryKeyCustom" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_sign_in_cnf
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <update id="updateByCustomExampleSelective" parameterType="map" >
+    update bu_sign_in_cnf t
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.baseAmount != null" >
+        base_amount = #{record.baseAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.inviteLimit != null" >
+        invite_limit = #{record.inviteLimit,jdbcType=INTEGER},
+      </if>
+      <if test="record.popupLimit != null" >
+        popup_limit = #{record.popupLimit,jdbcType=INTEGER},
+      </if>
+      <if test="record.isEffect != null" >
+        is_effect = #{record.isEffect,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  
+  <!-- 现金签到数据统计 -->
+  <select id="selectSignInCnfStatisticsList" resultType="java.util.Map" parameterType="java.util.Map" >
+  	SELECT
+		IFNULL(sum(B.qd_count), 0) qd_count,
+		IFNULL(SUM(B.new_member_count), 0) new_member_count,
+		IFNULL(SUM(B.lj_amount_sum), 0.00) lj_amount_sum,
+		IFNULL(SUM(B.tx_amount_sum), 0.00) tx_amount_sum,
+		
+		IFNULL(SUM(B.tx_ws_amount_sum), 0.00) tx_ws_amount_sum,
+		IFNULL(SUM(B.tx_sb_amount_sum), 0.00) tx_sb_amount_sum,
+		IFNULL(SUM(B.tx_cg_amount_sum), 0.00) tx_cg_amount_sum,
+		IFNULL(SUM(B.tx_cgyh_amount_sum), 0.00) tx_cgyh_amount_sum,
+		IFNULL(SUM(B.tx_cgxj_amount_sum), 0.00) tx_cgxj_amount_sum,
+		
+		IFNULL(SUM(B.gm_count), 0) gm_count,
+		IFNULL(SUM(B.dd_count), 0) dd_count,
+		IFNULL(
+			SUM(B.yg_commission_amount_sum),
+			0.00
+		) yg_commission_amount_sum,
+		IFNULL(sum(B.xy_gm_count), 0) xy_gm_count,
+		IFNULL(sum(B.xy_dd_count), 0) xy_dd_count,
+		IFNULL(
+			SUM(
+				B.xy_yg_commission_amount_sum
+			),
+			0.00
+		) xy_yg_commission_amount_sum
+	FROM
+		(
+			SELECT
+				count(1) qd_count,
+				count(
+					(
+						SELECT
+							m.id
+						FROM
+							bu_member_info m
+						WHERE
+							m.del_flag = '0'
+						AND m.id = A.member_id
+						AND m.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND m.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) new_member_count,
+				sum(
+					(
+						SELECT
+							sum(msid.help_amount)
+						FROM
+							bu_member_sign_in_dtl msid
+						WHERE
+							msid.del_flag = '0'
+						AND msid.current_source_member_id = A.member_id
+						AND msid.is_help_amount_get = '1'
+						AND msid.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND msid.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) lj_amount_sum,
+				sum(
+					(
+						SELECT
+							sum(w.amount)
+						FROM
+							bu_withdraw_order w
+						WHERE
+							w.del_flag = '0'
+						AND w. STATUS = '4'
+						AND w.member_id = A.member_id
+						AND w.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND w.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) tx_amount_sum,
+				sum(
+					(
+						SELECT
+							sum(w.amount)
+						FROM
+							bu_withdraw_order w
+						WHERE
+							w.del_flag = '0'
+						AND w. STATUS = '1'
+						AND w.member_id = A.member_id
+						AND w.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND w.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) tx_ws_amount_sum,
+				sum(
+					(
+						SELECT
+							sum(w.amount)
+						FROM
+							bu_withdraw_order w
+						WHERE
+							w.del_flag = '0'
+						AND w. STATUS in('5','6')
+						AND w.member_id = A.member_id
+						AND w.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND w.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) tx_sb_amount_sum,
+				sum(
+					(
+						SELECT
+							sum(w.amount)
+						FROM
+							bu_withdraw_order w
+						WHERE
+							w.del_flag = '0'
+						AND w. STATUS = '4'
+						AND w.member_id = A.member_id
+						AND w.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND w.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) tx_cg_amount_sum,
+				sum(
+					(
+						SELECT
+							sum(w.amount)
+						FROM
+							bu_withdraw_order w
+						WHERE
+							w.del_flag = '0'
+						AND w. STATUS = '4'
+						AND w. withdraw_type = '1'
+						AND w.member_id = A.member_id
+						AND w.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND w.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) tx_cgyh_amount_sum,
+				sum(
+					(
+						SELECT
+							sum(w.amount)
+						FROM
+							bu_withdraw_order w
+						WHERE
+							w.del_flag = '0'
+						AND w. STATUS = '4'
+						AND w. withdraw_type = '2'
+						AND w.member_id = A.member_id
+						AND w.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND w.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) tx_cgxj_amount_sum,
+				count(
+					(
+						SELECT DISTINCT
+							c.member_id
+						FROM
+							bu_combine_order c
+						WHERE
+							c.del_flag = '0'
+						AND c.member_id = A.member_id
+						AND c.pay_status = '1'
+						AND c.order_type IN ('1', '2')
+						AND c.pay_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND c.pay_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) gm_count,
+				sum(
+					(
+						SELECT
+							count(1)
+						FROM
+							bu_combine_order c
+						WHERE
+							c.del_flag = '0'
+						AND c.member_id = A.member_id
+						AND c.pay_status = '1'
+						AND c.pay_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND c.pay_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) dd_count,
+				sum(
+					(
+						SELECT
+							sum(o.commission_amount)
+						FROM
+							bu_combine_order c,
+							bu_sub_order s,
+							bu_order_dtl o
+						WHERE
+							c.del_flag = '0'
+						AND s.del_flag = '0'
+						AND o.del_flag = '0'
+						AND s.combine_order_id = c.id
+						AND o.sub_order_id = s.id
+						AND c.member_id = A.member_id
+						AND c.pay_status = '1'
+						AND c.pay_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND c.pay_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) yg_commission_amount_sum,
+				count(
+					(
+						SELECT DISTINCT
+							c.member_id
+						FROM
+							bu_combine_order c,
+							bu_member_info m
+						WHERE
+							c.del_flag = '0'
+						AND m.del_flag = '0'
+						AND c.member_id = m.id
+						AND m.id = A.member_id
+						AND m.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND m.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+						AND c.pay_status = '1'
+						AND c.order_type IN ('1', '2')
+						AND c.pay_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND c.pay_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) xy_gm_count,
+				sum(
+					(
+						SELECT
+							count(1)
+						FROM
+							bu_combine_order c,
+							bu_member_info m
+						WHERE
+							c.del_flag = '0'
+						AND m.del_flag = '0'
+						AND c.member_id = m.id
+						AND m.id = A.member_id
+						AND m.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND m.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+						AND c.pay_status = '1'
+						AND c.pay_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND c.pay_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) xy_dd_count,
+				sum(
+					(
+						SELECT
+							sum(o.commission_amount)
+						FROM
+							bu_combine_order c,
+							bu_sub_order s,
+							bu_order_dtl o,
+							bu_member_info m
+						WHERE
+							c.del_flag = '0'
+						AND s.del_flag = '0'
+						AND o.del_flag = '0'
+						AND m.del_flag = '0'
+						AND s.combine_order_id = c.id
+						AND o.sub_order_id = s.id
+						AND c.member_id = m.id
+						AND m.id = A.member_id
+						AND m.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND m.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+						AND c.pay_status = '1'
+						AND c.pay_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+						AND c.pay_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					)
+				) xy_yg_commission_amount_sum
+			FROM
+				(
+					SELECT
+						a.member_id
+					FROM
+						bu_member_sign_in_dtl a
+					WHERE
+						a.del_flag = '0'
+					AND a.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+					AND a.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+					GROUP BY
+						a.member_id
+				) A
+			UNION ALL
+				SELECT
+					NULL qd_count,
+					NULL new_member_count,
+					(
+						IFNULL(sum(d.amount), 0.00) + IFNULL(sum(d.extra_amount), 0.00)
+					) lj_amount_sum,
+					NULL tx_amount_sum,
+					NULL tx_ws_amount_sum,
+					NULL tx_sb_amount_sum,
+					NULL tx_cg_amount_sum,
+					NULL tx_cgyh_amount_sum,
+					NULL tx_cgxj_amount_sum,
+					NULL gm_count,
+					NULL dd_count,
+					NULL yg_commission_amount_sum,
+					NULL xy_gm_count,
+					NULL xy_dd_count,
+					NULL xy_yg_commission_amount_sum
+				FROM
+					bu_member_sign_in_dtl d
+				WHERE
+					d.del_flag = '0'
+				AND d.create_date <![CDATA[ >= ]]> #{beginDate, jdbcType=VARCHAR}
+				AND d.create_date <![CDATA[ <= ]]> #{endDate, jdbcType=VARCHAR}
+		) B
+  </select>
+  
+  
+  
+  <!-- 总提现人数-->
+  <select id="selectMemberCount" resultType="java.lang.Integer" >
+  	SELECT
+		COUNT(DISTINCT ma.member_id)
+	FROM
+		bu_member_account ma,
+		bu_member_account_dtl mad
+	WHERE
+		ma.del_flag = '0'
+	AND mad.del_flag = '0'
+	AND ma.id = mad.acc_id
+	AND mad.biz_type IN ('2', '3')
+  </select>
+  
+  <!-- 已提现金额 -->
+  <select id="selectAmountSum" resultType="java.lang.String" parameterType="java.util.Map" >
+  	SELECT
+		IFNULL(sum(mad.amount), 0.00)
+	FROM
+		bu_member_account_dtl mad
+	WHERE
+		mad.del_flag = '0'
+	AND mad.biz_type IN 
+	<foreach collection="list" item="bizType" open="(" close=")" separator="," >
+      #{bizType}
+    </foreach>
+  </select>
+  
+  
+</mapper>

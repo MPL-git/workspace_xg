@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>醒购</title>
+	<style>
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 750px) {
+			html {
+				width: 750px;
+				margin: 0 auto;
+			}
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html');
+
+		function fontFix() {
+			html.style.fontSize = html.offsetWidth / 7.5 + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+	<link rel="stylesheet" href="../static/css/reset.css">
+	<link rel="stylesheet" href="../static/css/apply-pop.css">
+</head>
+<body>
+	<div class="wrapper flex dc">
+		<section class="fg scroll-y">
+			<div class="banner">
+				<img src="../static/images/apply-pop/banner.jpg">
+			</div>
+
+			<div class="con describe">
+				醒购商城是一家品牌鞋服限时特卖商城，所属厦门聚买网络科技有限公司，创立于2017年1月，主营业务为互联网在线销售品牌折扣商品，涵盖运动、服饰、鞋包、生活四大品类，汇集众多国内外知名品牌，为用户提供优质的穿着生活体验。
+			</div>
+
+			<div class="con advantage">
+				<h2>平台优势</h2>
+				<div class="fw flex jb">
+					<p class="ellipsis fn">为商家提供专人服务</p>
+					<p class="ellipsis fn">醒购大力推广、海里用户</p>
+
+					<p class="ellipsis fn">丰富的商家扶持政策</p>
+					<p class="ellipsis fn">合理的、有序的活动策划</p>
+
+					<p class="ellipsis fn">一周一结算结款高效</p>
+					<p class="ellipsis fn">提供强大的商家培训支持</p>
+				</div>
+			</div>
+
+			<div class="con mode">
+				<h2>合作模式（POP）</h2>
+				<div>
+					<p>1、由商家自主定价销售，订单发票由商家提供并邮寄给客户</p>
+					<p>2、商家负责商品的售前、发货、退换货等服务</p>
+					<p>3、平台为商家提供技术支持，流量支持等服务</p>
+				</div>
+			</div>
+
+			<div class="con category">
+				<h2>招商类目</h2>
+				<div class="flex ja">
+					<figure>
+						<img src="../static/images/apply-pop/category-1.png" alt="运动">
+						<figcaption>运动</figcaption>
+					</figure>
+
+					<figure>
+						<img src="../static/images/apply-pop/category-2.png" alt="服饰">
+						<figcaption>服饰</figcaption>
+					</figure>
+
+					<figure>
+						<img src="../static/images/apply-pop/category-3.png" alt="鞋包">
+						<figcaption>鞋包</figcaption>
+					</figure>
+
+					<figure>
+						<img src="../static/images/apply-pop/category-4.png" alt="钟表">
+						<figcaption>钟表</figcaption>
+					</figure>
+
+					<figure>
+						<img src="../static/images/apply-pop/category-5.png" alt="生活">
+						<figcaption>生活</figcaption>
+					</figure>
+				</div>
+			</div>
+
+			<div class="con process">
+				<h2>入驻流程</h2>
+
+				<h3>一、申请入驻</h3>
+				<div>
+					<p>1. 填写企业信息/联系人/类目/品牌</p>
+					<p>2. 提交申请信息</p>
+					<p>3. 等待醒购商城审核</p>
+					<p>4. 审核通过分配招商经理洽谈</p>
+					<p>5. 招商经理与商家确认合作基本要求</p>
+					<p>6. 商家准备入驻相关资料文件</p>
+				</div>
+				<h3>二、提交入驻</h3>
+				<div>
+					<p>1. 商家提交入驻资料文件</p>
+					<p>2. 醒购商城审核</p>
+					<p>3. 审核通过商城寄应签署的资料文件给商家</p>
+					<p>4. 商家签署并完整寄回所有资料文件</p>
+					<p>5. 醒购商城接收审核资料文件</p>
+					<p>6. 审核通过后商家缴纳保证金</p>
+				</div>
+				<h3>三、开通店铺</h3>
+				<div>
+					<p>1. 开通商家管理后台账户</p>
+					<p>2. 分配一对一服务的运营经理</p>
+					<p>3. 商家开始运营店铺</p>
+				</div>
+			</div>
+
+			<div class="con mt20 standard">
+				<h2>招商标准及资费</h2>
+				<div>
+					<a href="apply_standard.html" class="flex ac jb">
+						<p class="ellipsis fg">2019醒购商城招商标准</p>
+						<span class="flex ac jc fn">查看</span>
+					</a>
+					
+					<a href="apply_aptitude.html" class="flex ac jb">
+						<p class="ellipsis fg">醒购商城招商入驻资质标准</p>
+						<span class="flex ac jc fn">查看</span>
+					</a>
+
+					<a href="apply_postage.html" class="flex ac jb">
+						<p class="ellipsis fg">醒购商城招商入驻资费标准</p>
+						<span class="flex ac jc fn">查看</span>
+					</a>
+				</div>
+			</div>
+		</section>
+	
+		<a href="javascript:;" class="fn btn-apply flex ac jc" id="apply">申请入驻</a>
+	</div>
+</body>
+<script src="../../js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+var platformContactId = document.location.search.replace('?platformContactId=', '');
+$("#apply").on('click',function(){
+	location.href="apply.html?source=8&platformContactId="+platformContactId;
+});
+</script>
+</html>

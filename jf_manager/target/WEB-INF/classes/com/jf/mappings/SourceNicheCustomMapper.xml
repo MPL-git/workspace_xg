@@ -1,0 +1,1555 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SourceNicheCustomMapper">
+    <resultMap id="BaseResultCustomMap" type="com.jf.entity.SourceNicheCustom"
+               extends="com.jf.dao.SourceNicheMapper.BaseResultMap">
+        <result column="pic" property="pic" jdbcType="VARCHAR"/>
+        <result column="product_code" property="productCode" jdbcType="VARCHAR"/>
+        <result column="art_brand_group" property="artbrandGroup" jdbcType="VARCHAR"/>
+        <result column="art_brand_group_easy" property="artbrandGroupEasy" jdbcType="VARCHAR"/>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="product_type1_name" property="producttype1Name" jdbcType="VARCHAR"/>
+        <result column="product_type2_name" property="producttype2Name" jdbcType="VARCHAR"/>
+        <result column="product_type3_name" property="producttype3Name" jdbcType="VARCHAR"/>
+        <result column="suit_sex" property="suitSex" jdbcType="VARCHAR"/>
+        <result column="suit_group" property="suitGroup" jdbcType="VARCHAR"/>
+        <result column="tag_price_min" property="tagPriceMin" jdbcType="DECIMAL"/>
+        <result column="sale_price_min" property="salePriceMin" jdbcType="DECIMAL"/>
+        <result column="mall_price_min" property="mallPriceMin" jdbcType="DECIMAL"/>
+        <result column="tag_price_max" property="tagPriceMax" jdbcType="DECIMAL"/>
+        <result column="sale_price_max" property="salePriceMax" jdbcType="DECIMAL"/>
+        <result column="mall_price_max" property="mallPriceMax" jdbcType="DECIMAL"/>
+        <result column="cost_price_max" property="costPriceMax" jdbcType="DECIMAL"/>
+        <result column="agreement_end_date" property="agreementEndDate" jdbcType="DATE"/>
+        <result column="cooperate_begin_date" property="cooperateBeginDate" jdbcType="DATE"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="mcht_type" property="mchtType" jdbcType="VARCHAR"/>
+        <result column="mcht_product_brand_name" property="mchtProductbrandName" jdbcType="VARCHAR"/>
+        <result column="shop_name" property="shopName" jdbcType="VARCHAR"/>
+        <result column="p_shop_name" property="pShopName" jdbcType="VARCHAR"/>
+        <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR"/>
+        <result column="mcht_status_desc" property="mchtStatusDesc" jdbcType="VARCHAR"/>
+        <result column="degree_audit_risk_desc" property="degreeAuditriskDesc" jdbcType="VARCHAR"/>
+        <result column="grade_desc" property="gradeDesc" jdbcType="VARCHAR"/>
+        <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR"/>
+        <result column="degree_adaptability_desc" property="degreeAdaptabilityDesc" jdbcType="VARCHAR"/>
+        <result column="shop_status" property="shopStatus" jdbcType="VARCHAR"/>
+        <result column="product_status_desc" property="productStatusDesc" jdbcType="VARCHAR"/>
+        <result column="shop_status_desc" property="shopStatusDesc" jdbcType="VARCHAR"/>
+        <result column="recommend_remarks" property="recommendRemarks" jdbcType="VARCHAR"/>
+        <result column="product_update_date" property="productUpdateDate" jdbcType="DATE"/>
+        <result column="product_create_date" property="productCreateDate" jdbcType="DATE"/>
+        <result column="prout_art_no" property="proutArtno" jdbcType="VARCHAR"/>
+        <result column="audit_name" property="auditName" jdbcType="VARCHAR"/>
+        <result column="avg_product_score" property="avgProductScore" jdbcType="VARCHAR"/>
+        <result column="avg_mcht_score" property="avgMchtScore" jdbcType="VARCHAR"/>
+        <result column="avg_wuliu_score" property="avgWuliuScore" jdbcType="VARCHAR"/>
+        <result column="discount_max" property="discountMax" jdbcType="DECIMAL"/>
+        <result column="discount_min" property="discountMin" jdbcType="DECIMAL"/>
+        <result column="svip_discount" property="svipDiscount" jdbcType="DECIMAL"/>
+        <!--   <result column="banner_status" property="bannerStatus" jdbcType="DECIMAL" /> -->
+
+        <result column="good_comment_rate" property="goodCommentRate" jdbcType="VARCHAR"/>
+        <result column="stock_sum" property="stockSum" jdbcType="INTEGER"/>
+        <result column="total_quantity_sum" property="totalQuantitySum" jdbcType="INTEGER"/>
+        <result column="productlog_min_sale_price" property="productlogminsalePrice" jdbcType="DECIMAL"/>
+        <result column="thiry_quantity_sum" property="thiryQuantitySum" jdbcType="INTEGER"/>
+
+        <result column="count_product" property="countProduct" jdbcType="INTEGER"/>
+        <result column="return_rate_30_days" property="return_rate_30_days" jdbcType="VARCHAR"/>
+        <result column="sub_order_count_30_days" property="sub_order_count_30_days" jdbcType="DECIMAL"/>
+        <result column="pay_amount_sum_30_days" property="pay_amount_sum_30_days" jdbcType="DECIMAL"/>
+
+        <result column="member_visitors_amount" property="memberVisitorsAmount" jdbcType="INTEGER"/>
+        <result column="unmember_visitors_amount" property="unmemberVisitorsAmount" jdbcType="INTEGER"/>
+        <result column="member_page_view" property="memberPageView" jdbcType="INTEGER"/>
+        <result column="unmember_page_view" property="unmemberPageView" jdbcType="INTEGER"/>
+        <result column="add_product_amount" property="addProductAmount" jdbcType="INTEGER"/>
+        <result column="submit_order_amount" property="submitOrderAmount" jdbcType="INTEGER"/>
+        <result column="payment_amount" property="paymentAmount" jdbcType="INTEGER"/>
+        <result column="add_product_rate" property="addProductRate" jdbcType="DECIMAL"/>
+        <result column="submit_order_rate" property="submitOrderRate" jdbcType="DECIMAL"/>
+        <result column="payment_rate" property="paymentRate" jdbcType="DECIMAL"/>
+        <result column="lottery_count" property="lotteryCount" jdbcType="INTEGER"/>
+        <!--   <result column="total_quantitys" property="totalQuantitys" jdbcType="INTEGER" />
+           <result column="total_sales" property="totalSales" jdbcType="DECIMAL" /> -->
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, type, link_id, support_quantity, seq_no, status, source, mcht_id, up_date, weight_update_date,
+        weight, audit_by, audit_status, audit_date, can_apply, audit_remarks, stock, create_by,
+        create_date, update_by, update_date, remarks, del_flag,
+        (select p.code from bu_product p where sn.link_id=p.id and p.del_flag='0')product_code,
+        (select a.pic from bu_product_pic a where sn.link_id=a.product_id and a.del_flag='0' and a.is_default=1) pic,
+        (select group_concat(CONCAT('【',pb.name,'】 ')) from bu_product p,bu_product_brand pb where sn.link_id=p.id and
+        p.brand_id=pb.id and pb.del_flag='0') art_brand_group,
+        (select group_concat(CONCAT(pb.name)) from bu_product p,bu_product_brand pb where sn.link_id=p.id and
+        p.brand_id=pb.id and pb.del_flag='0') art_brand_group_easy,
+        (select p.art_no from bu_product p,bu_product_brand pb where sn.link_id=p.id and p.brand_id=pb.id and
+        pb.del_flag='0') prout_art_no,
+        (select p.name from bu_product p where sn.link_id=p.id and p.del_flag='0')product_name,
+        (select pt.name from bu_product p,bu_product_type pt where sn.link_id=p.id and p.product_type1_id=pt.id and
+        pt.del_flag='0' LIMIT 1) product_type1_name,
+        (select pt.name from bu_product p,bu_product_type pt where sn.link_id=p.id and p.product_type2_id=pt.id and
+        pt.del_flag='0' LIMIT 1) product_type2_name,
+        (select pt.name from bu_product p,bu_product_type pt where sn.link_id=p.id and p.product_type_id=pt.id and
+        pt.del_flag='0' LIMIT 1) product_type3_name,
+        (select p.suit_sex from bu_product p where sn.link_id=p.id) suit_sex,
+        (select p.suit_group from bu_product p where sn.link_id=p.id) suit_group,
+        (select min(a.tag_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and
+        a.del_flag='0') tag_price_min,
+        (select max(a.tag_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and
+        a.del_flag='0') tag_price_max,
+        (select min(a.mall_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and
+        a.del_flag='0') mall_price_min,
+        (select max(a.mall_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and
+        a.del_flag='0') mall_price_max,
+        (select min(a.sale_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and
+        a.del_flag='0') sale_price_min,
+        (select max(a.sale_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and
+        a.del_flag='0') sale_price_max,
+        FUN_GET_STATUS_DESC("BU_MCHT_OPTIMIZE", "DEGREE_ADAPTABILITY", (select mo.degree_adaptability from
+        bu_mcht_optimize mo where mo.del_flag = '0' and sn.link_id = mo.mcht_id)) degree_adaptability_desc, <!-- 配合度 -->
+        (select pt.name from bu_mcht_product_type mpt, bu_product_type pt where sn.link_id = mpt.mcht_id and mpt.is_main
+        = '1' and mpt.del_flag = '0' and mpt.product_type_id = pt.id and pt.del_flag = '0' limit 1 )
+        product_type_name, <!-- 主营类目 -->
+        FUN_GET_STATUS_DESC("BU_MCHT_INFO","GRADE", (select mi.grade from bu_mcht_info mi where mi.del_flag = '0' and
+        sn.link_id = mi.id)) grade_desc,
+        FUN_GET_STATUS_DESC("BU_MCHT_OPTIMIZE", "AUDIT_RISK", (select mo.audit_risk from bu_mcht_optimize mo where
+        mo.del_flag = '0' and sn.link_id = mo.mcht_id)) degree_audit_risk_desc,
+        FUN_GET_STATUS_DESC("BU_MCHT_INFO","STATUS", (select mi.status from bu_mcht_info mi where mi.del_flag = '0' and
+        sn.link_id = mi.id)) mcht_status_desc,
+        (select mi.mcht_code from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)mcht_code,
+        (select mi.shop_name from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)shop_name,
+        (select mi.shop_name from bu_mcht_info mi ,bu_product p where mi.del_flag = '0' and sn.link_id = p.id and
+        p.mcht_id = mi.id )p_shop_name,
+        (select GROUP_CONCAT(pb.`name`) from bu_mcht_product_brand mpb, bu_product_brand pb where mpb.mcht_id =
+        sn.link_id and mpb.del_flag = '0' and mpb.product_brand_id = pb.id and pb.del_flag = '0')
+        mcht_product_brand_name, <!-- 品牌 -->
+        (select mi.mcht_type from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)mcht_type,
+        (select mi.company_name from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)company_name,
+        (select mi.cooperate_begin_date from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id =
+        mi.id)cooperate_begin_date,
+        (select mi.agreement_end_date from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id =
+        mi.id)agreement_end_date,
+        (select mi.shop_status from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)shop_status,
+        FUN_GET_STATUS_DESC("BU_PRODUCT","STATUS", (select p.status from bu_product p where p.del_flag = '0' and
+        sn.link_id = p.id)) product_status_desc,
+        FUN_GET_STATUS_DESC("BU_MCHT_INFO","SHOP_STATUS", (select mi.shop_status from bu_mcht_info mi where mi.del_flag
+        = '0' and sn.link_id = mi.id))shop_status_desc,
+        (select p.recommend_remarks from bu_product p where sn.link_id=p.id and p.del_flag='0')recommend_remarks,
+        (select p.update_date from bu_product p where sn.link_id=p.id and p.del_flag='0')product_update_date,
+        (select p.create_date from bu_product p where sn.link_id=p.id and p.del_flag='0')product_create_date,
+
+
+        (select si.STAFF_NAME from sys_staff_info si where si.STAFF_ID=sn.audit_by)audit_name,
+        <!-- 	(select brp.status from bu_banner_recommend_product brp  where sn.id=brp.source_niche_id  and brp.del_flag='0' and brp.banner_id=41 limit 1)banner_status, --><!--banner轮播图的先下线状态  -->
+
+        (select TRUNCATE(IFNULL(AVG(c.product_score), 0.00),2) from bu_comment c where c.del_flag = '0' and c.mcht_id =
+        sn.mcht_id ) avg_product_score, <!-- 商品评价得分 -->
+        (select IFNULL(TRUNCATE(AVG(ss.mcht_score), 2),0.00) from bu_shop_score ss where ss.del_flag = '0' and
+        ss.mcht_id = sn.mcht_id ) avg_mcht_score, <!-- 卖家服务得分 -->
+        (select IFNULL(TRUNCATE(AVG(ss.wuliu_score), 2),0.00) from bu_shop_score ss where ss.del_flag = '0' and
+        ss.mcht_id = sn.mcht_id) avg_wuliu_score, <!-- 物流服务得分 -->
+        (select ROUND(max(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=sn.link_id and
+        a.del_flag='0') discount_max,
+        (select ROUND(min(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=sn.link_id and
+        a.del_flag='0') discount_min,
+        (SELECT p.svip_discount FROM bu_product p WHERE sn.link_id=p.id AND p.del_flag='0') svip_discount,
+        (select count(*) from bu_product p ,bu_mcht_info mi where sn.link_id = mi.id and mi.id = p.mcht_id and
+        p.del_flag='0' and p.`status`='1')count_product ,<!--上架商品数  -->
+        (select CONCAT(ROUND((ms.return_rate_30_days),1),'%') from bu_mcht_statistical_info ms ,bu_mcht_info t where
+        ms.mcht_id=t.id and t.id=sn.link_id and ms.del_flag='0') return_rate_30_days,<!--三十天退货率  -->
+        (select ROUND(ms.pay_amount_sum_30_days,2) from bu_mcht_statistical_info ms ,bu_mcht_info t where
+        ms.mcht_id=t.id and t.id=sn.link_id and ms.del_flag='0') pay_amount_sum_30_days,<!-- 三十天销量  -->
+        (select ms.sub_order_count_30_days from bu_mcht_statistical_info ms ,bu_mcht_info t where ms.mcht_id=t.id and
+        t.id=sn.link_id and ms.del_flag='0') sub_order_count_30_days,<!--三十天订单量  -->
+        <!--
+           <![CDATA[(	SELECT	IFNULL(SUM(bd.quantity), 0)	FROM	bu_single_product_activity spa,	bu_order_dtl bd,	bu_sub_order so,	bu_combine_order co		WHERE	spa.product_id = sn.link_id		AND spa.audit_status = '3'	AND  spa.id = bd.single_product_activity_id		AND  spa.product_id = bd.product_id		AND bd.create_date >= sn.audit_date		AND bd.is_give = '0'		AND bd.del_flag = '0'		AND bd.sub_order_id = so.id		AND so.combine_order_id = co.id		AND co.`status` = '1'	)]]> total_quantitys上线后总销量
+          <![CDATA[ (	SELECT	IFNULL(SUM(bd.pay_amount), 0)	FROM	bu_single_product_activity spa,	bu_order_dtl bd,	bu_sub_order so,	bu_combine_order co		WHERE	spa.product_id = sn.link_id		AND spa.audit_status = '3'	AND  spa.id = bd.single_product_activity_id		AND  spa.product_id = bd.product_id		AND bd.create_date >= sn.audit_date		AND bd.is_give = '0'		AND bd.del_flag = '0'		AND bd.sub_order_id = so.id		AND so.combine_order_id = co.id		AND co.`status` = '1'	)]]> total_sales上线后总销售额
+            -->
+        (
+        SELECT
+        IFNULL(SUM(bd.quantity), 0)
+        FROM
+        bu_single_product_activity spa,
+        bu_order_dtl bd,
+        bu_sub_order so,
+        bu_combine_order co
+        WHERE
+        spa.product_id = sn.link_id
+        AND spa.audit_status = '3'
+        AND spa.id = bd.single_product_activity_id
+        AND spa.product_id = bd.product_id
+        AND bd.create_date BETWEEN concat(
+        DATE_SUB(CURDATE(), INTERVAL 30 DAY),
+        ' 00:00:00'
+        )
+        AND concat(CURDATE(), ' 23:59:59')
+        AND bd.is_give = '0'
+        AND bd.del_flag = '0'
+        AND bd.sub_order_id = so.id
+        AND so.combine_order_id = co.id
+        AND co.`status` = '1'
+        ) thiry_quantity_sum,
+
+        (
+        SELECT
+        min(ppcl.min_sale_price)
+        FROM
+        bu_product_price_change_log ppcl,
+        bu_product bp,
+        bu_product p
+        WHERE
+        ppcl.del_flag = '0'
+        AND p.del_flag = '0'
+        AND bp.del_flag = '0'
+        AND ppcl.product_id = bp.id
+        AND ppcl.create_date BETWEEN concat(
+        DATE_SUB(CURDATE(), INTERVAL 90 DAY),
+        ' 00:00:00'
+        )
+        AND concat(CURDATE(), ' 23:59:59')
+        AND bp.mcht_id = p.mcht_id
+        AND bp.brand_id = p.brand_id
+        AND bp.art_no = p.art_no
+        AND sn.link_id = p.id
+        LIMIT 1
+        ) productlog_min_sale_price ,<!-- 近三个月最低价 -->
+
+        (
+        SELECT
+        count(1)
+        FROM
+        bu_order_dtl od
+        WHERE
+        od.product_status = '1'
+        AND od.del_flag = '0'
+        AND od.product_id = sn.link_id
+        AND od.product_status_date BETWEEN concat(
+        DATE_SUB(CURDATE(), INTERVAL 90 DAY),
+        ' 00:00:00'
+        )
+        AND concat(CURDATE(), ' 23:59:59')
+        ) total_quantity_sum, <!-- 近三个月销量  -->
+
+        CONCAT(
+        IFNULL(
+        ROUND(
+        (
+        SELECT
+        count(1)
+        FROM
+        bu_comment c
+        WHERE
+        c.del_flag = '0'
+        AND c.comment_source = '1'
+        AND c.product_score > 3
+        AND c.is_append_comment = '0'
+        AND c.product_id = sn.link_id
+        ) * 100 / (
+        SELECT
+        count(1)
+        FROM
+        bu_comment c
+        WHERE
+        c.del_flag = '0'
+        AND c.comment_source = '1'
+        AND c.is_append_comment = '0'
+        AND c.product_id = sn.link_id
+        ),
+        2
+        ),
+        '100.00'
+        ),
+        '%'
+        ) good_comment_rate,<!--好评率  -->
+
+        (select IFNULL(SUM(bp.stock - bp.locked_amount), 0) from bu_product_item bp where sn.link_id = bp.product_id and bp.del_flag = '0')
+        stock_sum <!--最新库存  -->
+    </sql>
+    <sql id="Base_Column_List_1">
+        id,link_id,seq_no,integral_count,stock,up_date,status,
+        (select min(a.sale_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') sale_price_min,
+        (select max(a.sale_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') sale_price_max,
+        (select a.pic from bu_product_pic a where sn.link_id=a.product_id and a.del_flag='0' and a.is_default=1) pic,
+        (select p.name from bu_product p where sn.link_id=p.id and p.del_flag='0') product_name,
+        (select p.code from bu_product p where sn.link_id=p.id and p.del_flag='0')product_code,
+        (select group_concat(CONCAT(pb.name)) from bu_product p,bu_product_brand pb where sn.link_id=p.id and p.brand_id=pb.id and pb.del_flag='0') art_brand_group_easy,
+        (select pt.name from bu_product p,bu_product_type pt where sn.link_id=p.id and p.product_type1_id=pt.id and pt.del_flag='0' LIMIT 1) product_type1_name,
+        (select mi.shop_name from bu_mcht_info mi ,bu_product p where mi.del_flag = '0' and sn.link_id = p.id and p.mcht_id = mi.id )p_shop_name,
+        (select min(a.tag_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') tag_price_min,
+        (select max(a.tag_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') tag_price_max,
+        (select p.svip_discount from bu_product p where sn.link_id=p.id and p.del_flag='0') svip_discount,
+        (select IFNULL(SUM(bp.stock), 0) from bu_product_item bp where sn.link_id = bp.product_id and bp.del_flag = '0') stock_sum, <!--最新库存  -->
+        (select count(id) from bu_member_lottery ml where sn.link_id = ml.product_id and ml.type = 3 and ml.del_flag = '0') lottery_count
+    </sql>
+    <select id="sourceNicheCustomselectByExample" resultMap="BaseResultCustomMap"
+            parameterType="com.jf.entity.SourceNicheCustomExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from bu_source_niche sn
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart != null and limitStart>=0">
+            limit #{limitStart} , #{limitSize}
+        </if>
+    </select>
+    <select id="selectIntegralLotteryCommodityPoolsList" resultMap="BaseResultCustomMap"
+            parameterType="com.jf.entity.SourceNicheCustomExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_1"/>
+        from bu_source_niche sn
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limitStart != null and limitStart>=0">
+            limit #{limitStart} , #{limitSize}
+        </if>
+    </select>
+    <select id="sourceNicheCustomselectByPrimaryKey" resultMap="BaseResultCustomMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from bu_source_niche sn
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="sourceNichecountByExample" parameterType="com.jf.entity.SourceNicheCustomExample"
+            resultType="java.lang.Integer">
+        select count(*) from bu_source_niche sn
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+
+    </select>
+
+    <select id="selectWeightDetail" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+        SELECT
+            DATE_FORMAT(sn.weight_update_date,'%Y-%m-%d') AS weight_update_date,
+            count( od.product_id ) AS sales_volume,
+            sum( od.pay_amount ) AS sales_degree,
+            FLOOR(sum( od.pay_amount )/200) AS sales_degree_weight,
+            FLOOR(count( od.product_id )+sum( od.pay_amount )/200) AS weight
+        FROM
+            bu_order_dtl od ,
+            bu_source_niche sn
+        WHERE
+            od.product_id = sn.link_id
+            AND sn.id = #{id}
+            AND od.product_status = '1'
+            AND od.del_flag = '0'
+            AND od.product_status_date BETWEEN sn.weight_update_date AND NOW( )
+        GROUP BY
+            od.product_id;
+    </select>
+
+    <select id="queryProductlist" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+        select tab.* ,(SELECT a.pic
+        FROM bu_product_pic a
+        WHERE tab.linkId=a.product_id AND a.del_flag='0' AND a.is_default=1) pic, (SELECT GROUP_CONCAT(CONCAT(pb.name))
+        FROM bu_product p,bu_product_brand pb
+        WHERE tab.linkId=p.id AND p.brand_id=pb.id AND pb.del_flag='0') artBrandGroupEasy, (SELECT pt.name
+        FROM bu_product p,bu_product_type pt
+        WHERE tab.linkId=p.id AND p.product_type1_id=pt.id AND pt.del_flag='0'
+        LIMIT 1) producttype1Name, (SELECT pt.name
+        FROM bu_product p,bu_product_type pt
+        WHERE tab.linkId=p.id AND p.product_type2_id=pt.id AND pt.del_flag='0'
+        LIMIT 1) producttype2Name, (SELECT pt.name
+        FROM bu_product p,bu_product_type pt
+        WHERE tab.linkId=p.id AND p.product_type_id=pt.id AND pt.del_flag='0'
+        LIMIT 1) producttype3Name, (SELECT MIN(ppcl.min_sale_price)
+        FROM bu_product_price_change_log ppcl,bu_product bp,bu_product p
+        WHERE ppcl.del_flag = '0' AND p.del_flag = '0' AND bp.del_flag = '0' AND ppcl.product_id = bp.id AND
+        ppcl.create_date BETWEEN CONCAT(DATE_SUB(CURDATE(), INTERVAL 90 DAY),' 00:00:00') AND CONCAT(CURDATE(), '
+        23:59:59') AND bp.mcht_id = p.mcht_id AND bp.brand_id = p.brand_id AND bp.art_no = p.art_no AND 1003 = p.id)
+        minSalePrice90Days, (SELECT sold_amount_90_days - refund_amount_90_days
+        FROM bu_product_statistics ps
+        WHERE ps.product_id = tab.linkId AND ps.del_flag = '0') soldAmount90Days, (SELECT sold_count_90_days -
+        refund_count_90_days
+        FROM bu_product_statistics ps
+        WHERE ps.product_id = tab.linkId AND ps.del_flag = '0') soldCount90Days, (SELECT IFNULL(SUM(bp.stock), 0)
+        FROM bu_product_item bp
+        WHERE tab.linkId = bp.product_id AND bp.del_flag = '0') stockSum, (SELECT TRUNCATE(IFNULL(AVG(c.product_score),
+        0.00),2)
+        FROM bu_comment c
+        WHERE c.del_flag = '0' AND c.mcht_id = tab.mchtId ) avgProductScore, (SELECT IFNULL(TRUNCATE(AVG(ss.mcht_score),
+        2),0.00)
+        FROM bu_shop_score ss
+        WHERE ss.del_flag = '0' AND ss.mcht_id = tab.mchtId ) avgMchtScore, (SELECT IFNULL(TRUNCATE(AVG(ss.wuliu_score),
+        2),0.00)
+        FROM bu_shop_score ss
+        WHERE ss.del_flag = '0' AND ss.mcht_id = tab.mchtId) avgWuliuScore
+        from
+        (select sn.id,sn.type,sn.link_id linkId,sn.source,sn.mcht_id mchtId,sn.weight_update_date
+        weightUpdateDate,sn.weight,sn.create_date createDate,
+        p.id productId,p.art_no artNo,p.code productCode,p.min_mall_price minMallPrice,p.min_sale_price
+        minSalePrice,p.min_tag_price minTagPrice,p.name productName,
+        m.mcht_code mchtCode,p.svip_discount svipDiscount,m.shop_name shopName,m.company_name companyName,
+        (select applause_rate from bu_product_statistics ps where ps.product_id = sn.link_id and ps.del_flag = '0')
+        applauseRate,
+        p.product_type_id productType,p.product_type2_id productType2,p.product_type1_id productType1, pb.name
+        productBrand, pb.name_zh productBrandZh, pb.name_en productBrandEn
+        from bu_source_niche sn inner join bu_product p on sn.link_id = p.id inner join bu_mcht_info m on sn.mcht_id =
+        m.id inner join bu_product_brand pb on pb.id = p.brand_id
+        WHERE sn.del_flag = '0' AND sn.type = '12' AND sn.mcht_id IN(SELECT DISTINCT mcht_id FROM bu_mcht_product_brand
+        mpb WHERE mpb.status = '1' AND mpb.audit_status = '3' AND mpb.del_flag = '0')
+        AND sn.link_id IN(SELECT DISTINCT p.`id` FROM bu_product p,bu_mcht_product_brand mpb WHERE p.mcht_id =
+        mpb.mcht_id AND p.`brand_id` = mpb.product_brand_id AND mpb.status = '1' AND mpb.audit_status = '3' AND
+        mpb.del_flag = '0')
+        AND p.status = '1' AND p.audit_status = '2' AND p.sale_type = '1' AND p.del_flag = '0'
+        AND m.status = '1' AND m.shop_status = '1' AND m.del_flag = '0'
+        AND pb.del_flag = '0'
+        <if test="addType == 1">
+            and sn.source != '3'
+        </if>
+        <if test="addType == 3">
+            and sn.source = #{addType}
+        </if>
+        <if test="priceNum == 1">
+            <if test="priceBegin != null">
+                and p.min_mall_price &gt;= #{priceBegin}
+            </if>
+            <if test="priceEnd != null">
+                and p.min_mall_price &lt;= #{priceEnd}
+            </if>
+        </if>
+        <if test="priceNum == 2">
+            <if test="priceBegin != null">
+                and p.min_sale_price &gt;= #{priceBegin}
+            </if>
+            <if test="priceEnd != null">
+                and p.min_sale_price &lt;= #{priceEnd}
+            </if>
+        </if>
+        <if test="priceNum == 3">
+            <if test="priceBegin != null">
+                and p.min_tag_price &gt;= #{priceBegin}
+            </if>
+            <if test="priceEnd != null">
+                and p.min_tag_price &lt;= #{priceEnd}
+            </if>
+        </if>
+        <if test="whichProduct == 1">
+            <if test="goodIds != null">
+                and p.code in
+                <foreach item="goodId" index="index" collection="goodIds"
+                         open="(" separator="," close=")">#{goodId}
+                </foreach>
+            </if>
+        </if>
+        <if test="whichProduct == 2">
+            <if test="artnos != null">
+                and p.art_no in
+                <foreach item="artno" index="index" collection="artnos"
+                         open="(" separator="," close=")">#{artno}
+                </foreach>
+            </if>
+        </if>
+        <if test="name != null">
+            and p.name like #{name}
+        </if>
+        <if test="productType != null and productType != 1">
+            and sn.link_id IN (SELECT id FROM bu_product p WHERE p.product_type_id = #{productType} or
+            p.product_type2_id = #{productType} or p.product_type1_id =
+            #{productType} )
+        </if>
+        <if test="mchtCode != null">
+            and m.mcht_code = #{mchtCode}
+        </if>
+        <if test="mchtName != null">
+            and sn.mcht_id = (SELECT id FROM bu_mcht_info m WHERE m.shop_name like #{mchtName} or m.company_name like
+            #{mchtName})
+        </if>
+        <if test="productBrandName != null">
+            AND p.brand_id IN(SELECT id FROM bu_product_brand pb WHERE pb.name LIKE #{productBrandName} OR pb.name_zh
+            LIKE #{productBrandName} OR pb.name_en LIKE #{productBrandName} )
+        </if>
+        and p.del_flag = '0'
+        order by weight desc ,applauseRate desc ,id ASC
+        <if test="limitStart != null">
+            limit #{limitStart} ,#{limitSize}
+        </if>
+        ) tab
+
+    </select>
+
+    <select id="queryProductlistCount" resultType="java.lang.Integer" parameterType="java.util.HashMap">
+        select count(1)
+        from bu_source_niche sn inner join bu_product p on sn.link_id = p.id inner join bu_mcht_info m on sn.mcht_id =
+        m.id inner join bu_product_brand pb on pb.id = p.brand_id
+        WHERE sn.del_flag = '0' AND sn.type = '12' AND sn.mcht_id IN(SELECT DISTINCT mcht_id FROM bu_mcht_product_brand
+        mpb WHERE mpb.status = '1' AND mpb.audit_status = '3' AND mpb.del_flag = '0')
+        AND sn.link_id IN(SELECT DISTINCT p.`id` FROM bu_product p,bu_mcht_product_brand mpb WHERE p.mcht_id =
+        mpb.mcht_id AND p.`brand_id` = mpb.product_brand_id AND mpb.status = '1' AND mpb.audit_status = '3' AND
+        mpb.del_flag = '0')
+        AND p.status = '1' AND p.audit_status = '2' AND p.sale_type = '1' AND p.del_flag = '0'
+        AND m.status = '1' AND m.shop_status = '1' AND m.del_flag = '0'
+        AND pb.del_flag = '0'
+        <if test="addType == 1">
+            and sn.source != '3'
+        </if>
+        <if test="addType == 3">
+            and sn.source = #{addType}
+        </if>
+        <if test="priceNum == 1">
+            <if test="priceBegin != null">
+                and p.min_mall_price &gt;= #{priceBegin}
+            </if>
+            <if test="priceEnd != null">
+                and p.min_mall_price &lt;= #{priceEnd}
+            </if>
+        </if>
+        <if test="priceNum == 2">
+            <if test="priceBegin != null">
+                and p.min_sale_price &gt;= #{priceBegin}
+            </if>
+            <if test="priceEnd != null">
+                and p.min_sale_price &lt;= #{priceEnd}
+            </if>
+        </if>
+        <if test="priceNum == 3">
+            <if test="priceBegin != null">
+                and p.min_tag_price &gt;= #{priceBegin}
+            </if>
+            <if test="priceEnd != null">
+                and p.min_tag_price &lt;= #{priceEnd}
+            </if>
+        </if>
+        <if test="whichProduct == 1">
+            <if test="goodIds != null">
+                and p.code in
+                <foreach item="goodId" index="index" collection="goodIds"
+                         open="(" separator="," close=")">#{goodId}
+                </foreach>
+            </if>
+        </if>
+        <if test="whichProduct == 2">
+            <if test="artnos != null">
+                and p.art_no in
+                <foreach item="artno" index="index" collection="artnos"
+                         open="(" separator="," close=")">#{artno}
+                </foreach>
+            </if>
+        </if>
+        <if test="name != null">
+            and p.name like #{name}
+        </if>
+        <if test="productType != null and productType != 1">
+            and sn.link_id IN (SELECT id FROM bu_product p WHERE p.product_type_id = #{productType} or
+            p.product_type2_id = #{productType} or p.product_type1_id =
+            #{productType} )
+        </if>
+        <if test="mchtCode != null">
+            and m.mcht_code = #{mchtCode}
+        </if>
+        <if test="mchtName != null">
+            and sn.mcht_id = (SELECT id FROM bu_mcht_info m WHERE m.shop_name like #{mchtName} or m.company_name like
+            #{mchtName})
+        </if>
+        <if test="productBrandName != null">
+            AND p.brand_id IN(SELECT id FROM bu_product_brand pb WHERE pb.name LIKE #{productBrandName} OR pb.name_zh
+            LIKE #{productBrandName} OR pb.name_en LIKE #{productBrandName} )
+        </if>
+        and p.del_flag = '0'
+    </select>
+
+    <update id="batchAuditIntegralProduct" parameterType="map">
+        UPDATE bu_source_niche t
+        <set>
+            <if test="auditBy != null and auditBy != ''" >
+                t.audit_by = #{auditBy},
+                t.update_by = #{auditBy},
+            </if>
+            <if test="auditDate != null and auditDate != ''" >
+                t.audit_date = #{auditDate},
+                t.update_date = #{auditDate},
+            </if>
+            <if test="stock != null and stock != ''" >
+                t.stock = #{stock},
+                t.integral_count = (
+                SELECT
+                max( a.sale_price )
+                FROM
+                bu_product_item a
+                WHERE
+                a.product_id = t.link_id
+                AND a.del_flag = '0'
+                ) * 100,
+            </if>
+            <if test="seqNo != null and seqNo != ''" >
+                t.seq_no = #{seqNo},
+            </if>
+            <if test="artificialAuditStatus != null and artificialAuditStatus != ''" >
+                t.audit_status = #{artificialAuditStatus},
+            </if>
+        </set>
+        <where>
+            <if test="id != null and id != ''" >
+                and t.id = #{id}
+            </if>
+            <if test="ids != null and ids != ''" >
+                and t.id IN
+                <foreach collection="ids" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                </foreach>
+            </if>
+        </where>
+    </update>
+
+    <update id="updateIntegralLotterySeqNo" parameterType="map">
+        UPDATE bu_source_niche sn
+        <set>
+            <if test="auto_increment != null and auto_increment != ''" >
+                sn.seq_no = sn.seq_no + 1,
+            </if>
+            <if test="auto_reduce != null and auto_reduce != ''" >
+                sn.seq_no = sn.seq_no - 1,
+            </if>
+            <if test="seqNo != null and seqNo != ''" >
+                sn.seq_no = #{seqNo},
+            </if>
+        </set>
+        where
+            <choose>
+                <when test="id !=null and id != ''">
+                    id = #{id}
+                </when>
+                <otherwise>
+                    sn.del_flag = '0'
+                    AND sn.audit_status = '1'
+                    AND sn.type = '13'
+                    AND sn.status = '0'
+                    <if test="greaterThan != null and greaterThan != ''" >
+                        AND sn.seq_no &gt; #{greaterThan}
+                    </if>
+                    <if test="greaterThanOrEqualTo != null and greaterThanOrEqualTo != ''" >
+                        AND sn.seq_no &gt;= #{greaterThanOrEqualTo}
+                    </if>
+                    <if test="lessThan != null and lessThan != ''" >
+                        AND sn.seq_no &lt; #{lessThan}
+                    </if>
+                    <if test="lessThanOrEqualTo != null and lessThanOrEqualTo != ''" >
+                        AND sn.seq_no &lt;= #{lessThanOrEqualTo}
+                    </if>
+                </otherwise>
+            </choose>
+    </update>
+
+    <!--   <select id="selectDataStatisticsList"  parameterType="java.util.HashMap"  resultMap="BaseResultCustomMap">
+           select
+           sn.weight,
+           sn.link_id,
+           sn.up_date,
+           (select ROUND(max(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=sn.link_id and a.del_flag='0') discount_max,
+           (select ROUND(min(a.sale_price/a.tag_price)*10,1) from bu_product_item a where a.product_id=sn.link_id and a.del_flag='0') discount_min,
+           (select p.name from bu_product p where sn.link_id=p.id and p.del_flag='0')product_name,
+           (select min(a.tag_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') tag_price_min,
+           (select max(a.tag_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') tag_price_max,
+           (select min(a.sale_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') sale_price_min,
+           (select max(a.sale_price) from bu_product_item a, bu_product p where a.product_id=p.id and sn.link_id=p.id and a.del_flag='0') sale_price_max,
+           (select p.code from bu_product p where sn.link_id=p.id and p.del_flag='0')product_code,
+           (select a.pic from bu_product_pic a where sn.link_id=a.product_id and a.del_flag='0' and a.is_default=1) pic,
+           (select group_concat(CONCAT(pb.name)) from bu_product p,bu_product_brand pb where sn.link_id=p.id and p.brand_id=pb.id and pb.del_flag='0') art_brand_group_easy,
+           (select pt.name from bu_product p,bu_product_type pt where sn.link_id=p.id and p.product_type1_id=pt.id and pt.del_flag='0' LIMIT 1) product_type1_name,
+           member_visitors_amount ,
+           a.unmember_visitors_amounts as unmember_visitors_amount,
+           a.member_page_views as member_page_view,
+           a.unmember_page_views as unmember_page_view,
+           a.add_product_amounts as add_product_amount,
+           a.submit_order_amounts as submit_order_amount,
+           a.payment_amounts as payment_amount,
+           a.add_product_rates as add_product_rate,
+           a.submit_order_rates as submit_order_rate,
+           a.payment_rates as payment_rate
+           from
+           bu_source_niche sn
+           LEFT JOIN
+           (
+           SELECT
+           t.value_id as value_id,
+           sum(t.member_visitors_num) as member_visitors_amount ,
+           sum(t.unmember_visitors_num) as unmember_visitors_amounts,
+           sum(t.member_page_view_num) as member_page_views ,
+           sum(t.unmember_page_view_num) as unmember_page_views ,
+           sum(t.add_product_num) as add_product_amounts ,
+           sum(t.submit_order_num) as submit_order_amounts ,
+           sum(t.payment_num) as payment_amounts ,
+           IFNULL(ROUND(sum(t.add_product_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as add_product_rates,
+           IFNULL(ROUND(sum(t.submit_order_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as submit_order_rates,
+           IFNULL(ROUND(sum(t.payment_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as payment_rates
+           FROM
+           (
+           SELECT
+           bmp.value_id,
+           count(DISTINCT bmp.member_id) as member_visitors_num,
+           0 as unmember_visitors_num,
+           COUNT(bmp.member_id) as member_page_view_num,
+           0 as unmember_page_view_num,
+           sum((
+           SELECT
+           SUM(bsc.quantity)
+           FROM
+           bu_member_action bma,
+           bu_shopping_cart bsc
+           WHERE
+           bma.member_pv_id = bmp.pv_id
+           AND bsc.id = bma.action_item_id
+           AND bma.action_type = '14'
+           <if test="beginDate != null" >
+               AND bma.create_date <![CDATA[ >= ]]>#{beginDate}
+           </if>
+           <if test="endDate != null" >
+               AND bma.create_date <![CDATA[ <= ]]>#{endDate}
+           </if>
+           ) )as add_product_num,
+          sum((
+           SELECT
+           SUM(bod.quantity)
+           FROM
+           bu_order_dtl bod,bu_member_action bma,bu_shopping_cart bsc
+           WHERE
+           bmp.pv_id = bma.member_pv_id
+           AND bma.action_type in('14','15')
+           AND bma.action_item_id = bsc.id
+           AND bsc.order_dtl_id = bod.id
+           AND bod.del_flag = '0'
+           <if test="beginDate != null" >
+               AND bod.create_date <![CDATA[ >= ]]>#{beginDate}
+           </if>
+           <if test="endDate != null" >
+               AND bod.create_date <![CDATA[ <= ]]>#{endDate}
+           </if>
+           )) as submit_order_num,
+           sum((
+           SELECT
+           SUM(bod.quantity)
+           FROM
+           bu_member_action bma,
+           bu_shopping_cart bsc,
+           bu_order_dtl bod,
+           bu_sub_order bso,
+           bu_combine_order bco
+           WHERE
+           bmp.pv_id = bma.member_pv_id
+
+           AND bma.action_type in('14','15')
+           AND bma.action_item_id = bsc.id
+           AND bsc.order_dtl_id = bod.id
+           AND bod.sub_order_id = bso.id
+           AND bso.combine_order_id = bco.id
+           AND bod.del_flag = '0'
+           AND bsc.del_flag='0'
+           AND bco. STATUS = '1'
+           <if test="beginDate != null" >
+               AND bco.create_date <![CDATA[ >= ]]>#{beginDate}
+           </if>
+           <if test="endDate != null" >
+               AND bco.create_date <![CDATA[ <= ]]>#{endDate}
+           </if>
+           )) as payment_num
+           FROM
+           bu_member_pv bmp
+           WHERE
+           bmp.del_flag = '0'
+
+           <if test="beginDate != null" >
+               AND
+               bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+           </if>
+
+           <if test="endDate != null" >
+               AND
+               bmp.create_date <![CDATA[ <= ]]> #{endDate}
+           </if>
+
+           <if test="columnType != null" >
+               AND
+               bmp.column_type = #{columnType}
+           </if>
+           GROUP BY
+           bmp.value_id
+
+           UNION
+
+           SELECT
+           bmp.value_id,
+           0 as member_visitors_num,
+           COUNT( DISTINCT (bmp.device_number)) as unmember_visitors_num,
+           0 as member_page_view_num,
+           COUNT(bmp.device_number) as unmember_page_view_num,
+           0 as add_product_num,
+           0 as submit_order_num,
+           0 as payment_num
+           FROM
+           bu_member_pv bmp
+           WHERE
+           bmp.member_id IS NULL
+           AND bmp.del_flag = '0'
+
+           <if test="beginDate != null" >
+               AND
+               bmp.create_date <![CDATA[ >= ]]>#{beginDate}
+           </if>
+
+           <if test="endDate != null" >
+               AND
+               bmp.create_date <![CDATA[ <= ]]> #{endDate}
+           </if>
+
+           <if test="columnType != null" >
+               AND
+               bmp.column_type = #{columnType}
+           </if>
+           GROUP BY
+           bmp.value_id
+           ) t
+           GROUP BY
+           t.value_id
+           ) a
+           on sn.link_id = a.value_id
+           where
+           sn.del_flag= '0'
+           AND
+           sn.status='0'
+           AND
+           sn.audit_status='1'
+           AND
+           sn.link_id in (select p.id from bu_product p where sn.link_id =p.id  and p.del_flag='0' and p.status= '1')
+
+
+           <if test="type != null" >
+               AND
+               sn.type = ${type}
+           </if>
+
+           <if test="productId != null" >
+               AND
+               sn.link_id in (select p.id from bu_product p where sn.link_id=p.id and p.del_flag='0' and p.code = #{productId})
+           </if>
+
+           <if test="productName != null" >
+               AND
+               sn.link_id in (select p.id from bu_product p where sn.link_id =p.id  and p.del_flag='0' and p.name like #{productName})
+           </if>
+
+           <if test="productTypeId != null" >
+               AND
+               EXISTS(select p.id from bu_product p where sn.link_id=p.id and p.del_flag='0' and sn.link_id = p.id and p.product_type1_id = #{productTypeId})
+           </if>
+           order  by
+           IFNULL(sn.weight,0) desc,up_date desc
+
+           <if test="limitSize!=null and limitSize!=''">
+               LIMIT #{limitStart},#{limitSize}
+           </if>
+
+       </select>-->
+
+    <!--<select id="selectShopDataStatisticsList"  parameterType="java.util.HashMap"  resultMap="BaseResultCustomMap">
+        select
+        sn.link_id,
+        sn.up_date,
+        (select mi.cooperate_begin_date from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)cooperate_begin_date,
+        (select mi.mcht_code from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)mcht_code,
+        (select pt.name from bu_mcht_product_type mpt, bu_product_type pt where sn.link_id = mpt.mcht_id and mpt.is_main = '1' and mpt.del_flag = '0' and mpt.product_type_id = pt.id and pt.del_flag = '0' limit 1 ) product_type_name, &lt;!&ndash; 主营类目 &ndash;&gt;
+        (select mi.company_name from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)company_name,
+        (select mi.shop_name from bu_mcht_info mi where mi.del_flag = '0' and sn.link_id = mi.id)shop_name,
+        (select GROUP_CONCAT(pb.`name`) from bu_mcht_product_brand mpb, bu_product_brand pb where mpb.mcht_id = sn.link_id and mpb.del_flag = '0' and mpb.product_brand_id = pb.id and pb.del_flag = '0') mcht_product_brand_name, &lt;!&ndash; 品牌 &ndash;&gt;
+        member_visitors_amount ,
+        a.unmember_visitors_amounts as unmember_visitors_amount,
+        a.member_page_views as member_page_view,
+        a.unmember_page_views as unmember_page_view,
+        a.add_product_amounts as add_product_amount,
+        a.submit_order_amounts as submit_order_amount,
+        a.payment_amounts as payment_amount,
+        a.add_product_rates as add_product_rate,
+        a.submit_order_rates as submit_order_rate,
+        a.payment_rates as payment_rate
+        from
+        bu_source_niche sn
+        LEFT JOIN
+        (
+        SELECT
+        t.mcht_id as mcht_id,
+        sum(t.member_visitors_num) as member_visitors_amount ,
+        sum(t.unmember_visitors_num) as unmember_visitors_amounts,
+        sum(t.member_page_view_num) as member_page_views ,
+        sum(t.unmember_page_view_num) as unmember_page_views ,
+        sum(t.add_product_num) as add_product_amounts ,
+        sum(t.submit_order_num) as submit_order_amounts ,
+        sum(t.payment_num) as payment_amounts ,
+        IFNULL(ROUND(sum(t.add_product_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as add_product_rates,
+        IFNULL(ROUND(sum(t.submit_order_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as submit_order_rates,
+        IFNULL(ROUND(sum(t.payment_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as payment_rates
+        FROM
+        (
+        SELECT
+        bmp.mcht_id,
+        count(DISTINCT bmp.member_id) as member_visitors_num,
+        0 as unmember_visitors_num,
+        COUNT(bmp.member_id) as member_page_view_num,
+        0 as unmember_page_view_num,
+        sum((
+        SELECT
+        SUM(bsc.quantity)
+        FROM
+        bu_member_action bma,
+        bu_shopping_cart bsc
+        WHERE
+        bma.member_pv_id = bmp.pv_id
+        AND bsc.id = bma.action_item_id
+        AND bma.action_type = '14'
+        <if test="beginDate != null" >
+            AND bma.create_date <![CDATA[ >= ]]>#{beginDate}
+        </if>
+        <if test="endDate != null" >
+            AND bma.create_date <![CDATA[ <= ]]>#{endDate}
+        </if>
+        )) as add_product_num,
+        sum((
+        SELECT
+        SUM(bod.quantity)
+        FROM
+        bu_order_dtl bod,
+        bu_member_action bma,
+        bu_shopping_cart bsc
+        WHERE
+        bmp.pv_id = bma.member_pv_id
+        AND bma.action_type IN ('14', '15')
+        AND bma.action_item_id = bsc.id
+        AND bsc.order_dtl_id = bod.id
+        AND bod.del_flag = '0'
+        <if test="beginDate != null" >
+            AND bod.create_date <![CDATA[ >= ]]>#{beginDate}
+        </if>
+        <if test="endDate != null" >
+            AND bod.create_date <![CDATA[ <= ]]>#{endDate}
+        </if>
+        ) )as submit_order_num,
+       sum((
+        SELECT
+        SUM(bod.quantity)
+        FROM
+        bu_member_action bma,
+        bu_shopping_cart bsc,
+        bu_order_dtl bod,
+        bu_sub_order bso,
+        bu_combine_order bco
+        WHERE
+        bmp.pv_id = bma.member_pv_id
+        AND bma.action_type IN ('14', '15')
+        AND bma.action_item_id = bsc.id
+        AND bsc.order_dtl_id = bod.id
+        AND bod.sub_order_id = bso.id
+        AND bso.combine_order_id = bco.id
+        AND bod.del_flag = '0'
+        AND bsc.del_flag='0'
+        AND bco. STATUS = '1'
+        <if test="beginDate != null" >
+            AND bco.create_date <![CDATA[ >= ]]>#{beginDate}
+        </if>
+        <if test="endDate != null" >
+            AND bco.create_date <![CDATA[ <= ]]>#{endDate}
+        </if>
+        ) )as payment_num
+        FROM
+        bu_member_pv bmp
+        WHERE
+        bmp.del_flag = '0'
+        <if test="columnType != null" >
+            AND bmp.column_type= #{columnType}
+        </if>
+
+        <if test="beginDate != null" >
+            AND bmp.create_date <![CDATA[ >= ]]>#{beginDate}
+        </if>
+
+        <if test="endDate != null" >
+            AND bmp.create_date <![CDATA[ <= ]]>#{endDate}
+        </if>
+        GROUP BY
+        bmp.mcht_id
+
+        UNION
+
+        SELECT
+        bmp.mcht_id,
+        0 as member_visitors_num,
+        COUNT( DISTINCT (bmp.device_number)) as unmember_visitors_num,
+        0 as member_page_view_num,
+        COUNT(bmp.device_number) as unmember_page_view_num,
+        0 as add_product_num,
+        0 as submit_order_num,
+        0 as payment_num
+        FROM
+        bu_member_pv bmp
+        WHERE
+        bmp.member_id IS NULL
+        AND bmp.del_flag = '0'
+        <if test="columnType != null" >
+            AND bmp.column_type= #{columnType}
+        </if>
+
+        <if test="beginDate != null" >
+            AND bmp.create_date <![CDATA[ >= ]]>#{beginDate}
+        </if>
+
+        <if test="endDate != null" >
+            AND bmp.create_date <![CDATA[ <= ]]>#{endDate}
+        </if>
+        GROUP BY
+        bmp.mcht_id
+        ) t
+        GROUP BY
+        t.mcht_id
+        ) a
+        on sn.link_id = a.mcht_id
+        where
+        sn.del_flag= '0'
+        AND
+        sn.status='0'
+        AND
+        sn.audit_status='1'
+
+        <if test="type != null" >
+            AND
+            sn.type = #{type}
+        </if>
+
+        <if test="mchtCode != null" >
+            AND
+            sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and bmi.mcht_code =  #{mchtCode})
+        </if>
+
+        <if test="mchtName != null" >
+            AND
+            sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and ( bmi.shop_name like #{mchtName}   or bmi.company_name like #{mchtName} or bmi.shop_name like #{mchtName} ) )
+        </if>
+
+        <if test="productTypeId != null" >
+            AND
+            sn.link_id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.mcht_id = sn.link_id and mpt.is_main = '1' and mpt.del_flag = '0'  and mpt.product_type_id= #{productTypeId})
+        </if>
+        order  by
+        IFNULL(sn.weight,0) desc,up_date desc
+        <if test="limitSize!=null and limitSize!=''">
+            LIMIT #{limitStart},#{limitSize}
+        </if>
+
+    </select>-->
+
+    <!-- <sql id="selectDataStatisticsListSql">
+         sn.weight,
+         sn.link_id,
+         sn.up_date,
+         (SELECT bpp.pic FROM bu_product_pic bpp WHERE bpp.product_id = sn.link_id AND bpp.is_default='1' AND bpp.del_flag = '0') product_pic,
+         (SELECT bp.name FROM bu_product bp WHERE bp.id = sn.link_id AND bp.del_flag = '0') product_name,
+         (SELECT bp.code FROM bu_product bp WHERE bp.id = sn.link_id AND bp.del_flag = '0') product_code,
+         (SELECT bpb.name FROM bu_product bp,bu_product_brand bpb WHERE sn.link_id=bp.id AND bp.brand_id=bpb.id AND bp.del_flag='0') artbrandGroupEasy,
+         (SELECT bpt.name FROM bu_product bp,bu_mcht_product_type bmpt,bu_product_type bpt WHERE bp.id = sn.link_id AND bp.mcht_id = bmpt.mcht_id AND bmpt.is_main = '1' AND bmpt.`status` = '1' AND bmpt.product_type_id = bpt.id AND bp.del_flag = '0' AND bmpt.del_flag = '0' AND bpt.del_flag = '0') producttype1Name,
+         (SELECT min(a.tag_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') tag_price_min,
+         (SELECT max(a.tag_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') tag_price_max,
+         (SELECT min(a.sale_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') sale_price_min,
+         (SELECT max(a.sale_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') sale_price_max,
+         s.member_visitors_amount,
+         s.unmember_visitors_amounts,
+         s.member_page_views,
+         s.unmember_page_views,
+         s.add_product_amounts,
+         s.add_product_rates,
+         s.submit_order_amounts,
+         s.submit_order_rates,
+         s.payment_amounts,
+         s.payment_rates
+     </sql>
+
+     <sql id="dataStatisticsListSql">
+         SELECT
+         t.product_id,
+         sum(t.member_visitors_num) as member_visitors_amount ,
+         sum(t.unmember_visitors_num) as unmember_visitors_amounts,
+         sum(t.member_page_view_num) as member_page_views ,
+         sum(t.unmember_page_view_num) as unmember_page_views ,
+         sum(t.add_product_num) as add_product_amounts ,
+         sum(t.submit_order_num) as submit_order_amounts ,
+         sum(t.payment_num) as payment_amounts ,
+         IFNULL(ROUND(sum(t.add_product_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as add_product_rates,
+         IFNULL(ROUND(sum(t.submit_order_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as submit_order_rates,
+         IFNULL(ROUND(sum(t.payment_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as payment_rates
+         FROM
+         (
+         SELECT
+         bp.id AS product_id,
+         COUNT(DISTINCT(bmp.member_id)) AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         COUNT(bmp.member_id) AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         0 AS add_product_num,
+         0 AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_product bp
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.value_id = bp.id
+         AND bmp.del_flag = '0'
+         AND bp.del_flag = '0'
+         GROUP BY
+         bp.id
+         UNION
+         SELECT
+         bp.id AS product_id,
+         0 AS member_visitors_num,
+         COUNT(
+         DISTINCT (bmp.device_number)
+         ) AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         COUNT(bmp.device_number) AS unmember_page_view_num,
+         0 AS add_product_num,
+         0 AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_product bp
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.value_id = bp.id
+         AND bmp.member_id IS NULL
+         AND bmp.del_flag = '0'
+         AND bp.del_flag = '0'
+         GROUP BY
+         bp.id
+         UNION
+         SELECT
+         bp.id AS product_id,
+         0 AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         SUM(bsc.quantity) AS add_product_num,
+         0 AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_product bp,
+         bu_member_action bma,
+         bu_shopping_cart bsc
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.value_id = bp.id
+         AND bmp.pv_id = bma.member_pv_id
+         AND bma.action_item_id = bsc.id
+         AND bma.action_type = #{columnType}
+         AND bma.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bma.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.del_flag = '0'
+         AND bp.del_flag = '0'
+         AND bma.del_flag = '0'
+         GROUP BY
+         bp.id
+         UNION
+         SELECT
+         bp.id AS product_id,
+         0 AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         0 AS add_product_num,
+         SUM(bod.quantity) AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_member_action bma,
+         bu_order_dtl bod,
+         bu_product bp,
+         bu_shopping_cart bsc
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.pv_id = bma.member_pv_id
+         AND bma.action_type IN ('14', '15')
+         AND bmp.value_id = bp.id
+         AND bma.action_item_id = bsc.id
+         AND bsc.order_dtl_id = bod.id
+         AND bod.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bod.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.del_flag = '0'
+         AND bod.del_flag = '0'
+         AND bp.del_flag = '0'
+         AND bma.del_flag = '0'
+         GROUP BY
+         bp.id
+         UNION
+         SELECT
+         bp.id AS product_id,
+         0 AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         0 AS add_product_num,
+         0 AS submit_order_num,
+         SUM(bod.quantity) AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_member_action bma,
+         bu_shopping_cart bsc,
+         bu_combine_order bco,
+         bu_sub_order bso,
+         bu_order_dtl bod,
+         bu_product bp
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.pv_id = bma.member_pv_id
+         AND bmp.value_id = bp.id
+         AND bod.product_id = bp.id
+         AND bma.action_type IN ('14', '15')
+         AND bma.action_item_id = bsc.id
+         AND bsc.order_dtl_id = bod.id
+         AND bod.sub_order_id = bso.id
+         AND bso.combine_order_id = bco.id
+         AND bco. STATUS = '1'
+         AND bco.pay_date <![CDATA[ >= ]]> #{beginDate}
+         AND bco.pay_date <![CDATA[ <= ]]> #{endDate}
+         AND bco.pay_status = '1'
+         AND bmp.del_flag = '0'
+         AND bco.del_flag = '0'
+         AND bso.del_flag = '0'
+         AND bod.del_flag = '0'
+         AND bma.del_flag = '0'
+         AND bsc.del_flag = '0'
+         AND bp.del_flag = '0'
+         GROUP BY
+         bp.id
+         ) t
+         GROUP BY
+         t.product_id
+     </sql>
+     <select id="selectDataStatisticsList"  parameterType="java.util.HashMap"  resultMap="BaseResultCustomMap">
+         SELECT
+             <include refid="selectDataStatisticsListSql"/>
+         FROM bu_source_niche sn
+         LEFT JOIN (
+             <include refid="dataStatisticsListSql"/>
+         ) s
+         ON sn.link_id = s.product_id
+         WHERE
+         sn.type = #{type}
+         AND
+         sn.status = '0'
+         AND
+         sn.audit_status = '1'
+         AND sn.link_id IN (
+         SELECT
+         p.id
+         FROM
+         bu_product p
+         WHERE
+         sn.link_id = p.id
+         AND p.del_flag = '0'
+         AND p.STATUS = '1'
+         )
+         AND
+         sn.del_flag = '0'
+         <if test="productId != null" >
+             AND exists(select bp.id from bu_product bp where bp.id = sn.link_id and bp.code = #{productId} and bp.del_flag = '0')
+         </if>
+         <if test="productName != null" >
+             AND exists(select bp.id from bu_product bp where bp.id = sn.link_id and bp.name like #{productName} and bp.del_flag = '0')
+         </if>
+         <if test="mchtCode != null" >
+             AND sn.link_id in (select bp.id from bu_product bp,bu_mcht_info bmi where bp.id = sn.link_id and bmi.id = bp.mcht_id and bp.del_flag = '0' and bmi.del_flag='0' and bmi.mcht_code =  #{mchtCode})
+         </if>
+         <if test="mchtName != null" >
+             AND sn.link_id in (select bp.id from bu_product bp,bu_mcht_info bmi where bp.id = sn.link_id and bmi.id = bp.mcht_id  and bp.del_flag = '0' and bmi.del_flag='0' and ( bmi.shop_name like #{mchtName}  or bmi.company_name like #{mchtName} ) )
+         </if>
+         <if test="productTypeId != null" >
+             AND exists(select p.id from bu_product p where sn.link_id=p.id and p.del_flag='0' and p.product_type1_id = #{productTypeId})
+         </if>
+         order by
+         IFNULL(sn.weight,0) desc, sn.up_date desc
+         <if test="limitSize!=null and limitSize!=''">
+             LIMIT #{limitStart},#{limitSize}
+         </if>
+     </select>
+
+     <sql id="selectShopDataStatisticsListSql">
+         sn.weight,
+         sn.link_id,
+         sn.up_date,
+         (SELECT mi.status FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id) shop_status,
+         (SELECT mi.mcht_type FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id) mcht_type,
+         (SELECT mi.cooperate_begin_date FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)cooperate_begin_date,
+         (SELECT mi.mcht_code FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)mcht_code,
+         (SELECT pt.name FROM bu_mcht_product_type mpt, bu_product_type pt WHERE sn.link_id = mpt.mcht_id AND mpt.is_main = '1' AND mpt.del_flag = '0' AND mpt.product_type_id = pt.id AND pt.del_flag = '0' limit 1 ) product_type_name,
+         (SELECT mi.company_name FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)company_name,
+         (SELECT mi.shop_name FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)shop_name,
+         (SELECT GROUP_CONCAT(pb.`name`) FROM bu_mcht_product_brand mpb, bu_product_brand pb where mpb.mcht_id = sn.link_id and mpb.del_flag = '0' AND mpb.product_brand_id = pb.id AND pb.del_flag = '0') mcht_product_brand_name,
+         s.member_visitors_amount,
+         s.unmember_visitors_amounts,
+         s.member_page_views,
+         s.unmember_page_views,
+         s.add_product_amounts,
+         s.add_product_rates,
+         s.submit_order_amounts,
+         s.submit_order_rates,
+         s.payment_amounts,
+         s.payment_rates
+     </sql>
+
+     <sql id="dataShopStatisticsListSql">
+         SELECT
+         t.mcht_id,
+         sum(t.member_visitors_num) as member_visitors_amount ,
+         sum(t.unmember_visitors_num) as unmember_visitors_amounts,
+         sum(t.member_page_view_num) as member_page_views ,
+         sum(t.unmember_page_view_num) as unmember_page_views ,
+         sum(t.add_product_num) as add_product_amounts ,
+         sum(t.submit_order_num) as submit_order_amounts ,
+         sum(t.payment_num) as payment_amounts ,
+         IFNULL(ROUND(sum(t.add_product_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as add_product_rates,
+         IFNULL(ROUND(sum(t.submit_order_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as submit_order_rates,
+         IFNULL(ROUND(sum(t.payment_num)*100/(sum(t.member_visitors_num)+sum(t.unmember_visitors_num)),4),0) as payment_rates
+         FROM
+         (
+         SELECT
+         bp.mcht_id AS mcht_id,
+         COUNT(DISTINCT(bmp.member_id)) AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         COUNT(bmp.member_id) AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         0 AS add_product_num,
+         0 AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_product bp
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.value_id = bp.id
+         AND bmp.del_flag = '0'
+         AND bp.del_flag = '0'
+         GROUP BY
+         bp.mcht_id
+         UNION
+         SELECT
+         bp.mcht_id AS mcht_id,
+         0 AS member_visitors_num,
+         COUNT(
+         DISTINCT (bmp.device_number)
+         ) AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         COUNT(bmp.device_number) AS unmember_page_view_num,
+         0 AS add_product_num,
+         0 AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_product bp
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.value_id = bp.id
+         AND bmp.member_id IS NULL
+         AND bmp.del_flag = '0'
+         AND bp.del_flag = '0'
+         GROUP BY
+         bp.mcht_id
+         UNION
+         SELECT
+         bp.mcht_id AS mcht_id,
+         0 AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         SUM(bsc.quantity) AS add_product_num,
+         0 AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_product bp,
+         bu_member_action bma,
+         bu_shopping_cart bsc
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.value_id = bp.id
+         AND bmp.pv_id = bma.member_pv_id
+         AND bma.action_item_id = bsc.id
+         AND bma.action_type = #{columnType}
+         AND bma.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bma.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.del_flag = '0'
+         AND bp.del_flag = '0'
+         AND bma.del_flag = '0'
+         GROUP BY
+         bp.mcht_id
+         UNION
+         SELECT
+         bp.mcht_id AS mcht_id,
+         0 AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         0 AS add_product_num,
+         SUM(bod.quantity) AS submit_order_num,
+         0 AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_member_action bma,
+         bu_order_dtl bod,
+         bu_product bp,
+         bu_shopping_cart bsc
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.pv_id = bma.member_pv_id
+         AND bma.action_type IN ('14', '15')
+         AND bmp.value_id = bp.id
+         AND bma.action_item_id = bsc.id
+         AND bsc.order_dtl_id = bod.id
+         AND bod.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bod.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.del_flag = '0'
+         AND bod.del_flag = '0'
+         AND bp.del_flag = '0'
+         AND bma.del_flag = '0'
+         GROUP BY
+         bp.mcht_id
+         UNION
+         SELECT
+         bp.mcht_id AS mcht_id,
+         0 AS member_visitors_num,
+         0 AS unmember_visitors_num,
+         0 AS member_page_view_num,
+         0 AS unmember_page_view_num,
+         0 AS add_product_num,
+         0 AS submit_order_num,
+         SUM(bod.quantity) AS payment_num
+         FROM
+         bu_member_pv bmp,
+         bu_member_action bma,
+         bu_shopping_cart bsc,
+         bu_combine_order bco,
+         bu_sub_order bso,
+         bu_order_dtl bod,
+         bu_product bp
+         WHERE
+         bmp.column_type = #{columnType}
+         AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+         AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+         AND bmp.pv_id = bma.member_pv_id
+         AND bmp.value_id = bp.id
+         AND bod.product_id = bp.id
+         AND bma.action_type IN ('14', '15')
+         AND bma.action_item_id = bsc.id
+         AND bsc.order_dtl_id = bod.id
+         AND bod.sub_order_id = bso.id
+         AND bso.combine_order_id = bco.id
+         AND bco.id = bso.combine_order_id
+         AND bso.id = bod.sub_order_id
+         AND bco. STATUS = '1'
+         AND bco.pay_date <![CDATA[ >= ]]> #{beginDate}
+         AND bco.pay_date <![CDATA[ <= ]]> #{endDate}
+         AND bco.pay_status = '1'
+         AND bmp.del_flag = '0'
+         AND bco.del_flag = '0'
+         AND bso.del_flag = '0'
+         AND bod.del_flag = '0'
+         AND bma.del_flag = '0'
+         AND bsc.del_flag = '0'
+         AND bp.del_flag = '0'
+         GROUP BY
+         bp.mcht_id
+         ) t
+         GROUP BY
+         t.mcht_id
+     </sql>
+
+     <select id="selectShopDataStatisticsList"  parameterType="java.util.HashMap"  resultMap="BaseResultCustomMap">
+         SELECT
+         <include refid="selectShopDataStatisticsListSql"/>
+         FROM bu_source_niche sn
+         LEFT JOIN (
+         <include refid="dataShopStatisticsListSql"/>
+         ) s
+         ON sn.link_id = s.mcht_id
+         WHERE
+         sn.type = #{type}
+         AND
+         sn.status = '0'
+         AND
+         sn.audit_status = '1'
+         AND
+         sn.del_flag = '0'
+         <if test="mchtCode != null" >
+             AND sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and bmi.mcht_code =  #{mchtCode})
+         </if>
+         <if test="mchtName != null" >
+             AND sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and ( bmi.shop_name like #{mchtName}  or bmi.company_name like #{mchtName}))
+         </if>
+         <if test="productTypeId != null" >
+             AND exists(select bpt.id from bu_mcht_product_type bpt where bpt.mcht_id = sn.link_id and bpt.is_main = '1' and bpt.status = '1' and bpt.del_flag='0' and bpt.product_type_id = #{productTypeId})
+         </if>
+         order by
+         IFNULL(sn.weight,0) desc, sn.up_date desc
+         <if test="limitSize!=null and limitSize!=''">
+             LIMIT #{limitStart},#{limitSize}
+         </if>
+     </select>-->
+</mapper>

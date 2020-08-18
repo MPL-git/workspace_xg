@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SubOrderCustomMapper" >
+ <select id="selectOverTimeDeliveryListByCnf" resultMap="com.jf.dao.SubOrderMapper.BaseResultMap">
+  <![CDATA[
+	SELECT
+		*
+	FROM
+		(
+			SELECT
+				so.*
+			FROM
+				bu_sub_order so,
+				bu_delivery_overtime_cnf cnf
+			WHERE
+				so.`status` = '1'
+			AND so.create_date >= cnf.begin_date
+			AND so.create_date <= cnf.end_date
+			AND so.status_date < SUBDATE(
+				now(),
+				INTERVAL cnf.overtime HOUR
+			)
+		) so_tmp
+	WHERE
+		NOT EXISTS (
+			SELECT
+				vo.id
+			FROM
+				bu_violate_order vo
+			WHERE
+				vo.sub_order_id = so_tmp.id
+			AND vo.violate_type = 'D'
+			AND vo.violate_action = 'D3'
+		)
+	]]>
+ </select>
+ <select id="selectOverTimeDeliveryListByDefault" resultMap="com.jf.dao.SubOrderMapper.BaseResultMap">
+ <![CDATA[ 
+	SELECT
+		*
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				bu_sub_order so
+			WHERE
+				so.`status` = '1'
+			AND NOT EXISTS (
+				SELECT
+					cnf.id
+				FROM
+					bu_delivery_overtime_cnf cnf
+				WHERE
+					so.create_date >= cnf.begin_date
+				AND so.create_date <= cnf.end_date
+			)
+		) so_tmp
+	WHERE
+		so_tmp.status_date < SUBDATE(now(), INTERVAL 48 HOUR)
+	AND NOT EXISTS (
+		SELECT
+			vo.id
+		FROM
+			bu_violate_order vo
+		WHERE
+			vo.sub_order_id = so_tmp.id
+		AND vo.violate_type = 'D'
+		AND vo.violate_action = 'D3'
+	)
+	]]>
+ </select>
+ 
+ 
+ <select id="selectOverTimeDeliveryList" resultMap="com.jf.dao.SubOrderMapper.BaseResultMap">
+  <![CDATA[
+			SELECT
+				so.*
+			FROM
+				bu_sub_order so
+			WHERE
+				so.`status` = '1'
+				and so.del_flag='0'
+				AND so.audit_status IN (1,3)
+			AND so.delivery_last_date < now()
+            AND NOT EXISTS (
+			SELECT
+				vo.id
+			FROM
+				bu_violate_order vo
+			WHERE
+				vo.sub_order_id = so.id
+			AND vo.violate_type = 'D'
+			AND vo.violate_action = 'D3'
+		   )
+		  AND NOT EXISTS (
+			SELECT
+				mi.id
+			FROM
+				bu_mcht_info mi
+			WHERE
+				so.mcht_id=mi.id
+			AND mi.del_flag = '0'
+			AND mi.mcht_code IN ('P170043','P190313')
+		 )
+	]]>
+ </select>
+ 
+ <select id="selectShamDeliveryList" resultMap="com.jf.dao.SubOrderMapper.BaseResultMap">
+  <![CDATA[
+			SELECT * from 
+			( SELECT
+				bso.id
+			FROM
+				bu_sub_order bso
+			LEFT JOIN bu_kdn_wuliu_info kwi ON bso.express_id = kwi.express_id
+			AND bso.express_no = kwi.logistic_code
+			WHERE
+				bso.delivery_date < #{bgnDeliveryDate,jdbcType=TIMESTAMP}
+			AND bso.delivery_date >= date_add(#{bgnDeliveryDate,jdbcType=TIMESTAMP}, interval -5 day)
+			AND bso.express_no IS NOT NULL
+			AND kwi.`status` = '0'
+			AND kwi.express_id<>2
+			) T1
+			where not EXISTS (SELECT a.id from bu_order_abnormal_log a where a.sub_order_id=T1.id and a.del_flag='0' and a.abnormal_type='4')
+	]]>
+ </select>
+ 
+ <insert id="batchInsertShamDelivery" >
+  <![CDATA[
+			INSERT INTO `bu_order_abnormal_log` (
+				`sub_order_id`,
+				`abnormal_type`,
+				`abnormal_desc`,
+				`follow_by`,
+				`follow_status`,
+				`create_by`,
+				`create_date`,
+				`update_by`,
+				`update_date`,
+				`remarks`,
+				`del_flag`
+			)
+			
+			SELECT
+				T1.id,
+					'4',
+					'虚假发货',
+					NULL,
+					'1',
+					null,
+					NOW(),
+					NULL,
+					NULL,
+					NULL,
+					'0'
+			FROM
+				(
+					SELECT
+						bso.id
+					FROM
+						bu_sub_order bso
+					LEFT JOIN bu_kdn_wuliu_info kwi ON bso.express_id = kwi.express_id
+					AND bso.express_no = kwi.logistic_code
+					WHERE
+						bso.delivery_date < #{bgnDeliveryDate,jdbcType=TIMESTAMP}
+					AND bso.delivery_date >= date_add(#{bgnDeliveryDate,jdbcType=TIMESTAMP}, interval -5 day)
+					AND bso.express_no IS NOT NULL
+					AND kwi.`status` = '0'
+					AND kwi.express_id <> 2
+					AND kwi.express_id <> 20
+				
+				) T1
+			WHERE
+				NOT EXISTS (
+					SELECT
+						a.id
+					FROM
+						bu_order_abnormal_log a
+					WHERE
+						a.sub_order_id = T1.id
+					AND a.del_flag = '0'
+					AND a.abnormal_type = '4'
+				)
+	]]>
+ </insert>
+ 
+ 
+ <!--查出未生成违规单的虚假发货订单，考虑到性能问题，只查发货时间30天内的订单-->
+ <select id="selectShamDeliveryOrderWithNoViolateOrder" resultMap="com.jf.dao.SubOrderMapper.BaseResultMap">
+  <![CDATA[
+			SELECT
+				t.*
+			FROM
+				bu_sub_order t,
+				bu_combine_order co,
+				bu_mcht_info mi
+			WHERE
+				t.combine_order_id = co.id
+			and t.del_flag='0'
+			and co.del_flag='0'
+			AND t.delivery_date > date_add(now(), INTERVAL -30 DAY)
+			AND co.pay_date > '2018-03-20 00:00:00'
+			AND t.mcht_id=mi.id
+            AND mi.del_flag='0'
+            AND mi.mcht_code NOT IN ('P170043','P190313')
+			AND NOT EXISTS (
+				SELECT
+					vo.sub_order_id
+				FROM
+					bu_violate_order vo
+				WHERE
+					vo.violate_type = 'D'
+				AND vo.violate_action = 'D1'
+				AND vo.del_flag='0'
+				AND vo.sub_order_id=t.id
+			)
+			AND t.id in (
+				SELECT
+					a.sub_order_id
+				FROM
+					bu_order_abnormal_log a
+				WHERE
+				a.del_flag = '0'
+				AND a.abnormal_type = '4'
+			)
+			order by t.id desc
+	]]>
+ </select>
+ 
+ 
+<!--  承诺发货时间+24小时未发货标记为缺货，只处理5天内的订单 -->
+ <insert id="batchInsertOutOfStock">
+  <![CDATA[
+		INSERT INTO `bu_order_abnormal_log` (
+			`sub_order_id`,
+			`abnormal_type`,
+			`abnormal_desc`,
+			`follow_by`,
+			`follow_status`,
+			`create_by`,
+			`create_date`,
+			`update_by`,
+			`update_date`,
+			`remarks`,
+			`del_flag`
+		) SELECT
+			T1.id,
+			'1',
+			'缺货',
+			NULL,
+			'1',
+			NULL,
+			NOW(),
+			NULL,
+			NULL,
+			NULL,
+			'0'
+		FROM
+			(
+				SELECT
+					so.*
+				FROM
+					bu_sub_order so,
+					bu_combine_order co,
+					bu_member_info bmi
+				WHERE
+				so.combine_order_id = co.id
+				AND co.member_id = bmi.id
+				AND so.del_flag = '0'
+				AND co.del_flag = '0'
+				AND so.`status` = '1'
+				AND co.pay_status = '1'
+				AND so.audit_status IN (1,3)
+				AND so.delivery_last_date > date_add(NOW(), INTERVAL - 5 DAY)
+				AND so.delivery_last_date < date_add(NOW(), INTERVAL - 24 HOUR)
+				AND bmi.`status` != 'P'
+			) T1
+		WHERE
+			NOT EXISTS (
+				SELECT
+					log.sub_order_id
+				FROM
+					bu_order_abnormal_log log
+				WHERE
+					log.sub_order_id = T1.id
+				AND log.del_flag = '0'
+				AND log.abnormal_type = '1'
+			)
+	]]>
+ </insert> 
+ 
+ 
+  <!--查出未生成违规单的缺货订单，考虑到性能问题，只查发货时间10天内的订单-->
+ <select id="selectOutOfStockOrderWithNoViolateOrder" resultMap="com.jf.dao.SubOrderMapper.BaseResultMap">
+  <![CDATA[
+			SELECT
+				t.*
+			FROM
+				bu_sub_order t,
+				bu_combine_order co,
+				bu_mcht_info mi
+			WHERE
+				t.combine_order_id = co.id
+			AND t.del_flag = '0'
+			AND co.del_flag = '0'
+			AND co.pay_status = '1'
+			AND t.delivery_last_date > date_add(now(), INTERVAL - 5 DAY)
+			AND t.mcht_id=mi.id
+			AND mi.mcht_code NOT IN ('P170043','P190313')
+			AND mi.del_flag='0'
+			AND NOT EXISTS (
+				SELECT
+					vo.sub_order_id
+				FROM
+					bu_violate_order vo
+				WHERE
+					vo.violate_type = 'D'
+				AND vo.violate_action = 'D4'
+				AND vo.del_flag = '0'
+				AND vo.sub_order_id=t.id
+			)
+			AND t.id IN (
+				SELECT
+					a.sub_order_id
+				FROM
+					bu_order_abnormal_log a
+				WHERE
+					a.del_flag = '0'
+				AND a.abnormal_type = '1'
+				AND a.create_date > date_add(now(), INTERVAL - 5 DAY)
+			)
+			order by t.id desc
+	]]>
+ </select>
+
+ <resultMap id="BaseResultMap" type="com.jf.entity.SubOrderCustom"  extends="com.jf.dao.SubOrderMapper.BaseResultMap" >
+	<result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+	<result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+ </resultMap>
+ <!-- 大学生订单 -->
+ <select id="selectCollegeStudentOrderList" parameterType="java.lang.String" resultMap="BaseResultMap">
+	SELECT
+		so.*,
+		co.receiver_phone,
+		co.payment_id
+	FROM
+		bu_sub_order so,
+		bu_combine_order co
+	WHERE
+		so.combine_order_id = co.id
+	AND so.del_flag = '0'
+	AND so.status = '1'
+	AND so.audit_status = #{auditStatus}
+	AND co.del_flag = '0'
+	AND co.pay_status = '1'
+	AND NOT EXISTS (
+		SELECT
+	 		cso.id
+		FROM
+	 		bu_customer_service_order cso
+		WHERE
+	 		cso.del_flag = '0'
+		AND cso.sub_order_id = so.id
+		AND cso.service_type = 'A'
+	)
+	<if test="auditStatus == 2" >
+		<![CDATA[
+			AND co.pay_date < date_sub(now(),interval 1 DAY)
+		]]>
+		AND NOT EXISTS (
+			SELECT
+				csc.id
+			FROM
+				bu_member_college_student_certification csc
+			WHERE
+				csc.del_flag = '0'
+			AND csc.member_id = co.member_id
+		)
+	</if>
+	<if test="auditStatus == 4" >
+		<![CDATA[
+			AND so.audit_date < date_sub(now(),interval 1 DAY)
+		]]>
+	</if>
+
+ </select>
+
+	<update id="bulkUpdateSubOrderAuditStatus" parameterType="java.util.Map">
+		UPDATE `bu_sub_order`
+		SET audit_status = '3',audit_date = #{now}
+		WHERE audit_status = '1' AND create_date &lt; #{endTime} AND `status` = '1' AND del_flag = '0'
+	</update>
+ 
+</mapper>

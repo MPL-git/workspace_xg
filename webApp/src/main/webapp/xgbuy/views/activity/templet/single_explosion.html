@@ -1,0 +1,79 @@
+<div class="page single-exp flex dc" data-title="单品爆款" data-id="activity_templet_single_explosion">
+	<link rel="stylesheet" href="../static/css/common-tabTop2.css">
+	<link rel="stylesheet" href="activity/templet/css/single-exp.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">单品爆款</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg content flex dc">
+		<div class="tab-box2 fn">
+			<div class="tag tag1 flex scroll-x"></div>
+		</div>
+
+		<div class="scroll-y scroll-more activity-single-con fg swiper-slide"></div>
+	</div>
+
+	<script id="activity_single_explosion_list_tpl" type="text/html">
+		{{if returnData.length}}
+		{{each returnData value i}}
+		<a class="mb20 flex" onclick="getUrlGoods(this)"
+			data-activityareaid="{{activityAreaId}}"
+			data-productid="{{value.productId}}">
+			<div class="con-1 fn">
+				<img src="{{value.productPic}}">
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+			</div>
+			<div class="con-2 fg">
+				<p title="{{value.productName}}">{{value.productName}}</p>
+				<div class="con-21 flex ac">
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+					<span
+						class="time f50"
+						data-current="{{value.currentTime}}"
+						data-begin="{{value.beginTime}}"
+						data-end="{{value.endTime}}"
+					></span>
+				</div>
+
+				<div class="con-22 flex ae jb">
+					<div>
+						<strong class="f50">{{value.salePrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</div>
+					{{if value.stockSum <= 0}}
+					<b class="flex ac jc btn-gray">已售罄</b>
+					{{else}}
+						{{if value.currentTime > value.endTime}}
+					<b class="flex ac jc btn-gray">已售罄</b>
+						{{else if value.currentTime >= value.beginTime}}
+					<b class="flex ac jc btn-red">去抢购</b>
+						{{else}}
+					<b class="flex ac jc btn-yellow">即将开抢</b>
+						{{/if}}
+					{{/if}}
+				</div>
+			</div>
+		</a>
+		{{/each}}
+		{{else}}
+		{{include 'activity_single_explosion_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="activity_single_explosion_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg" style="height: calc(100vh - 1.69rem);">
+			<i></i>
+			<p>对不起, 此类目没有商品</p>
+		</div>
+	</script>
+
+	<script src="activity/templet/js/single-exp.js?var=1.0" async></script>
+</div>

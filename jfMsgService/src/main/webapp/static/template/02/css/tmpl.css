@@ -1,0 +1,55 @@
+
+/*header*/
+#header{ overflow: hidden; clear: both;}
+.headertb,#header,#headerRight,#nav{ height: 80px;}
+.headertb td img{ max-height: 80px;}
+#headerRight,#nav{ margin-top: -80px;}
+#headerRight .steps{position: relative; z-index: 10; margin-top: 8px;}
+.header{ position: relative; z-index: 9; border-bottom: 1px solid #dcdcdc; background: #fff; -webkit-box-shadow:0 0px 4px rgba(0, 0, 0, 0.3); -moz-box-shadow:0 0px 4px rgba(0, 0, 0, 0.3); box-shadow:0 0px 4px rgba(0, 0, 0, 0.3);}
+#headerSearch{ position: relative; z-index: 10; float: right; width: auto; margin-top: 24px; margin-right: 6px; display: inline;}
+#headerCart{ margin-top: 24px;}
+.search-panel-fields{width: auto; overflow: hidden; padding: 0; border: 2px solid;}
+.search-panel-fields label{position: absolute; left: 10px; top: 0; z-index: 2; line-height: 26px; color: #949494; cursor: text;}
+.search-panel-fields input{float: left; width: 170px; height: 26px; *line-height: 26px; margin: 0; padding: 0 10px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; border: 0; background: #fff;}
+.search-panel-fields button{float: left; position: static; height: 26px; width: 28px; border: 0; color: #fff; background:#999 url(../../../images/ico-search-white.png) no-repeat center;}
+.cartbtn{ text-indent: -9999px; float: left; width: 28px; height: 26px; border: 2px solid; padding: 0;background:#999 url(../../../images/ico-cart-white.png) no-repeat center;}
+.mini-cart-menu{ top: 30px;}
+#nav{ position: relative;}
+.site-nav{ position: relative; z-index: 10; margin:0 280px 0 220px; height: 80px; overflow: hidden;}
+.site-nav-item{ float: left; height: 80px; line-height: 80px; font-size: 16px; font-family: "Microsoft YaHei","Hiragino Sans GB";}
+.site-nav-item a{ color: #000; display: block; padding: 0 20px;}
+.site-nav-item a:hover{ text-decoration: none;}
+.site-nav-item a:hover span{ height: 77px; display: block; overflow: hidden; border-bottom: 3px solid;}
+
+.site-nav-layer{ display: none; top: 79px; position: absolute; z-index: 99; padding: 14px 0 14px 228px; width: 410px; background: #fff; *zoom:1; border: 1px solid #d2d2d2; -webkit-box-shadow:1px 1px 4px rgba(0, 0, 0, .2); -moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, .2); box-shadow:1px 1px 4px rgba(0, 0, 0, .2); border-top: 0;}
+.site-nav-layer:after{ clear: both; height: 0; content: ""; display: block;}
+.snav-side{ float: left; width: 200px; padding-right: 14px; border-right: 1px solid #d0d0d0; overflow: hidden; display: inline; margin-left: -214px;}
+.snav-side img{ width: 200px;}
+.snav-main{ float: left; width: 409px; border-left: 1px solid #d0d0d0; margin-left: -1px; display: inline;}
+.site-nav-layer-noimg{ padding-left: 0;}
+.site-nav-layer-noimg .snav-main{border-left: 0; margin-left: 0;}
+
+.gbc-tree{ padding: 5px 0;}
+.gbc-treetitle, .gbc-treeitem {display: block;padding-left: 0;line-height: 20px;zoom: 1; }
+.gbc-treeli {margin: 0 15px; border-top: 1px solid #d9d6d4; clear: both; *zoom:1;}
+.gbc-treeli:after{content: ""; display: block; clear: both; }
+.gbc-treetitle{}
+.gbc-treeli:first-child{border-top: 0;}
+.gbc-treelitem{padding: 10px 15px; margin: 0 -15px; *zoom:1;}
+.gbc-treetitle{font-weight: bold;}
+.gbc-subtree { margin-top: 2px; line-height: 0;}
+.gbc-subtree ul{ margin-left: -12px; overflow: hidden; *zoom:1;}
+.gbc-subtree li { float: left; margin-left: 12px; _display: inline; }
+.gbc-subtree li a{ display: inline-block; white-space: nowrap;}
+.gbc-subtree .gbc-treeitem { float: left; }
+
+.sublayer { display: none; position: absolute; left: 208px; top: 0; min-height: 100%; width: 480px; }
+.sublayer-item { border-top: 1px dashed #d9d6d4; margin: 0 10px; padding: 15px 10px 15px 88px; overflow: hidden; zoom: 1; }
+.sublayer-item:first-child { border-top: 0; }
+.sublayer-item:hover { text-decoration: underline; }
+.sublayer-item dt { float: left; width: 72px; margin-left: -78px; display: inline; font-size: 14px; }
+.sublayer-item dd { overflow: hidden; }
+.sublayer-item, .sublayer-item a { }
+.sublayer-item ul { margin-left: -22px; }
+.sublayer-item li { float: left; margin-left: 22px; }
+.sublayer-item li a{ display: inline-block; white-space: nowrap;}

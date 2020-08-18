@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SysAppMessageCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SysAppMessageCustom"  extends="com.jf.dao.SysAppMessageMapper.BaseResultMap" >
+    <result column="app_message_member_id" property="appMessageMemberId" jdbcType="INTEGER" />
+    <result column="app_message_id" property="appMessageId" jdbcType="INTEGER" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="getTransactionMsg" parameterType="java.util.Map" resultType="com.jf.entity.SysAppMessageCustom">
+  		select 
+  		msg.id,
+		msg.type,
+		msg.title,
+		msg.content,
+		msg.express_no,
+		msg.link_type,
+		msg.link_id,
+		msg.member_id,
+		msg.create_date
+		from sys_app_message msg
+		where msg.del_flag = '0'
+		and msg.type = '2'
+		and msg.member_id = #{memberId}
+		order by msg.id desc
+		<choose>
+			<when test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</when>
+			<otherwise>
+				limit 1
+			</otherwise>
+		</choose>
+  	</select>
+  	
+  	<select id="getSystemMsg" parameterType="java.util.Map" resultType="com.jf.entity.SysAppMessageCustom">
+  		select 
+  		msg.id,
+		msg.type,
+		msg.title,
+		msg.content,
+		msg.express_no,
+		msg.link_type,
+		msg.link_id,
+		msg.member_id,
+		userMsg.create_date
+		from sys_app_message msg
+		LEFT JOIN sys_app_message_member userMsg on userMsg.app_message_id = msg.id
+		where userMsg.del_flag = '0'
+		and msg.del_flag = '0'
+		and msg.type = '1'
+		and userMsg.member_id = #{memberId}
+		order by userMsg.id desc
+		<choose>
+			<when test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize} 
+			</when>
+			<otherwise>
+				limit 1
+			</otherwise>
+		</choose>
+  	</select>
+  
+</mapper>

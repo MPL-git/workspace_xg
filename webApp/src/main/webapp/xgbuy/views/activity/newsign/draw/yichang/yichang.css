@@ -1,0 +1,59 @@
+.checkin-yichang {
+    height: 100vh;
+    background-color: #fff;
+}
+
+.checkin-yichang .main-tishi {
+    position: relative;
+    font-size: 0.28rem;
+    border-bottom: 0.01rem solid #eeeeee;
+    margin: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+
+.checkin-yichang .main-body {
+    margin: 0.2rem;
+}
+
+.checkin-yichang input {
+    border: 0.01rem solid #dddddd;
+    height: 0.6rem;
+    font-size: 16px;
+    width: 4.6rem;
+    background-color: #fafafa;
+    padding-left: 0.08rem;
+}
+
+.checkin-yichang .yichang-body {
+    margin: 0.5rem auto;
+}
+
+.checkin-yichang .imgs {
+    width: 0.28rem;
+    height: 0.28rem;
+    position: absolute;
+    top: 0.02rem;
+    left: 0.01rem;
+}
+
+.checkin-yichang .main-tishi p {
+    text-indent: .4rem;
+    font-size: 0.26rem;
+}
+
+.checkin-yichang .yichang-body p {
+    width: 1.43rem;
+    font-size: 0.26rem;
+    text-align: right;
+    margin-right: 0.12rem;
+}
+
+.checkin-yichang .btns {
+    margin: 1rem auto;
+    width: 6rem;
+    height: 0.8rem;
+    font-size: 0.3rem;
+    border-radius: 0.05rem;
+    background-color: #ff5050;
+    color: #ffffff;
+}

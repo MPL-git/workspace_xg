@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ViolateOrderCustomMapper" >
+ <resultMap id="BaseResultMap" type="com.jf.entity.ViolateOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <result column="sub_order_id" property="subOrderId" jdbcType="INTEGER" />
+    <result column="violate_type" property="violateType" jdbcType="CHAR" />
+    <result column="violate_action" property="violateAction" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="punish_means" property="punishMeans" jdbcType="VARCHAR" />
+    <result column="platform_remarks" property="platformRemarks" jdbcType="VARCHAR" />
+    <result column="order_source" property="orderSource" jdbcType="CHAR" />
+    <result column="violate_date" property="violateDate" jdbcType="TIMESTAMP" />
+    <result column="complain_date" property="complainDate" jdbcType="TIMESTAMP" />
+    <result column="complain_end_date" property="complainEndDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="audit_status" property="auditStatus" jdbcType="CHAR" />
+    <result column="audit_remarks" property="auditRemarks" jdbcType="VARCHAR" />
+    <result column="audit_date" property="auditDate" jdbcType="TIMESTAMP" />
+    <result column="platform_processor" property="platformProcessor" jdbcType="INTEGER" />
+    <result column="complain_info_status" property="complainInfoStatus" jdbcType="CHAR" />
+    <result column="enclosure" property="enclosure" jdbcType="VARCHAR" />
+    <result column="jifen_status" property="jifenStatus" jdbcType="CHAR" />
+    <result column="jifen_integral" property="jifenIntegral" jdbcType="INTEGER" />
+    <result column="enable_hours" property="enableHours" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>	
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+   	id, order_code, mcht_id, sub_order_id, violate_type, violate_action, content, money, 
+    punish_means, platform_remarks, order_source, violate_date, complain_date, complain_end_date, 
+    status, audit_status, audit_remarks, audit_date, platform_processor, complain_info_status, 
+    enclosure, jifen_status, jifen_integral, enable_hours, jifen_integral_desc, again_audit_status, 
+    again_audit_by, again_audit_date, again_audit_remarks, status_date, create_by, create_date, 
+    update_by, update_date, remarks, del_flag
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.ViolateOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_violate_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+</mapper>

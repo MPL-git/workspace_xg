@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtCloseApplicationCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtCloseApplicationCustom" extends="com.jf.dao.MchtCloseApplicationMapper.BaseResultMap" >
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="is_manage_self" property="isManageSelf" jdbcType="CHAR" />
+    <result column="mcht_type" property="mchtType" jdbcType="CHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="mcht_product_brands" property="mchtProductBrands" jdbcType="VARCHAR" />
+    <result column="agreement_begin_date" property="agreementBeginDate" jdbcType="TIMESTAMP" />
+    <result column="agreement_end_date" property="agreementEndDate" jdbcType="TIMESTAMP" />
+    <result column="archive_status" property="archiveStatus" jdbcType="VARCHAR" />
+    <result column="archive_date" property="archiveDate" jdbcType="TIMESTAMP" />
+    <result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+    <result column="delivery_date" property="deliveryDate" jdbcType="TIMESTAMP" />
+    <result column="complete_date" property="completeDate" jdbcType="TIMESTAMP" />
+    <result column="total_amt" property="totalAmt" jdbcType="DECIMAL" />
+    <result column="pay_amt" property="payAmt" jdbcType="DECIMAL" />
+    <result column="unpay_amt" property="unpayAmt" jdbcType="DECIMAL" />
+    <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+    <result column="zs_staff_name" property="zsStaffName" jdbcType="VARCHAR" />
+    <result column="commodity_staff_name" property="commodityStaffName" jdbcType="VARCHAR" />
+    <result column="mcht_archive_staff_name" property="mchtArchiveStaffName" jdbcType="VARCHAR" />
+    <result column="kf_staff_name" property="kfStaffName" jdbcType="VARCHAR" />
+    <result column="cw_staff_name" property="cwStaffName" jdbcType="VARCHAR" />
+    <result column="fw_staff_name" property="fwStaffName" jdbcType="VARCHAR" />
+    <result column="director_staff_name" property="directorStaffName" jdbcType="VARCHAR" />
+    <result column="product_staff_name" property="productStaffName" jdbcType="VARCHAR" />
+    <result column="settlement_staff_name" property="settlementStaffName" jdbcType="VARCHAR" />
+    <result column="op_staff_name" property="opStaffName" jdbcType="VARCHAR" />
+    <result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+    <result column="platform_merchants_contact" property="platformMerchantsContact" jdbcType="VARCHAR" />
+    <result column="platform_fawu_contact" property="platformFawuContact" jdbcType="VARCHAR" />
+    <result column="opening_date" property="openingDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+   t.*,
+   (select mi.mcht_code from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id LIMIT 1 ) mcht_code,
+   (select mi.mcht_type from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id LIMIT 1 ) mcht_type,
+   (select mi.is_manage_self from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id LIMIT 1 ) is_manage_self,
+   (select mi.shop_name from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id LIMIT 1 ) shop_name,
+   (select mi.company_name from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id LIMIT 1 ) company_name,
+   (select mc.end_date from bu_mcht_contract mc where mc.del_flag = '0' and mc.mcht_id = t.mcht_id and mc.audit_status='3' order by mc.id desc LIMIT 1 ) agreement_end_date,
+   (select mc.archive_status from bu_mcht_contract mc where mc.del_flag = '0' and mc.mcht_id = t.mcht_id and mc.audit_status='3' order by mc.id desc LIMIT 1 ) archive_status,
+   (select so.sub_order_code from bu_sub_order so where so.mcht_id = t.mcht_id and so.del_flag='0' and so.status = '3' order by so.complete_date desc limit 1)sub_order_code,
+   (select so.delivery_date from bu_sub_order so where so.mcht_id = t.mcht_id and so.del_flag='0' and so.status = '3' order by so.complete_date desc limit 1)delivery_date,
+   (select md.pay_amt from bu_mcht_deposit md where md.del_flag = '0' and md.mcht_id = t.mcht_id LIMIT 1 )pay_amt,
+   FUN_GET_STATUS_DESC("BU_MCHT_INFO","STATUS", (select mi.status from bu_mcht_info mi where mi.del_flag = '0' and mi.id = t.mcht_id LIMIT 1)) status_desc,
+   (SELECT IFNULL(GROUP_CONCAT(b.contact_name),'') FROM bu_mcht_platform_contact a,bu_platform_contact b,bu_mcht_info c where a.status='1' and a.del_flag='0' and a.mcht_id = c.id AND a.platform_contact_id = b.id AND c.id=t.mcht_id AND b.contact_type = '1') platform_merchants_contact,
+	(SELECT IFNULL(GROUP_CONCAT(b.contact_name),'') FROM bu_mcht_platform_contact a,bu_platform_contact b,bu_mcht_info c where a.status='1' and a.del_flag='0' and a.mcht_id = c.id AND a.platform_contact_id = b.id AND c.id=t.mcht_id AND b.contact_type = '7') platform_fawu_contact,
+   (select a.cooperate_begin_date from bu_mcht_info a where t.mcht_id = a.id and a.del_flag='0' )opening_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtCloseApplicationCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_close_application t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.MchtCloseApplicationCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_close_application t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectCustomByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select
+  		t.*,
+  		(select mi.mcht_code from bu_mcht_info mi where mi.id = t.mcht_id and mi.del_flag='0')mcht_code,
+  		(select mi.mcht_type from bu_mcht_info mi where mi.id = t.mcht_id and mi.del_flag='0')mcht_type,
+  		(select mi.is_manage_self from bu_mcht_info mi where mi.id = t.mcht_id and mi.del_flag='0')is_manage_self,
+  		(select mi.company_name from bu_mcht_info mi where mi.id = t.mcht_id and mi.del_flag='0')company_name,
+  		(select mi.shop_name from bu_mcht_info mi where mi.id = t.mcht_id and mi.del_flag='0')shop_name, 
+  		(select pt.name from bu_mcht_product_type mpt,bu_product_type pt where mpt.mcht_id = t.mcht_id and mpt.product_type_id = pt.id and mpt.del_flag='0' and mpt.is_main = '1' and mpt.status='1' and pt.del_flag='0' and pt.status='1' and pt.t_level=1 limit 1)product_type_name,
+  		(select mc.begin_date from bu_mcht_contract mc where mc.mcht_id = t.mcht_id and mc.del_flag='0' and mc.audit_status = '3' order by mc.id desc limit 1 ) agreement_begin_date,
+  		(select mc.end_date from bu_mcht_contract mc where mc.mcht_id = t.mcht_id and mc.del_flag='0' and mc.audit_status = '3' order by mc.id desc limit 1 ) agreement_end_date,
+  		(select mc.archive_status from bu_mcht_contract mc where mc.mcht_id = t.mcht_id and mc.del_flag='0' and mc.audit_status = '3' order by mc.id desc limit 1 ) archive_status,
+  		(select mc.archive_date from bu_mcht_contract mc where mc.mcht_id = t.mcht_id and mc.del_flag='0' and mc.audit_status = '3' order by mc.id desc limit 1 ) archive_date,
+  		(select so.sub_order_code from bu_sub_order so where so.mcht_id = t.mcht_id and so.del_flag='0' and so.status = '3' order by complete_date desc limit 1)sub_order_code,
+  		(select so.delivery_date from bu_sub_order so where so.mcht_id = t.mcht_id and so.del_flag='0' and so.status = '3' order by complete_date desc limit 1)delivery_date,
+  		(select so.complete_date from bu_sub_order so where so.mcht_id = t.mcht_id and so.del_flag='0' and so.status = '3' order by complete_date desc limit 1)complete_date,
+  		(select md.total_amt from bu_mcht_deposit md where md.mcht_id = t.mcht_id and md.del_flag='0')total_amt,
+  		(select md.pay_amt from bu_mcht_deposit md where md.mcht_id = t.mcht_id and md.del_flag='0')pay_amt,
+  		(select md.unpay_amt from bu_mcht_deposit md where md.mcht_id = t.mcht_id and md.del_flag='0')unpay_amt,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.zs_confirm_by limit 1)zs_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.commodity_confirm_by limit 1)commodity_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.mcht_archive_confirm_by limit 1)mcht_archive_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.kf_confirm_by limit 1)kf_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.cw_confirm_by limit 1)cw_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.fw_confirm_by limit 1)fw_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.director_confirm_by limit 1)director_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.product_confirm_by limit 1)product_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.settlement_confirm_by limit 1)settlement_staff_name,
+  		(select ssi.STAFF_NAME from sys_staff_info ssi where ssi.STAFF_ID = t.op_confirm_by limit 1)op_staff_name
+  	from bu_mcht_close_application t where t.id=#{id}
+  </select>
+</mapper>

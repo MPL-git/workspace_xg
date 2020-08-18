@@ -1,0 +1,31 @@
+.wrapper {
+	padding: .19rem 0 .7rem;
+	font-size: .28rem;
+	text-align: center;
+}
+h1 {
+	line-height: 1.22rem;
+	font-size: .44rem;
+	font-weight: bold;
+}
+table {
+	width: 100%;
+	margin-bottom: .7rem;
+	table-layout: fixed;
+}
+caption {
+	height: .68rem;
+	line-height: .68rem;
+	font-size: .3rem;
+	font-weight: bold;
+	border: 1px solid #bbb;
+	border-bottom: none;
+}
+td {
+	width: 33.3%;
+	height: .68rem;
+	border: 1px solid #bbb;
+}
+tr td:nth-child(2) {
+	width: auto;
+}

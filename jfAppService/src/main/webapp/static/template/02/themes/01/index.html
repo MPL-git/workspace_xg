@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Genanx</title>
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/module.css">
+    <link rel="stylesheet" href="../../css/tmpl.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <script src="../../../../js/lib/jquery-1.8.3.min.js"></script>
+    <script src="../../../../js/jquery.switchable.min.js"></script>
+    <script>
+        $(function(){
+
+            var sideitems = $("#inslides .slide-side-item");
+            sideitems.eq(0).show();
+            $('#inslides .switchable-slides').switchable({
+                triggers: '&bull;',
+                putTriggers: 'insertAfter',
+                effect: 'fade',
+                easing: 'ease-in-out',
+                loop: true,
+                autoplay:true,
+                panels:'li',
+                prev: '#inslide_prev',
+                next: '#inslide_next',
+                onSwitch: function(event, currentIndex) {
+                    sideitems.hide().eq(currentIndex).fadeIn();
+                }
+            });
+        });
+    </script>
+</head>
+<body class="page-index">
+<div id="topbar">
+    <div class="topbar">
+        <div class="layout">
+            <div class="toptools">
+            </div>
+            <div class="toplinks">
+                <a href="#">官方微博</a> 丨 <a href="#">网站公告</a> 丨 <a href="#">帮助中心</a> 丨 <a href="#">在线客服</a> 丨 贵宾专线：400-000-0000 丨<a href="/m">手机加欧</a>
+            </div>
+            <div class="toplogin">
+                <p class="topwelcome">您好！</p>
+                <p><a href="login.html" class="loginlink">登录</a></p>
+                <p><a href="register.html" class="loginlink">注册</a></p>
+                <p class="topnotify">
+                    <a href="###"><span>通知<i>3</i></span></a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="header">
+    <div class="header">
+        <div class="layout">
+            <table class="headertb" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td id="siteLogo">
+                        <a href="#"><img src="images/pic/logo.png" alt=""></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="headerRight" class="layout">
+    <div id="headerCart" class="cart-hover">
+        <div class="cartbtn"><i></i><span><a href="#">购物车</a></span><b class="cartcount"><em>8</em>件</b></div>
+        <div class="mini-cart-menu">
+            <div class="mini-cart-panel">
+                <ul class="mini-cart-bd">
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                    <li>
+                        <div class="mini-cart-img"><a href="#"><img src="../../images/goodspic.jpg" alt=""/></a></div>
+                        <div class="mini-cart-count">¥<strong>219.00</strong></div>
+                        <div class="mini-cart-title"><a href="#">千纸鹤男装 2013秋装上新</a></div>
+                        <div class="mini-cart-del"><a href="#">&times;</a></div>
+                        <div class="mini-cart-info"><span>颜色：黑色</span><span>尺码：M</span></div>
+                    </li>
+                </ul>
+                <div class="mini-cart-ft">
+                    <div class="mini-cart-total">
+                        <p>总计: <strong>¥ 219.00</strong></p>
+                    </div>
+                    <div class="mini-cart-view">
+                        <a href="#">查看更多商品</a>
+                        <a class="mini-cart-btn" href="#"><span>结算</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="headerSearch">
+        <form target="_top" action="" name="search">
+            <div class="search-panel-fields">
+                <label for="q">搜索商城商品!</label>
+                <input type="text" name="q" id="q" accesskey="s" autocomplete="off" autofocus x-webkit-speech="" x-webkit-grammar="builtin:translate" lang="zh-CN">
+                <button type="submit">搜索</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="nav">
+    <div class="layout">
+        <div class="site-nav">
+            <ul>
+                <li data-navmenu="snav_item1" class="site-nav-item"><a href="#"><span>首页</span></a></li>
+                <li data-navmenu="snav_item2" class="site-nav-item"><a href="#"><span>关于我们</span></a></li>
+                <li data-navmenu="snav_item3" class="site-nav-item"><a href="#"><span>产品中心</span></a></li>
+                <li data-navmenu="snav_item4" class="site-nav-item"><a href="#"><span>品质领域</span></a></li>
+                <li data-navmenu="snav_item5" class="site-nav-item"><a href="#"><span>联系我们</span></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<style>
+.jo-banner{ position: relative; height: 600px;}
+.jo-banner img{ position: absolute; left: 50%; top: 0; margin-left: -960px;}
+.jo-footer{ width: 1200px; margin:auto;}
+.jo-footer td{ vertical-align: top; padding: 10px 0 0 60px;}
+.jo-footer h3{ line-height: 34px; font-size: 16px;}
+.jo-footer p{ line-height: 24px;}
+.jo-footer-border{border-right: 1px solid #4cacd8;}
+.jo-footer .jo-foot-contact{ vertical-align: middle; padding-left: 40px; width: 274px;}
+.jo-foot-contact a{ display: inline-block; position: relative; padding: 0 9px;}
+.jo-footinfo{ background: #555; border-top: 1px solid #4cacd8; line-height: 38px; height: 38px; color: #fff;}
+.jo-footinfo a{ color: #fff;}
+.jo-footinfo table{ width: 1200px; margin: auto;}
+</style>
+<div id="page">
+    <div id="inslides">
+        <div class="switchable-slides">
+            <ul>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+                <li>
+                    <div class="item"><a href="#"><img src="images/pic/banner_1.jpg" alt=""/></a></div>
+                </li>
+            </ul>
+        </div>
+        <div class="switchable-nav">
+            <a id="inslide_prev" href="javascript:void(0)">上一张</a>
+            <a id="inslide_next" href="javascript:void(0)">下一张</a>
+        </div>
+    </div>
+
+    <br/>
+    <table width="1194" align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/cat1_01.jpg" alt=""></td>
+            <td rowspan="2" width="25"><td>
+                <img src="images/pic/cat1_03.jpg" alt=""></td>
+            <td rowspan="2" width="25"><td>
+                <img src="images/pic/cat1_05.jpg" alt=""></td>
+            <td rowspan="2" width="25"><td>
+                <img src="images/pic/cat1_07.jpg" alt=""></td>
+        </tr>
+        <tr>
+            <td>
+                <img src="images/pic/cat1_08.png" alt=""></td>
+            <td>
+                <img src="images/pic/cat1_08.png" alt=""></td>
+            <td>
+                <img src="images/pic/cat1_08.png" alt=""></td>
+            <td>
+                <img src="images/pic/cat1_08.png" alt=""></td>
+        </tr>
+    </table>
+    <br/>
+    <table width="1194" align="center" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <img src="images/pic/cat2_01.png" alt=""></td>
+            <td>
+                <img src="images/pic/cat2_02.jpg" alt=""></td>
+        </tr>
+        <tr>
+            <td colspan="2"><img src="images/pic/cat1_08.png" alt=""/></td>
+        </tr>
+    </table>
+
+    <div class="jo-banner" style="height: 420px;">
+        <img src="images/pic/inbanner_1.jpg" alt="" style="width: 1920px;"/>
+    </div>
+    <div class="jo-banner" style="height: 255px;">
+        <img src="images/pic/inlogo.png" alt="" style="width: 1920px;"/>
+    </div>
+    <div class="jo-banner">
+        <img src="images/pic/inbanner_2.jpg" alt="" style="width: 1920px;"/>
+    </div>
+    <div class="jo-banner">
+        <img src="images/pic/inbanner_3.jpg" alt="" style="width: 1920px;"/>
+    </div>
+    <div class="jo-banner">
+        <img src="images/pic/inbanner_4.jpg" alt="" style="width: 1920px;"/>
+    </div>
+    <div class="jo-banner">
+        <img src="images/pic/inbanner_5.jpg" alt="" style="width: 1920px;"/>
+    </div>
+</div>
+
+<div id="footer">
+    <div class="footer">
+        <table class="jo-footer">
+            <tr>
+                <td class="jo-footer-border">
+                    <h3>产品中心</h3>
+                    <p><a href="#">有机农产品</a></p>
+                    <p><a href="#">科技产品</a></p>
+                </td>
+                <td>
+                    <h3>新手指南</h3>
+                    <p><a href="#">注册登录</a></p>
+                    <p><a href="#">忘记密码</a></p>
+                    <p><a href="#">购物流程</a></p>
+                </td>
+                <td>
+                    <h3>付款方式</h3>
+                    <p><a href="#">货到付款</a></p>
+                    <p><a href="#">在线支付</a></p>
+                    <p><a href="#">余额支付</a></p>
+                    <p><a href="#">发票说明</a></p>
+                </td>
+                <td>
+                    <h3>售后服务</h3>
+                    <p><a href="#">售后咨询</a></p>
+                    <p><a href="#">售后政策</a></p>
+                    <p><a href="#">退换货说明</a></p>
+                    <p><a href="#">咨询投诉</a></p>
+                </td>
+                <td class="jo-footer-border">
+                    <h3>服务保障</h3>
+                    <p><a href="#">真品保证</a></p>
+                    <p><a href="#">100%正品保证</a></p>
+                    <p><a href="#">金牌会员服务</a></p>
+                    <p><a href="#">无忧退换货</a></p>
+                </td>
+                <td class="jo-foot-contact">
+                    <a href="#"><img src="images/pic/ft-mail.png" alt=""/></a>
+                    <a href="#"><img src="images/pic/ft-weibo.png" alt=""/></a>
+                    <a href="#"><img src="images/pic/ft-tel.png" alt=""/></a>
+                    <a href="#"><img src="images/pic/ft-qrcode.png" alt=""/></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="jo-footinfo">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td>
+                    <a href="#">关于我们</a> | <a href="#">联系我们</a> | <a href="#">网站地图</a> | <a href="#">法律声明</a>
+                </td>
+                <td align="right">
+                    闽ICP备123456789号 | Copyright ©2013-2014  加欧蓝屋有限公司 版权所有
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div id="gotop"></div>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<div class="page my-download flex dc" data-title="醒购商城" data-id="my_download">
+	<link rel="stylesheet" href="my/download/download.css?var=1.0">
+
+	<div class="content scroll-y fg">
+		<div class="con-1 flex ae jc">
+			<a class="flex ac jc" onclick="myDownload.down()">去下载</a>
+		</div>
+		<div class="con-2 flex ae jc">
+			<a class="flex ac jc" onclick="popupShow('.popup-download-wx')">去关注</a>
+		</div>
+	</div>
+
+	<div class="popup popup-rule popup-download-wx" onclick="closeSelf(this)">
+		<div class="popup-center" onclick="stopSelf()">
+			<h3 class="flex ac jc">关注醒购公众号</h3>
+			<dl class="flex jc">
+				<dt class="flex jc">
+					<img src="my/download/resources/wx.png">
+				</dt>
+				<dd class="flex dc ac jc">长按指纹识别二维码</dd>
+			</dl>
+		</div>
+	</div>
+
+	<script src="my/download/download.js?var=1.2" async></script>
+</div>

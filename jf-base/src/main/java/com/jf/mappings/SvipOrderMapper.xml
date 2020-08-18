@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SvipOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SvipOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="buy_type" property="buyType" jdbcType="CHAR" />
+    <result column="member_id" property="memberId" jdbcType="INTEGER" />
+    <result column="svip_member_setting_id" property="svipMemberSettingId" jdbcType="INTEGER" />
+    <result column="years_of_purchase" property="yearsOfPurchase" jdbcType="INTEGER" />
+    <result column="source_client" property="sourceClient" jdbcType="CHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+    <result column="payment_no" property="paymentNo" jdbcType="VARCHAR" />
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="deal_complete_date" property="dealCompleteDate" jdbcType="TIMESTAMP" />
+    <result column="pay_status" property="payStatus" jdbcType="CHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_code, buy_type, member_id, svip_member_setting_id, years_of_purchase, source_client, 
+    ip, payment_id, payment_no, pay_amount, status, pay_date, deal_complete_date, pay_status, 
+    create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SvipOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_svip_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_svip_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_svip_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.SvipOrderExample" >
+    delete from bu_svip_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.SvipOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_svip_order (order_code, buy_type, member_id, 
+      svip_member_setting_id, years_of_purchase, source_client, 
+      ip, payment_id, payment_no, 
+      pay_amount, status, pay_date, 
+      deal_complete_date, pay_status, create_by, 
+      create_date, update_by, update_date, 
+      remarks, del_flag)
+    values (#{orderCode,jdbcType=VARCHAR}, #{buyType,jdbcType=CHAR}, #{memberId,jdbcType=INTEGER}, 
+      #{svipMemberSettingId,jdbcType=INTEGER}, #{yearsOfPurchase,jdbcType=INTEGER}, #{sourceClient,jdbcType=CHAR}, 
+      #{ip,jdbcType=VARCHAR}, #{paymentId,jdbcType=INTEGER}, #{paymentNo,jdbcType=VARCHAR}, 
+      #{payAmount,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, #{payDate,jdbcType=TIMESTAMP}, 
+      #{dealCompleteDate,jdbcType=TIMESTAMP}, #{payStatus,jdbcType=CHAR}, #{createBy,jdbcType=INTEGER}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.SvipOrder" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_svip_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        order_code,
+      </if>
+      <if test="buyType != null" >
+        buy_type,
+      </if>
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="svipMemberSettingId != null" >
+        svip_member_setting_id,
+      </if>
+      <if test="yearsOfPurchase != null" >
+        years_of_purchase,
+      </if>
+      <if test="sourceClient != null" >
+        source_client,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="paymentId != null" >
+        payment_id,
+      </if>
+      <if test="paymentNo != null" >
+        payment_no,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="dealCompleteDate != null" >
+        deal_complete_date,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderCode != null" >
+        #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="buyType != null" >
+        #{buyType,jdbcType=CHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="svipMemberSettingId != null" >
+        #{svipMemberSettingId,jdbcType=INTEGER},
+      </if>
+      <if test="yearsOfPurchase != null" >
+        #{yearsOfPurchase,jdbcType=INTEGER},
+      </if>
+      <if test="sourceClient != null" >
+        #{sourceClient,jdbcType=CHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentId != null" >
+        #{paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="paymentNo != null" >
+        #{paymentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealCompleteDate != null" >
+        #{dealCompleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.SvipOrderExample" resultType="java.lang.Integer" >
+    select count(*) from bu_svip_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_svip_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderCode != null" >
+        order_code = #{record.orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyType != null" >
+        buy_type = #{record.buyType,jdbcType=CHAR},
+      </if>
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.svipMemberSettingId != null" >
+        svip_member_setting_id = #{record.svipMemberSettingId,jdbcType=INTEGER},
+      </if>
+      <if test="record.yearsOfPurchase != null" >
+        years_of_purchase = #{record.yearsOfPurchase,jdbcType=INTEGER},
+      </if>
+      <if test="record.sourceClient != null" >
+        source_client = #{record.sourceClient,jdbcType=CHAR},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentId != null" >
+        payment_id = #{record.paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.paymentNo != null" >
+        payment_no = #{record.paymentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=CHAR},
+      </if>
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dealCompleteDate != null" >
+        deal_complete_date = #{record.dealCompleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payStatus != null" >
+        pay_status = #{record.payStatus,jdbcType=CHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_svip_order
+    set id = #{record.id,jdbcType=INTEGER},
+      order_code = #{record.orderCode,jdbcType=VARCHAR},
+      buy_type = #{record.buyType,jdbcType=CHAR},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      svip_member_setting_id = #{record.svipMemberSettingId,jdbcType=INTEGER},
+      years_of_purchase = #{record.yearsOfPurchase,jdbcType=INTEGER},
+      source_client = #{record.sourceClient,jdbcType=CHAR},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      payment_id = #{record.paymentId,jdbcType=INTEGER},
+      payment_no = #{record.paymentNo,jdbcType=VARCHAR},
+      pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+      status = #{record.status,jdbcType=CHAR},
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      deal_complete_date = #{record.dealCompleteDate,jdbcType=TIMESTAMP},
+      pay_status = #{record.payStatus,jdbcType=CHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.SvipOrder" >
+    update bu_svip_order
+    <set >
+      <if test="orderCode != null" >
+        order_code = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="buyType != null" >
+        buy_type = #{buyType,jdbcType=CHAR},
+      </if>
+      <if test="memberId != null" >
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="svipMemberSettingId != null" >
+        svip_member_setting_id = #{svipMemberSettingId,jdbcType=INTEGER},
+      </if>
+      <if test="yearsOfPurchase != null" >
+        years_of_purchase = #{yearsOfPurchase,jdbcType=INTEGER},
+      </if>
+      <if test="sourceClient != null" >
+        source_client = #{sourceClient,jdbcType=CHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentId != null" >
+        payment_id = #{paymentId,jdbcType=INTEGER},
+      </if>
+      <if test="paymentNo != null" >
+        payment_no = #{paymentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealCompleteDate != null" >
+        deal_complete_date = #{dealCompleteDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=CHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.SvipOrder" >
+    update bu_svip_order
+    set order_code = #{orderCode,jdbcType=VARCHAR},
+      buy_type = #{buyType,jdbcType=CHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      svip_member_setting_id = #{svipMemberSettingId,jdbcType=INTEGER},
+      years_of_purchase = #{yearsOfPurchase,jdbcType=INTEGER},
+      source_client = #{sourceClient,jdbcType=CHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      payment_id = #{paymentId,jdbcType=INTEGER},
+      payment_no = #{paymentNo,jdbcType=VARCHAR},
+      pay_amount = #{payAmount,jdbcType=DECIMAL},
+      status = #{status,jdbcType=CHAR},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      deal_complete_date = #{dealCompleteDate,jdbcType=TIMESTAMP},
+      pay_status = #{payStatus,jdbcType=CHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

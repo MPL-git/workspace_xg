@@ -1,0 +1,66 @@
+.address-list li {
+	height: 1.84rem;
+	border-top: 1px solid #ddd;
+	background: #fff;
+}
+.address-list .con-2 {
+	width: .98rem;
+}
+.address-list .con-1 h3 {
+	height: .8rem;
+	padding-top: .05rem;
+	font-size: .3rem;
+}
+.address-list .con-1 h3 span {
+	margin-right: .4rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 2rem;
+}
+.address-list .con-1 p {
+	line-height: .4rem;
+	font-size: .28rem;
+	color: #666;
+}
+
+.address-list .btn-f50 {
+	margin-left: .2rem;
+	font-weight: bold;
+}
+
+.address-list .add-address-btn {
+	width: 6.9rem;
+	height: .8rem;
+	background-color: #ff5050;
+	font-size: .3rem;
+	color: #fff;
+	line-height: .8rem;
+	text-align: center;
+	margin: .2rem auto;
+}
+.address-list .address-info {
+	display: flex;
+}
+.address-list .address-info p {
+	flex: 1;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+.address-list .address-btns {
+	display: flex;
+	justify-content: space-between;
+}
+.address-list .address-btns span {
+	padding: 0 .2rem;
+}
+.address-list .address-del-btn {
+	font-size: .3rem;
+	font-weight: 800;
+	height: .81rem;
+	border-top: 1px solid #ddd;
+	line-height: .81rem;
+	text-align: center;
+}

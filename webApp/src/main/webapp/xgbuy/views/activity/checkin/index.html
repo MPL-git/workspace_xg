@@ -1,0 +1,254 @@
+<div class="page checkin product-3 flex dc bgf4" data-title="现金签到" data-id="activity_checkin">
+	<link rel="stylesheet" href="activity/checkin/checkin.css?ver=1.0">
+	<link rel="stylesheet" href="../static/css/product-3.css?ver=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('activity/checkin/index.html')"></i></div>
+		<p class="ellipsis">现金签到</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more scroll-decorate">
+		<div class="touchfix">
+			<div class="row-1"></div>
+			<div class="row-2"></div>
+		</div>
+	</div>
+
+	<!-- 规则 -->
+	<div class="popup popup-rule popup-checkin-rule" onclick="closeSelf(this)">
+		<div class="popup-checkin-con" onclick="stopSelf()">
+			<div class="tab-head flex">
+				<a class="fg flex ac jc active" onclick="checkinApi.changeTab(this)">红包规则</a>
+				<a class="fg flex ac jc" onclick="checkinApi.changeTab(this)">注意事项</a>
+			</div>
+
+			<div class="tab-body"></div>
+		</div>
+	</div>
+
+	<!-- 好友签到记录 -->
+	<div class="popup popup-friend popup-style-sign" onclick="closeSelf(this)">
+		<div class="popup-checkin-con" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+
+			<h3 class="flex ac jc">邀请好友签到，获额外红包</h3>
+			<div class="con"></div>
+		</div>
+	</div>
+
+	<!-- 签到领现金红包 -->
+	<div class="popup popup-sign popup-style-sign" onclick="checkinApi.closeSign(this)">
+		<div class="popup-checkin-con" onclick="stopSelf()">
+			<a class="close-x" onclick="checkinApi.closeSign(this)"></a>
+
+			<h3 class="flex ac jc">签到成功</h3>
+			<div class="con"></div>
+		</div>
+	</div>
+
+	<!-- 是否分享 -->
+	<div class="popup popup-doyoushare popup-style-sign popup-style-friend" onclick="closeSelf(this)">
+		<div class="popup-checkin-con" onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+
+			<h3 class="flex ac jc">取消分享将无法获得额外红包哦</h3>
+
+			<div class="flex jc">
+				<a class="btn-checkin flex ac jc no-share" onclick="closeSelf(this)">不分享</a>
+				<a class="btn-checkin flex ac jc is-share" onclick="checkinApi.share()">立即分享</a>
+			</div>
+		</div>
+	</div>
+
+	<script id="checkin_tpl" type="text/html">
+		<div class="col-1 flex ac jb">
+			<a class="rule flex ac" onclick="checkinApi.rule()">
+				<i class="flex ac jc">?</i>
+				规则
+			</a>
+
+			<a class="remind flex ac hide" onclick="checkinApi.remind(this)">
+				签到提醒
+				<i></i>
+			</a>
+		</div>
+
+		<div class="col-2">
+			<div class="con-1 flex jc">
+				<span class="flex ac">
+					<strong>{{memberBalance}}</strong>
+					<b>元</b>
+
+					<a class="flex ac jc" onclick="getUrl('activity/checkin/draw/index.html', 'self')">提现</a>
+				</span>
+			</div>
+			<div class="con-2 flex ae jc">
+				{{if currentSignIn}}
+					{{if !isWeiXin}}
+				<a class="flex ac jc" onclick="checkinApi.share()">分享领红包</a>
+					{{/if}}
+				<a class="flex ac jc" onclick="checkinApi.friendSign()">好友签到记录</a>
+				{{else}}
+				<a class="flex ac jc longer" onclick="getUrl('activity/newsign/index.html', 'self')">签到领现金红包</a>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class="col-3 flex">
+			{{each isSignInList value i}}
+			<div class="fg flex ac je dc">
+				{{if value.extraInfo}}
+				<em class="flex ac jc"><b>{{value.extraInfo}}</b></em>
+				{{/if}}
+
+				{{if value.isSignIn}}
+				<span class="red1"></span>
+				{{else if value.extraInfo == '额外红包'}}
+				<span class="red2"></span>
+				{{else}}
+				<span class="red0"></span>
+				{{/if}}
+
+				<p class="flex ac jc">{{value.date}}</p>
+			</div>
+			{{/each}}
+		</div>
+	</script>
+
+	<script id="checkin_tpl_record" type="text/html">
+		<div class="scroll-y tab-con">
+			<dl class="flex jb ac">
+				<dt class="flex dc jc">
+					<h3>签到红包</h3>
+					<p class="c9">2018-12-11</p>
+				</dt>
+
+				<dd>
+					<em class="f50">+.12元</em>
+				</dd>
+			</dl>
+		</div>
+
+		<div class="hide scroll-y tab-con">
+			<dl class="flex jb ac">
+				<dt class="flex dc jc">
+					<h3>微信红包退还</h3>
+					<p class="c9">2018-12-11</p>
+				</dt>
+
+				<dd>
+					<em class="f50">.12元</em>
+				</dd>
+			</dl>
+		</div>
+	</script>
+
+	<script id="checkin_tpl_friend" type="text/html">
+		<ul class="flex jc suff-{{inviteLimit}}">
+			{{each dataList value i}}
+			<li data-money="{{value.helpAmount}}">
+				<div class="img img-cover">
+					<img src="{{value.headPic}}">
+				</div>
+				{{if value.isNewEnjoy}}
+				<span></span>
+				{{/if}}
+			</li>
+			{{/each}}
+		</ul>
+
+		{{if memberSize}}
+			{{if unDrawHelpAmount}}
+				{{if drawHelpAmount}}
+		<p class="c9 flex ac jc">{{memberSize}}位好友签到成功</p>
+		<p class="c9 flex ac jc">已领取<em class="f50">{{drawHelpAmount}}元</em>，<em class="f50">{{unDrawHelpAmount}}元</em>未领取</p>
+				{{else}}
+		<p class="c9 flex ac jc">{{memberSize}}位好友签到成功额外获得{{unDrawHelpAmount}}元红包</p>
+				{{/if}}
+		<a class="btn-checkin flex ac jc" onclick="checkinApi.handCash('{{unDrawHelpAmountMIds}}')">立即领取红包现金</a>
+		<div class="red-tip f50 flex ac jc">当天失效，请及时领取！</div>
+			{{else}}
+		<p class="c9 flex ac jc">{{memberSize}}位好友签到成功，已领取<em class="f50">{{drawHelpAmount}}元</em></p>
+		<a class="btn-checkin btn-gray flex ac jc">立即领取红包现金</a>
+			{{/if}}
+		{{else}}
+		<p class="c9 flex ac jc">
+			{{if !isWeiXin}}
+			还未好友签到，赶紧去分享吧
+			{{else}}
+			当前还未好友签到
+			{{/if}}
+		</p>
+			{{if !isWeiXin}}
+		<a class="btn-checkin flex ac jc" onclick="checkinApi.share()">立即分享</a>
+			{{else}}
+		<a class="btn-checkin flex ac jc" onclick="closeSelf(this)">知道了</a>
+			{{/if}}
+		{{/if}}
+	</script>
+
+	<script id="checkin_tpl_sign" type="text/html">
+		<h4 class="flex ac jc">恭喜你获得了{{memberSignInAmount}}元</h4>
+
+		<div class="bg-sign"></div>
+
+		{{if sevenSignIn}}
+		<p class="c9 flex ac jc">已连续签到7天</p>
+		<p class="c9 flex ac jc">分享至朋友圈即可获得额外红包哦</p>
+		{{else}}
+		<p class="c9 flex ac jc">
+			{{if !isWeiXin}}
+			邀请好友签到，签到成功获得额外现金红包
+			{{else}}
+			分享可邀请好友签到
+			{{/if}}
+		</p>
+		{{/if}}
+		{{if !isWeiXin}}
+		<a class="btn-checkin flex ac jc" onclick="checkinApi.share()">分享领红包</a>
+		{{else}}
+	<a class="btn-checkin flex ac jc" onclick="closeSelf(this)">知道了</a>
+		{{/if}}
+	</script>
+
+	<script id="checkin_tpl_rule" type="text/html">
+		<div class="scroll-y tab-con">
+			<p>1. 每天签到，每天可领取奖励，领取到账户内的现金到达一定金额即可提现兑换。兑换完成的金额会从签到余额中扣除，需重新签到领取</p>
+			<p>2. 签到漏签不可补签，累计签到7赠送额外现金红包，提现时，一个醒购账号必须要与一个微信账号绑定。</p>
+			<p>3.每天邀请一定的好友签到可随机获得一定额外红包，新用户获得的红包翻倍哦，好友签到必须要来APP领取，不领取每天凌晨24:00将会清空。</p>
+			<p>4. 用户在微信签到所获得的钱须前往醒购App中点击领取。领取后需要等待审核，审核成功后进入微信公众号进行领取。</p>
+			<p>5.如果用户存在违规行为（包括但不限于洗钱、虚假交易、赌博、恶意套现、作弊、刷信誉），将取消用户的活动资格、并有权撤销相关违规交易、收回奖励（包括已消费金额）等利益</p>
+			<p>6.在法律允许范围内，醒购有权对本活动规则进行变动或调整，相关变动或调整将公布在活动页面上；如遇自然灾害、网络攻击或系统故障等不可抗力因素导致活动无法正常进行时，醒购将有权终止活动。在法律允许范围内，醒购拥有本次活动的最终解释权。</p>
+		</div>
+
+		<div class="scroll-y tab-con">
+			<div>
+				<h3>1. 什么是现金签到</h3>
+				<p>每天签到可获得随机红包，签到后也分享给好友，好友签到后可额外获得红包，红包满10元后可提现。</p>
+			</div>
+			<div>
+				<h3>2. 什么是邀请好友获更多红包</h3>
+				<p>分享链接给微信好友，您的好友点击链接并且完成签到后您就可以获得额外红包。</p>
+			</div>
+			<div>
+				<h3>3.连续签到7天额外红包是什么</h3>
+				<p>您连续签到7天后可获得领取额外红包的机会，只要您分享到朋友圈即可领取，不分享视为放弃本次获得额外红包的机会哦。</p>
+			</div>
+			<div>
+				<h3>4. 为什么我的提现马上没到账？</h3>
+				<p>由于提现人数较多，醒购会有相应的审核流程，偶尔现金提现会有一定的延迟，我们将24小时内为您操作提现，若遇到系统问题导致提现失败，我们将返回现金到您的签到账户</p>
+			</div>
+		</div>
+	</script>
+
+	<script id="checkin_tpl_role" type="text/html">
+		<ul>
+			{{each returnData value i}}
+			<li>{{value}}</li>
+			{{/each}}
+		</ul>
+	</script>
+
+	<script src="activity/checkin/checkin.js?ver=1.2" async></script>
+</div>

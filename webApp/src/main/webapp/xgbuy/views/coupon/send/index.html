@@ -1,0 +1,33 @@
+<div class="page coupon-send" data-title="绑定好友" data-id="coupon_send">
+	<link rel="stylesheet" href="coupon/send/index.css?var=1.0">
+
+	<header class="flex ac jb">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('coupon/index.html')"></i></div>
+		<p class="ellipsis">绑定好友</p>
+		<div class="fn"></div>
+	</header>
+	
+	<table>
+		<input class="flex ac jc" name="phone" type="number" maxlength="11" placeholder="请输入好友绑定手机号">
+		<button class="flex ac jc" onclick="couponsendApi.draw()">下一步</button>
+	</table>
+
+	<div class="text">
+		<text class="flex">赠送规则:</text>
+		<text class="flex">1、赠送的用户必须未开通会员，有绑定手机的用户</text>
+		<text class="flex">2、赠送后优惠券的有效期时间不会改变请尽快使用</text>
+		<text class="flex">3、赠送后您将不再有此优惠券的使用权限，不再显示在您的优惠券信息中。</text>
+	</div>
+	
+	<div class="popup popup-clear" onclick="closeSelf(this)">
+		<div class="popup-clear-con" onclick="stopSelf()">
+			<div class="tab-body"></div>
+			<div class="flex clear-btn">
+				<a class="flex ac jc c9 bdrg" onclick="closeSelf(this)">取消</a>
+				<a class="flex ac jc f50" onclick="couponsendApi.send()">确定</a>
+			</div>
+		</div>
+	</div>
+
+	<script src="coupon/send/index.js?var=1.0" async></script>
+</div>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>醒购商城招商</title>
+	<style>
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 750px) {
+			html {
+				width: 750px;
+				margin: 0 auto;
+			}
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html');
+
+		function fontFix() {
+			html.style.fontSize = html.offsetWidth / 7.5 + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+	<link rel="stylesheet" href="../static/css/reset.css">
+	<link rel="stylesheet" href="../static/css/swiper.min.css">
+	<link rel="stylesheet" href="../static/css/index.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="swiper-container">
+			<ul class="swiper-wrapper">
+				<li class="swiper-slide s1">
+					<header></header>
+					<h2></h2>
+					<p><span>无限商机</span><span>共赢未来</span></p>
+					<img id="qr_code" src="../static/images/s1-anz.png" alt="">
+					<div>
+						<p><a class="iflex ac jc" href="tel:400-8088-227">招商电话：400-8088-227<i class="tel"></i></a></p>
+						<p>招商邮箱：zs@xgbuy.cc</p>
+						<a class="download flex ac jc" id="qr_load">立即下载</a>
+					</div>
+				</li>
+				<li class="swiper-slide s2">
+					<h2></h2>
+					<p>醒购商城是以特卖为主的综合性电商平台，所属厦门聚买网络科技有限公司旗下。商城创立于2017年1月，主营商品涵盖运动、服饰、鞋包、生活四大品类，汇集了众多国内外知名品牌， 为用户提供优质的穿着生活体验。</p>
+					<footer></footer>
+				</li>
+				<li class="swiper-slide s3">
+					<img src="../static/images/s3-bg.png">
+				</li>
+				<li class="swiper-slide s4">
+					<h2>重点招商品牌</h2>
+					<img src="../static/images/s4-img.png">
+				</li>
+				<li class="swiper-slide s5">
+					<h2>招商流程</h2>
+					<article>
+						<div>
+							<h3>阶段一</h3>
+							<span>申请入驻</span>
+							<ul>
+								<li>填写企业/联系人/经营类目/品牌信息</li>
+								<li>等待商城审核</li>
+								<li>审核通过分配招商经理洽谈</li>
+								<li>招商经理与商家确认合作基本要求</li>
+								<li>商家准备入驻资料文件</li>
+							</ul>
+						</div>
+						<div>
+							<h3>阶段二</h3>
+							<span>提交入驻</span>
+							<ul>
+								<li>商家提交入驻资料文件</li>
+								<li>等待商城审核</li>
+								<li>审核通过商城寄应签署的资料文件给商家</li>
+								<li>商家签署并完整寄回所有资料文件</li>
+								<li>商城接收审核资料文件</li>
+								<li>审核通过后商家缴纳保证金</li>
+							</ul>
+						</div>
+						<div>
+							<h3>阶段三</h3>
+							<span>开通店铺</span>
+							<ul>
+								<li>开通商家管理后台账号</li>
+								<li>分配一对一服务运营经理</li>
+								<li>商家开始运营店铺</li>
+							</ul>
+						</div>
+					</article>
+				</li>
+			</ul>
+		</div>
+		<div class="next"></div>
+		<a class="apply flex dc ac jc" href="apply.html">
+			<span>申请</span>
+			<span>入驻</span>
+		</a>
+	</div>
+
+	<div style="display:none">
+		<script>
+			var _hmt = _hmt || [];
+
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?6d2fd36d9cf86bab33982f624c157f83";
+				var s = document.getElementsByTagName("script")[0]; 
+				s.parentNode.insertBefore(hm, s);
+			})();
+
+			var _userAgent = navigator.userAgent,
+				_sys = location.href.split('?sys=')[1],
+				isiOSX = /iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375),
+				isiOS = !!_userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+				isxgbuy = /xgbuy/.test(_userAgent) || /ios/.test(_sys) || /android/.test(_sys);
+
+			isiOS && (qr_code.src = '../static/images/s1-ios.png');
+
+			if (isxgbuy) {
+				qr_load.style.display = 'none';
+				isiOS && (document.body.style.paddingBottom = isiOSX ? '88px' : '64px');
+			}
+		</script>
+	</div>
+	<script src=../static/js/require.min.js data-main="../static/js/index" async></script>
+</body>
+</html>

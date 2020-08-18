@@ -1,0 +1,96 @@
+<div class="page settled" data-title="醒购商城" data-id="settled">
+	<link rel="stylesheet" href="../static/css/swiper.min.css">
+	<link rel="stylesheet" href="settled_old/settled.css?var=1.3">
+
+	<div class="swiper-container">
+		<ul class="swiper-wrapper">
+			<li class="swiper-slide s-9">
+				<form class="flex dc f-bg" onsubmit="settledApi.submit(this)">
+					<h3 class="flex ac jc">申请入驻</h3>
+
+					<div class="s9-con">
+						<div class="flex jb s9-2">
+							<figure class="flex">
+								<label for="f_name" class="flex ac fn">姓名：</label>
+								<input id="f_name" id="" class="fg" type="text" name="contactName" required maxlength="16">
+							</figure>
+							<figure class="flex">
+								<label for="f_job" class="flex ac fn">职务：</label>
+								<input id="f_job" id="" class="fg" type="text" name="contactJob" required maxlength="16">
+							</figure>
+						</div>
+
+						<div class="flex jb s9-2">
+							<figure class="flex">
+								<label for="f_tel" class="flex ac fn">电话：</label>
+								<input id="f_tel" class="fg" type="tel" name="phone" required pattern="^1\d{10}$">
+							</figure>
+							<figure class="flex">
+								<label for="f_qq" class="flex ac fn">Q Q：</label>
+								<input id="f_qq" class="fg" type="text" name="qq" required pattern="\d{4,16}">
+							</figure>
+						</div>
+
+						<figure class="flex">
+							<label for="f_email" class="flex ac fn">邮<b style="padding: 0 1em;"></b>箱：</label>
+							<input id="f_email" class="fg" type="email" name="email" required maxlength="64">
+						</figure>
+
+						<figure class="flex">
+							<label for="f_cname" class="flex ac fn">公司名称：</label>
+							<input id="f_cname" class="fg" type="text" name="companyName" required maxlength="128">
+						</figure>
+
+						<figure class="flex">
+							<label for="f_prod" class="flex ac fn">品<b style="padding: 0 1em;"></b>类：</label>
+							<select id="f_prod" class="fg" type="text" name="productTypeMain" required maxlength="128">
+								<option value="">请选择</option>
+								<option value="运动户外">运动户外</option>
+								<option value="鞋靴箱包">鞋靴箱包</option>
+								<option value="服装配饰">服装配饰</option>
+								<option value="生活家居">生活家居</option>
+								<option value="钟表珠宝">钟表珠宝</option>
+								<option value="数码家电">数码家电</option>
+								<option value="美妆个护">美妆个护</option>
+								<option value="母婴童装">母婴童装</option>
+								<option value="食品超市">食品超市</option>
+							</select>
+						</figure>
+
+						<figure class="flex">
+							<label for="f_pname" class="flex ac fn">品牌名称：</label>
+							<input id="f_pname" class="fg" type="text" name="productBrandMain" required maxlength="128">
+						</figure>
+
+						<figure class="flex">
+							<label for="f_olink" class="flex ac fn">其他渠道链接：</label>
+							<input id="f_olink" class="fg" type="text" name="otherChannelLink" required maxlength="512">
+						</figure>
+					</div>
+
+					<div class="submit-box">
+						<input id="f_sm" type="submit" value="提交入驻">
+						<label for="f_sm" class="corsor"></label>
+					</div>
+
+					<div class="f-code flex jc">
+						<div class="c-wx">
+							<span>
+								<img class="code-img" src="settled_old/resources/c-wx.png">
+							</span>
+							<a class="iflex">关注微信商城</a>
+						</div>
+						<div class="c-ld">
+							<span>
+								<img class="code-img" src="settled_old/resources/c-ld.png">
+							</span>
+							<a class="iflex" onclick="getUrl('my/download/index.html')">下载APP</a>
+						</div>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</div>
+
+	<script src="settled_old/settled.js?var=1.3" async></script>
+</div>

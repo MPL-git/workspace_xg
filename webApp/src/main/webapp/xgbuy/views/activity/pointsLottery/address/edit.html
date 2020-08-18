@@ -1,0 +1,51 @@
+<div class="page address register flex dc" data-title="新增地址" data-id="activity_pointsLottery_address_edit">
+	<link rel="stylesheet" href="register/index.css">
+	<link rel="stylesheet" href="address/index.css">
+
+	<form class="flex dc h100">
+		<header class="flex ac jb fn">
+			<div class="flex fn"><i class="back ico-btn" onclick="addressEditApi.back()"></i></div>
+			<p class="ellipsis">新增地址</p>
+			<div class="fn"></div>
+		</header>
+
+		<div class="scroll-y fg content">
+			<div class="con-1">
+				<div class="flex ac jb">
+					<label>联系人：</label>
+					<input type="text" name="recipient" maxlength="32" placeholder="请输入联系人姓名" required>
+				</div>
+				<div class="flex ac jb">
+					<label>联系电话：</label>
+					<input type="tel" name="phone" placeholder="请输入联系人电话" required maxlength="11">
+				</div>
+				<div class="flex ac jb">
+					<label class="fn">地区：</label>
+
+					<div class="distpicker flex">
+						<select name="province" required autocomplete="off" onchange="addressEditApi.getProvince(this)">
+							<option value="">请选择</option>
+						</select>
+						<select name="city" required autocomplete="off" onchange="addressEditApi.getCity(this)">
+							<option value="">请选择</option>
+						</select>
+						<select name="county" required autocomplete="off" onchange="addressEditApi.getCounty(this)">
+							<option value="">请选择</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="flex ac jb">
+					<label>详细地址：</label>
+					<input type="text" name="address" maxlength="32" placeholder="请输入详细地址" required>
+				</div>
+
+				<input type="hidden" name="id">
+
+				<input class="btn-submit" type="submit" value="保存">
+			</div>
+		</div>
+	</form>
+
+	<script src="activity/pointsLottery/address/edit.js?var=1.2" async></script>
+</div>

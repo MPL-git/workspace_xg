@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.InformationCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.InformationCustom"  extends="com.jf.dao.ActivityMapper.BaseResultMap">
+    <result column="isRead" property="isRead" jdbcType="VARCHAR" />
+    <result column="tag" property="tag" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <select id="selectCountCustom" resultType="Integer" parameterType="java.util.Map" >
+    select
+    count(1)
+    from bu_information i
+    where
+    i.del_flag = '0'
+    and i.status = '1'
+    and i.info_type like '%4%'
+    <if test="id != null" >
+      and i.id = #{id}
+    </if>
+    <if test="catalogId != null" >
+      and i.catalog_id = #{catalogId}
+    </if>
+    <if test="title != null" >
+      and i.title like concat('%',#{title},'%')
+    </if>
+    order by i.release_time desc
+  </select>
+
+  <sql id="Base_Column_List" >
+   	i.*,
+   	(select mi.id from bu_mcht_information mi where mi.information_id = i.id and mi.mcht_id = #{mchtId} and mi.del_flag = '0') isRead,
+    case when i.window_end_time <![CDATA[>=]]> now() then '' else '0' end tag
+  </sql>
+
+  <select id="selectByExampleCustom" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from bu_information i
+    where
+    i.del_flag = '0'
+    and i.status = '1'
+    and i.info_type like '%4%'
+    <if test="id != null" >
+      and i.id = #{id}
+    </if>
+    <if test="catalogId != null" >
+      and i.catalog_id = #{catalogId}
+    </if>
+    <if test="catalogIds != null" >
+      and i.catalog_id in (#{catalogIds})
+    </if>
+    <if test="title != null" >
+      and i.title like concat('%',#{title},'%')
+    </if>
+    order by i.release_time desc
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+
+</mapper>

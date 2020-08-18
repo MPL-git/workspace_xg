@@ -1,0 +1,1588 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtPvStatisticalCustomMapper">
+	<resultMap id="BaseResultMap" type="com.jf.entity.MchtPvStatisticalCustom"
+		extends="com.jf.dao.MchtPvStatisticalMapper.BaseResultMap">
+		<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+		<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+		<result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+		<result column="product_name" property="productName" jdbcType="VARCHAR" />
+		<result column="browse_quantity" property="browseQuantity" jdbcType="VARCHAR" />
+		<result column="browse_quantity_tourist" property="browseQuantityTourist" jdbcType="VARCHAR" />
+		<result column="payment_of_buyers" property="paymentOfBuyers" jdbcType="VARCHAR" />
+		<result column="mcht_product_brand_name" property="mchtProductBrandName" jdbcType="VARCHAR" />
+		<result column="mcht_type" property="mchtType" jdbcType="VARCHAR" />
+
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		a.*,
+		(select b.mcht_code from bu_mcht_info b where b.id = a.mcht_id and b.del_flag = '0') mcht_code,
+		(select b.company_name from bu_mcht_info b where b.id = a.mcht_id and b.del_flag = '0') company_name,
+		(select b.shop_name from bu_mcht_info b where b.id = a.mcht_id and b.del_flag = '0') shop_name,
+		(select b.name from bu_product_type b,bu_mcht_product_type c where c.mcht_id = a.mcht_id and c.product_type_id = b.id and c.is_main = '1' and c.status = '1' and b.del_flag='0' and c.del_flag='0') product_name,
+		IFNULL(TRUNCATE (total_pv_count / total_visitor_count, 2), 0) browse_quantity,
+		IFNULL(TRUNCATE (total_pv_count_tourist / total_visitor_count_tourist, 2), 0) browse_quantity_tourist,
+		IFNULL(TRUNCATE (pay_member_count / total_visitor_count * 100, 2), 0) payment_of_buyers,
+		(select GROUP_CONCAT(CONCAT(pb.`name`,'（',ROUND(mpb.pop_commission_rate*100),'%）', pb.id)) from bu_mcht_product_brand mpb, bu_product_brand pb where mpb.mcht_id = a.mcht_id and mpb.del_flag = '0' and mpb.product_brand_id = pb.id and pb.del_flag = '0') mcht_product_brand_name,
+		(select b.mcht_type from bu_mcht_info b where b.id = a.mcht_id and b.del_flag = '0') mcht_type
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.jf.entity.MchtPvStatisticalExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from bu_mcht_pv_statistical a
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="limitStart != null and limitStart>=0">
+			limit #{limitStart} , #{limitSize}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from bu_mcht_pv_statistical a
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		bu_mcht_pv_statistical
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.jf.entity.MchtPvStatisticalExample">
+		delete from bu_mcht_pv_statistical
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.jf.entity.MchtPvStatistical">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into bu_mcht_pv_statistical (mcht_id, statistical_date,
+		total_visitor_count,
+		total_pv_count, pay_amount, pay_sub_order_count,
+		pay_product_count, pay_member_count, create_by,
+		create_date, update_by,
+		update_date,
+		remarks, del_flag)
+		values (#{mchtId,jdbcType=INTEGER},
+		#{statisticalDate,jdbcType=CHAR},
+		#{totalVisitorCount,jdbcType=INTEGER},
+		#{totalPvCount,jdbcType=INTEGER}, #{payAmount,jdbcType=DECIMAL},
+		#{paySubOrderCount,jdbcType=INTEGER},
+		#{payProductCount,jdbcType=INTEGER},
+		#{payMemberCount,jdbcType=INTEGER}, #{createBy,jdbcType=INTEGER},
+		#{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER},
+		#{updateDate,jdbcType=TIMESTAMP},
+		#{remarks,jdbcType=VARCHAR},
+		#{delFlag,jdbcType=CHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.jf.entity.MchtPvStatistical">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into bu_mcht_pv_statistical
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mchtId != null">
+				mcht_id,
+			</if>
+			<if test="statisticalDate != null">
+				statistical_date,
+			</if>
+			<if test="totalVisitorCount != null">
+				total_visitor_count,
+			</if>
+			<if test="totalPvCount != null">
+				total_pv_count,
+			</if>
+			<if test="payAmount != null">
+				pay_amount,
+			</if>
+			<if test="paySubOrderCount != null">
+				pay_sub_order_count,
+			</if>
+			<if test="payProductCount != null">
+				pay_product_count,
+			</if>
+			<if test="payMemberCount != null">
+				pay_member_count,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="createDate != null">
+				create_date,
+			</if>
+			<if test="updateBy != null">
+				update_by,
+			</if>
+			<if test="updateDate != null">
+				update_date,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="delFlag != null">
+				del_flag,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mchtId != null">
+				#{mchtId,jdbcType=INTEGER},
+			</if>
+			<if test="statisticalDate != null">
+				#{statisticalDate,jdbcType=CHAR},
+			</if>
+			<if test="totalVisitorCount != null">
+				#{totalVisitorCount,jdbcType=INTEGER},
+			</if>
+			<if test="totalPvCount != null">
+				#{totalPvCount,jdbcType=INTEGER},
+			</if>
+			<if test="payAmount != null">
+				#{payAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="paySubOrderCount != null">
+				#{paySubOrderCount,jdbcType=INTEGER},
+			</if>
+			<if test="payProductCount != null">
+				#{payProductCount,jdbcType=INTEGER},
+			</if>
+			<if test="payMemberCount != null">
+				#{payMemberCount,jdbcType=INTEGER},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				#{updateBy,jdbcType=INTEGER},
+			</if>
+			<if test="updateDate != null">
+				#{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				#{delFlag,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.jf.entity.MchtPvStatisticalExample"
+		resultType="java.lang.Integer">
+		select count(*) from bu_mcht_pv_statistical
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update bu_mcht_pv_statistical
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.mchtId != null">
+				mcht_id = #{record.mchtId,jdbcType=INTEGER},
+			</if>
+			<if test="record.statisticalDate != null">
+				statistical_date =
+				#{record.statisticalDate,jdbcType=CHAR},
+			</if>
+			<if test="record.totalVisitorCount != null">
+				total_visitor_count =
+				#{record.totalVisitorCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.totalPvCount != null">
+				total_pv_count = #{record.totalPvCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.payAmount != null">
+				pay_amount = #{record.payAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="record.paySubOrderCount != null">
+				pay_sub_order_count =
+				#{record.paySubOrderCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.payProductCount != null">
+				pay_product_count =
+				#{record.payProductCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.payMemberCount != null">
+				pay_member_count =
+				#{record.payMemberCount,jdbcType=INTEGER},
+			</if>
+			<if test="record.createBy != null">
+				create_by = #{record.createBy,jdbcType=INTEGER},
+			</if>
+			<if test="record.createDate != null">
+				create_date = #{record.createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.updateBy != null">
+				update_by = #{record.updateBy,jdbcType=INTEGER},
+			</if>
+			<if test="record.updateDate != null">
+				update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="record.remarks != null">
+				remarks = #{record.remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="record.delFlag != null">
+				del_flag = #{record.delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update bu_mcht_pv_statistical
+		set id = #{record.id,jdbcType=INTEGER},
+		mcht_id = #{record.mchtId,jdbcType=INTEGER},
+		statistical_date =
+		#{record.statisticalDate,jdbcType=CHAR},
+		total_visitor_count =
+		#{record.totalVisitorCount,jdbcType=INTEGER},
+		total_pv_count =
+		#{record.totalPvCount,jdbcType=INTEGER},
+		pay_amount =
+		#{record.payAmount,jdbcType=DECIMAL},
+		pay_sub_order_count =
+		#{record.paySubOrderCount,jdbcType=INTEGER},
+		pay_product_count =
+		#{record.payProductCount,jdbcType=INTEGER},
+		pay_member_count =
+		#{record.payMemberCount,jdbcType=INTEGER},
+		create_by =
+		#{record.createBy,jdbcType=INTEGER},
+		create_date =
+		#{record.createDate,jdbcType=TIMESTAMP},
+		update_by =
+		#{record.updateBy,jdbcType=INTEGER},
+		update_date =
+		#{record.updateDate,jdbcType=TIMESTAMP},
+		remarks =
+		#{record.remarks,jdbcType=VARCHAR},
+		del_flag =
+		#{record.delFlag,jdbcType=CHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.MchtPvStatistical">
+		update bu_mcht_pv_statistical
+		<set>
+			<if test="mchtId != null">
+				mcht_id = #{mchtId,jdbcType=INTEGER},
+			</if>
+			<if test="statisticalDate != null">
+				statistical_date = #{statisticalDate,jdbcType=CHAR},
+			</if>
+			<if test="totalVisitorCount != null">
+				total_visitor_count =
+				#{totalVisitorCount,jdbcType=INTEGER},
+			</if>
+			<if test="totalPvCount != null">
+				total_pv_count = #{totalPvCount,jdbcType=INTEGER},
+			</if>
+			<if test="payAmount != null">
+				pay_amount = #{payAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="paySubOrderCount != null">
+				pay_sub_order_count =
+				#{paySubOrderCount,jdbcType=INTEGER},
+			</if>
+			<if test="payProductCount != null">
+				pay_product_count = #{payProductCount,jdbcType=INTEGER},
+			</if>
+			<if test="payMemberCount != null">
+				pay_member_count = #{payMemberCount,jdbcType=INTEGER},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=INTEGER},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateBy != null">
+				update_by = #{updateBy,jdbcType=INTEGER},
+			</if>
+			<if test="updateDate != null">
+				update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="delFlag != null">
+				del_flag = #{delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.jf.entity.MchtPvStatistical">
+		update
+		bu_mcht_pv_statistical
+		set mcht_id = #{mchtId,jdbcType=INTEGER},
+		statistical_date = #{statisticalDate,jdbcType=CHAR},
+		total_visitor_count = #{totalVisitorCount,jdbcType=INTEGER},
+		total_pv_count = #{totalPvCount,jdbcType=INTEGER},
+		pay_amount =
+		#{payAmount,jdbcType=DECIMAL},
+		pay_sub_order_count =
+		#{paySubOrderCount,jdbcType=INTEGER},
+		pay_product_count =
+		#{payProductCount,jdbcType=INTEGER},
+		pay_member_count =
+		#{payMemberCount,jdbcType=INTEGER},
+		create_by =
+		#{createBy,jdbcType=INTEGER},
+		create_date =
+		#{createDate,jdbcType=TIMESTAMP},
+		update_by =
+		#{updateBy,jdbcType=INTEGER},
+		update_date =
+		#{updateDate,jdbcType=TIMESTAMP},
+		remarks =
+		#{remarks,jdbcType=VARCHAR},
+		del_flag = #{delFlag,jdbcType=CHAR}
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="countCustomByExample" parameterType="com.jf.entity.MchtPvStatisticalCustomExample"
+		resultType="java.lang.Integer">
+		select count(*) from bu_mcht_pv_statistical a
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+
+	<select id="selectMchtPvStatisticalCustomByExample"
+		parameterType="com.jf.entity.MchtPvStatisticalCustomExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from bu_mcht_pv_statistical a
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+		<if test="limitStart != null and limitStart>=0">
+			limit #{limitStart} , #{limitSize}
+		</if>
+	</select>
+  
+  <!-- 商家历史总览 -->
+  <select id="getMchtPvStatisticalSumUp" parameterType="java.util.Map" resultType="java.util.Map" >
+ 	SELECT
+		IFNULL(SUM(A.total_visitor_count_sum_a), 0) total_visitor_count_sum_a,
+		IFNULL(SUM(A.total_visitor_count_tourist_sum_a), 0) total_visitor_count_tourist_sum_a,
+		IFNULL(SUM(A.total_pv_count_sum_a), 0) total_pv_count_sum_a,
+		IFNULL(SUM(A.total_pv_count_tourist_sum_a), 0) total_pv_count_tourist_sum_a,
+		IFNULL(SUM(A.pay_amount_sum_a), 0.00) pay_amount_sum_a,
+		IFNULL(SUM(A.pay_combine_order_count_sum_a), 0) pay_combine_order_count_sum_a,
+		IFNULL(SUM(A.pay_sub_order_count_sum_a), 0) pay_sub_order_count_sum_a,
+		IFNULL(SUM(A.pay_product_count_sum_a), 0) pay_product_count_sum_a,
+		IFNULL(SUM(A.pay_member_count_sum_a), 0) pay_member_count_sum_a,
+		IFNULL(SUM(A.total_visitor_count_sum_b), 0) total_visitor_count_sum_b,
+		IFNULL(SUM(A.total_visitor_count_tourist_sum_b), 0) total_visitor_count_tourist_sum_b,
+		IFNULL(SUM(A.total_pv_count_sum_b), 0) total_pv_count_sum_b,
+		IFNULL(SUM(A.total_pv_count_tourist_sum_b), 0) total_pv_count_tourist_sum_b,
+		IFNULL(SUM(A.pay_amount_sum_b), 0) pay_amount_sum_b,
+		IFNULL(SUM(A.pay_combine_order_count_sum_b), 0) pay_combine_order_count_sum_b,
+		IFNULL(SUM(A.pay_sub_order_count_sum_b), 0) pay_sub_order_count_sum_b,
+		IFNULL(SUM(A.pay_product_count_sum_b), 0) pay_product_count_sum_b,
+		IFNULL(SUM(A.pay_member_count_sum_b), 0) pay_member_count_sum_b,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_sum_a) - SUM(A.total_visitor_count_sum_b)) / SUM(A.total_visitor_count_sum_b) * 100, 2), 0) total_visitor_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_tourist_sum_a) - SUM(A.total_visitor_count_tourist_sum_b)) / SUM(A.total_visitor_count_tourist_sum_b) * 100, 2), 0) total_visitor_count_rate_tourist,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_sum_a) - SUM(A.total_pv_count_sum_b)) / SUM(A.total_pv_count_sum_b) * 100, 2), 0) total_pv_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_tourist_sum_a) - SUM(A.total_pv_count_tourist_sum_b)) / SUM(A.total_pv_count_tourist_sum_b) * 100, 2), 0) total_pv_count_rate_tourist,
+		IFNULL(TRUNCATE ((SUM(A.pay_amount_sum_a) - SUM(A.pay_amount_sum_b)) / SUM(A.pay_amount_sum_b) * 100, 2), 0) pay_amount_rate,
+		IFNULL(TRUNCATE ((SUM(A.pay_combine_order_count_sum_a) - SUM(A.pay_combine_order_count_sum_b)) / SUM(A.pay_combine_order_count_sum_b) * 100, 2), 0) pay_combine_order_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.pay_sub_order_count_sum_a) - SUM(A.pay_sub_order_count_sum_b)) / SUM(A.pay_sub_order_count_sum_b) * 100, 2), 0) pay_sub_order_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.pay_product_count_sum_a) - SUM(A.pay_product_count_sum_b)) / SUM(A.pay_product_count_sum_b) * 100, 2), 0) pay_product_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.pay_member_count_sum_a) - SUM(A.pay_member_count_sum_b)) / SUM(A.pay_member_count_sum_b) * 100, 2), 0) pay_member_count_rate,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_sum_a) / SUM(A.total_visitor_count_sum_a), 2), 0) pv,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_tourist_sum_a) / SUM(A.total_visitor_count_tourist_sum_a), 2), 0) pv_tourist,
+		IFNULL(TRUNCATE (SUM(A.pay_member_count_sum_a) / (SUM(A.total_visitor_count_sum_a)+SUM(A.total_visitor_count_tourist_sum_a)) * 100, 2), 0) cr
+	FROM
+		(
+			SELECT
+				SUM(mps.total_visitor_count) total_visitor_count_sum_a,
+				SUM(mps.total_visitor_count_tourist) total_visitor_count_tourist_sum_a,
+				SUM(mps.total_pv_count) total_pv_count_sum_a,
+				SUM(mps.total_pv_count_tourist) total_pv_count_tourist_sum_a,
+				SUM(mps.pay_amount) pay_amount_sum_a,
+				SUM(mps.pay_combine_order_count) pay_combine_order_count_sum_a,
+				SUM(mps.pay_sub_order_count) pay_sub_order_count_sum_a,
+				SUM(mps.pay_product_count) pay_product_count_sum_a,
+				SUM(mps.pay_member_count) pay_member_count_sum_a,
+				0 total_visitor_count_sum_b,
+				0 total_visitor_count_tourist_sum_b,
+				0 total_pv_count_sum_b,
+				0 total_pv_count_tourist_sum_b,
+				0 pay_amount_sum_b,
+				0 pay_combine_order_count_sum_b,
+				0 pay_sub_order_count_sum_b,
+				0 pay_product_count_sum_b,
+				0 pay_member_count_sum_b
+			FROM
+				bu_mcht_pv_statistical mps
+			WHERE
+				mps.del_flag = '0'
+			AND mps.statistical_date BETWEEN #{statisticsBeginDate}
+			AND #{statisticsEndDate}
+			AND mps.mcht_id = #{mchtId}
+			UNION ALL
+				SELECT
+					0 total_visitor_count_sum_a,
+					0 total_visitor_count_tourist_sum_a,
+					0 total_pv_count_sum_a,
+					0 total_pv_count_tourist_sum_a,
+					0.00 pay_amount_sum_a,
+					0 pay_combine_order_count_sum_a,
+					0 pay_sub_order_count_sum_a,
+					0 pay_product_count_sum_a,
+					0 pay_member_count_sum_a,
+					SUM(mps.total_visitor_count) total_visitor_count_sum_b,
+					SUM(mps.total_visitor_count_tourist) total_visitor_count_tourist_sum_b,
+					SUM(mps.total_pv_count) total_pv_count_sum_b,
+					SUM(mps.total_pv_count_tourist) total_pv_count_tourist_sum_b,
+					SUM(mps.pay_amount) pay_amount_sum_b,
+					SUM(mps.pay_combine_order_count) pay_combine_order_count_sum_b,
+					SUM(mps.pay_sub_order_count) pay_sub_order_count_sum_b,
+					SUM(mps.pay_product_count) pay_product_count_sum_b,
+					SUM(mps.pay_member_count) pay_member_count_sum_b
+				FROM
+					bu_mcht_pv_statistical mps
+				WHERE
+					mps.del_flag = '0'
+				AND mps.statistical_date BETWEEN #{comparisonBeginDate}
+				AND #{comparisonEndDate}
+				AND mps.mcht_id = #{mchtId}
+		) A
+  </select>
+  
+  <!-- 商家店铺支付金额排名 -->
+  <select id="getMchtPvPayAmountRank" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		C.*
+	FROM
+		(
+			SELECT
+				A.*, (@rank := @rank + 1) rank
+			FROM
+				(
+					SELECT
+						mps.mcht_id,
+						SUM(mps.pay_amount) pay_amount
+					FROM
+						bu_mcht_pv_statistical mps,
+						bu_mcht_product_type mpt
+					WHERE
+						mps.mcht_id = mpt.mcht_id
+					AND	mps.del_flag = '0'
+					AND mps.create_date BETWEEN #{statisticsBeginDateStr}
+					AND #{statisticsEndDateStr}
+					AND mpt.del_flag = '0'
+					AND mpt.is_main = '1'
+					AND mpt.status = '1'
+					AND mpt.product_type_id = #{productTypeId}
+					GROUP BY
+						mps.mcht_id
+					ORDER BY
+						pay_amount DESC
+				) A,
+				(SELECT @rank := 0) B
+		) C
+	WHERE
+		C.mcht_id = #{mchtId}
+  </select>
+  
+  <!-- 前一百家店铺支付金额平均值 -->
+  <select id="getMchtPvPayAmountAvg" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		IFNULL(TRUNCATE (AVG(pay_amount), 2), 0) pay_amount_avg
+	FROM
+		(
+			SELECT
+				SUM(mps.pay_amount) pay_amount
+			FROM
+				bu_mcht_pv_statistical mps,
+				bu_mcht_product_type mpt
+			WHERE
+				mps.mcht_id = mpt.mcht_id
+			AND	mps.del_flag = '0'
+			AND mps.create_date BETWEEN #{statisticsBeginDateStr}
+			AND #{statisticsEndDateStr}
+			AND mpt.del_flag = '0'
+			AND mpt.is_main = '1'
+			AND mpt.status = '1'
+			AND mpt.product_type_id = #{productTypeId}
+			GROUP BY
+				mps.mcht_id
+			LIMIT 0,
+			100
+		) A
+  </select>
+  
+  <!-- 商家店铺访客数排名 -->
+  <select id="getMchtPvTotalVisitorCountRank" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		C.*
+	FROM
+		(
+			SELECT
+				A.*, (@rank := @rank + 1) rank
+			FROM
+				(
+					SELECT
+						mps.mcht_id,
+						SUM(mps.total_visitor_count) total_visitor_count
+					FROM
+						bu_mcht_pv_statistical mps,
+						bu_mcht_product_type mpt
+					WHERE
+						mps.mcht_id = mpt.mcht_id
+					AND	mps.del_flag = '0'
+					AND mps.create_date BETWEEN #{statisticsBeginDateStr}
+					AND #{statisticsEndDateStr}
+					AND mpt.del_flag = '0'
+					AND mpt.is_main = '1'
+					AND mpt.status = '1'
+					AND mpt.product_type_id = #{productTypeId}
+					GROUP BY
+						mps.mcht_id
+					ORDER BY
+						total_visitor_count DESC
+				) A,
+				(SELECT @rank := 0) B
+		) C
+	WHERE
+		C.mcht_id = #{mchtId}
+  </select>
+  
+  <!-- 前一百家店铺访客数平均值 -->
+  <select id="getMchtPvTotalVisitorCountAvg" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		IFNULL(TRUNCATE (AVG(total_visitor_count), 0), 0) total_visitor_count_avg
+	FROM
+		(
+			SELECT
+				SUM(mps.total_visitor_count) total_visitor_count
+			FROM
+				bu_mcht_pv_statistical mps,
+				bu_mcht_product_type mpt
+			WHERE
+				mps.mcht_id = mpt.mcht_id
+			AND	mps.del_flag = '0'
+			AND mps.create_date BETWEEN #{statisticsBeginDateStr}
+			AND #{statisticsEndDateStr}
+			AND mpt.del_flag = '0'
+			AND mpt.is_main = '1'
+			AND mpt.status = '1'
+			AND mpt.product_type_id = #{productTypeId}
+			GROUP BY
+				mps.mcht_id
+			LIMIT 0,
+			100
+		) A
+  </select>
+  
+  <!-- 商家店铺支付买家数排名 -->
+  <select id="getMchtPvPayMemberCountRank" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		C.*
+	FROM
+		(
+			SELECT
+				A.*, (@rank := @rank + 1) rank
+			FROM
+				(
+					SELECT
+						mps.mcht_id,
+						SUM(mps.pay_member_count) pay_member_count
+					FROM
+						bu_mcht_pv_statistical mps,
+						bu_mcht_product_type mpt
+					WHERE
+						mps.mcht_id = mpt.mcht_id
+					AND	mps.del_flag = '0'
+					AND mps.create_date BETWEEN #{statisticsBeginDateStr}
+					AND #{statisticsEndDateStr}
+					AND mpt.del_flag = '0'
+					AND mpt.is_main = '1'
+					AND mpt.status = '1'
+					AND mpt.product_type_id = #{productTypeId}
+					GROUP BY
+						mps.mcht_id
+					ORDER BY
+						pay_member_count DESC
+				) A,
+				(SELECT @rank := 0) B
+		) C
+	WHERE
+		C.mcht_id = #{mchtId}
+  </select>
+  
+  <!-- 前一百家店铺支付买家数平均值 -->
+  <select id="getMchtPvPayMemberCountAvg" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		IFNULL(TRUNCATE (AVG(pay_member_count), 0), 0) pay_member_count_avg
+	FROM
+		(
+			SELECT
+				SUM(mps.pay_member_count) pay_member_count
+			FROM
+				bu_mcht_pv_statistical mps,
+				bu_mcht_product_type mpt
+			WHERE
+				mps.mcht_id = mpt.mcht_id
+			AND	mps.del_flag = '0'
+			AND mps.create_date BETWEEN #{statisticsBeginDateStr}
+			AND #{statisticsEndDateStr}
+			AND mpt.del_flag = '0'
+			AND mpt.is_main = '1'
+			AND mpt.status = '1'
+			AND mpt.product_type_id = #{productTypeId}
+			GROUP BY
+				mps.mcht_id
+			LIMIT 0,
+			100
+		) A
+  </select>
+  
+  <!-- 商家商品流量相关 -->
+  <select id="getFlowMchtProductPvMap" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+	  IFNULL(SUM(A.total_visitor_count_a), 0) total_visitor_count_a,
+	  IFNULL(SUM(A.total_visitor_count_tourist_a), 0) total_visitor_count_tourist_a,
+	  IFNULL(SUM(A.total_pv_count_a), 0) total_pv_count_a,
+	  IFNULL(SUM(A.total_pv_count_tourist_a), 0) total_pv_count_tourist_a,
+	  IFNULL(SUM(A.total_product_count_a), 0) total_product_count_a,
+	  IFNULL(SUM(A.total_visitor_count_b), 0) total_visitor_count_b,
+	  IFNULL(SUM(A.total_visitor_count_tourist_b), 0) total_visitor_count_tourist_b,
+	  IFNULL(SUM(A.total_pv_count_b), 0) total_pv_count_b,
+	  IFNULL(SUM(A.total_pv_count_tourist_b), 0) total_pv_count_tourist_b,
+	  IFNULL(SUM(A.total_product_count_b), 0) total_product_count_b,
+	  IFNULL(TRUNCATE ((SUM(A.total_visitor_count_a) - SUM(A.total_visitor_count_b)) / SUM(A.total_visitor_count_b) * 100, 2), 0) total_visitor_count_rate,
+	  IFNULL(TRUNCATE ((SUM(A.total_visitor_count_tourist_a) - SUM(A.total_visitor_count_tourist_b)) / SUM(A.total_visitor_count_tourist_b) * 100, 2), 0) total_visitor_count_rate_tourist,
+	  IFNULL(TRUNCATE ((SUM(A.total_pv_count_a) - SUM(A.total_pv_count_b)) / SUM(A.total_pv_count_b) * 100, 2), 0) total_pv_count_rate,
+	  IFNULL(TRUNCATE ((SUM(A.total_pv_count_tourist_a) - SUM(A.total_pv_count_tourist_b)) / SUM(A.total_pv_count_tourist_b) * 100, 2), 0) total_pv_count_rate_tourist,
+	  IFNULL(TRUNCATE ((SUM(A.total_product_count_a) - SUM(A.total_product_count_b)) / SUM(A.total_product_count_b) * 100, 2), 0) total_product_count_rate
+	FROM
+		(
+			SELECT
+			  COUNT(DISTINCT pv.member_id) total_visitor_count_a,
+			  COUNT(DISTINCT IF(pv.member_id IS NOT NULL, NULL, pv.device_number)) total_visitor_count_tourist_a,
+			  COUNT(pv.member_id) total_pv_count_a,
+			  COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist_a,
+			  COUNT(DISTINCT pv.value_id) total_product_count_a,
+			  0 total_visitor_count_b,
+			  0 total_visitor_count_tourist_b,
+			  0 total_pv_count_b,
+			  0 total_pv_count_tourist_b,
+			  0 total_product_count_b
+			FROM
+				bu_member_pv pv,
+				bu_product p
+			WHERE
+				pv.value_id = p.id
+			AND pv.del_flag = '0'
+			AND pv.page_type = '29'
+			AND pv.create_date BETWEEN #{statisticsBeginDate}
+			AND #{statisticsEndDate}
+			AND p.del_flag = '0'
+			AND p.mcht_id = #{mchtId}
+			<if test="clientSource != null and clientSource != ''" >
+				AND pv.client_source = #{clientSource}
+			</if>
+			UNION ALL
+				SELECT
+				  0 total_visitor_count_a,
+				  0 total_visitor_count_tourist_a,
+				  0 total_pv_count_a,
+				  0 total_pv_count_tourist_a,
+				  0 total_product_count_a,
+				  COUNT(DISTINCT pv.member_id) total_visitor_count_b,
+				  COUNT(DISTINCT IF(pv.member_id IS NOT NULL, NULL, pv.device_number)) total_visitor_count_tourist_b,
+	              COUNT(pv.member_id) total_pv_count_b,
+	  			  COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist_b,
+				  COUNT(DISTINCT pv.value_id) total_product_count_b
+				FROM
+					bu_member_pv pv,
+					bu_product p
+				WHERE
+					pv.value_id = p.id
+				AND pv.del_flag = '0'
+				AND pv.page_type = '29'
+				AND pv.create_date BETWEEN #{comparisonBeginDate}
+				AND #{comparisonEndDate}
+				AND pv.member_id IS NOT NULL
+				AND p.del_flag = '0'
+				AND p.mcht_id = #{mchtId}
+				<if test="clientSource != null and clientSource != ''" >
+					AND pv.client_source = #{clientSource}
+				</if>
+		) A
+  </select>
+  
+  <!-- 商家商品相关 -->
+  <select id="getMchtProductPvMap" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		IFNULL(SUM(C.member_remind_count_a), 0) member_remind_count_a,
+		IFNULL(SUM(C.shopping_cart_quantity_sum_a), 0) shopping_cart_quantity_sum_a,
+		IFNULL(SUM(C.order_dtl_quantity_sum_a), 0) order_dtl_quantity_sum_a,
+		IFNULL(SUM(C.pay_product_sum_a), 0) pay_product_sum_a,
+		IFNULL(SUM(C.member_remind_count_b), 0) member_remind_count_b,
+		IFNULL(SUM(C.shopping_cart_quantity_sum_b), 0) shopping_cart_quantity_sum_b,
+		IFNULL(SUM(C.order_dtl_quantity_sum_b), 0) order_dtl_quantity_sum_b,
+		IFNULL(SUM(C.pay_product_sum_b), 0) pay_product_sum_b,
+		IFNULL(TRUNCATE ((SUM(C.member_remind_count_a) - SUM(C.member_remind_count_b)) / SUM(C.member_remind_count_b) * 100, 2), 0) member_remind_count_rate,
+		IFNULL(TRUNCATE ((SUM(C.shopping_cart_quantity_sum_a) - SUM(C.shopping_cart_quantity_sum_b)) / SUM(C.shopping_cart_quantity_sum_b) * 100, 2), 0) shopping_cart_quantity_sum_rate,
+		IFNULL(TRUNCATE ((SUM(C.order_dtl_quantity_sum_a) - SUM(C.order_dtl_quantity_sum_b)) / SUM(C.order_dtl_quantity_sum_b) * 100, 2), 0) order_dtl_quantity_sum_rate,
+		IFNULL(TRUNCATE ((SUM(C.pay_product_sum_a) - SUM(C.pay_product_sum_b)) / SUM(C.pay_product_sum_b) * 100, 2), 0) pay_product_sum_rate
+	FROM
+		(
+			SELECT
+				(
+					SELECT
+						COUNT(DISTINCT mr.member_id)
+					FROM
+						bu_member_remind mr
+					WHERE
+						mr.del_flag = '0'
+					AND mr.remind_type = '2'
+					AND mr.create_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND mr.remind_id = A.value_id
+				) member_remind_count_a,
+				(
+					SELECT
+						SUM(s.quantity)
+					FROM
+						bu_shopping_cart s,
+						bu_product_item p
+					WHERE
+						s.product_item_id = p.id
+					AND s.del_flag = '0'
+					AND s.create_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND p.del_flag = '0'
+					AND p.product_id = A.value_id
+				) shopping_cart_quantity_sum_a,
+				(
+					SELECT
+						SUM(od.quantity)
+					FROM
+						bu_order_dtl od
+					WHERE
+						od.del_flag = '0'
+					AND od.create_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND od.product_id = A.value_id
+				) order_dtl_quantity_sum_a,
+				(
+					SELECT
+						SUM(od.quantity)
+					FROM
+						bu_combine_order co,
+						bu_sub_order so,
+						bu_order_dtl od
+					WHERE
+						co.id = so.combine_order_id
+					AND so.id = od.sub_order_id
+					AND co.del_flag = '0'
+					AND co.status = '1'
+					AND co.pay_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND so.del_flag = '0'
+					AND od.del_flag = '0'
+					AND od.product_id = A.value_id
+				) pay_product_sum_a,
+				0 member_remind_count_b,
+				0 shopping_cart_quantity_sum_b,
+				0 order_dtl_quantity_sum_b,
+				0 pay_product_sum_b
+			FROM
+				(
+					SELECT DISTINCT
+						pv.value_id
+					FROM
+						bu_member_pv pv,
+						bu_product p
+					WHERE
+						pv.value_id = p.id
+					AND pv.del_flag = '0'
+					AND pv.page_classify = '10'
+					AND pv.page_type = '29'
+					<if test="clientSource != null and clientSource != ''" >
+						AND pv.client_source = #{clientSource}
+					</if>
+					AND pv.create_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND p.del_flag = '0'
+					AND p.mcht_id = #{mchtId}
+				) A
+			UNION ALL
+				SELECT
+					0 member_remind_count_a,
+					0 shopping_cart_quantity_sum_a,
+					0 order_dtl_quantity_sum_a,
+					0 pay_product_sum_a,
+					(
+						SELECT
+							COUNT(DISTINCT mr.member_id)
+						FROM
+							bu_member_remind mr
+						WHERE
+							mr.del_flag = '0'
+						AND mr.remind_type = '2'
+						AND mr.create_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND mr.remind_id = B.value_id
+					) member_remind_count_b,
+					(
+						SELECT
+							SUM(s.quantity)
+						FROM
+							bu_shopping_cart s,
+							bu_product_item p
+						WHERE
+							s.product_item_id = p.id
+						AND s.del_flag = '0'
+						AND s.create_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND p.del_flag = '0'
+						AND p.product_id = B.value_id
+					) shopping_cart_quantity_sum_b,
+					(
+						SELECT
+							SUM(od.quantity)
+						FROM
+							bu_order_dtl od
+						WHERE
+							od.del_flag = '0'
+						AND od.create_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND od.product_id = B.value_id
+					) order_dtl_quantity_sum_b,
+					(
+						SELECT
+							SUM(od.quantity)
+						FROM
+							bu_combine_order co,
+							bu_sub_order so,
+							bu_order_dtl od
+						WHERE
+							co.id = so.combine_order_id
+						AND so.id = od.sub_order_id
+						AND co.del_flag = '0'
+						AND co.status = '1'
+						AND co.pay_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND so.del_flag = '0'
+						AND od.del_flag = '0'
+						AND od.product_id = B.value_id
+					) pay_product_sum_b
+				FROM
+					(
+						SELECT DISTINCT
+							pv.value_id
+						FROM
+							bu_member_pv pv,
+							bu_product p
+						WHERE
+							pv.value_id = p.id
+						AND pv.del_flag = '0'
+						AND pv.page_classify = '10'
+						AND pv.page_type = '29'
+						<if test="clientSource != null and clientSource != ''" >
+							AND pv.client_source = #{clientSource}
+						</if>
+						AND pv.create_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND p.del_flag = '0'
+						AND p.mcht_id = #{mchtId}
+					) B
+			) C
+  </select>
+  
+	<!-- 商品效果明细 -->
+	<select id="getMchtProductPvList" parameterType="java.util.Map" resultType="java.util.Map" >
+		SELECT
+			A.*,
+			(
+				SELECT
+					COUNT(DISTINCT mr.member_id)
+				FROM
+					bu_member_remind mr
+				WHERE
+					mr.del_flag = '0'
+				AND mr.remind_type = '2'
+				AND mr.create_date BETWEEN #{statisticsBeginDate}
+				AND #{statisticsEndDate}
+				AND mr.remind_id = A.product_id
+			) member_remind_count,
+			(
+				SELECT
+					IFNULL(SUM(sc.quantity), 0)
+				FROM
+					bu_shopping_cart sc, bu_product_item pi
+				WHERE
+					sc.product_item_id = pi.id
+				AND sc.del_flag = '0'
+				AND sc.create_date BETWEEN #{statisticsBeginDate}
+				AND #{statisticsEndDate}
+				AND pi.del_flag = '0'
+				AND pi.product_id = A.product_id
+			) shopping_cart_quantity_sum,
+			(
+				SELECT
+					IFNULL(SUM(od.quantity), 0)
+				FROM
+					bu_order_dtl od
+				WHERE
+					od.del_flag = '0'
+				AND od.create_date BETWEEN #{statisticsBeginDate}
+				AND #{statisticsEndDate}
+				AND od.product_id = A.product_id
+			) order_dtl_quantity_sum,
+			(
+				SELECT
+					IFNULL(SUM(od.quantity), 0)
+				FROM
+					bu_combine_order co, bu_sub_order so, bu_order_dtl od
+				WHERE
+					co.id = so.combine_order_id
+				AND so.id = od.sub_order_id
+				AND co.del_flag = '0'
+				AND co.status = '1'
+				AND co.pay_date BETWEEN #{statisticsBeginDate}
+				AND #{statisticsEndDate}
+				AND so.del_flag = '0'
+				AND od.del_flag = '0'
+				AND od.product_id = A.product_id
+			) pay_product_sum,
+			(
+				SELECT
+					IFNULL(SUM(od.pay_amount), 0)
+				FROM
+					bu_combine_order co, bu_sub_order so, bu_order_dtl od
+				WHERE
+					co.id = so.combine_order_id
+				AND so.id = od.sub_order_id
+				AND co.del_flag = '0'
+				AND co.status = '1'
+				AND co.pay_date BETWEEN #{statisticsBeginDate}
+				AND #{statisticsEndDate}
+				AND so.del_flag = '0'
+				AND od.del_flag = '0'
+				AND od.product_id = A.product_id
+			) pay_amount_sum
+		FROM(
+		  SELECT
+			  p.id product_id,
+			  p.`name` product_name,
+			  p.`code` product_code,
+			  pc.pic product_pic,
+			  pt.name product_type_name,
+			  p.art_no product_art_no,
+			  COUNT(DISTINCT pv.member_id) total_visitor_count,
+			  COUNT(DISTINCT IF(pv.member_id IS NOT NULL, NULL, pv.device_number)) total_visitor_count_tourist,
+			  COUNT(pv.member_id) total_pv_count,
+			  COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist
+		  FROM
+			  bu_member_pv pv,
+			  bu_product p,
+			  bu_product_type pt,
+			  bu_product_pic pc
+		  WHERE
+			pv.value_id = p.id
+		  AND p.product_type1_id = pt.id
+		  AND p.id = pc.product_id
+		  AND p.mcht_id = #{mchtId}
+		  AND pv.page_classify = '10'
+		  AND pv.page_type = '29'
+		  AND pv.create_date BETWEEN #{statisticsBeginDate}
+		  AND #{statisticsEndDate}
+		  <if test="clientSource != null and clientSource != ''" >
+			  AND pv.client_source = #{clientSource}
+		  </if>
+		  <if test="saleType != null and saleType != ''" >
+			  AND p.sale_type = #{saleType}
+		  </if>
+		  <if test="productName != null and productName != ''" >
+			  AND p.`name` LIKE #{productName}
+		  </if>
+		  <if test="productCode != null and productCode != ''" >
+			  AND p.`code` = #{productCode}
+		  </if>
+		  <if test="productTypeId != null and productTypeId != ''" >
+			  AND pt.id = #{productTypeId}
+		  </if>
+		  AND pc.is_default = '1'
+		  GROUP BY
+		  product_id
+		  <if test="orderByClause != null" >
+			  ORDER BY ${orderByClause}
+		  </if>
+		  <if test="limitStart != null and limitStart>=0" >
+			  LIMIT #{limitStart} , #{limitSize}
+		  </if>
+		)A
+	</select>
+	<select id="getMchtProductPvCount" parameterType="java.util.Map" resultType="java.lang.Integer" >
+		SELECT
+			COUNT(DISTINCT p.id)
+		FROM
+			bu_member_pv pv,
+			bu_product p,
+			bu_product_type pt,
+			bu_product_pic pc
+		WHERE
+			pv.value_id = p.id
+		AND p.product_type1_id = pt.id
+		AND p.id = pc.product_id
+		AND p.mcht_id = #{mchtId}
+		AND pv.page_classify = '10'
+		AND pv.page_type = '29'
+		AND pv.create_date BETWEEN #{statisticsBeginDate}
+		AND #{statisticsEndDate}
+		<if test="clientSource != null and clientSource != ''" >
+			AND pv.client_source = #{clientSource}
+		</if>
+		<if test="saleType != null and saleType != ''" >
+			AND p.sale_type = #{saleType}
+		</if>
+		<if test="productName != null and productName != ''" >
+			AND p.`name` LIKE #{productName}
+		</if>
+		<if test="productCode != null and productCode != ''" >
+			AND p.`code` = #{productCode}
+		</if>
+		<if test="productTypeId != null and productTypeId != ''" >
+			AND pt.id = #{productTypeId}
+		</if>
+		AND pc.is_default = '1'
+	</select>
+
+  <!-- 历史流量看板（访问店铺，转化） -->
+  <select id="getMchtVisitorMap" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		IFNULL(SUM(A.total_visitor_count_a), 0) total_visitor_count_a,
+		IFNULL(SUM(A.pay_member_count_a), 0) pay_member_count_a,
+		IFNULL(SUM(A.total_visitor_count_b), 0) total_visitor_count_b,
+		IFNULL(SUM(A.pay_member_count_b), 0) pay_member_count_b,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_a) - SUM(A.total_visitor_count_b)) / SUM(A.total_visitor_count_b) * 100, 2), 0) total_visitor_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.pay_member_count_a) - SUM(A.pay_member_count_b)) / SUM(A.pay_member_count_b) * 100, 2), 0) pay_member_count_rate
+	FROM
+		(
+			SELECT
+				SUM(mps.total_visitor_count) total_visitor_count_a,
+				SUM(mps.pay_member_count) pay_member_count_a,
+				0 total_visitor_count_b,
+				0 pay_member_count_b
+			FROM
+				bu_mcht_pv_statistical mps
+			WHERE
+				mps.del_flag = '0'
+			AND mps.statistical_date BETWEEN #{statisticsBeginStr}
+			AND #{statisticsEndStr}
+			AND mps.mcht_id = #{mchtId}
+			UNION ALL
+				SELECT
+					0 total_visitor_count_a,
+					0 pay_member_count_a,
+					SUM(mps.total_visitor_count) total_visitor_count_b,
+					SUM(mps.pay_member_count) pay_member_count_b
+				FROM
+					bu_mcht_pv_statistical mps
+				WHERE
+					mps.del_flag = '0'
+				AND mps.statistical_date BETWEEN #{comparisonBeginStr}
+				AND #{comparisonEndStr}
+				AND mps.mcht_id = #{mchtId}
+		) A
+  </select>
+  
+  <!-- 历史流量看板（访问商品）  -->
+  <select id="getMchtProductVisitorMap" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		IFNULL(SUM(A.total_visitor_count_a), 0) total_visitor_count_a,
+		IFNULL(SUM(A.total_visitor_count_b), 0) total_visitor_count_b,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_a) - SUM(A.total_visitor_count_b)) / SUM(A.total_visitor_count_b) * 100, 2), 0) total_visitor_count_rate
+	FROM
+		(
+			SELECT
+				COUNT(DISTINCT pv.member_id) total_visitor_count_a,
+				0 total_visitor_count_b
+			FROM
+				bu_member_pv pv,
+				bu_product p
+			WHERE
+				pv.value_id = p.id
+			AND pv.del_flag = '0'
+			AND pv.page_classify = '10'
+			AND pv.page_type = '29'
+			AND pv.create_date BETWEEN #{statisticsBeginDate}
+			AND #{statisticsEndDate}
+			AND p.del_flag = '0'
+			AND p.mcht_id = #{mchtId}
+			UNION ALL
+				SELECT
+					0 total_visitor_count_a,
+					COUNT(DISTINCT pv.member_id) total_visitor_count_b
+				FROM
+					bu_member_pv pv,
+					bu_product p
+				WHERE
+					pv.value_id = p.id
+				AND pv.del_flag = '0'
+				AND pv.page_classify = '10'
+				AND pv.page_type = '29'
+				AND pv.create_date BETWEEN #{comparisonBeginDate}
+				AND #{comparisonEndDate}
+				AND p.del_flag = '0'
+				AND p.mcht_id = #{mchtId}
+		) A
+  </select>
+  
+  <!-- 访问店铺  -->
+  <select id="getMchtVisitorPvMap" parameterType="java.util.Map" resultType="java.util.Map" >
+  	SELECT
+		IFNULL(SUM(A.total_visitor_count_a), 0) total_visitor_count_a,
+		IFNULL(SUM(A.total_visitor_count_tourist_a), 0) total_visitor_count_tourist_a,
+		IFNULL(SUM(A.total_pv_count_a), 0) total_pv_count_a,
+		IFNULL(SUM(A.total_pv_count_tourist_a), 0) total_pv_count_tourist_a,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_a) / SUM(A.total_visitor_count_a), 2), 0) total_pv_avg_a,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_tourist_a) / SUM(A.total_visitor_count_tourist_a), 2), 0) total_pv_avg_tourist_a,
+		IFNULL(SUM(A.member_remind_count_a), 0) member_remind_count_a,
+		IFNULL(SUM(A.total_visitor_count_b), 0) total_visitor_count_b,
+		IFNULL(SUM(A.total_visitor_count_tourist_b), 0) total_visitor_count_tourist_b,
+		IFNULL(SUM(A.total_pv_count_b), 0) total_pv_count_b,
+		IFNULL(SUM(A.total_pv_count_tourist_b), 0) total_pv_count_tourist_b,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_b) / SUM(A.total_visitor_count_b), 2), 0) total_pv_avg_b,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_tourist_b) / SUM(A.total_visitor_count_tourist_b), 2), 0) total_pv_avg_tourist_b,
+		IFNULL(SUM(A.member_remind_count_b), 0) member_remind_count_b,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_a) - SUM(A.total_visitor_count_b)) / SUM(A.total_visitor_count_b) * 100, 2), 0) total_visitor_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_tourist_a) - SUM(A.total_visitor_count_tourist_b)) / SUM(A.total_visitor_count_tourist_b) * 100, 2), 0) total_visitor_count_rate_tourist,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_a) - SUM(A.total_pv_count_b)) / SUM(A.total_pv_count_b) * 100, 2), 0) total_pv_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_tourist_a) - SUM(A.total_pv_count_tourist_b)) / SUM(A.total_pv_count_tourist_b) * 100, 2), 0) total_pv_count_rate_tourist,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_a) / SUM(A.total_visitor_count_a) - SUM(A.total_pv_count_b) / SUM(A.total_visitor_count_b)) / (SUM(A.total_pv_count_b) / SUM(A.total_visitor_count_b)) * 100, 2), 0) total_pv_avg_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_tourist_a) / SUM(A.total_visitor_count_tourist_a) - SUM(A.total_pv_count_tourist_b) / SUM(A.total_visitor_count_tourist_b)) / (SUM(A.total_pv_count_tourist_b) / SUM(A.total_visitor_count_tourist_b)) * 100, 2), 0) total_pv_avg_rate_tourist,
+		IFNULL(TRUNCATE ((SUM(A.member_remind_count_a) - SUM(A.member_remind_count_b)) / SUM(A.member_remind_count_b) * 100, 2), 0) member_remind_count_rate
+	FROM
+		(
+			SELECT
+				mps.mcht_id,
+				SUM(mps.total_visitor_count) total_visitor_count_a,
+				SUM(mps.total_visitor_count_tourist) total_visitor_count_tourist_a,
+				SUM(mps.total_pv_count) total_pv_count_a,
+				SUM(mps.total_pv_count_tourist) total_pv_count_tourist_a,
+				(
+					SELECT
+						COUNT(DISTINCT mr.member_id)
+					FROM
+						bu_member_remind mr
+					WHERE
+						mr.del_flag = '0'
+					AND mr.remind_type = '3'
+					AND mr.create_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND mr.remind_id = mps.mcht_id
+				) member_remind_count_a,
+				0 total_visitor_count_b,
+				0 total_visitor_count_tourist_b,
+				0 total_pv_count_b,
+				0 total_pv_count_tourist_b,
+				0 member_remind_count_b
+			FROM
+				bu_mcht_pv_statistical mps
+			WHERE
+				mps.del_flag = '0'
+			AND mps.statistical_date BETWEEN #{statisticsBeginStr}
+			AND #{statisticsEndStr}
+			AND mps.mcht_id = #{mchtId}
+			GROUP BY 
+				mcht_id
+			UNION ALL
+				SELECT
+					mps.mcht_id,
+					0 total_visitor_count_a,
+					0 total_visitor_count_tourist_a,
+					0 total_pv_count_a,
+					0 total_pv_count_tourist_a,
+					0 member_remind_count_a,
+					SUM(mps.total_visitor_count) total_visitor_count_b,
+					SUM(mps.total_visitor_count_tourist) total_visitor_count_tourist_b,
+					SUM(mps.total_pv_count) total_pv_count_b,
+					SUM(mps.total_pv_count_tourist) total_pv_count_tourist_b,
+					(
+						SELECT
+							COUNT(DISTINCT mr.member_id)
+						FROM
+							bu_member_remind mr
+						WHERE
+							mr.del_flag = '0'
+						AND mr.remind_type = '3'
+						AND mr.create_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND mr.remind_id = mps.mcht_id
+					) member_remind_count_b
+				FROM
+					bu_mcht_pv_statistical mps
+				WHERE
+					mps.del_flag = '0'
+				AND mps.statistical_date BETWEEN #{comparisonBeginStr}
+				AND #{comparisonEndStr}
+				AND mps.mcht_id = #{mchtId}
+				GROUP BY 
+					mcht_id
+		) A
+  </select>
+  
+  <!-- 访问商品  -->
+  <select id="getMchtPvProductVisitorMap" parameterType="java.util.Map" resultType="java.util.Map" >
+	SELECT
+		IFNULL(SUM(A.total_visitor_count_a), 0) total_visitor_count_a,
+		IFNULL(SUM(A.total_visitor_count_tourist_a), 0) total_visitor_count_tourist_a,
+		IFNULL(SUM(A.total_pv_count_a), 0) total_pv_count_a,
+		IFNULL(SUM(A.total_pv_count_tourist_a), 0) total_pv_count_tourist_a,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_a) / SUM(A.total_visitor_count_a), 2), 0) total_pv_count_avg_a,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_tourist_a) / SUM(A.total_visitor_count_tourist_a), 2), 0) total_pv_count_avg_tourist_a,
+		IFNULL(SUM(A.total_visitor_count_b), 0) total_visitor_count_b,
+		IFNULL(SUM(A.total_visitor_count_tourist_b), 0) total_visitor_count_tourist_b,
+		IFNULL(SUM(A.total_pv_count_b), 0) total_pv_count_b,
+		IFNULL(SUM(A.total_pv_count_tourist_b), 0) total_pv_count_tourist_b,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_b) / SUM(A.total_visitor_count_b), 2), 0) total_pv_count_avg_b,
+		IFNULL(TRUNCATE (SUM(A.total_pv_count_tourist_b) / SUM(A.total_visitor_count_tourist_b), 2), 0) total_pv_count_avg_tourist_b,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_a) - SUM(A.total_visitor_count_b)) / SUM(A.total_visitor_count_b) * 100, 2), 0) total_visitor_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_visitor_count_tourist_a) - SUM(A.total_visitor_count_tourist_b)) / SUM(A.total_visitor_count_tourist_b) * 100, 2), 0) total_visitor_count_rate_tourist,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_a) - SUM(A.total_pv_count_b)) / SUM(A.total_pv_count_b) * 100, 2), 0) total_pv_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_tourist_a) - SUM(A.total_pv_count_tourist_b)) / SUM(A.total_pv_count_tourist_b) * 100, 2), 0) total_pv_count_rate_tourist,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_a) / SUM(A.total_visitor_count_a) - SUM(A.total_pv_count_b) / SUM(A.total_visitor_count_b)) / SUM(A.total_pv_count_b) * SUM(A.total_visitor_count_b) * 100, 2), 0) total_pv_count_avg_rate,
+		IFNULL(TRUNCATE ((SUM(A.total_pv_count_tourist_a) / SUM(A.total_visitor_count_tourist_a) - SUM(A.total_pv_count_tourist_b) / SUM(A.total_visitor_count_tourist_b)) / SUM(A.total_pv_count_tourist_b) * SUM(A.total_visitor_count_tourist_b) * 100, 2), 0) total_pv_count_avg_rate_tourist
+	FROM
+		(
+			SELECT
+				COUNT(DISTINCT pv.member_id) total_visitor_count_a,
+				COUNT(DISTINCT IF(pv.member_id IS NOT NULL, NULL, pv.device_number)) total_visitor_count_tourist_a,
+				COUNT(pv.member_id) total_pv_count_a,
+				COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist_a,
+				0 total_visitor_count_b,
+				0 total_visitor_count_tourist_b,
+				0 total_pv_count_b,
+				0 total_pv_count_tourist_b
+			FROM
+				bu_member_pv pv,
+				bu_product p
+			WHERE
+				pv.value_id = p.id
+			AND pv.del_flag = '0'
+			AND pv.page_classify = '10'
+			AND pv.page_type = '29'
+			AND pv.create_date BETWEEN #{statisticsBeginDate}
+			AND #{statisticsEndDate}
+			AND p.del_flag = '0'
+			AND p.mcht_id = #{mchtId}
+			UNION ALL
+				SELECT
+					0 total_visitor_count_a,
+					0 total_visitor_count_tourist_a,
+					0 total_pv_count_a,
+					0 total_pv_count_tourist_a,
+					COUNT(DISTINCT pv.member_id) total_visitor_count_b,
+					COUNT(DISTINCT IF(pv.member_id IS NOT NULL, NULL, pv.device_number)) total_visitor_count_tourist_b,
+					COUNT(pv.member_id) total_pv_count_b,
+					COUNT(1)-COUNT(pv.member_id) total_pv_count_tourist_b
+				FROM
+					bu_member_pv pv,
+					bu_product p
+				WHERE
+					pv.value_id = p.id
+				AND pv.del_flag = '0'
+				AND pv.page_classify = '10'
+				AND pv.page_type = '29'
+				AND pv.create_date BETWEEN #{comparisonBeginDate}
+				AND #{comparisonEndDate}
+				AND p.del_flag = '0'
+				AND p.mcht_id = #{mchtId}
+		) A
+  </select>
+  <select id="getMchtMemberRemindCount" parameterType="java.util.Map" resultType="java.util.Map" >
+	SELECT
+		IFNULL(SUM(A.member_remind_count_a), 0) member_remind_count_a,
+		IFNULL(SUM(A.member_remind_count_b), 0) member_remind_count_b,
+		IFNULL(TRUNCATE ((SUM(A.member_remind_count_a) - SUM(A.member_remind_count_b)) / SUM(A.member_remind_count_b) * 100, 2), 0) member_remind_count_rate
+	FROM
+		(
+			SELECT
+				COUNT(DISTINCT mr.member_id) member_remind_count_a,
+				0 member_remind_count_b
+			FROM
+				bu_member_pv pv,
+				bu_member_remind mr,
+				bu_product p
+			WHERE
+				pv.value_id = p.id
+			AND pv.del_flag = '0'
+			AND pv.page_classify = '10'
+			AND pv.page_type = '29'
+			AND pv.create_date BETWEEN #{statisticsBeginDate}
+			AND #{statisticsEndDate}
+			AND mr.del_flag = '0'
+			AND mr.remind_type = '2'
+			AND mr.create_date BETWEEN #{statisticsBeginDate}
+			AND #{statisticsEndDate}
+			AND mr.remind_id = p.id
+			AND p.del_flag = '0'
+			AND p.mcht_id = #{mchtId}
+			UNION ALL
+				SELECT
+					0 member_remind_count_a,
+					COUNT(DISTINCT mr.member_id) member_remind_count_b
+				FROM
+					bu_member_pv pv,
+					bu_member_remind mr,
+					bu_product p
+				WHERE
+					pv.value_id = p.id
+				AND pv.del_flag = '0'
+				AND pv.page_classify = '10'
+				AND pv.page_type = '29'
+				AND pv.create_date BETWEEN #{comparisonBeginDate}
+				AND #{comparisonEndDate}
+				AND mr.del_flag = '0'
+				AND mr.remind_type = '2'
+				AND mr.create_date BETWEEN #{comparisonBeginDate}
+				AND #{comparisonEndDate}
+				AND mr.remind_id = p.id
+				AND p.del_flag = '0'
+				AND p.mcht_id = #{mchtId}
+		) A
+  </select>
+  
+  
+  <!-- 转化  -->
+  <select id="getMchtPvVisitorMap" parameterType="java.util.Map" resultType="java.util.Map" >
+	SELECT
+		IFNULL(SUM(A.pay_member_count_a), 0) pay_member_count_a,
+		IFNULL(SUM(A.combine_order_count_a), 0) combine_order_count_a,
+		IFNULL(SUM(A.shopping_cart_count_a), 0) shopping_cart_count_a,
+		IFNULL(SUM(A.pay_member_count_b), 0) pay_member_count_b,
+		IFNULL(SUM(A.combine_order_count_b), 0) combine_order_count_b,
+		IFNULL(SUM(A.shopping_cart_count_b), 0) shopping_cart_count_b,
+		IFNULL(TRUNCATE ((SUM(A.pay_member_count_a) - SUM(A.pay_member_count_b)) / SUM(A.pay_member_count_b) * 100, 2), 0) pay_member_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.combine_order_count_a) - SUM(A.combine_order_count_b)) / SUM(A.combine_order_count_b) * 100, 2), 0) combine_order_count_rate,
+		IFNULL(TRUNCATE ((SUM(A.shopping_cart_count_a) - SUM(A.shopping_cart_count_b)) / SUM(A.shopping_cart_count_b) * 100, 2), 0) shopping_cart_count_rate
+	FROM
+		(
+			SELECT
+				mps.mcht_id,
+				SUM(mps.pay_member_count) pay_member_count_a,
+				(
+					SELECT
+						COUNT(DISTINCT co.member_id)
+					FROM
+						bu_combine_order co,
+						bu_sub_order so
+					WHERE
+						co.id = so.combine_order_id
+					AND	so.del_flag = '0'
+					AND so.create_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND so.mcht_id = mps.mcht_id
+				) combine_order_count_a,
+				(
+					SELECT
+						COUNT(DISTINCT s.member_id)
+					FROM
+						bu_shopping_cart s
+					WHERE
+						 s.del_flag = '0'
+					AND s.create_date BETWEEN #{statisticsBeginDate}
+					AND #{statisticsEndDate}
+					AND s.mcht_id = mps.mcht_id
+				) shopping_cart_count_a,
+				0 pay_member_count_b,
+				0 combine_order_count_b,
+				0 shopping_cart_count_b
+			FROM
+				bu_mcht_pv_statistical mps
+			WHERE
+				mps.del_flag = '0'
+			AND mps.statistical_date BETWEEN #{statisticsBeginStr}
+			AND #{statisticsEndStr}
+			AND mps.mcht_id = #{mchtId}
+			GROUP BY 
+				mcht_id
+			UNION ALL
+				SELECT
+					mps.mcht_id,
+					0 pay_member_count_a,
+					0 combine_order_count_a,
+					0 shopping_cart_count_a,
+					SUM(mps.pay_member_count) pay_member_count_b,
+					(
+						SELECT
+							COUNT(DISTINCT co.member_id)
+						FROM
+							bu_combine_order co,
+							bu_sub_order so
+						WHERE
+							co.id = so.combine_order_id
+						AND	so.del_flag = '0'
+						AND so.create_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND so.mcht_id = mps.mcht_id
+					) combine_order_count_b,	
+					(
+						SELECT
+							COUNT(DISTINCT s.member_id)
+						FROM
+							bu_shopping_cart s
+						WHERE
+							 s.del_flag = '0'
+						AND s.create_date BETWEEN #{comparisonBeginDate}
+						AND #{comparisonEndDate}
+						AND s.mcht_id = mps.mcht_id
+					) shopping_cart_count_b
+				FROM
+					bu_mcht_pv_statistical mps
+				WHERE
+					mps.del_flag = '0'
+				AND mps.statistical_date BETWEEN #{comparisonBeginStr}
+				AND #{comparisonEndStr}
+				AND mps.mcht_id = #{mchtId}
+				GROUP BY 
+					mcht_id
+		) A
+  </select>
+ 
+  
+  <select id="getMchtPvStatisticalSourceList" parameterType="java.util.Map" resultType="java.util.Map" >
+	SELECT
+		<if test="totalCount == null" >
+			pv.page_classify pv_page_classify,
+			FUN_GET_STATUS_DESC (
+				'BU_MEMBER_PV',
+				'PAGE_CLASSIFY',
+				pv.page_classify
+			) page_classify_desc,
+		</if>
+		<if test="flag != null and flag == '1'.toString()" >
+			COUNT(DISTINCT pv.member_id) total_visitor_count,
+		</if>
+		<if test="flag != null and flag == '0'.toString()" >
+			COUNT(DISTINCT pv.device_number) total_visitor_count,
+		</if>
+		COUNT(1) total_pv_count
+	FROM
+		bu_member_pv mp,
+		bu_member_pv pv,
+		bu_product p
+	WHERE
+		mp.from_pv_id = pv.pv_id
+	AND mp.value_id = p.id
+	AND mp.page_classify = '10'
+	AND mp.page_type = '29'
+	AND mp.create_date BETWEEN #{statisticsBeginDate}
+	AND #{statisticsEndDate}
+	<if test="flag != null and flag == '1'.toString()" >
+		AND mp.member_id IS NOT NULL
+	</if>
+	<if test="flag != null and flag == '0'.toString()" >
+		AND mp.member_id IS NULL
+	</if>
+	AND p.del_flag = '0'
+	AND p.mcht_id = #{mchtId }
+	<if test="totalCount == null" >
+		GROUP BY
+			pv_page_classify
+	</if>
+  </select>
+  
+  
+</mapper>

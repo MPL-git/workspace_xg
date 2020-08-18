@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.DepositOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.DepositOrderCustom"  extends="com.jf.dao.DepositOrderMapper.BaseResultMap">
+  	<result column="payment_type_desc" property="paymentTypeDesc" jdbcType="VARCHAR" />
+  	<result column="status_desc" property="statusDesc" jdbcType="VARCHAR" />
+  	<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+  	<result column="company_name" property="companyName" jdbcType="VARCHAR" />
+  	<result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  	<result column="platform_payment_name" property="platformPaymentName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mcht_id, account_id, amount, payment_type, payment_name, account_no, account_name, 
+    pay_date, payment_no, receive_date, status, create_by, create_date, update_by, update_date, 
+    remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_DEPOSIT_ORDER","PAYMENT_TYPE", payment_type) payment_type_desc,
+    FUN_GET_STATUS_DESC("BU_DEPOSIT_ORDER","STATUS", status) status_desc,
+    (select a.mcht_code from bu_mcht_info a where a.id = t.mcht_id) mcht_code,
+    (select a.company_name from bu_mcht_info a where a.id = t.mcht_id) company_name,
+    (select a.STAFF_NAME from sys_staff_info a where a.STAFF_ID = t.update_by) staff_name,
+    (select pca.payment_name from bu_platform_capital_account pca where t.account_id = pca.id)platform_payment_name
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.DepositOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_deposit_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByExample" resultType="java.lang.Integer" parameterType="com.jf.entity.DepositOrderCustomExample" >
+    select count(*) from bu_deposit_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+</mapper>

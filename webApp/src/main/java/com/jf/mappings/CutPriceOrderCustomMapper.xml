@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CutPriceOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CutPriceOrderCustom" extends="com.jf.dao.CutPriceOrderMapper.BaseResultMap">
+  
+  </resultMap>
+  <!-- 更新砍价单主表砍价成功状态 -->
+  <update id="updateCutOrderStatus" parameterType="int">
+  		update bu_cut_price_order set status = '2',can_order = '1' 
+  		where id = #{cutOrderId} and `status` = '1' and del_flag = '0' and audit_status = '0'
+  </update>
+  <!-- 更新砍价单主表下单成功状态且关联总订单(废弃) -->
+  <update id="updateCutOrderSuccess" parameterType="com.jf.entity.CutPriceOrder">
+  		update 
+  			bu_cut_price_order 
+  		set 
+	  		status = '4',
+	  		combine_order_id = #{combineOrderId},
+	  		pay_amount = #{payAmount},
+	  		update_date = #{updateDate}
+  		where 
+	  		id = #{id}
+	  		and `status` = '2' 
+	  		and audit_status = '0'
+	  		and can_order = '1' 
+	  		and del_flag = '0'
+  </update>
+  
+  <select id="getMyAssistanceGoodsTaskList" parameterType="java.util.Map" resultType="CutPriceOrderCustom">
+  		SELECT T.*,
+		(SELECT cnfDtl.fixed_amount FROM bu_cut_price_cnf_dtl cnfDtl WHERE cnfDtl.cut_price_cnf_id = T.cnfId and cnfDtl.rate_type = '4' limit 1) AS fixedAmount,
+		(SELECT COUNT(1) from bu_cut_price_order_dtl orderDtl where orderDtl.del_flag = '0' and orderDtl.`status` = '1' and orderDtl.cut_price_order_id = T.id) as assistanceNum,
+		(SELECT COUNT(1) from bu_cut_price_order_dtl orderDtl where orderDtl.del_flag = '0' and orderDtl.`status` = '0' and orderDtl.cut_price_order_id = T.id) as unAssistanceNum
+		FROM(
+		SELECT
+		cutOrder.id,
+		cutOrder.product_id,
+		cutOrder.sale_price,
+		cutOrder.tag_price,
+		cutOrder.activity_type,
+		cutOrder.product_name,
+		cutOrder.`status`,
+		cutOrder.create_date,
+		cutOrder.sku_pic,
+		cutOrder.product_item_id,
+		cutOrder.quantity,
+	  	cutOrder.update_date,
+		cnf.max_invite_times as maxInviteTimes,
+		cnf.active_time as activeTime,
+		cnf.id as cnfId
+		from bu_cut_price_order cutOrder,bu_cut_price_cnf cnf
+		where cutOrder.single_product_activity_id = cnf.single_product_activity_id
+		and cutOrder.del_flag = '0'
+		and cutOrder.activity_type = '10'
+		and cutOrder.status != '0'
+		and cutOrder.member_id = #{memberId}
+		ORDER BY cutOrder.id DESC
+		<!-- #分页 -->
+		<if test="currentPage != null and pageSize != null">
+			limit #{currentPage} , #{pageSize} 
+		</if>
+		) T
+		
+  	</select>
+
+	<select id="findAssistanceCutCompleteLog" resultType="com.jf.entity.dto.CutPriceOrderDTO">
+		select a.id,a.create_date ,a.update_date, mi.weixin_head as weixinHead,mi.pic,mi.nick as memberNick,a.pay_amount,mi.id as memberId
+		from bu_cut_price_order a
+		left join bu_member_info mi on a.member_id=mi.id
+		where a.del_flag = '0' and a.activity_type = #{activityType} and mi.del_flag = '0' and a.status = '4'
+		<if test="productId !=null">
+			and a.product_id = #{productId}
+		</if>
+		order by a.update_date desc
+		limit #{offset},#{fetchSize}
+	</select>
+</mapper>

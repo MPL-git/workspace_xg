@@ -1,0 +1,66 @@
+.novaplan-code {
+	background: #ffa60a url(images/bg-0.png) no-repeat;
+	background-size: 100% auto;
+}
+
+.novaplan-code .bf {
+	background: #fff;
+}
+
+.novaplan-code form {
+	overflow: hidden;
+	display: block;
+	margin: 1.7rem .75rem 0;
+	border-radius: .04rem;
+	box-sizing: border-box;
+}
+.novaplan-code h2 {
+	height: 1.15rem;
+	font-size: .36rem;
+	font-weight: bold;
+}
+.novaplan-code .input-box {
+	height: 1rem;
+	margin: 0 .73rem .3rem;
+	background: #f0f0f0;
+	font-size: .6rem;
+	font-weight: bold;
+	color: #FF573B;
+	border: 1px solid #ccc;
+	border-radius: .04rem;
+}
+.novaplan-code .input-box input {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+}
+
+.novaplan-code .bg-1 {
+	height: .5rem;
+	background: url(images/bg-1.png) no-repeat;
+	background-size: 100% 100%;
+}
+.novaplan-code .pb38 {
+	padding: .5rem 0 .38rem;
+}
+.novaplan-code .pt38 {
+	padding: .38rem 0 .5rem;
+}
+.novaplan-code .pt38 input {
+	height: .8rem;
+	margin: 0 .73rem;
+	background: #FF573B;
+	font-size: .3rem;
+}
+
+.novaplan-code article {
+	line-height: .36rem;
+	padding: .3rem;
+	font-size: .24rem;
+	color: #fff;
+}
+.novaplan-code h3 {
+	margin: .1rem 0;
+	font-size: .28rem;
+	font-weight: bold;
+}

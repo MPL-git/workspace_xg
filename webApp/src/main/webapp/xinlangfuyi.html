@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+	<title>大牌3折起</title>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0 auto;
+		}
+		html {
+			font-size: 100px;
+		}
+		@media (min-width: 640px) {
+			html {
+				width: 640px;
+			}
+		}
+		body {
+			width: 6.4rem;
+		}
+
+		.article {
+			position: relative;
+		}
+		.article img {
+			display: block;
+			border: none;
+			width: 100%;
+		}
+		.article a {
+			position: fixed;
+			bottom: 0;
+			left: 50%;
+			z-index: 1;
+			width: 100%;
+			height: 1.14rem;
+			margin-left: -3.2rem;
+			background: url(images/xinlangfuyi/xl-b.jpg) no-repeat;
+			background-size: contain;
+		}
+	</style>
+	<script>
+		var	html = document.querySelector('html'),
+			psd = {
+				w: 640,
+				h: false,
+				f: 100,
+				v: 1
+			};
+
+		function fontFix() {
+			var	a = html.offsetWidth,
+				b = psd.h ? html.offsetHeight * psd.w / a / psd.h : 0;
+
+			psd.v = a / psd.w * (b > 1 || !b ? 1 : b);
+			html.style.fontSize = psd.f * psd.v + 'px';
+		}
+		fontFix();
+		window.onresize = fontFix;
+	</script>
+</head>
+
+<body>
+	<div class="article">
+		<img src="images/xinlangfuyi/xl.jpg">
+		<a href="https://itunes.apple.com/cn/app/id1250285750?mt=8"></a>
+	</div>
+
+	<script src="js/spread.js?var=1.0"></script>
+</body>
+</html>

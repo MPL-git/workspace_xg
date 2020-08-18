@@ -1,0 +1,50 @@
+<div class="page points-lottery" data-title="积分抽奖" data-id="activity_pointsLottery">
+  <link rel="stylesheet" href="activity/pointsLottery/index.css">
+  <header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">积分抽奖</p>
+		<div class="fn">分享</div>
+  </header>
+
+  <div class="points-lottery-template"></div>
+  <script id="pointsLotteryTemplate" type="text/html">
+    <div class="points-lottery-content">
+      <div class="lottery-rule" onclick="pointsLottery.showRule()">活动规则</div>
+      <div class="main-integral">
+        <p>我的积分：0</p>
+      </div>
+      <div class="points-lottery-box"></div>
+      <div class="points-lottery-winner">
+        <div class="lottery-winner-title">
+          <h3>中奖名单</h3>
+          <p onclick="pointsLottery.toRecord()">我的中奖记录<i></i></p>
+        </div>
+        <div class="lottery-winner-content">
+          <ul></ul>
+        </div>
+      </div>
+    </div>
+  </script>
+
+  <!-- 活动规则 -->
+  <div class="points-rules-mark popup" onclick="closeSelf(this)">
+    <div class="points-lottery-rules" onclick="stopSelf()">
+      <i onclick="closeSelf(this)"></i>
+      <h3>活动规则</h3>
+      <div class="points-rule-content"></div>
+    </div>
+  </div>
+  <!-- 抽中奖品 -->
+  <div class="points-lottery-mark popup" onclick="closeSelf(this)">
+    <div class="points-modal" onclick="stopSelf()"></div>
+  </div>
+  <!-- 刷新页面 -->
+  <div class="points-lottery-refresh popup" onclick="closeSelf(this)">
+    <div class="points-modal" onclick="stopSelf()">
+      <h3>温馨提示</h3>
+      <p>页面信息已过期，请刷新重试！</p>
+      <div class="modal-btn" onclick="pointsLottery.refreshPage()">刷新</div>
+    </div>
+  </div>
+  <script src="activity/pointsLottery/index.js"></script>
+</div>

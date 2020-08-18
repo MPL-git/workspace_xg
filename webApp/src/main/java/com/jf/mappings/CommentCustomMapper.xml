@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CommentCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.CommentCustom" extends="com.jf.dao.CommentMapper.BaseResultMap">
+   
+  </resultMap>
+  <select id="getOrderCommentList" parameterType="java.util.Map" resultType="com.jf.entity.CommentCustom">
+  		select
+		c.id,
+		c.sub_order_id,
+		c.order_dtl_id,
+		c.product_id,
+		c.product_score,
+		c.content,
+		c.create_date,
+		c.mcht_reply,
+		sub.complete_date as completeDate,
+		sub.is_allow_modify_comment as isAllowModifyComment,
+		dtl.sku_pic as skuPic,
+		FUN_GET_PRODUCT_ITEM_PROP_DESC(dtl.product_item_id,' ') as productPropDesc
+		from bu_comment c,bu_sub_order sub,bu_order_dtl dtl
+		where c.sub_order_id = sub.id and c.order_dtl_id= dtl.id
+		and c.del_flag = '0'
+		and sub.del_flag = '0'
+		and dtl.del_flag = '0'
+		and c.is_append_comment = '0'
+		and c.sub_order_id = #{subOrderId}
+  	</select>
+  	
+  	<select id="getUserProductAllComment" parameterType="java.util.Map" resultType="com.jf.entity.CommentCustom">
+  		select
+		c.id,
+		c.sub_order_id,
+		c.order_dtl_id,
+		c.product_id,
+		c.product_score,
+		c.content,
+		c.create_date,
+		c.mcht_reply,
+		(select mi.nick from bu_member_info mi where mi.id = c.member_id and mi.del_flag = '0') as memberNick,
+		(select mi.pic from bu_member_info mi where mi.id = c.member_id and mi.del_flag = '0') as memberPic,
+		ifnull((select dtl.product_prop_desc FROM bu_order_dtl dtl WHERE dtl.id = c.order_dtl_id and dtl.del_flag = '0'),product_prop_desc) as productPropDesc
+		from bu_comment c
+		where c.del_flag = '0'
+		and c.is_append_comment = '0'
+		and (c.is_show is null or c.is_show = '1')
+		and c.product_id = #{productId}
+		<choose>
+			<when test="commentIdList != null and commentIdList.size() > 0"> <!-- 这个集合size > 0 表示不是第一页 按id排序 -->
+				and c.id not in
+					<foreach collection="commentIdList" item="id" open="(" separator="," close=")">
+			             #{id}
+			        </foreach>
+				ORDER BY c.id desc
+			</when>
+			
+			<otherwise>
+				ORDER BY c.comment_weight desc,c.id desc
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="currentPage != null and pageSize != null">
+				limit #{currentPage} , #{pageSize}  
+			</when>
+			<otherwise>
+				limit 0,10
+			</otherwise>
+		</choose>
+  	</select>
+  	
+  	
+  	<select id="getShopAvgScore" parameterType="java.util.Map" resultType="com.jf.entity.CommentCustom">
+  		select 
+  			ifnull(t.shop_score_avg,0) as mchtAvgScore,
+  			ifnull(t.wuliu_score_avg,0) as wuliuAvgScore,
+  			ifnull(t.product_score_avg,0) as productAvgScore
+  		from 
+  			bu_mcht_statistical_info t
+  		where t.del_flag = '0' and t.mcht_id = #{mchtId}
+  	</select>
+  	
+  	<select id="getProductAvgScore" parameterType="java.util.Map" resultType="com.jf.entity.CommentCustom">
+  		select 
+  			ifnull(t.product_score_avg,0) as productAvgScore
+  		from 
+  			bu_mcht_statistical_info t
+  		where t.del_flag = '0' and t.mcht_id = #{mchtId}
+  	</select>
+  	
+</mapper>

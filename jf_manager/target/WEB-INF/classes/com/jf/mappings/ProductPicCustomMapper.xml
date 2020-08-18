@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductPicCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductPicCustom"  extends="com.jf.dao.ProductPicMapper.BaseResultMap">
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, product_id, pic, is_default, seq_no, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="getPics" parameterType="java.util.HashMap" resultType="java.lang.String">
+    SELECT
+		a.pic
+	FROM
+		bu_product p,
+		bu_product_pic a
+	WHERE
+		a.product_id = p.id
+	AND a.del_flag = '0'
+	AND a.is_default = 1
+	AND a.product_id IN 
+	<foreach collection="productIds" item="listItem" open="(" close=")" separator="," >
+		#{listItem}
+    </foreach>
+	ORDER BY FIND_IN_SET(a.product_id,#{ids})
+  </select>
+  <select id="getPicsByProductIds" parameterType="java.util.List" resultType="java.lang.String">
+  	SELECT
+		a.pic
+	FROM
+		bu_product p,
+		bu_product_pic a
+	WHERE
+		a.product_id = p.id
+	AND a.del_flag = '0'
+	AND a.is_default = 1
+	AND a.product_id IN 
+	<foreach collection="list" item="listItem" open="(" close=")" separator="," >
+		#{listItem}
+    </foreach>
+  </select>
+</mapper>

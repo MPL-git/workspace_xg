@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SubOrderCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SubOrderCustom" extends="com.jf.dao.SubOrderMapper.BaseResultMap">
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="express_name" property="expressName" jdbcType="VARCHAR" />
+    <result column="order_pay_date" property="orderPayDate" jdbcType="TIMESTAMP" />
+    <result column="payment_id" property="paymentId" jdbcType="INTEGER" />
+    <result column="member_status" property="memberStatus" jdbcType="VARCHAR" />
+    <result column="yesterday" property="yesterday" jdbcType="TIMESTAMP" />
+    <result column="delivery_date_after" property="deliveryDateAfter" jdbcType="TIMESTAMP"/>
+    <result column="delivery_last_date_after" property="deliveryLastDateAfter" jdbcType="TIMESTAMP"/>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, combine_order_id, sub_order_code, mcht_id, mcht_type, is_manage_self, amount,
+    pay_amount, platform_preferential, mcht_preferential, integral_preferential, status, 
+    receipt_date, receiver_type, is_user_del, remarks_color, status_date, express_id, 
+    express_no, delivery_date, complete_date, close_date, delivery_last_date, delivery_overtime, 
+    follow_by, is_comment, is_allow_modify_comment, freight, member_remind_count, member_remind_date, 
+    is_special, create_by, create_date, update_by, update_date, remarks, del_flag,audit_status,
+    (select a.receiver_name from bu_combine_order a where a.id=t.combine_order_id) receiver_name,
+    (select a.receiver_phone from bu_combine_order a where a.id=t.combine_order_id) receiver_phone,
+    (select a.receiver_address from bu_combine_order a where a.id=t.combine_order_id) receiver_address,
+    (select a.pay_date from bu_combine_order a where a.id=t.combine_order_id) order_pay_date,
+    (select a.name from bu_express a where a.id = t.express_id)express_name,
+    (select a.payment_id from bu_combine_order a where a.id=t.combine_order_id)payment_id,
+    (SELECT bmi.`status` from bu_member_info bmi where bmi.id=(SELECT bco.member_id from bu_combine_order bco where bco.id=t.combine_order_id)) member_status,
+    (DATE_SUB(NOW(),INTERVAL 1 DAY))yesterday,
+    (DATE_ADD(delivery_date,INTERVAL 24 HOUR)) delivery_date_after,
+    (DATE_ADD(delivery_last_date,INTERVAL 48 HOUR)) delivery_last_date_after
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SubOrderCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_sub_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+ 
+ <select id="countByExample" parameterType="com.jf.entity.SubOrderCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_sub_order t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+ <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.jf.entity.SubOrderCustom" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_sub_order t
+    where t.id = #{id,jdbcType=INTEGER}
+    and t.del_flag = "0"
+  </select>
+  
+  <select id="countWaitDelivery" parameterType="map" resultType="java.lang.Integer" >
+    select count(*) from bu_sub_order t,bu_mcht_info a where a.id = t.mcht_id and t.mcht_id =#{mchtId} and t.express_no is null and t.status=#{status} and t.del_flag=0
+  </select>
+  
+  <select id="countConfirmDelivery" parameterType="map" resultType="java.lang.Integer" >
+    select count(*) from bu_sub_order t,bu_mcht_info a where a.id = t.mcht_id and t.mcht_id =#{mchtId} and t.express_no is not null and t.status=#{status} and t.del_flag=0
+  </select>
+  
+  <select id="countHasDelivery" parameterType="map" resultType="java.lang.Integer" >
+    select count(*) from bu_sub_order t,bu_mcht_info a where a.id = t.mcht_id and t.mcht_id =#{mchtId} and DATE_FORMAT(t.delivery_date,'%Y-%m-%d') <![CDATA[ = ]]> #{deliveryDate} and t.status=#{status} and t.del_flag=0
+  </select>
+  
+  <select id="updateExpressId" parameterType="map" >
+    UPDATE bu_sub_order t SET t.express_id = #{expressId} WHERE t.del_flag='0' and t.id IN
+    <foreach item="item" index="index" collection="subOrderIdsArray" open="(" separator="," close=")">  
+  	#{item}  
+ 	</foreach> 
+  </select>
+  
+  <update id="updateDeliveryDateAndStatus" parameterType="map" >
+    UPDATE bu_sub_order t SET t.status = #{status},t.delivery_date = #{deliveryDate} WHERE t.del_flag='0' and t.id IN
+    <foreach item="item" index="index" collection="subOrderIds" open="(" separator="," close=")">  
+  	#{item}  
+ 	</foreach> 
+  </update>
+  
+  <select id="selectBySubOrderCodes" parameterType="java.util.List" resultType="String">
+    SELECT GROUP_CONCAT(id) sub_order_ids FROM bu_sub_order WHERE sub_order_code IN 
+    <foreach item="item" index="index" collection="socList" open="(" separator="," close=")">  
+  	#{item}  
+ 	</foreach> 
+  </select>
+  
+    <select id="selectMemberIdsBySubOrderCodes" parameterType="java.util.List" resultType="String">
+    SELECT GROUP_CONCAT( member_id) member_ids FROM bu_combine_order WHERE
+	FIND_IN_SET(id,(SELECT GROUP_CONCAT(combine_order_id) combine_order_ids FROM bu_sub_order WHERE sub_order_code IN 
+ 	<foreach item="item" index="index" collection="socList" open="(" separator="," close=")">  
+  	#{item}  
+ 	</foreach> 
+		)
+	)
+    </select>
+  
+  	<select id="selectSubOrderCodesBySubOrderIds" parameterType="java.util.List" resultType="java.lang.String">
+   	SELECT sub_order_code FROM bu_sub_order WHERE id in 	
+    <foreach item="item" index="index" collection="subOrderIdsList" open="(" separator="," close=")">  
+  	#{item}  
+ 	</foreach> 
+  </select> 
+  
+  
+</mapper>

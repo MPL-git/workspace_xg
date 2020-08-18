@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MemberPvCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.ProductDataStatistics" extends="com.jf.dao.ColumnPvHourStatisticalMapper.BaseResultMap">
+    <result column="productType1Id" property="productType1Id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="addProductRate" property="addProductRate" jdbcType="VARCHAR" />
+    <result column="submitOrderRate" property="submitOrderRate" jdbcType="VARCHAR" />
+    <result column="paymentRate" property="paymentRate" jdbcType="VARCHAR" />
+  </resultMap>
+<!--
+  <sql id="categoryProductDataStatisticsListSql">
+    t.product_type1_id AS productType1Id,
+    t.name,
+    IFNULL(SUM(t.member_visitors_amount),0) AS totalVisitorCount,
+    IFNULL(SUM(t.unmember_visitors_amount),0) AS totalVisitorCountTourist,
+    IFNULL(SUM(t.member_page_view),0) AS totalPvCount,
+    IFNULL(SUM(t.unmember_page_view),0) AS totalPvCountTourist,
+    IFNULL(SUM(t.add_product_amount),0) AS shoppingCartCount,
+    CONCAT(ROUND(SUM(t.add_product_amount)/(SUM(t.member_visitors_amount)+SUM(t.unmember_visitors_amount))*100,2),'%') AS addProductRate,
+    IFNULL(SUM(t.submit_order_amount),0) AS subProductCount,
+    CONCAT(ROUND(SUM(t.submit_order_amount)/(SUM(t.member_visitors_amount)+SUM(t.unmember_visitors_amount))*100,2),'%') AS submitOrderRate,
+    IFNULL(SUM(t.payment_amount),0) AS payProductCount,
+    CONCAT(ROUND(SUM(t.payment_amount)/(SUM(t.member_visitors_amount)+SUM(t.unmember_visitors_amount))*100,2),'%') AS paymentRate
+  </sql>
+
+  <sql id="categoryProductDataStatisticsListSql1">
+    SELECT
+    bp.product_type1_id AS product_type1_id,
+    (SELECT bpt.`name` FROM bu_product_type bpt where bpt.id = bp.product_type1_id AND bpt.del_flag = '0') AS name,
+    COUNT(DISTINCT(bmp.member_id)) AS member_visitors_amount,
+    0 AS unmember_visitors_amount,
+    COUNT(bmp.member_id) AS member_page_view,
+    0 AS unmember_page_view,
+    0 AS add_product_amount,
+    0 AS submit_order_amount,
+    0 AS payment_amount
+
+    FROM
+    bu_member_pv bmp,bu_product bp
+    WHERE
+    bmp.column_type = #{columnType}
+    AND
+    bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+    AND
+    bmp.create_date <![CDATA[ <= ]]> #{endDate}
+    AND
+    bmp.value_id = bp.id
+    AND
+    bmp.del_flag = '0'
+    AND
+    bp.del_flag = '0'
+    GROUP BY
+    bp.product_type1_id
+
+    UNION
+
+    SELECT
+    bp.product_type1_id AS product_type1_id,
+    0 AS name,
+    0 AS member_visitors_amount,
+    COUNT(DISTINCT(bmp.device_number)) AS unmember_visitors_amount,
+    0 AS member_page_view,
+    COUNT(bmp.device_number) AS uunmember_page_view,
+    0 AS add_product_amount,
+    0 AS submit_order_amount,
+    0 AS payment_amount
+    FROM
+    bu_member_pv bmp,bu_product bp
+    WHERE
+    bmp.column_type = #{columnType}
+    AND
+    bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+    AND
+    bmp.create_date <![CDATA[ <= ]]> #{endDate}
+    AND
+    bmp.value_id = bp.id
+    AND
+    bmp.member_id IS NULL
+    AND
+    bmp.del_flag = '0'
+    AND
+    bp.del_flag = '0'
+    GROUP BY
+    bp.product_type1_id
+
+    UNION
+
+    SELECT
+    bp.product_type1_id AS product_type1_id,
+    0 AS name,
+    0 AS member_visitors_amount,
+    0 AS unmember_visitors_amount,
+    0 AS member_page_view,
+    0 AS uunmember_page_view,
+    SUM(bsc.quantity) AS add_product_amount,
+    0 AS submit_order_amount,
+    0 AS payment_amount
+    FROM
+    bu_member_pv bmp,bu_product bp,bu_member_action bma,bu_shopping_cart bsc
+    WHERE
+    bmp.column_type = #{columnType}
+    AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+    AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+    AND bmp.value_id = bp.id
+    AND bmp.pv_id = bma.member_pv_id
+    AND bma.action_item_id = bsc.id
+    AND bma.action_type = '14'
+    AND bma.create_date <![CDATA[ >= ]]> #{beginDate}
+    AND bma.create_date <![CDATA[ <= ]]> #{endDate}
+    AND bmp.del_flag = '0'
+    AND bp.del_flag = '0'
+    AND bma.del_flag = '0'
+    GROUP BY
+    bp.product_type1_id
+
+    UNION
+
+    SELECT
+    bp.product_type1_id AS product_type1_id,
+    0 AS name,
+    0 AS member_visitors_amount,
+    0 AS unmember_visitors_amount,
+    0 AS member_page_view,
+    0 AS uunmember_page_view,
+    0 AS add_product_amount,
+    SUM(bod.quantity) AS submit_order_amount,
+    0 AS payment_amount
+    FROM
+    bu_member_pv bmp,
+    bu_member_action bma,
+    bu_order_dtl bod,
+    bu_product bp,
+    bu_shopping_cart bsc
+    WHERE
+    bmp.column_type = #{columnType}
+    AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+    AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+    AND bmp.pv_id = bma.member_pv_id
+    AND bma.action_type IN('14','15')
+    AND bmp.value_id = bp.id
+    AND bma.action_item_id = bsc.id
+    AND bsc.order_dtl_id = bod.id
+    AND bod.create_date <![CDATA[ >= ]]> #{beginDate}
+    AND bod.create_date <![CDATA[ <= ]]> #{endDate}
+    AND bmp.del_flag = '0'
+    AND bod.del_flag = '0'
+    AND bp.del_flag = '0'
+    AND bma.del_flag = '0'
+    GROUP BY
+    bp.product_type1_id
+
+    UNION
+
+    SELECT
+    bp.product_type1_id AS product_type1_id,
+    0 AS name,
+    0 AS member_visitors_amount,
+    0 AS unmember_visitors_amount,
+    0 AS member_page_view,
+    0 AS uunmember_page_view,
+    0 AS add_product_amount,
+    0 AS submit_order_amount,
+    SUM(bod.quantity) AS payment_amount
+    FROM
+    bu_member_pv bmp,bu_member_action bma,bu_shopping_cart bsc,bu_combine_order bco,bu_sub_order bso,bu_order_dtl bod,bu_product bp
+    WHERE
+    bmp.column_type = #{columnType}
+    AND bmp.create_date <![CDATA[ >= ]]> #{beginDate}
+    AND bmp.create_date <![CDATA[ <= ]]> #{endDate}
+    AND bmp.pv_id = bma.member_pv_id
+    AND bmp.value_id = bp.id
+    AND bod.product_id = bp.id
+    AND bma.action_type IN ('14','15')
+    AND bma.action_item_id = bsc.id
+    AND bsc.order_dtl_id = bod.id
+    AND bod.sub_order_id = bso.id
+    AND bso.combine_order_id = bco.id
+    AND bco.id = bso.combine_order_id
+    AND bso.id = bod.sub_order_id
+    AND bco.status = '1'
+    AND bco.pay_date <![CDATA[ >= ]]> #{beginDate}
+    AND bco.pay_date <![CDATA[ <= ]]> #{endDate}
+    AND bco.pay_status = '1'
+    AND bmp.del_flag = '0'
+    AND bco.del_flag = '0'
+    AND bso.del_flag = '0'
+    AND bod.del_flag = '0'
+    AND bma.del_flag = '0'
+    AND bsc.del_flag = '0'
+    AND bp.del_flag = '0'
+    GROUP BY
+    bp.product_type1_id
+  </sql>
+
+  <select id="getCategoryProductDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    SELECT
+    <include refid="categoryProductDataStatisticsListSql" />
+     FROM (
+    <include refid="categoryProductDataStatisticsListSql1" />
+    ) t
+    GROUP BY
+    t.product_type1_id
+    ORDER BY t.product_type1_id ASC
+  </select>-->
+
+  <sql id="getHourProductDataStatisticsListSql">
+    cphs.*,
+    CONCAT(ROUND(cphs.shopping_cart_count/(cphs.total_visitor_count+cphs.total_visitor_count_tourist)*100,2),'%') AS addProductRate,
+    CONCAT(ROUND(cphs.sub_product_count/(cphs.total_visitor_count+cphs.total_visitor_count_tourist)*100,2),'%') AS submitOrderRate,
+    CONCAT(ROUND(cphs.pay_product_count/(cphs.total_visitor_count+cphs.total_visitor_count_tourist)*100,2),'%') AS paymentRate
+  </sql>
+
+  <select id="getHourProductDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    SELECT
+    <include refid="getHourProductDataStatisticsListSql" />
+    FROM
+    bu_column_pv_hour_statistical cphs
+    WHERE
+    cphs.statistical_date = #{beginDate}
+    AND
+    cphs.column_type = #{columnType}
+    AND
+    cphs.del_flag = '0'
+    GROUP BY time_hour
+  </select>
+
+  <sql id="getNowHourProductDataStatisticsListSql">
+    1 AS id,
+	s.time_hour,
+	b.statistical_date,
+	IFNULL(total_visitor_count, 0) AS total_visitor_count,
+	IFNULL(
+		total_visitor_count_tourist,
+		0
+	) AS total_visitor_count_tourist,
+	IFNULL(total_pv_count,0) AS total_pv_count,
+	IFNULL(total_pv_count_tourist,0) AS total_pv_count_tourist,
+	IFNULL(c.shopping_cart_count, 0) AS shopping_cart_count,
+	IFNULL(d.sub_product_count, 0) AS sub_product_count,
+	IFNULL(e.pay_product_count, 0) AS pay_product_count,
+	CONCAT(
+		IFNULL(
+			ROUND(
+				c.shopping_cart_count / (
+					total_visitor_count + total_visitor_count_tourist
+				) * 100,
+				2
+			),
+			0.00
+		),
+		'%'
+	) AS addProductRate,
+	CONCAT(
+		IFNULL(
+			ROUND(
+				d.sub_product_count / (
+					total_visitor_count + total_visitor_count_tourist
+				) * 100,
+				2
+			),
+			0.00
+		),
+		'%'
+	) AS submitOrderRate,
+	CONCAT(
+		IFNULL(
+			ROUND(
+				e.pay_product_count / (
+					total_visitor_count + total_visitor_count_tourist
+				) * 100,
+				2
+			),
+			0.00
+		),
+		'%'
+	) AS paymentRate
+  </sql>
+
+  <select id="getNowHourProductDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    SELECT
+    <include refid="getNowHourProductDataStatisticsListSql" />
+      <![CDATA[
+    FROM
+      (
+      SELECT
+      @xi :=@xi + 1 AS time_hour
+      FROM
+      (
+      SELECT
+      1
+      UNION
+      SELECT
+      2
+      UNION
+      SELECT
+      3
+      UNION
+      SELECT
+      4
+      UNION
+      SELECT
+      5
+      ) xc1,
+      (
+      SELECT
+      1
+      UNION
+      SELECT
+      2
+      UNION
+      SELECT
+      3
+      UNION
+      SELECT
+      4
+      UNION
+      SELECT
+      5
+      ) xc2,
+      (SELECT @xi :=- 1) xc0
+      ) s
+      LEFT JOIN (
+      SELECT
+      a.time_hour,
+      a.statistical_date,
+      COUNT(DISTINCT(a.member_id)) AS total_visitor_count,
+      a.unmember_visitors_amounts AS total_visitor_count_tourist,
+      SUM(a.member_page_views) AS total_pv_count,
+      a.unmember_page_views AS total_pv_count_tourist
+      FROM
+      (
+      SELECT
+      HOUR (bmf.update_date) AS time_hour,
+      DATE_FORMAT(bmf.update_date, '%Y-%m-%d') statistical_date,
+      bmf.member_id AS member_id,
+      0 AS unmember_visitors_amounts,
+      COUNT(bmf.member_id) AS member_page_views,
+      0 AS unmember_page_views
+      FROM
+      bu_member_footprint bmf,
+      bu_source_niche bsn
+      WHERE
+      bmf.del_flag = '0'
+      AND bsn.audit_status = '1'
+      AND bmf.update_date >= #{beginDate}
+      AND bmf.update_date <= #{endDate}
+      AND bmf.product_id = bsn.link_id
+      AND bsn. STATUS = '0'
+      AND bsn.type = #{columnType}
+      GROUP BY
+      HOUR (bmf.update_date),
+      bsn.link_id,
+      bmf.member_id
+      ) a
+      GROUP BY
+      a.time_hour
+      ) b ON b.time_hour = s.time_hour
+      LEFT JOIN (
+      SELECT
+      HOUR (bsc.create_date) AS time_hour,
+      DATE_FORMAT(bsc.create_date, '%Y-%m-%d') statistical_date,
+      SUM(bsc.quantity) AS shopping_cart_count
+      FROM
+      bu_shopping_cart bsc,
+      bu_order_dtl bod,
+      bu_source_niche bsn
+      WHERE
+      bsc.order_dtl_id = bod.id
+      AND bod.product_id = bsn.link_id
+      AND bsn.audit_status = '1'
+      AND bsn. STATUS = '0'
+      AND bsn.type = #{columnType}
+      AND bsc.create_date >= #{beginDate}
+      AND bsc.create_date <= #{endDate}
+      AND bsc.del_flag = '0'
+      AND bod.del_flag = '0'
+      AND bsn.del_flag = '0'
+      GROUP BY
+      HOUR (bsc.create_date)
+      ) c ON c.time_hour = s.time_hour
+      LEFT JOIN (
+      SELECT
+      HOUR (bod.create_date) AS time_hour,
+      DATE_FORMAT(bod.create_date, '%Y-%m-%d') statistical_date,
+      SUM(bod.quantity) AS sub_product_count
+      FROM
+      bu_order_dtl bod,
+      bu_source_niche bsn
+      WHERE
+      bod.product_id = bsn.link_id
+      AND bod.create_date >= #{beginDate}
+      AND bod.create_date <= #{endDate}
+      AND bsn.audit_status = '1'
+      AND bsn. STATUS = '0'
+      AND bsn.type = #{columnType}
+      AND bod.del_flag = '0'
+      AND bsn.del_flag = '0'
+      GROUP BY
+      HOUR (bod.create_date)
+      ) d ON d.time_hour = s.time_hour
+      LEFT JOIN (
+      SELECT
+      HOUR (bco.pay_date) AS time_hour,
+      DATE_FORMAT(bco.create_date, '%Y-%m-%d') statistical_date,
+      SUM(bod.quantity) AS pay_product_count
+      FROM
+      bu_order_dtl bod,
+      bu_sub_order bso,
+      bu_combine_order bco,
+      bu_source_niche bsn
+      WHERE
+      bsn.link_id = bod.product_id
+      AND bod.sub_order_id = bso.id
+      AND bso.combine_order_id = bco.id
+      AND bco. STATUS = '1'
+      AND bco.pay_date >= #{beginDate}
+      AND bco.pay_date <= #{endDate}
+      AND bco.pay_status = '1'
+      AND bsn.audit_status = '1'
+      AND bsn. STATUS = '0'
+      AND bsn.type = #{columnType}
+      AND bod.del_flag = '0'
+      AND bso.del_flag = '0'
+      AND bco.del_flag = '0'
+      AND bsn.del_flag = '0'
+      GROUP BY
+      HOUR (bco.pay_date)
+      ) e ON e.time_hour = s.time_hour
+  ]]>
+  </select>
+
+  <sql id="getNowHourMchtDataStatisticsListSql">
+    1 AS id,
+	s.time_hour,
+	b.statistical_date,
+	IFNULL(total_visitor_count,0) AS total_visitor_count,
+	IFNULL(total_visitor_count_tourist,0) AS total_visitor_count_tourist,
+	IFNULL(total_pv_count,0) AS total_pv_count,
+	IFNULL(total_pv_count_tourist,0) AS total_pv_count_tourist,
+	IFNULL(c.shopping_cart_count, 0) AS shopping_cart_count,
+	IFNULL(d.sub_product_count, 0) AS sub_product_count,
+	IFNULL(e.pay_product_count, 0) AS pay_product_count,
+	CONCAT(
+		IFNULL(
+			ROUND(
+				c.shopping_cart_count / (
+					total_visitor_count + total_visitor_count_tourist
+				) * 100,
+				2
+			),
+			0.00
+		),
+		'%'
+	) AS addProductRate,
+	CONCAT(
+		IFNULL(
+			ROUND(
+				d.sub_product_count / (
+					total_visitor_count + total_visitor_count_tourist
+				) * 100,
+				2
+			),
+			0.00
+		),
+		'%'
+	) AS submitOrderRate,
+	CONCAT(
+		IFNULL(
+			ROUND(
+				e.pay_product_count / (
+					total_visitor_count + total_visitor_count_tourist
+				) * 100,
+				2
+			),
+			0.00
+		),
+		'%'
+	) AS paymentRate
+  </sql>
+
+  <select id="getNowHourMchtDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    SELECT
+    <include refid="getNowHourMchtDataStatisticsListSql" />
+      FROM
+      <![CDATA[
+      (
+      SELECT
+      @xi :=@xi + 1 AS time_hour
+      FROM
+      (
+      SELECT
+      1
+      UNION
+      SELECT
+      2
+      UNION
+      SELECT
+      3
+      UNION
+      SELECT
+      4
+      UNION
+      SELECT
+      5
+      ) xc1,
+      (
+      SELECT
+      1
+      UNION
+      SELECT
+      2
+      UNION
+      SELECT
+      3
+      UNION
+      SELECT
+      4
+      UNION
+      SELECT
+      5
+      ) xc2,
+      (SELECT @xi :=- 1) xc0
+      ) s
+      LEFT JOIN (
+      SELECT
+		a.time_hour,
+		a.statistical_date,
+		COUNT(DISTINCT(a.member_id)) AS total_visitor_count,
+		0 AS total_visitor_count_tourist,
+		SUM(a.member_page_views) AS total_pv_count,
+		0 AS total_pv_count_tourist
+	FROM
+		(
+			SELECT
+				HOUR (bmsf.update_date) AS time_hour,
+				DATE_FORMAT(
+					bmsf.update_date,
+					'%Y-%m-%d'
+				) statistical_date,
+				bmsf.member_id AS member_id,
+				0 AS unmember_visitors_amounts,
+				COUNT(bmsf.member_id) AS member_page_views,
+				0 AS unmember_page_views
+			FROM
+				bu_member_shop_footprint bmsf,
+				bu_source_niche bsn
+			WHERE
+				bmsf.del_flag = '0'
+			AND bsn.audit_status = '1'
+			AND bmsf.update_date >= #{beginDate}
+			AND bmsf.update_date <= #{endDate}
+			AND bmsf.mcht_id = bsn.link_id
+			AND bsn. STATUS = '0'
+			AND bsn.type = #{columnType}
+			GROUP BY
+				HOUR (bmsf.update_date),
+				bsn.link_id,
+				bmsf.member_id
+	UNION
+SELECT
+				HOUR (bmf.update_date) AS time_hour,
+				DATE_FORMAT(
+					bmf.update_date,
+					'%Y-%m-%d'
+				) statistical_date,
+				bmf.member_id AS member_id,
+				0 AS unmember_visitors_amounts,
+				COUNT(bmf.member_id) AS member_page_views,
+				0 AS unmember_page_views
+			FROM
+				bu_member_footprint bmf,
+				bu_product bp,
+				bu_source_niche bsn
+			WHERE
+				bmf.del_flag = '0'
+			AND bsn.audit_status = '1'
+			AND bmf.update_date >= #{beginDate}
+			AND bmf.update_date <= #{endDate}
+			AND bmf.product_id = bp.id
+			AND bp.mcht_id = bsn.link_id
+			AND bsn. STATUS = '0'
+			AND bsn.type = #{columnType}
+			GROUP BY
+				HOUR (bmf.update_date),
+				bsn.link_id,
+				bmf.member_id
+      ) a
+      GROUP BY
+      a.time_hour
+      ) b ON b.time_hour = s.time_hour
+      LEFT JOIN (
+      SELECT
+      HOUR (bsc.create_date) AS time_hour,
+      DATE_FORMAT(bsc.create_date, '%Y-%m-%d') statistical_date,
+      SUM(bsc.quantity) AS shopping_cart_count
+      FROM
+      bu_shopping_cart bsc,
+      bu_source_niche bsn
+      WHERE
+      bsc.mcht_id = bsn.link_id
+      AND bsn.audit_status = '1'
+      AND bsn. STATUS = '0'
+      AND bsn.type = #{columnType}
+      AND bsc.create_date >= #{beginDate}
+      AND bsc.create_date <= #{endDate}
+      AND bsc.del_flag = '0'
+      AND bsn.del_flag = '0'
+      GROUP BY
+      HOUR (bsc.create_date)
+      ) c ON c.time_hour = s.time_hour
+      LEFT JOIN (
+      SELECT
+      HOUR (bod.create_date) AS time_hour,
+      DATE_FORMAT(bod.create_date, '%Y-%m-%d') statistical_date,
+      SUM(bod.quantity) AS sub_product_count
+      FROM
+      bu_order_dtl bod,
+      bu_product bp,
+      bu_source_niche bsn
+      WHERE
+      bod.product_id = bp.id
+      AND bp.mcht_id = bsn.link_id
+      AND bod.create_date >= #{beginDate}
+      AND bod.create_date <= #{endDate}
+      AND bsn.audit_status = '1'
+      AND bsn. STATUS = '0'
+      AND bsn.type = #{columnType}
+      AND bod.del_flag = '0'
+      AND bp.del_flag = '0'
+      AND bsn.del_flag = '0'
+      GROUP BY
+      HOUR (bod.create_date)
+      ) d ON d.time_hour = s.time_hour
+      LEFT JOIN (
+      SELECT
+      HOUR (bco.pay_date) AS time_hour,
+      DATE_FORMAT(bco.create_date, '%Y-%m-%d') statistical_date,
+      SUM(bod.quantity) AS pay_product_count
+      FROM
+      bu_order_dtl bod,
+      bu_sub_order bso,
+      bu_combine_order bco,
+      bu_source_niche bsn
+      WHERE
+      bsn.link_id = bso.mcht_id
+      AND bod.sub_order_id = bso.id
+      AND bso.combine_order_id = bco.id
+      AND bco. STATUS = '1'
+      AND bco.pay_date >= #{beginDate}
+      AND bco.pay_date <= #{endDate}
+      AND bco.pay_status = '1'
+      AND bsn.audit_status = '1'
+      AND bsn. STATUS = '0'
+      AND bsn.type = #{columnType}
+      AND bod.del_flag = '0'
+      AND bso.del_flag = '0'
+      AND bco.del_flag = '0'
+      AND bsn.del_flag = '0'
+      GROUP BY
+      HOUR (bco.pay_date)
+      ) e ON e.time_hour = s.time_hour
+      ]]>
+  </select>
+
+</mapper>

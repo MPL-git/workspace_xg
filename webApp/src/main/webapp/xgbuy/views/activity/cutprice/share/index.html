@@ -1,0 +1,191 @@
+<div class="page cut-share cut-price flex dc bgf4" data-title="砍价免费拿" data-id="activity_cutprice_share">
+	<link rel="stylesheet" href="activity/cutprice/cutprice.css?ver=1.0">
+	<link rel="stylesheet" href="activity/cutprice/share/share.css?ver=1.0">
+
+	<header class="flex ac jb fn hide">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">砍价免费拿</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y scroll-fix scroll-fix scroll-more fg scroll-decorate">
+		<div class="touchfix">
+			<span class="ico-btn cut-share-rule" onclick="popupShow('.popup-rule-cut')"></span>
+			<div class="row-1 w75"></div>
+			<div class="row-2 w75"></div>
+		</div>
+	</div>
+
+	<div class="popup popup-cut-share" onclick="closeSelf(this)"></div>
+
+	<div class="popup popup-rule popup-rule-cut" onclick="closeSelf(this)">
+		<div class="popup-rule-con" onclick="stopSelf()">
+			<div class="tab-head flex ac jc">
+				砍价规则
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</div>
+
+			<div class="con scroll-y scroll-fix f28">
+				<div class="touchfix">
+					<p class="mb20">1、为感谢广大消费者对醒购的支持与热爱，醒购官方为消费者提供免费领取商品的福利，消费者可以通过参与砍价免费拿活动获得商品。活动内不涉及任何支付行为，请广大消费者放心参与。</p>
+					<p class="mb20">2、选择您心仪的商品，邀请好友一起砍价，只要在24小时内砍价到0元就可以免费获得商品。</p>
+					<p class="mb20">3、每次砍价金额随机，参与好友越多越容易成功。</p>
+					<p class="mb20">4、您每天最多能帮助1个好友砍价。</p>
+					<p class="mb20">5、每个用户每天只能发起一次砍价，发起后只能隔天在发起新的砍价。</p>
+					<p class="mb20">6、若发现用户存在刷单、虚假用户卡键等违规行为，平台有权利判定砍价失败。</p>
+					<p class="mb20">7、砍价成功后，平台审核后生成对应订单，24小时內审核下单。</p>
+					<p>8、砍价成功的商品不支持退换。</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script id="cut_share_popup_tpl" type="text/html">
+		<div onclick="stopSelf()">
+			<a class="close-x" onclick="closeSelf(this)"></a>
+
+			{{if returnData}}
+			<p class="flex ac jc">砍价成功</p>
+			<strong class="flex ac jc f50">您砍了{{returnData.amount}}元</strong>
+			<a class="btn-red flex ac jc" onclick="getUrl('my/download/index.html')">我也要免费拿</a>
+			{{else}}
+			<h3 class="flex ac jc">{{returnMsg}}</h3>
+			<a class="btn-red flex ac jc" onclick="closeSelf(this)">知道了</a>
+			{{/if}}
+		</div>
+	</script>
+
+	<script id="cut_share_tpl" type="text/html">
+		<div class="con-main">
+			<div class="r-head flex img-cover">
+				<img src="{{sourceHeadPic}}">
+			</div>
+			<div class="r-title flex ac jc">看上一件好货，快来一起砍价免费拿吧</div>
+			<dl class="flex">
+				<dt class="fn">
+					<img src="{{skuPic}}">
+				</dt>
+				<dd class="fg">
+					<h3>{{productName}}</h3>
+					<div class="flex ac jb">
+						<span class="f50"><strong>{{tagPrice}}</strong></span>
+						<span class="c9">{{memberReceiveNum}}人已拿免费</span>
+					</div>
+				</dd>
+			</dl>
+
+			{{if timer > 0 && status == 1 || status == 2 || status == 4}}
+			<div class="r-price flex ac jc">
+				{{if status == 1}}
+				已砍<b class="f50">{{cutAmount}}</b>元，还差<b class="f50">{{surplusCutAmount}}</b>元
+				{{else}}
+				已经完成砍价
+				{{/if}}
+			</div>
+
+				{{if memberStatus == 1}}
+			<a class="btn-red flex ac jc" onclick="cutShare.share()">分享好友，砍价免费拿</a>
+				{{else if memberStatus == 2 && surplusCutAmount > 0}}
+			<a class="btn-red flex ac jc" onclick="cutShare.help()">帮他砍一刀</a>
+				{{else}}
+			<a class="btn-red flex ac jc" onclick="getUrl('my/download/index.html')">我也要免费拿</a>
+				{{/if}}
+
+			<p class="c9 r-tip flex ac jc">还剩<time data-timer="{{timer}}">{{time}}</time>结束，快来邀请好友砍价吧</p>
+			{{else}}
+			<div class="r-price flex ac jc">
+				{{if status == 2 || status == 4}}
+				已经完成砍价
+				{{else}}
+				未在24小时内完成，砍价已过期
+				{{/if}}
+			</div>
+
+			<a class="btn-red flex ac jc" onclick="getUrl('my/download/index.html')">我也要免费拿</a>
+
+			<p class="r-empty"></p>
+			{{/if}}
+		</div>
+	</script>
+
+	<script id="cut_share_tpl_record" type="text/html">
+		<div class="con-main">
+			<h2 class="flex ac jc">砍价记录</h2>
+			<div class="con-record scroll-y show2 scroll-fix">
+				{{include 'cut_share_tpl_record_list'}}
+			</div>
+			{{if dataList.length > 2}}
+			<div class="more-record corsor" onclick="cutShare.moreRecord(this)"></div>
+			{{/if}}
+		</div>
+	</script>
+
+	<script id="cut_share_tpl_record_list" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+		<div class="flex ac jb">
+			<dl class="fg flex">
+				<dt class="fn img-cover flex">
+					<img src="{{value.headPic}}">
+				</dt>
+				<dd class="fg">
+					<h3>{{value.nick}}</h3>
+					<p>{{value.content}}</p>
+				</dd>
+			</dl>
+			<div class="fn">砍掉<strong>{{value.amount}}</strong>元</div>
+		</div>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="cut_price_tpl_share" type="text/html">
+		<div class="tab-con">
+			<h2 class="flex ac jc">砍价免费拿商品</h2>
+			<div class="con-1 con-list">
+				{{include 'cut_price_tpl_share_list'}}
+			</div>
+		</div>
+	</script>
+
+	<script id="cut_price_tpl_share_list" type="text/html">
+		{{if dataList.length}}
+			{{each dataList value i}}
+				{{if value.status == 1}}
+		<dl class="flex fg corsor" onclick="getUrl('my/download/index.html')">
+				{{else}}
+		<dl class="flex fg">
+				{{/if}}
+			<dt class="fn">
+				<img src="{{value.productPic}}">
+			</dt>
+			<dd class="fg">
+				<h3>{{value.productName}}</h3>
+
+				<p class="c9">{{value.memberReceiveNum}}人已免费拿</p>
+
+				<div class="flex ac jb">
+					<span class="f50">
+						<strong>{{value.tagPrice}}</strong>
+					</span>
+					
+					{{if value.status == 1}}
+					<a class="btn-red flex ac jc">
+					砍价免费拿
+					{{else if value.status == 2}}
+					<a class="btn-red flex ac jc btn-gray">
+					名额已满
+					{{else}}
+					<a class="btn-red flex ac jc btn-gray">
+					已抢光
+					{{/if}}
+					</a>
+				</div>
+			</dd>
+		</dl>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script src="activity/cutprice/share/share.js?ver=1.2" async></script>
+</div>

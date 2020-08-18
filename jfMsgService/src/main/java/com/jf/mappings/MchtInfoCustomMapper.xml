@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtInfoCustomMapper">
+  <resultMap id="BaseResultMap" type="com.jf.entity.MchtInfoCustom" extends="com.jf.dao.MchtInfoMapper.BaseResultMap" >
+  <result column="activity_count_7_days" property="activityCount7Days" jdbcType="INTEGER" />
+  <result column="pay_amount_sum_7_days" property="payamountSum7Days" jdbcType="DECIMAL" />
+  <result column="sub_order_count_7_days" property="suborderCount7Days" jdbcType="INTEGER" />
+  <result column="return_rate_7_days" property="returnRate7Days" jdbcType="DECIMAL" />
+  <result column="appeal_rate_7_days" property="appealRate7Days" jdbcType="DECIMAL" />
+  <result column="intervention_rate_7_days" property="interventionRate7Days" jdbcType="DECIMAL" />
+  <result column="activity_count_30_days" property="activityCount30Days" jdbcType="INTEGER" />
+  <result column="pay_amount_sum_30_days" property="payamountSum30Days" jdbcType="DECIMAL" />
+  <result column="sub_order_count_30_days" property="suborderCount30Days" jdbcType="INTEGER" />
+  <result column="return_rate_30_days" property="returnRate30Days" jdbcType="DECIMAL" />
+  <result column="appeal_rate_30_days" property="appealRate30Days" jdbcType="DECIMAL" />
+  <result column="intervention_rate_30_days" property="interventionRate30Days" jdbcType="DECIMAL" />
+  <result column="activity_count_90_days" property="activityCount90Days" jdbcType="INTEGER" />
+  <result column="pay_amount_sum_90_days" property="payamountSum90Days" jdbcType="DECIMAL" />
+  <result column="sub_order_count_90_days" property="suborderCount90Days" jdbcType="INTEGER" />
+  <result column="return_rate_90_days" property="returnRate90Days" jdbcType="DECIMAL" />
+  <result column="appeal_rate_90_days" property="appealRate90Days" jdbcType="DECIMAL" />
+  <result column="intervention_rate_90_days" property="interventionRate90Days" jdbcType="DECIMAL" />
+  <result column="product_score_avg" property="productScoreAvg" jdbcType="DECIMAL" />
+  <result column="product_applause_rate" property="productApplauseRate" jdbcType="DECIMAL" />
+   <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+  <result column="avg_drs" property="avgDrs" jdbcType="DOUBLE" />
+   <result column="sales_rate_30_days" property="salesRate30Days" jdbcType="INTEGER" />
+  </resultMap>
+   <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+	<sql id="Base_Column_List" >
+    id, mcht_code, short_name, mcht_type, cooperate_begin_date, is_manage_self, agreement_begin_date, 
+    agreement_end_date, shop_name, shop_catalog, business_firms, product_type, brand, 
+    shop_type, shop_name_audit_status, shop_name_audit_remarks, status, status_date, 
+    total_audit_status, total_audit_remarks, total_audit_date, commit_audit_date, is_total_audit_re_commit, 
+    company_name, company_type, company_reg_name, uscc, company_address, founded_date, 
+    reg_capital, reg_fee_type, corporation_name, corporation_idcard_no, corporation_mobile, 
+    corporation_idcard_img_1, corporation_idcard_img_2, bl_pic, occ_pic, trc_pic, atq_pic, 
+    boaal_pic, yearly_inspection_date, company_tel, contact_province, contact_city, contact_county, 
+    contact_address, is_company_inf_perfect, company_inf_audit_remarks, contract_deposit, 
+    brand_deposit, select_contract_deposit, select_brand_deposit, deposit_type, deposit_content, 
+    custom_service_type, sobot_id, xiaoneng_id, in_blacklist, zs_audit_status, zs_audit_by, 
+    finance_confirm_status, finance_confirm_by, shop_status, shop_status_date, shop_logo, 
+    grade, activity_auth_status, shop_name_audit_inner_remarks, zs_total_audit_status, 
+    zs_total_audit_by, zs_total_audit_remarks, zs_total_audit_date, is_zs_total_audit_re_commit, 
+    zs_commit_audit_date, total_audit_by, idcard_img_1_archive_status, idcard_img_2_archive_status, 
+    occ_pic_archive_status, trc_pic_archive_status, atq_pic_archive_status, boaal_pic_archive_status, 
+    company_inf_audit_inner_remarks, activity_auth_status_date, operate_status, operate_status_date, 
+    operate_remarks, fee_rate, archive_status, allow_mcht_apply_close, company_info_archive_status, 
+    mcht_brand_archive_status, scope_of_business, delay_status, delay_days, create_by, 
+    create_date, update_by, update_date, remarks, del_flag,
+    (select COUNT(1) from bu_activity ba, bu_activity_area baa where ba.del_flag = '0' and ba.status = '6' and ba.mcht_id = a.id and ba.activity_area_id = baa.id and baa.del_flag = '0' and baa.source = '2' and baa.activity_begin_time between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) activity_count_7_days, <!-- 7天特卖数 -->
+    (select IFNULL(SUM(so.pay_amount), 0) from bu_sub_order so, bu_combine_order co where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) pay_amount_sum_7_days,<!-- 7天销售额 -->
+    (select COUNT(1) from bu_sub_order so, bu_combine_order co where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) sub_order_count_7_days,<!--7天订单量-->
+    IF((select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_customer_service_order cso where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and cso.del_flag = '0' and cso.sub_order_id = so.id and cso.service_type = 'B' ) = 0, 
+						'0.0',
+						CONCAT(ROUND(
+							(select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_customer_service_order cso where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and cso.del_flag = '0' and cso.sub_order_id = so.id and cso.service_type = 'B' )
+							/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') AND od.sub_order_id = co.id )*100, 1))) return_rate_7_days,<!-- 7退货率 -->
+    IF((select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_appeal_order ao where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and ao.del_flag = '0' and ao.sub_order_id = so.id ) = 0,
+						'0.0',
+						CONCAT(ROUND(
+							(select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_appeal_order ao where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and ao.del_flag = '0' and ao.sub_order_id = so.id )
+							/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') AND od.sub_order_id = co.id )*100, 1))) appeal_rate_7_days,<!-- 7天投诉率-->
+    IF((select COUNT(DISTINCT od.id) from bu_sub_order so, bu_combine_order co, bu_order_dtl od, bu_customer_service_order cso, bu_intervention_order io where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id and cso.del_flag = '0' and cso.order_dtl_id = od.id and io.del_flag = '0' and io.service_order_id = cso.id ) = 0,
+						'',
+						CONCAT(ROUND(
+							(select COUNT(DISTINCT od.id) from bu_sub_order so, bu_combine_order co, bu_order_dtl od, bu_customer_service_order cso, bu_intervention_order io where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id and cso.del_flag = '0' and cso.order_dtl_id = od.id and io.del_flag = '0' and io.service_order_id = cso.id )
+			 				/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 7 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id )*100, 1))) intervention_rate_7_days,<!--7天介入率-->
+	(select COUNT(1) from bu_activity ba, bu_activity_area baa where ba.del_flag = '0' and ba.status = '6' and ba.mcht_id = a.id and ba.activity_area_id = baa.id and baa.del_flag = '0' and baa.source = '2' and baa.activity_begin_time between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) activity_count_30_days, <!-- 30天特卖数 -->	
+	(SELECT IFNULL(SUM(od.pay_amount), 0) FROM bu_sub_order so,bu_order_dtl od,bu_combine_order co WHERE so.del_flag = '0' AND od.product_status not in('2','3') AND so.mcht_id = a.id AND so.combine_order_id = co.id AND od.sub_order_id = so.id AND co.`status` = '1' AND co.pay_date BETWEEN concat( DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00' ) AND concat(CURDATE(), ' 23:59:59')) pay_amount_sum_30_days,<!-- 30天销售额 -->	 											
+  	(select COUNT(1) from bu_sub_order so, bu_combine_order co where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) sub_order_count_30_days,<!--30天订单量-->
+	IF ((SELECT IFNULL(SUM(od.quantity), 0) FROM bu_sub_order so,bu_combine_order co,bu_order_dtl od WHERE so.del_flag = '0' AND so.mcht_id = a.id AND so.combine_order_id = co.id AND od.sub_order_id = so.id AND od.product_status in('2','3') AND co.pay_date BETWEEN concat( DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00' ) AND concat(CURDATE(), ' 23:59:59') ) = 0,
+						'0.0',
+						CONCAT(ROUND(
+								(SELECT IFNULL(SUM(od.quantity), 0) FROM bu_sub_order so,bu_combine_order co, bu_order_dtl od WHERE so.del_flag = '0' AND so.mcht_id = a.id AND so.combine_order_id = co.id AND od.sub_order_id = so.id AND od.product_status in('2','3') AND co.pay_date BETWEEN concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY),' 00:00:00') AND concat(CURDATE(), ' 23:59:59'))
+							/ (SELECT IFNULL(SUM(od.quantity), 0)FROM bu_sub_order so,bu_combine_order co,bu_order_dtl od WHERE so.del_flag = '0' AND so.mcht_id = a.id AND so.combine_order_id = co.id AND od.sub_order_id = so.id AND co.pay_date BETWEEN concat( DATE_SUB(CURDATE(), INTERVAL 30 DAY),' 00:00:00') AND concat(CURDATE(), ' 23:59:59')) * 100,1))) return_rate_30_days,<!-- 30退货率 -->
+	IF((select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_appeal_order ao where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and ao.del_flag = '0' and ao.sub_order_id = so.id ) = 0,
+						'0.0',
+						CONCAT(ROUND(
+							(select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_appeal_order ao where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and ao.del_flag = '0' and ao.sub_order_id = so.id )
+							/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') AND od.sub_order_id = co.id )*100, 1))) appeal_rate_30_days,<!-- 30天投诉率-->
+	IF((select COUNT(DISTINCT od.id) from bu_sub_order so, bu_combine_order co, bu_order_dtl od, bu_customer_service_order cso, bu_intervention_order io where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id and cso.del_flag = '0' and cso.order_dtl_id = od.id and io.del_flag = '0' and io.service_order_id = cso.id ) = 0,
+						'',
+						CONCAT(ROUND(
+							(select COUNT(DISTINCT od.id) from bu_sub_order so, bu_combine_order co, bu_order_dtl od, bu_customer_service_order cso, bu_intervention_order io where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id and cso.del_flag = '0' and cso.order_dtl_id = od.id and io.del_flag = '0' and io.service_order_id = cso.id )
+			 				/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 30 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id )*100, 1))) intervention_rate_30_days,<!--30天介入率-->
+  (select COUNT(1) from bu_activity ba, bu_activity_area baa where ba.del_flag = '0' and ba.status = '6' and ba.mcht_id = a.id and ba.activity_area_id = baa.id and baa.del_flag = '0' and baa.source = '2' and baa.activity_begin_time between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) activity_count_90_days, <!-- 90天特卖数 -->
+  (select IFNULL(SUM(so.pay_amount), 0) from bu_sub_order so, bu_combine_order co where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) pay_amount_sum_90_days,<!-- 90天销售额 -->
+  (select COUNT(1) from bu_sub_order so, bu_combine_order co where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59')) sub_order_count_90_days,<!--90天订单量-->
+  IF((select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_customer_service_order cso where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and cso.del_flag = '0' and cso.sub_order_id = so.id and cso.service_type = 'B' ) = 0, 
+						'0.0',
+						CONCAT(ROUND(
+							(select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_customer_service_order cso where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and cso.del_flag = '0' and cso.sub_order_id = so.id and cso.service_type = 'B' )
+							/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') AND od.sub_order_id = co.id )*100, 1))) return_rate_90_days,<!-- 90天退货率 -->
+  IF((select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_appeal_order ao where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and ao.del_flag = '0' and ao.sub_order_id = so.id ) = 0,
+						'0.0',
+						CONCAT(ROUND(
+							(select COUNT(1) from bu_sub_order so, bu_combine_order co, bu_appeal_order ao where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and ao.del_flag = '0' and ao.sub_order_id = so.id )
+							/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') AND od.sub_order_id = co.id )*100, 1))) appeal_rate_90_days,<!-- 90天投诉率-->
+  IF((select COUNT(DISTINCT od.id) from bu_sub_order so, bu_combine_order co, bu_order_dtl od, bu_customer_service_order cso, bu_intervention_order io where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id and cso.del_flag = '0' and cso.order_dtl_id = od.id and io.del_flag = '0' and io.service_order_id = cso.id ) = 0,
+						'',
+						CONCAT(ROUND(
+							(select COUNT(DISTINCT od.id) from bu_sub_order so, bu_combine_order co, bu_order_dtl od, bu_customer_service_order cso, bu_intervention_order io where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id and cso.del_flag = '0' and cso.order_dtl_id = od.id and io.del_flag = '0' and io.service_order_id = cso.id )
+			 				/(select SUM(od.quantity) from bu_sub_order so, bu_combine_order co, bu_order_dtl od where so.del_flag = '0' and so.mcht_id = a.id and so.combine_order_id = co.id and co.pay_date between concat(DATE_SUB(CURDATE(), INTERVAL 90 DAY), ' 00:00:00') and concat(CURDATE(), ' 23:59:59') and od.sub_order_id = so.id )*100, 1))) intervention_rate_90_days,<!--90天介入率-->
+		IFNULL(ROUND((select ifnull(sum(c.product_score), 0) from bu_comment c where c.del_flag = '0' and c.mcht_id = a.id)
+							/(select COUNT(1) from bu_comment c where c.del_flag = '0' and c.mcht_id = a.id), 2),0) product_score_avg,<!--商品平均分-->
+  IF((select COUNT(1) from bu_comment c where c.del_flag = '0' and c.mcht_id = a.id and c.product_score in(4, 5) ) = 0,
+						'',
+						CONCAT(TRUNCATE(
+							(select COUNT(1) from bu_comment c where c.del_flag = '0' and c.mcht_id = a.id and c.product_score in(4, 5) )
+							/(select COUNT(1) from bu_comment c where c.del_flag = '0' and c.mcht_id = a.id )*100
+						, 2))) product_applause_rate<!--商品好评率-->									 																			
+									 																												 
+  </sql>
+	<select id="selectByCustomExample" resultMap="BaseResultMap" parameterType="com.jf.entity.MchtInfoCustomExample" >
+	    select
+	    <if test="distinct" >
+	      distinct
+	    </if>
+	    <include refid="Base_Column_List" />
+	    from bu_mcht_info a
+	    <if test="_parameter != null" >
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="orderByClause != null" >
+	      order by ${orderByClause}
+	    </if>
+	    <if test="limitStart != null and limitStart>=0" >
+	      limit #{limitStart} , #{limitSize}
+	    </if>
+	</select>
+	
+	<!--查找店铺DRS  -->
+		<select id="findMchtDrs" resultMap="BaseResultMap" parameterType="list" >
+			SELECT
+			a.id as mcht_id,
+				ROUND(
+					(
+						(
+							SELECT
+								IFNULL(AVG(t.product_score), 5) AS avg_product_score
+							FROM
+								bu_comment t
+							WHERE
+								t.del_flag = '0'
+							AND t.is_append_comment = '0'
+							AND t.mcht_id = a.id
+						) + (
+							SELECT
+								IFNULL(
+									(
+										AVG(ss.wuliu_score) + AVG(ss.mcht_score)
+									),
+									10
+								) AS avg_serve_score
+							FROM
+								bu_shop_score ss
+							WHERE
+								ss.del_flag = '0'
+							AND ss.mcht_id = a.id
+						)
+					) / 3,
+					1
+				) avg_drs
+			FROM
+				bu_mcht_info a where a.id in 
+		 <foreach item="item" index="index" collection="list" open="(" separator="," close=")">  
+		  	#{item}  
+		 </foreach> 
+			
+		</select>
+	
+	
+</mapper>

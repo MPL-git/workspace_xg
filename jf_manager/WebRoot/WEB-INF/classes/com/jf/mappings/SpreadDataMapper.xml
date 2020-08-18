@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SpreadDataMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SpreadData" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="date" property="date" jdbcType="DATE" />
+    <result column="account_id" property="accountId" jdbcType="VARCHAR" />
+    <result column="account_name" property="accountName" jdbcType="VARCHAR" />
+    <result column="display_quantity" property="displayQuantity" jdbcType="VARCHAR" />
+    <result column="click_quantity" property="clickQuantity" jdbcType="VARCHAR" />
+    <result column="click_rate" property="clickRate" jdbcType="VARCHAR" />
+    <result column="conversion_quantity" property="conversionQuantity" jdbcType="VARCHAR" />
+    <result column="conversion_cost" property="conversionCost" jdbcType="VARCHAR" />
+    <result column="conversion_rate" property="conversionRate" jdbcType="VARCHAR" />
+    <result column="total_consumption" property="totalConsumption" jdbcType="VARCHAR" />
+    <result column="consumption_ring_ratio" property="consumptionRingRatio" jdbcType="VARCHAR" />
+    <result column="balance" property="balance" jdbcType="VARCHAR" />
+    <result column="available_balance" property="availableBalance" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="create_by" property="createBy" jdbcType="INTEGER" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="INTEGER" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, date, account_id, account_name, display_quantity, click_quantity, click_rate, 
+    conversion_quantity, conversion_cost, conversion_rate, total_consumption, consumption_ring_ratio, 
+    balance, available_balance, email, create_by, create_date, update_by, update_date, 
+    remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SpreadDataExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_spread_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bu_spread_data
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bu_spread_data
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jf.entity.SpreadDataExample" >
+    delete from bu_spread_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jf.entity.SpreadData" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_spread_data (date, account_id, account_name, 
+      display_quantity, click_quantity, click_rate, 
+      conversion_quantity, conversion_cost, conversion_rate, 
+      total_consumption, consumption_ring_ratio, 
+      balance, available_balance, email, 
+      create_by, create_date, update_by, 
+      update_date, remarks, del_flag
+      )
+    values (#{date,jdbcType=DATE}, #{accountId,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{displayQuantity,jdbcType=VARCHAR}, #{clickQuantity,jdbcType=VARCHAR}, #{clickRate,jdbcType=VARCHAR}, 
+      #{conversionQuantity,jdbcType=VARCHAR}, #{conversionCost,jdbcType=VARCHAR}, #{conversionRate,jdbcType=VARCHAR}, 
+      #{totalConsumption,jdbcType=VARCHAR}, #{consumptionRingRatio,jdbcType=VARCHAR}, 
+      #{balance,jdbcType=VARCHAR}, #{availableBalance,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=INTEGER}, 
+      #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jf.entity.SpreadData" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+       SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into bu_spread_data
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="accountName != null" >
+        account_name,
+      </if>
+      <if test="displayQuantity != null" >
+        display_quantity,
+      </if>
+      <if test="clickQuantity != null" >
+        click_quantity,
+      </if>
+      <if test="clickRate != null" >
+        click_rate,
+      </if>
+      <if test="conversionQuantity != null" >
+        conversion_quantity,
+      </if>
+      <if test="conversionCost != null" >
+        conversion_cost,
+      </if>
+      <if test="conversionRate != null" >
+        conversion_rate,
+      </if>
+      <if test="totalConsumption != null" >
+        total_consumption,
+      </if>
+      <if test="consumptionRingRatio != null" >
+        consumption_ring_ratio,
+      </if>
+      <if test="balance != null" >
+        balance,
+      </if>
+      <if test="availableBalance != null" >
+        available_balance,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="createBy != null" >
+        create_by,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="date != null" >
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null" >
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayQuantity != null" >
+        #{displayQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="clickQuantity != null" >
+        #{clickQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="clickRate != null" >
+        #{clickRate,jdbcType=VARCHAR},
+      </if>
+      <if test="conversionQuantity != null" >
+        #{conversionQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="conversionCost != null" >
+        #{conversionCost,jdbcType=VARCHAR},
+      </if>
+      <if test="conversionRate != null" >
+        #{conversionRate,jdbcType=VARCHAR},
+      </if>
+      <if test="totalConsumption != null" >
+        #{totalConsumption,jdbcType=VARCHAR},
+      </if>
+      <if test="consumptionRingRatio != null" >
+        #{consumptionRingRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        #{balance,jdbcType=VARCHAR},
+      </if>
+      <if test="availableBalance != null" >
+        #{availableBalance,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jf.entity.SpreadDataExample" resultType="java.lang.Integer" >
+    select count(*) from bu_spread_data
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update bu_spread_data
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.accountId != null" >
+        account_id = #{record.accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountName != null" >
+        account_name = #{record.accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.displayQuantity != null" >
+        display_quantity = #{record.displayQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clickQuantity != null" >
+        click_quantity = #{record.clickQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clickRate != null" >
+        click_rate = #{record.clickRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conversionQuantity != null" >
+        conversion_quantity = #{record.conversionQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conversionCost != null" >
+        conversion_cost = #{record.conversionCost,jdbcType=VARCHAR},
+      </if>
+      <if test="record.conversionRate != null" >
+        conversion_rate = #{record.conversionRate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalConsumption != null" >
+        total_consumption = #{record.totalConsumption,jdbcType=VARCHAR},
+      </if>
+      <if test="record.consumptionRingRatio != null" >
+        consumption_ring_ratio = #{record.consumptionRingRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.balance != null" >
+        balance = #{record.balance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.availableBalance != null" >
+        available_balance = #{record.availableBalance,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createBy != null" >
+        create_by = #{record.createBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remarks != null" >
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delFlag != null" >
+        del_flag = #{record.delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update bu_spread_data
+    set id = #{record.id,jdbcType=INTEGER},
+      date = #{record.date,jdbcType=DATE},
+      account_id = #{record.accountId,jdbcType=VARCHAR},
+      account_name = #{record.accountName,jdbcType=VARCHAR},
+      display_quantity = #{record.displayQuantity,jdbcType=VARCHAR},
+      click_quantity = #{record.clickQuantity,jdbcType=VARCHAR},
+      click_rate = #{record.clickRate,jdbcType=VARCHAR},
+      conversion_quantity = #{record.conversionQuantity,jdbcType=VARCHAR},
+      conversion_cost = #{record.conversionCost,jdbcType=VARCHAR},
+      conversion_rate = #{record.conversionRate,jdbcType=VARCHAR},
+      total_consumption = #{record.totalConsumption,jdbcType=VARCHAR},
+      consumption_ring_ratio = #{record.consumptionRingRatio,jdbcType=VARCHAR},
+      balance = #{record.balance,jdbcType=VARCHAR},
+      available_balance = #{record.availableBalance,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      create_by = #{record.createBy,jdbcType=INTEGER},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=INTEGER},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      remarks = #{record.remarks,jdbcType=VARCHAR},
+      del_flag = #{record.delFlag,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jf.entity.SpreadData" >
+    update bu_spread_data
+    <set >
+      <if test="date != null" >
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null" >
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="displayQuantity != null" >
+        display_quantity = #{displayQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="clickQuantity != null" >
+        click_quantity = #{clickQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="clickRate != null" >
+        click_rate = #{clickRate,jdbcType=VARCHAR},
+      </if>
+      <if test="conversionQuantity != null" >
+        conversion_quantity = #{conversionQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="conversionCost != null" >
+        conversion_cost = #{conversionCost,jdbcType=VARCHAR},
+      </if>
+      <if test="conversionRate != null" >
+        conversion_rate = #{conversionRate,jdbcType=VARCHAR},
+      </if>
+      <if test="totalConsumption != null" >
+        total_consumption = #{totalConsumption,jdbcType=VARCHAR},
+      </if>
+      <if test="consumptionRingRatio != null" >
+        consumption_ring_ratio = #{consumptionRingRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null" >
+        balance = #{balance,jdbcType=VARCHAR},
+      </if>
+      <if test="availableBalance != null" >
+        available_balance = #{availableBalance,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null" >
+        create_by = #{createBy,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=INTEGER},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jf.entity.SpreadData" >
+    update bu_spread_data
+    set date = #{date,jdbcType=DATE},
+      account_id = #{accountId,jdbcType=VARCHAR},
+      account_name = #{accountName,jdbcType=VARCHAR},
+      display_quantity = #{displayQuantity,jdbcType=VARCHAR},
+      click_quantity = #{clickQuantity,jdbcType=VARCHAR},
+      click_rate = #{clickRate,jdbcType=VARCHAR},
+      conversion_quantity = #{conversionQuantity,jdbcType=VARCHAR},
+      conversion_cost = #{conversionCost,jdbcType=VARCHAR},
+      conversion_rate = #{conversionRate,jdbcType=VARCHAR},
+      total_consumption = #{totalConsumption,jdbcType=VARCHAR},
+      consumption_ring_ratio = #{consumptionRingRatio,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=VARCHAR},
+      available_balance = #{availableBalance,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=INTEGER},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

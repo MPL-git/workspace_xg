@@ -1,0 +1,185 @@
+.mall-list .popup-right {
+	width: 6.5rem;
+	height: 100%;
+}
+.mall-list .scroll-y {
+	overflow: overlay;
+}
+.mall-list .footers {
+	height: .91rem;
+	border-top: 1px solid #eee;
+}
+.mall-list .footers a {
+	width: 50%;
+	height: 100%;
+	font-size: .32rem;
+}
+.mall-list .footers a.sure {
+	background: #ff5050;
+	color: #fff;
+}
+
+/*筛选*/
+.popup-mall-pick .row-1 .col-1 {
+	padding: 0 .3rem;
+}
+.popup-mall-pick .row-1 h3 {
+	height: .88rem;
+	font-size: .3rem;
+	font-weight: bold;
+}
+.popup-mall-pick .row-1 h3 input {
+	width: 3.6rem;
+	height: .4rem;
+	margin-right: .1rem;
+	font-size: .26rem;
+	font-weight: normal;
+	text-align: right;
+	color: #ff5050;
+	background: none;
+	text-overflow: ellipsis;
+	pointer-events: none;
+}
+.popup-mall-pick .row-1 input::-webkit-input-placeholder {
+	color: #bbb;
+}
+.popup-mall-pick .row-1 h3 .arrow-r {
+	width: .24rem;
+	background-position: .08rem center;
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+.popup-mall-pick .row-1 h3 .active .arrow-r {
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+.popup-mall-pick .row-1 .narrow {
+	overflow: hidden;
+	max-height: .8rem;
+}
+.popup-mall-pick .row-1 .con-1>input {
+	float: left;
+	width: 1.82rem;
+	height: .6rem;
+	margin: 0 .2rem .2rem 0;
+	padding: 0 .2rem;
+	border-radius: .3rem;
+	font-size: .26rem;
+	background: #f4f4f4;
+	text-align: center;
+}
+.popup-mall-pick .row-1 .con-1>input.more {
+	background: none;
+	border: 1px solid #bbb;
+}
+.popup-mall-pick .row-1 .con-1>input:nth-child(3n) {
+	margin-right: 0;
+}
+.popup-mall-pick .row-1 .con-1>input.on {
+	background: #fff0f0;
+	color: #ff5050;
+	border: 1px solid #ff5050;
+}
+
+.popup-mall-pick .row-1 .price input {
+	float: none;
+	width: 2.6rem;
+	margin-right: 0;
+}
+.popup-mall-pick .row-1 .price i {
+	width: .2rem;
+	height: .02rem;
+	margin-bottom: .2rem;
+	background: #333;
+}
+
+/*空数据*/
+.mall-list .product .empty-goods {
+	height: calc(100vh - 1.79rem);
+}
+
+/*全部分类*/
+.mall-list .no-bg {
+	background: none;
+}
+.mall-list .no-bg h4,
+.mall-list .headers {
+	height: .88rem;
+	padding: 0 .3rem;
+}
+.mall-list .no-bg .row-2 a {
+	height: .88rem;
+}
+.mall-list .headers h3 {
+	font-size: .36rem;
+	font-weight: bold;
+}
+.mall-list .no-bg h4 {
+	font-size: .3rem;
+}
+.mall-list .no-bg .clear {
+	font-size: .32rem;
+}
+.mall-list .headers a {
+	width: 1rem;
+}
+.mall-list .no-bg .row-2 {
+	font-size: .3rem;
+}
+.mall-list .no-bg .row-2 a {
+	border-bottom: 1px solid #eee;
+}
+.mall-list .no-bg .row-2 li:last-child a {
+	border: none;
+}
+.mall-list .no-bg .row-2 .on:after {
+	content: '';
+	width: .33rem;
+	height: .26rem;
+	background: url(resources/check.png) no-repeat;
+	background-size: contain;
+}
+.mall-list .no-bg .row-2 p {
+	height: .4rem;
+	padding-left: .3rem;
+	background: #f4f4f4;
+}
+
+.popup-mall-category .row-2 a {
+	padding: 0 .3rem 0 .6rem;
+}
+
+/*全部品牌*/
+.popup-mall-brand .row-2 .col-1 {
+	position: relative;
+}
+.popup-mall-brand .row-2 {
+	height: calc(100% - 1.79rem);
+}
+.popup-mall-brand .row-2 .on {
+	color: #ff5050;
+}
+.popup-mall-brand a {
+	padding: 0 .2rem 0 .3rem;
+}
+.popup-mall-brand .col-2 {
+	width: .4rem;
+}
+.popup-mall-brand .col-2 span {
+	height: .4rem;
+	font-size: .22rem;
+	cursor: pointer;
+}
+
+.mall-list .left,
+.mall-list .right {
+	float: left;
+	width: calc(50% - .05rem);
+}
+.mall-list .right {
+	float: right;
+}
+.mall-list.product-3 div.product a {
+	width: 100%;
+	margin: 0 0 .1rem 0;
+}

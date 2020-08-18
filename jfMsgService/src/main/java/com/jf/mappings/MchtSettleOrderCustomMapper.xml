@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtSettleOrderCustomMapper" >
+ <select id="selectNoSettleOrderDtlList" resultMap="com.jf.dao.OrderDtlCustomMapper.BaseResultMap">
+ select so.mcht_id,(select mcht_type from bu_mcht_info mi where mi.id=so.mcht_id) mcht_type,od.* from bu_sub_order so,bu_order_dtl od where so.id=od.sub_order_id  and so.del_flag='0' and od.del_flag='0' and od.product_status='1' and so.`status`='3' and od.mcht_settle_order_id is null and od.is_give='0' and  DATE_FORMAT(so.complete_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate,jdbcType=VARCHAR} and DATE_FORMAT(so.complete_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate,jdbcType=VARCHAR} 
+ </select>
+ 
+ <select id="selectNoSettleCustomOrderList" resultMap="com.jf.dao.CustomerServiceOrderCustomMapper.BaseResultMap">
+ select cso.*,so.mcht_id ,(select mcht_type from bu_mcht_info mi where mi.id=so.mcht_id) mcht_type from bu_customer_service_order cso,bu_customer_service_status_log cssl,bu_sub_order so where cso.id=cssl.service_order_id and cso.sub_order_id=so.id  and  cso.service_type='D' and cssl.pro_status='D2' and cso.mcht_settle_order_id is null and cso.del_flag='0' and cssl.del_flag='0' and  DATE_FORMAT(cssl.create_date,'%Y-%m-%d')<![CDATA[ >= ]]>#{beginDate,jdbcType=VARCHAR} and DATE_FORMAT(cssl.create_date,'%Y-%m-%d')<![CDATA[ <= ]]>#{endDate,jdbcType=VARCHAR} 
+ </select>
+ 
+ <select id="selectNoSettleMchtInfo" resultMap="com.jf.dao.MchtInfoMapper.BaseResultMap">
+ select mi.id,mi.mcht_type from bu_mcht_info mi where mi.del_flag='0' and  mi.`status` in ('1','2') and mi.id not in (select mso.mcht_id from bu_mcht_settle_order mso where mso.del_flag='0' and  DATE_FORMAT(mso.begin_date,'%Y-%m-%d')<![CDATA[ = ]]>#{beginDate,jdbcType=VARCHAR} and DATE_FORMAT(mso.end_date,'%Y-%m-%d')<![CDATA[ = ]]>#{endDate,jdbcType=VARCHAR}) 
+ </select>
+ 
+ 
+ <select id="selectNoSituationCustomOrderDtlList" resultMap="com.jf.dao.OrderDtlCustomMapper.BaseResultMap">
+ SELECT mi.id mcht_id,mi.mcht_type,od_tmp.* FROM bu_mcht_info mi LEFT JOIN ( SELECT so.mcht_id mid,	od.*	FROM bu_order_dtl od,		bu_sub_order so,		bu_combine_order co	WHERE		od.sub_order_id = so.id	AND so.combine_order_id = co.id	AND so.del_flag = '0'	AND od.del_flag = '0'	AND co. STATUS = '1'	AND co.pay_status = '1'	AND od.is_give = '0'	AND DATE_FORMAT(co.pay_date, '%Y-%m') = #{settleDate,jdbcType=VARCHAR}) od_tmp ON mi.id = od_tmp.mid where not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=mi.id)
+ 
+ </select>
+ 
+ 
+ <select id="selectNoSituationCustomOrderList" resultMap="com.jf.dao.CustomerServiceOrderCustomMapper.BaseResultMap">
+ select cso.*,so.mcht_id ,(select mcht_type from bu_mcht_info mi where mi.id=so.mcht_id) mcht_type from bu_customer_service_order cso,bu_customer_service_status_log cssl,bu_sub_order so where cso.id=cssl.service_order_id and cso.sub_order_id=so.id  and  cso.service_type='D' and cssl.pro_status='D2' and not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=so.mcht_id) and cso.del_flag='0' and cssl.del_flag='0' and  DATE_FORMAT(cssl.create_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR}
+ </select>
+ 
+ <select id="selectNoSituationPayLogList" resultMap="com.jf.dao.PayToMchtLogMapper.BaseResultMap">
+ select ptml.* from bu_pay_to_mcht_log ptml where ptml.del_flag='0' and  ptml.type in ('1','2')   and not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=ptml.mcht_id)  and DATE_FORMAT(ptml.pay_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR}
+ </select>
+ 
+ <select id="selectSituationByMchtIdAndDate" resultMap="com.jf.dao.MchtSettleSituationMapper.BaseResultMap">
+ select mss.* from bu_mcht_settle_situation mss where mss.del_flag='0' and mss.mcht_id=#{mchtId,jdbcType=INTEGER} and mss.settle_date=#{settleDate,jdbcType=VARCHAR}
+ </select>
+ 
+ <select id="selectSituationDepositTotal" resultType="map">
+ select t.mcht_id mchtId,sum(IFNULL(t.pay_amount,0)) totalPayAmount from bu_pay_to_mcht_log t  where t.del_flag='0' and t.type in ('3','4') and  DATE_FORMAT(t.pay_date,'%Y-%m')=#{payDate,jdbcType=VARCHAR}  group by t.mcht_id
+ </select>
+ 
+ <select id="selectSituationDeductionDeposit" resultType="map">
+ select t.mcht_id mchtId,sum(IFNULL(t.deposit_amount,0)) totalDeductionDeposit from bu_pay_to_mcht_log t  where t.del_flag='0' and t.type='1' and  DATE_FORMAT(t.pay_date,'%Y-%m')=#{payDate,jdbcType=VARCHAR}  group by t.mcht_id
+ </select>
+ 
+ <select id="selectNoSituationReturnOrderDtlList" resultMap="com.jf.dao.OrderDtlCustomMapper.BaseResultMap">
+
+	SELECT
+		od.*, so.mcht_id,
+		bmi.mcht_type
+	FROM
+		bu_sub_order so,
+		bu_order_dtl od,
+		bu_mcht_info bmi
+	WHERE
+		so.id = od.sub_order_id
+	AND so.mcht_id = bmi.id
+	AND od.del_flag = '0'
+	AND so.del_flag = '0'
+	AND od.product_status IN ('2', '3')
+	AND DATE_FORMAT(od.refund_date, '%Y-%m') = #{settleDate,jdbcType=VARCHAR}
+	AND bmi.id NOT IN (
+		SELECT
+			mss.mcht_id
+		FROM
+			bu_mcht_settle_situation mss
+		WHERE
+			mss.settle_date = #{settleDate,jdbcType=VARCHAR}
+	)
+
+<!--  select od.*,so.mcht_id,(select mcht_type from bu_mcht_info mi where mi.id=so.mcht_id) mcht_type  from bu_customer_service_order cso,bu_customer_service_status_log cssl,bu_sub_order so,bu_order_dtl od where cso.id=cssl.service_order_id and cso.order_dtl_id = od.id and so.id=od.sub_order_id  and  cso.service_type in ('A','B') and cssl.pro_status in ('A4','B7') and not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=so.mcht_id) and cso.del_flag='0' and od.del_flag='0' and cssl.del_flag='0' and  DATE_FORMAT(cssl.create_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR} -->
+ </select>
+ 
+ <select id="selectNoSituationCustomOrderListAB" resultMap="com.jf.dao.OrderDtlCustomMapper.BaseResultMap">
+<!--  select cso.*,so.mcht_id  from bu_customer_service_order cso,bu_customer_service_status_log cssl,bu_sub_order so,bu_combine_order co where cso.id=cssl.service_order_id and cso.sub_order_id=so.id AND so.combine_order_id=co.id  and  cso.service_type in ('A','B') and cssl.pro_status in ('A4','B7') and not EXISTS(select mss.id from bu_mcht_settle_situation mss where mss.settle_date=#{settleDate,jdbcType=VARCHAR} and mss.mcht_id=so.mcht_id) and cso.del_flag='0' and cssl.del_flag='0' and  DATE_FORMAT(cssl.create_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR} -->
+ 
+	 SELECT
+		dtl.*, so.mcht_id
+	FROM
+		bu_order_dtl dtl,
+		bu_sub_order so,
+		bu_combine_order co
+	WHERE
+	dtl.sub_order_id=so.id
+	AND so.combine_order_id = co.id
+	and dtl.del_flag='0'
+	and so.del_flag='0'
+	and co.del_flag='0'
+	and dtl.product_status in ('2','3')
+	
+	and DATE_FORMAT(dtl.refund_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR}
+	
+	AND so.mcht_id not in (
+		SELECT
+		  mss.mcht_id
+		FROM
+			bu_mcht_settle_situation mss
+		WHERE
+			mss.settle_date = #{settleDate,jdbcType=VARCHAR} )
+ 
+<!--  当期退款 -->
+ <if test="dateType!='' and dateType==1">
+ and DATE_FORMAT(co.pay_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR}
+ </if>
+ 
+<!--  跨期退款 -->
+ <if test="dateType!='' and dateType==2">
+ and DATE_FORMAT(co.pay_date,'%Y-%m')<![CDATA[ < ]]>#{settleDate,jdbcType=VARCHAR}
+ </if>
+ 
+ </select>
+ 
+<!--  统计本月可计算 -->
+ <select id="selectCurrentMonthSettleAmount" resultType="map">
+ select so.mcht_id,sum(IFNULL(od.settle_amount,0)) settle_amount from bu_order_dtl od , bu_sub_order so, bu_combine_order co where od.sub_order_id=so.id and so.combine_order_id=co.id and od.product_status='1' and  DATE_FORMAT(so.complete_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR} and DATE_FORMAT(co.pay_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR} group by so.mcht_id;
+  </select>
+<!--  统计跨月可计算 -->
+ <select id="selectAcrossMonthSettleAmount" resultType="map">
+ select so.mcht_id,sum(IFNULL(od.settle_amount,0)) settle_amount from bu_order_dtl od , bu_sub_order so, bu_combine_order co where od.sub_order_id=so.id and so.combine_order_id=co.id and od.product_status='1' and  DATE_FORMAT(so.complete_date,'%Y-%m')=#{settleDate,jdbcType=VARCHAR} and DATE_FORMAT(co.pay_date,'%Y-%m')<![CDATA[ < ]]>#{settleDate,jdbcType=VARCHAR} group by so.mcht_id;
+ </select>
+
+ <select id="selectNoSettleSituationMcht" resultMap="com.jf.dao.MchtInfoMapper.BaseResultMap">
+ <![CDATA[
+	SELECT
+			*
+		FROM
+			bu_mcht_info bmi
+		WHERE
+			bmi.del_flag = '0'
+		AND bmi.`status` IN ('1', '2', '3')
+		AND NOT EXISTS (
+			SELECT
+				mss.id
+			FROM
+				bu_mcht_settle_situation mss
+			WHERE
+				mss.mcht_id = bmi.id
+			AND mss.settle_date = #{settleDate,jdbcType=VARCHAR}
+		)
+ ]]>
+ </select>
+
+
+<!--  根据订单明细id查询预售定金订单-->
+ <select id="selectTotalDepositSettleAmountByOrderDtlIds" resultType="map">
+ SELECT t.id,t.settle_amount,t.commission_amount,t.deposit*t.quantity total_deposit from bu_sub_deposit_order t where t.mcht_settle_order_id is null AND t.order_dtl_id in 
+ <foreach collection="orderDtlIds" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+ </foreach>
+ </select>
+ 
+ <!--  查询未付尾款的预售定金订单-->
+ <select id="selectNoSettleSubDepositOrderList" resultType="map">
+ <![CDATA[ SELECT t.id, t.mcht_id,(select mcht_type from bu_mcht_info mi where mi.id=t.mcht_id) mcht_type, t.settle_amount,t.commission_amount,t.deposit*t.quantity total_deposit from bu_sub_deposit_order t where DATE_FORMAT(t.complete_date,'%Y-%m-%d') >= #{beginDate,jdbcType=VARCHAR} and DATE_FORMAT(t.complete_date,'%Y-%m-%d') <= #{endDate,jdbcType=VARCHAR}  and t.`status`='9' and t.del_flag='0' AND t.mcht_settle_order_id is null]]>
+ </select>
+</mapper>

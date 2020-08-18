@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.CommentPicCustomMapper" >
+
+  <insert id="insertBatch">
+    insert into bu_comment_pic
+    (comment_id, pic, pic_type,
+    create_by, create_date, remarks, del_flag)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.commentId,jdbcType=INTEGER}, #{item.pic,jdbcType=VARCHAR}, #{item.picType,jdbcType=CHAR},
+      #{item.createBy,jdbcType=INTEGER}, #{item.createDate,jdbcType=TIMESTAMP},#{item.remarks,jdbcType=VARCHAR}, #{item.delFlag,jdbcType=CHAR}
+      )
+    </foreach>
+  </insert>
+</mapper>

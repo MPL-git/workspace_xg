@@ -1,0 +1,108 @@
+<div class="page checkin checkin-draw flex dc bgf4" data-title="提现" data-id="activity_checkin_draw">
+	<link rel="stylesheet" href="activity/checkin/checkin.css?ver=1.0">
+	<link rel="stylesheet" href="activity/checkin/draw/draw.css?ver=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('activity/checkin/index.html')"></i></div>
+		<p class="ellipsis">提现</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="scroll-y fg scroll-more">
+		<div class="touchfix">
+			<div class="row-1"></div>
+
+			<div class="row-2 flex jb fw"></div>
+
+			<div class="row-3 hide">
+				<h2 class="flex ac jc guess-you-like">如何提现</h2>
+				<div class="col-1">
+					<p>点击立即提现，需要先绑定微信不绑定微信无法进行提现</p>
+					<img src="activity/checkin/draw/resources/d1.png">
+					<p>打开微信并搜索公众号“醒购”，并且进行关注（已关注的无需该步骤）</p>
+					<img src="activity/checkin/draw/resources/d5.png">
+					<p>关注后进入APP操作提现，审核成功后将在三个工作日左右发送红包至您的微信账号内</p>
+					<img src="activity/checkin/draw/resources/d3.png">
+					<p>您会收到对应红包，点击领取红包就可以领取了</p>
+					<img src="activity/checkin/draw/resources/d4.png">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 红包明细 -->
+	<div class="popup popup-record popup-rule" onclick="closeSelf(this)">
+		<div class="popup-checkin-con" onclick="stopSelf()">
+			<div class="tab-head flex">
+				<a class="fg flex ac jc" data-type="1" onclick="checkinDrawApi.changeTabRecord(this, true)">签到记录</a>
+				<a class="fg flex ac jc" data-type="2" onclick="checkinDrawApi.changeTabRecord(this, true)">提现记录</a>
+			</div>
+
+			<div class="tab-body">
+				<div class="hide scroll-y tab-con data-type-1"></div>
+				<div class="hide scroll-y tab-con data-type-2"></div>
+			</div>
+		</div>
+	</div>
+
+	<script id="checkin_draw_tpl" type="text/html">
+		<div class="col-1 flex ac je">
+			<a onclick="checkinDrawApi.record()">红包明细</a>
+		</div>
+
+		<div class="col-2">
+			<dl class="flex">
+				<dt class="fn img-cover">
+					<img src="{{headPic}}">
+				</dt>
+				<dd class="fg flex dc jc">
+					<h3>{{nick}}</h3>
+					<p>
+						<span class="c9">签到余额：</span>
+						<em class="f50">{{memberBalance}}元</em>
+					</p>
+				</dd>
+			</dl>
+		</div>
+	</script>
+
+	<script id="checkin_draw_tpl_record" type="text/html">
+		{{each returnData value i}}
+		<dl class="flex jb ac">
+			<dt class="flex dc jc">
+				<h3 class="flex">
+					{{value.content}}
+					{{if value.statusName}}({{value.statusName}}){{/if}}
+				</h3>
+				<p class="c9">{{value.date}}</p>
+			</dt>
+
+			<dd>
+				<em class="f50">{{value.amount}}元</em>
+			</dd>
+		</dl>
+		{{/each}}
+	</script>
+
+	<script id="checkin_draw_tpl_cnf" type="text/html">
+		{{each withdrawCnf value i}}
+		<div class="con fn flex dc ac jc style-{{value.withdrawType}}">
+			<div class="flex jc ae con-1"><div><strong>{{value.amount}}</strong>元</div></div>
+			<p class="flex ac jc">{{value.withdrawText}}</p>
+			<a class="flex ac jc" onclick="checkinDrawApi.getCnf('{{value.amount}}', '{{value.id}}', '{{value.withdrawText}}')">
+				{{value.withdrawType == 1 ? '立即兑换' : '立即提现'}}
+			</a>
+		</div>
+		{{/each}}
+	</script>
+
+	<script id="checkin_draw_tpl_role" type="text/html">
+		<ul>
+			{{each returnData value i}}
+			<li>{{value}}</li>
+			{{/each}}
+		</ul>
+	</script>
+
+	<script src="activity/checkin/draw/draw.js?ver=1.1" async></script>
+</div>

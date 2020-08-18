@@ -1,0 +1,152 @@
+/*common*/
+.btn-action { background: #0580b7; }
+
+a:hover { color: #0580b7; }
+
+/*top*/
+/*header*/
+#header { background: #ffffff; }
+
+#headerSearch { width: 446px; }
+
+.search-panel-fields { width: auto; padding: 0; overflow: hidden; border: 2px solid #0580b7; }
+.search-panel-fields label { position: absolute; left: 10px; top: 0; z-index: 2; line-height: 30px; color: #949494; cursor: text; }
+.search-panel-fields input { float: left; width: 350px; height: 28px; *line-height: 28px; margin: 0; padding: 0 10px; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; border: 1px solid #0580b7; }
+.search-panel-fields button { float: left; position: static; width: 70px; height: 30px; background: #0580b7; border: 0; color: #fff; text-indent: 0; cursor: pointer; font-size: 14px; }
+
+.hotsearch { position: relative; height: 30px; overflow: hidden; line-height: 30px; }
+.hotsearch a { margin-left: 5px; color: #b1a8a3; }
+
+#headerCart { border: 2px solid #0580b7; }
+
+.cartbtn { float: left; padding: 0 0 0 35px; display: block; height: 30px; line-height: 30px; color: #0580b7; background: #f4f4f4; }
+.cartbtn a { color: #0580b7; }
+.cartbtn i { position: absolute; left: 5px; top: 0; width: 28px; height: 30px; background: url(../images/topcart.png) no-repeat; }
+.cartbtn span { display: inline-block; }
+.cartbtn .cartcount { display: inline-block; padding-right: 20px; background: url("../images/topcart.png") no-repeat 100% 100%; }
+
+.cart-hover .cartbtn { background: #f4f4f4; }
+
+.mini-cart-menu { border: 2px solid #0580b7; right: -2px; top: 30px; }
+
+.mini-cart-view .mini-cart-btn { background: #0580b7; border: 1px solid #0580b7; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; }
+
+/*nav*/
+.nav, .nav .layout { background: #0580b7; }
+.nav .textNav a, .nav .site-nav a { color: #fff; }
+.nav .textNav a .current, .nav .textNav a:hover, .nav .site-nav a .current, .nav .site-nav a:hover { color: #f76363; text-decoration: none; }
+
+.gbc-title { background: #f76363; }
+
+.gbc-title span { background: url("../images/gbctitle-arrow.gif") no-repeat 100% 0; padding-right: 30px; color: #fff; }
+
+.global-catalog-open .gbc-title span { background-position: 100% 100%; }
+
+.gbc-treetitle, .gbc-subtree li a:hover, .sublayer-item li a:hover, .sublayer-item dt a:hover { color: #0580b7; }
+
+/*footer*/
+.footer { background: #0576b7; color: #fff; padding-bottom: 20px; }
+
+.footer .layout { position: relative; }
+
+.footer a { color: #fff; }
+
+/*login*/
+.loginbox { border-top: 3px solid #0580b7; }
+
+/*main*/
+.filter-sort .sort-on { border-color: #0580b7; background-color: #0580b7; color: #fff; }
+
+.pagination .page-cur, .page-go button { background: #0580b7; border: 1px solid #045d85; color: #fff; }
+
+/*page*/
+.block .blocktitle { color: #0580b7; background: #ffffff; }
+.block .blocktitle span { margin-bottom: -2px; border-bottom: 2px solid #0580b7; }
+
+.commentblock h3 { border-color: #0580b7; }
+
+.sideblock .blocktitle { border-top: 3px solid #0580b7; margin: 0 -1px; }
+
+/*slides*/
+#inslides { height: 460px; position: relative; z-index: 1; }
+#inslides .switchable-slides { height: 460px; }
+#inslides .switchable-slides li { position: absolute; height: 460px; width: 100%; background-position: center; }
+#inslides .switchable-triggers { /*li{color: $theme_color2;}*/ }
+
+/*tabs*/
+#intabs .switchable-tab-title { height: 30px; line-height: 30px; border-bottom: 2px solid #d4d4d4; }
+#intabs .switchable-tab-title .current { border-bottom: 2px solid #0580b7; margin-bottom: -2px; }
+#intabs .switchable-nav-item i { display: block; margin-top: 70px; width: 0; height: 0; border: 15px dashed transparent; text-indent: -9999px; line-height: 0; }
+#intabs .prev i { border-right: 15px solid #0580b7; }
+#intabs .next i { border-left: 15px solid #0580b7; margin-left: 10px; }
+
+/*goodslist*/
+.m-itemslist .type-grid .item-hover { border-color: #0580b7; }
+.m-itemslist .type-grid .goodsname a:hover { color: #0580b7; }
+.m-itemslist .type-grid .thumbslist li.selected { border-color: #0580b7; }
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected { border-color: #0580b7; }
+
+.detail-tabbar { border-color: #e2e1e3; background: #fafafa; }
+.detail-tabbar a { color: #717171; border-color: #e2e1e3; }
+.detail-tabbar .selected { border-top: 3px solid #0580b7; margin-top: -3px; background: #ffffff; }
+.detail-tabbar .selected a { color: #0580b7; }
+
+.detail-bd .hd { background: #0580b7; color: #ffffff; }
+
+.review-rate span { color: #0580b7; }
+
+.sumratebar span { background: #0580b7; }
+
+/*goods-set*/
+.combobuy-hd h3, .combobuy-ft h3 { color: #0580b7; }
+
+/*step*/
+.stepind { background-image: url("../images/step.png"); }
+
+.steps .step-active { background-color: #f76363; }
+.steps .step-active .stepname { color: #f76363; }
+
+.orderstate .stepind { background-image: url("../images/step-l.png"); }
+.orderstate .steps .step-active { background-color: #f76363; }
+.orderstate .steps .step-active .stepname { color: #f76363; }
+
+/*payment*/
+.tabbar .selected { margin-top: -3px; border-top: 3px solid #0580b7; }
+
+.payment .tabbar .selected a { border-top: 3px solid #0580b7; padding-top: 0; }
+
+/*refund*/
+.tabnav li a.current { color: #fff; background: #0580b7; }
+
+/*news*/
+.newslist h3 { border-bottom: 2px solid #0580b7; }
+
+.newslist .title a:hover { color: #0580b7; }
+
+.newstop { border-bottom: 2px solid #0580b7; }
+
+/*mycenter*/
+.mcmenu-home { margin-bottom: 10px; background-color: #0580b7; }
+
+.mcmenu { border-top: 4px solid #0580b7; }
+
+.mctitle span { margin-bottom: -2px; border-bottom: 2px solid #0580b7; }
+
+.mcmenu dd a.current { background-image: url("../images/mc-menuarrow.gif"); }
+
+.link-back { background: #0580b7; }
+
+.pswstrength-low, .pswstrength-mid, .pswstrength-high { background-image: url("../images/password-strength.png"); }
+
+.link { color: #f76363; }
+
+.deliverstatus li.itemactive s { background: #0580b7; }
+
+.deliverstatus li p, .deliverstatus li p span { background-image: url("../images/deliverstatus.png"); }
+
+/*brand*/
+.brandextra a { background: #0580b7; }
+
+/*# sourceMappingURL=theme.css.map */

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.IndexPopupAdCustomMapper">
+
+    <select id="findMemberIndexPopupAd" resultType="com.jf.entity.IndexPopupAd">
+		SELECT b.* FROM
+			(SELECT mlgr.label_group_id
+			FROM bu_member_label_relation mlr
+			LEFT JOIN bu_member_label_group_relation mlgr ON mlr.label_type_id = mlgr.label_type_id
+			LEFT JOIN bu_member_label ml ON mlr.label_id = ml.id
+			WHERE mlr.memeber_id = #{memberId}  AND mlr.del_flag='0' AND mlgr.del_flag='0' AND ml.del_flag = '0'
+		) a
+		LEFT JOIN bu_index_popup_ad b ON FIND_IN_SET(a.label_group_id,b.select_group)
+		WHERE b.status='1' AND b.del_flag = '0' AND b.up_date &lt; NOW() AND b.down_date &gt; NOW()
+		ORDER BY b.up_date DESC LIMIT 1
+	</select>
+
+</mapper>

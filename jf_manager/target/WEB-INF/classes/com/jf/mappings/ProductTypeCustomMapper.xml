@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.ProductTypeCustomMapper">
+	<resultMap id="BaseResultCustomMap" type="com.jf.entity.ProductTypeCustom" extends="com.jf.dao.ProductTypeMapper.BaseResultMap">
+		<result column="parent_name" property="parentName" jdbcType="VARCHAR" />
+		<result column="zsproducttype_name" property="zsproducttypename" jdbcType="VARCHAR" />
+
+		<result column="member_visitors_num" property="memberVisitorsNum" jdbcType="INTEGER" />
+		<result column="unmember_visitors_num" property="unmemberVisitorsNum" jdbcType="INTEGER" />
+		<result column="member_page_view" property="memberPageView" jdbcType="INTEGER" />
+		<result column="unmember_page_view" property="unmemberPageView" jdbcType="INTEGER" />
+		<result column="add_product_amount" property="addProductAmount" jdbcType="INTEGER" />
+		<result column="submit_order_amount" property="submitOrderAmount" jdbcType="INTEGER" />
+		<result column="payment_amount" property="paymentAmount" jdbcType="INTEGER" />
+		<result column="add_product_rate" property="addProductRate" jdbcType="VARCHAR" />
+		<result column="submit_order_rate" property="submitOrderRate" jdbcType="VARCHAR" />
+		<result column="payment_rate" property="paymentRate" jdbcType="VARCHAR" />
+		<result column="pay_money" property="payMoney" jdbcType="DECIMAL" />
+	</resultMap>
+
+     <resultMap type="com.gzs.common.beans.Menu" id="resultProcType">
+     	<id column="id" property="menuID" />
+		<result column="name" property="menuName" />
+		<result column="remarks" property="menuDesc" />
+		<result column="parent_id" property="parentID" />
+		<result column="menu_path" property="menuPath" />
+		<result column="create_date" property="createDate" />
+		<result column="status" property="status" />
+		<result column="update_date" property="statusDate" />
+		<result column="seq_no" property="menuOrder" />
+    </resultMap>
+	
+      <select id="selectProductType" resultMap="resultProcType">  
+      <![CDATA[
+       select tt.*
+            from(select id,
+            		CONCAT(name,if(is_smallware='1','<a style="color:red;" href="javascript:;">*</a>',''),
+            	    if( t_level != '0', CONCAT('(', IFNULL((select pts.product_num from bu_product_type_statistics pts where pts.product_type_id = a.id and pts.del_flag='0'),0) ,')'),'')) as name,
+                    parent_id,
+                    create_date,
+                    status,
+                    update_date,
+                    seq_no,
+                    remarks,
+                    is_smallware
+		  from bu_product_type a
+		 where a.del_flag = '0'
+		 order by seq_no)tt   
+	 ]]>	 
+     </select>
+    
+    
+    <select id="selectProductTypeList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		 select 
+		        id,
+				name,
+				parent_id,
+				(select x.name from bu_product_type x where x.id=a.parent_id) parent_name,
+				pic,
+                status,
+                FUN_GET_STATUS_DESC("BU_PRODUCT_TYPE","STATUS", a.status) status_desc,
+		        seq_no,
+		        suit_sex,
+		        suit_group,
+		        deposit,
+		        fee_rate,
+		        individual_deposit,
+		        individual_fee_rate,
+		        t_level,
+		        brand_aptitude,
+		        create_by,
+		        create_date,
+		        update_by,
+		        update_date,
+		        remarks,
+		        enterprise_activities_DSR,
+		        enterprise_turnover,
+		        enterprise_activity_sales,
+		        is_return_7days,
+		        is_smallware,
+		       <!-- (select group_concat(b.name) FROM  bu_zs_product_type b WHERE b.del_flag='0' AND b.status='1' AND b.product_type_ids=a.id) zsproducttype_name -->
+		       (SELECT GROUP_CONCAT(b.name) FROM  bu_zs_product_type b WHERE FIND_IN_SET(a.id,b.product_type_ids) AND b.del_flag='0' AND b.status='1') zsproducttype_name
+		  from bu_product_type a
+		 where a.del_flag = '0'
+		 <if test="ISNO ==0">
+		 and a.id = #{id}
+		 </if>
+		 <if test="ISNO !=0">
+		 and a.parent_id = #{id}
+		 </if>
+		 order by seq_no
+		 <if test="MAX_NUM!=null and MAX_NUM!=''">
+		   limit #{MIN_NUM},#{MAX_NUM}
+	     </if>   
+    </select>
+    <select id="queryDataCount" parameterType="java.util.HashMap" resultType="String">  
+		 select count(*) totalnum
+		  from bu_product_type a
+		 where a.del_flag = '0'
+		 <if test="ISNO==0">
+		 and a.id = #{id}
+		 </if>
+		 <if test="ISNO!=0">
+		 and a.parent_id = #{id}
+		 </if>
+    </select>
+    <select id="getprarentList" parameterType="java.util.HashMap" resultType="java.util.HashMap">  
+		    select name parent_name,id parent_id
+			  from bu_product_type a
+			 where id =#{id} 
+
+    </select>
+    <select id="getprarentId" parameterType="java.util.HashMap" resultType="String">  
+		    select parent_id from bu_product_type a where id=#{id} 
+
+    </select>
+    <select id="getPrarentF" parameterType="java.util.HashMap" resultType="String">  
+		    select parent_id
+			  from bu_product_type a
+			 where id in (select parent_id
+			                             from bu_product_type a
+			                            where a.id = ${id}
+			                              and a.del_flag = '0')
+
+    </select>
+    <select id="getIsNotType" parameterType="java.util.HashMap" resultType="int">  
+		 select count(*) ISNOTTYPE
+		  from bu_product_type a
+		 where a.name =#{name}
+		   and a.del_flag = '0'
+    </select>
+    <select id="getProdTypeName" parameterType="java.util.HashMap" resultType="String">  
+		 select name
+		  from bu_product_type a
+		 where a.id = #{id}
+		   and a.del_flag = '0'
+    </select>
+     <select id="gettlevvel" parameterType="java.util.HashMap" resultType="int">  
+		 select ifnull(t_level,0)+1
+		  from bu_product_type a
+		 where a.id =#{parent_id}
+		   and del_flag = '0'
+    </select>
+   <select id="selectProductTypeListByid" parameterType="java.util.HashMap" resultType="java.util.HashMap">  
+		 select 
+		        id,
+				name,
+				parent_id,
+				(select x.name from bu_product_type x where x.id=a.parent_id) parent_name,
+				pic,
+                status,
+		        seq_no,
+		        suit_sex,
+		        suit_group,
+		        deposit,
+		        fee_rate,
+		        individual_deposit,
+		        individual_fee_rate,
+		        t_level,
+		        create_by,
+		        create_date,
+		        update_by,
+		        update_date,
+		        remarks,
+		        principal_staff_id,
+		        enterprise_activities_DSR,
+		        enterprise_turnover,
+		        enterprise_activity_sales,
+		        is_smallware
+		  from bu_product_type a
+		 where a.del_flag = '0'
+		 and a.id =#{id}
+		 
+    </select>
+    
+    <select id="getNamesByIds" parameterType="java.lang.String" resultType="java.lang.String">
+    	SELECT GROUP_CONCAT(pt.`name`) FROM bu_product_type pt WHERE pt.del_flag='0' AND FIND_IN_SET(pt.id,#{ids})
+    </select>
+    
+    <select id="getProductTypeList" parameterType="java.util.HashMap" resultType="java.util.HashMap" >
+    	SELECT
+			t.id id,
+			t.name name,
+			t.parent_id parent_id,
+			t.pic pic,
+			t. STATUS STATUS,
+			t.seq_no seq_no,
+			t.suit_sex suit_sex,
+			t.suit_group suit_group,
+			t.fee_rate fee_rate,
+			t.t_level t_level,
+			t.create_by create_by,
+			t.create_date create_date,
+			t.update_by update_by,
+			t.update_date update_date,
+			t.remarks remarks,
+			(SELECT CASE t.t_level
+					WHEN '0' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA, bu_product_type ptB, bu_product_type ptC WHERE ptA.parent_id = ptB.id AND ptB.parent_id = ptC.id AND ptC.parent_id = t.id))
+					WHEN '1' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA, bu_product_type ptB WHERE ptA.parent_id = ptB.id AND ptB.parent_id = t.id))
+					WHEN '2' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA WHERE ptA.parent_id = t.id))
+					WHEN '3' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (t.id))
+					ELSE 0
+				END
+			) product_count,
+			t.del_flag del_flag
+			
+		FROM
+			bu_product_type t
+		WHERE
+			t.del_flag = '0'
+		<if test="productTypeId != null">
+			AND t.id = ${productTypeId }
+		</if>
+		<if test="productTypeName != null">
+			AND t.name like #{productTypeName }
+		</if>
+		<if test="productType2Ids != null">
+			AND (t.parent_id IN(${productType2Ids }) OR t.id IN(${productType2Ids }))
+		</if>
+		<if test="notIds != null">
+			AND t.id NOT IN(${notIds })
+		</if>
+		<if test="status != null">
+			AND t.status = #{status }
+		</if>
+		<if test="product_count != null">
+			AND (SELECT CASE t.t_level
+					WHEN '0' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA, bu_product_type ptB, bu_product_type ptC WHERE ptA.parent_id = ptB.id AND ptB.parent_id = ptC.id AND ptC.parent_id = t.id))
+					WHEN '1' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA, bu_product_type ptB WHERE ptA.parent_id = ptB.id AND ptB.parent_id = t.id))
+					WHEN '2' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA WHERE ptA.parent_id = t.id))
+					WHEN '3' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (t.id))
+					ELSE 0
+				END
+			) > 0
+		</if>
+		<if test="limitStart != null and limitSize != null">
+			LIMIT #{limitStart} , #{limitSize}
+		</if>
+    </select>
+    
+    <select id="getProductTypeCount" parameterType="java.util.HashMap" resultType="java.lang.Integer" >
+    	SELECT
+			count(1)
+		FROM
+			bu_product_type t
+		WHERE
+			t.del_flag = '0'
+		<if test="productTypeId != null">
+			AND t.id = ${productTypeId }
+		</if>
+		<if test="productTypeName != null">
+			AND t.name like #{productTypeName }
+		</if>
+		<if test="productType2Ids != null">
+			AND (t.parent_id IN(${productType2Ids }) OR t.id IN(${productType2Ids }))
+		</if>
+		<if test="notIds != null">
+			AND t.id NOT IN(${notIds })
+		</if>
+		<if test="status != null">
+			AND t.status = #{status }
+		</if>
+		<if test="product_count != null">
+			AND (SELECT CASE t.t_level
+					WHEN '0' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA, bu_product_type ptB, bu_product_type ptC WHERE ptA.parent_id = ptB.id AND ptB.parent_id = ptC.id AND ptC.parent_id = t.id))
+					WHEN '1' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA, bu_product_type ptB WHERE ptA.parent_id = ptB.id AND ptB.parent_id = t.id))
+					WHEN '2' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (SELECT ptA.id FROM bu_product_type ptA WHERE ptA.parent_id = t.id))
+					WHEN '3' THEN (SELECT count(1) FROM bu_product p WHERE p.del_flag = '0' AND p. STATUS = '1' AND p.product_type_id IN (t.id))
+					ELSE 0
+				END
+			) > 0
+		</if>
+    </select>
+    
+    <select id="getProductTypeIds" parameterType="java.util.HashMap" resultType="java.lang.String" >
+    	SELECT FUN_GET_PRODUCT_TYPE_All_CHILD (#{id })
+    </select>
+   
+    <select id="getProductCount" parameterType="java.util.HashMap" resultType="java.lang.String" >
+    	SELECT
+			count(1)
+		FROM
+			bu_product p
+		WHERE
+			p.del_flag = '0'
+		AND p. STATUS = '1'
+		<if test="productTypeIds != null">
+			AND FIND_IN_SET(p.product_type_id, #{productTypeIds } )
+		</if>
+		<if test="productTypeId != null">
+			AND p.product_type_id = ${productTypeId } 
+		</if>
+		
+    </select>
+    
+    <select id="countListByFirstProductTypeIds" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+    	select 
+    		count(pt.id) 
+    	from 
+    		bu_product_type pt,bu_product_type fpt 
+    	where 
+    		pt.parent_id = fpt.id 
+    		and pt.del_flag='0' and pt.status='1' and fpt.del_flag='0' and fpt.status='1' 
+    		and pt.t_level=3 and fpt.t_level=2
+    		and fpt.parent_id IN
+    		<foreach collection="productTypeIdList" item="listItem" open="(" close=")" separator="," >
+				#{listItem}
+    		</foreach>
+    		<if test="name != null">
+    		and pt.name like #{name}
+    		</if>
+    </select>
+    
+    <select id="getListByFirstProductTypeIds" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+    	select 
+    		pt.id,
+    		pt.name 
+    	from 
+    		bu_product_type pt,bu_product_type fpt 
+    	where 
+    		pt.parent_id = fpt.id 
+    		and pt.del_flag='0' and pt.status='1' and fpt.del_flag='0' and fpt.status='1' 
+    		and pt.t_level=3 and fpt.t_level=2
+    		and fpt.parent_id IN
+    		<foreach collection="productTypeIdList" item="listItem" open="(" close=")" separator="," >
+				#{listItem}
+    		</foreach>
+    		<if test="name != null">
+    		and pt.name like #{name}	
+    		</if>
+    		limit #{limitStart},#{limitSize}
+    </select>
+    
+        <select id="getProductTypeListByStaffId" parameterType="java.lang.Integer" resultMap="BaseResultCustomMap">
+			SELECT
+				p.id,
+				p.name
+			FROM
+				SYS_STAFF_INFO t,
+				bu_product_type p,
+				sys_staff_product_type s
+			WHERE
+				p.id = s.product_type_id
+			AND s.staff_id = T.STAFF_ID
+			AND p. STATUS = '1'
+			AND s.del_flag = '0'
+			AND p.del_flag = '0'
+			and t.STAFF_ID =  #{staffId}
+    </select>
+
+	<!--查询类目流量报表数据-->
+	<select id="getcategoryFlowReportData"  parameterType="java.util.HashMap"  resultMap="BaseResultCustomMap">
+		select
+			t.id,
+			t.name,
+						IFNULL(a.member_visitors_num,0) as member_visitors_num,
+						IFNULL(a.unmember_visitors_num,0) as unmember_visitors_num,
+						IFNULL(a.member_page_view,0) as member_page_view,
+						IFNULL(a.unmember_page_view,0) as unmember_page_view,
+						IFNULL(a.add_product_amount,0) as add_product_amount,
+						IFNULL(a.submit_order_amount,0) as submit_order_amount,
+						IFNULL(a.payment_amount,0) as payment_amount,
+						IFNULL(a.pay_money,0) as pay_money,
+						a.add_product_rate as add_product_rate,
+						a.submit_order_rate as submit_order_rate,
+						a.payment_rate as payment_rate
+				from
+		 bu_product_type t
+
+				LEFT JOIN
+
+				(select
+							m.product_type1_id as product_type1_id,
+							sum(member_visitors_amount) as member_visitors_num,
+							sum(unmember_visitors_amount) as unmember_visitors_num,
+							sum(member_page_view) as member_page_view,
+							sum(unmember_page_view) as unmember_page_view,
+							sum(add_product_amount) as add_product_amount,
+							sum(submit_order_amount) as submit_order_amount,
+							sum(payment_amount) as payment_amount,
+							sum(pay_money) as  pay_money ,
+							CONCAT(ROUND(SUM(add_product_amount)/(SUM(member_visitors_amount)+SUM(unmember_visitors_amount))*100,2),'%') AS add_product_rate,
+							CONCAT(ROUND(SUM(submit_order_amount)/(SUM(member_visitors_amount)+SUM(unmember_visitors_amount))*100,2),'%') AS submit_order_rate,
+							CONCAT(ROUND(SUM(payment_amount)/(SUM(member_visitors_amount)+SUM(unmember_visitors_amount))*100,2),'%') AS payment_rate
+		from
+		(
+		 SELECT
+			bp.product_type1_id AS product_type1_id,
+
+			COUNT(DISTINCT(bmp.member_id)) AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			COUNT(bmp.member_id) AS member_page_view,
+			0 AS unmember_page_view,
+			0 AS add_product_amount,
+			0 AS submit_order_amount,
+			0 AS payment_amount,
+				0 as pay_money
+			FROM
+			bu_member_pv bmp,bu_product bp
+			WHERE
+			bmp.value_id = bp.id
+			AND
+			bmp.del_flag = '0'
+			AND
+			bp.del_flag = '0'
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		AND bmp.create_date <![CDATA[ >= ]]>#{payBegin}
+		AND bmp.create_date <![CDATA[ <= ]]>#{payEnd}
+			GROUP BY
+			bp.product_type1_id
+
+			UNION
+
+			SELECT
+			bp.product_type1_id AS product_type1_id,
+
+			0 AS member_visitors_amount,
+			COUNT(DISTINCT(bmp.device_number)) AS unmember_visitors_amount,
+			0 AS member_page_view,
+			COUNT(bmp.device_number) AS uunmember_page_view,
+			0 AS add_product_amount,
+			0 AS submit_order_amount,
+			0 AS payment_amount,
+				0 as pay_money
+			FROM
+			bu_member_pv bmp,bu_product bp
+			WHERE
+			bmp.value_id = bp.id
+			AND
+			bmp.member_id IS NULL
+			AND
+			bmp.del_flag = '0'
+			AND
+			bp.del_flag = '0'
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		AND bmp.create_date <![CDATA[ >= ]]>#{payBegin}
+		AND bmp.create_date <![CDATA[ <= ]]>#{payEnd}
+			GROUP BY
+			bp.product_type1_id
+
+			UNION
+
+			SELECT
+			bp.product_type1_id AS product_type1_id,
+
+			0 AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			0 AS member_page_view,
+			0 AS uunmember_page_view,
+			SUM(bsc.quantity) AS add_product_amount,
+			0 AS submit_order_amount,
+			0 AS payment_amount,
+			0 as pay_money
+			FROM
+			bu_member_pv bmp,bu_product bp,bu_member_action bma,bu_shopping_cart bsc
+			WHERE
+			bmp.value_id = bp.id
+			AND bmp.pv_id = bma.member_pv_id
+			AND bma.action_item_id = bsc.id
+			AND bma.action_type = '14'
+			AND bmp.del_flag = '0'
+			AND bp.del_flag = '0'
+			AND bma.del_flag = '0'
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		AND bmp.create_date <![CDATA[ >= ]]>#{payBegin}
+		AND bmp.create_date <![CDATA[ <= ]]>#{payEnd}
+			GROUP BY
+			bp.product_type1_id
+
+			UNION
+
+			SELECT
+			bp.product_type1_id AS product_type1_id,
+
+			0 AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			0 AS member_page_view,
+			0 AS uunmember_page_view,
+			0 AS add_product_amount,
+			SUM(bod.quantity) AS submit_order_amount,
+			0 AS payment_amount,
+			  0 as pay_money
+			FROM
+			bu_member_pv bmp,
+			bu_member_action bma,
+			bu_order_dtl bod,
+			bu_product bp,
+			bu_shopping_cart bsc
+			WHERE
+			bmp.pv_id = bma.member_pv_id
+			AND bma.action_type IN('14','15')
+			AND bmp.value_id = bp.id
+			AND bma.action_item_id = bsc.id
+			AND bsc.order_dtl_id = bod.id
+			AND bmp.del_flag = '0'
+			AND bod.del_flag = '0'
+			AND bp.del_flag = '0'
+			AND bma.del_flag = '0'
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		AND bmp.create_date <![CDATA[ >= ]]>#{payBegin}
+		AND bmp.create_date <![CDATA[ <= ]]>#{payEnd}
+			GROUP BY
+			bp.product_type1_id
+
+			UNION
+
+			SELECT
+			bp.product_type1_id AS product_type1_id,
+
+			0 AS member_visitors_amount,
+			0 AS unmember_visitors_amount,
+			0 AS member_page_view,
+			0 AS uunmember_page_view,
+			0 AS add_product_amount,
+			0 AS submit_order_amount,
+			SUM(bod.quantity) AS payment_amount,
+			sum(bod.pay_amount) as pay_money
+			FROM
+			bu_member_pv bmp,bu_member_action bma,bu_shopping_cart bsc,bu_combine_order bco,bu_sub_order bso,bu_order_dtl bod,bu_product bp
+			WHERE
+			bmp.pv_id = bma.member_pv_id
+			AND bmp.value_id = bp.id
+			AND bod.product_id = bp.id
+			AND bma.action_type IN ('14','15')
+			AND bma.action_item_id = bsc.id
+			AND bsc.order_dtl_id = bod.id
+			AND bod.sub_order_id = bso.id
+			AND bso.combine_order_id = bco.id
+			AND bco.id = bso.combine_order_id
+			AND bso.id = bod.sub_order_id
+			AND bco.status = '1'
+			AND bco.pay_status = '1'
+			AND bmp.del_flag = '0'
+			AND bco.del_flag = '0'
+			AND bso.del_flag = '0'
+			AND bod.del_flag = '0'
+			AND bma.del_flag = '0'
+			AND bsc.del_flag = '0'
+			AND bp.del_flag = '0'
+		<if test="reportColumnId!=null">
+			and bmp.column_type = #{reportColumnId}
+		</if>
+		AND bmp.create_date <![CDATA[ >= ]]>#{payBegin}
+		AND bmp.create_date <![CDATA[ <= ]]>#{payEnd}
+			GROUP BY
+			bp.product_type1_id
+
+		) m
+
+		GROUP BY m.product_type1_id
+		)a
+
+		on
+		t.id = a.product_type1_id
+		where
+			t.del_flag = '0'
+		and t.t_level='1'
+		and t.status = '1'
+		<if test="productTypeId!=null ">
+			AND t.productTypeId = #{productTypeId}
+		</if>
+		<if test="productTypeName!=null ">
+			AND t.productTypeName like #{productTypeId}
+		</if>
+		ORDER BY t.id
+
+		<if test="limitSize!=null and limitSize!=null">
+			LIMIT #{limitStart},#{limitSize}
+		</if>
+	</select>
+    
+    
+</mapper>

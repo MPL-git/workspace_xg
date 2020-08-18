@@ -1,0 +1,132 @@
+.order-express {
+	background: #f4f4f4;
+}
+.order-express dl {
+	padding: .3rem;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+}
+.order-express dt {
+	overflow: hidden;
+	width: 1.5rem;
+	height: 1.5rem;
+}
+.order-express dd {
+	padding-left: .2rem;
+	font-size: .26rem;
+}
+.order-express dd p {
+	height: .26rem;
+	margin-top: .2rem;
+	line-height: .26rem;
+}
+.order-express dd p.f22 {
+	font-size: .22rem;
+}
+.order-express dd p:first-child {
+	max-width: 5rem;
+	margin: 0;
+}
+.order-express dd span {
+	padding-right: .1rem;
+	color: #999;
+}
+
+.order-express .content {
+	background: #f4f4f4;
+}
+.order-express ul {
+	padding-left: .7rem;
+	background: #fff;
+}
+.order-express li {
+	position: relative;
+	font-size: .28rem;
+	padding-left: .71rem;
+	border-left: 1px solid #ddd;
+}
+.order-express li div {
+	height: 100%;
+	padding-right: .4rem;
+	border-top: 1px solid #ddd;
+}
+.order-express li p {
+	line-height: .34rem;
+	padding-top: .3rem;
+}
+.order-express li:first-child div {
+	border: none;
+}
+.order-express li span {
+	line-height: .64rem;
+	color: #999;
+	padding-bottom: .2rem;
+}
+
+.order-express li:first-child:after {
+	position: absolute;
+	top: 0;
+	left: -1px;
+	content: '';
+	width: 1px;
+	height: .3rem;
+	background: #fff;
+}
+
+.order-express li:before {
+	position: absolute;
+	top: .3rem;
+	left: -.09rem;
+	content: '';
+	z-index: 1;
+	width: .16rem;
+	height: .16rem;
+	background: #ddd;
+	border-radius: 100%;
+}
+.order-express li.on:before {
+	left: -.13rem;
+	width: .2rem;
+	height: .2rem;
+	background: #ff5050;
+	border: .03rem solid #ff8484;
+}
+
+.order-express .logistics {
+	padding-bottom: 1.6rem;
+}
+.order-express .logistics-tab {
+	display: none;
+}
+.order-express .logistics-tab.on {
+	display: block;
+}
+.order-express .copy-bt {
+	position: absolute;
+	bottom: .3rem;
+	right: .3rem;
+    border: 1px solid #bbb;
+	font-size: .22rem;
+	padding: .06rem .15rem;
+}
+.order-express .logistics-b {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 9;
+	width: 100%;
+	height: 1.6rem;
+	background: #fff;
+}
+.order-express .logistics-b img {
+	width: 1rem;
+	height: 1rem;
+	margin-left: .2rem;
+	box-sizing: border-box;
+}
+.order-express .logistics-b img.on {
+	border: .02rem solid #ff5050
+}
+.order-express .specifications {
+	width: 5rem;
+}

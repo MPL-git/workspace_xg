@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.WithdrawOrderStatusLogCustomMapper" >
+  <insert id="batchInsert" >
+  	insert into bu_withdraw_order_status_log (withdraw_order_id,status,create_date,del_flag) values
+      		<foreach collection="list" item="item" separator=",">
+      			(
+      			#{item.withdrawOrderId},
+      			#{item.status},
+      			#{item.createDate},
+      			#{item.delFlag}
+      			)
+      		</foreach>
+  	
+  </insert>
+</mapper>

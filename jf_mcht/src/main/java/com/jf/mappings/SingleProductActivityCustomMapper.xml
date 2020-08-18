@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.SingleProductActivityCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.SingleProductActivityCustom"  extends="com.jf.dao.SingleProductActivityMapper.BaseResultMap">
+  	<result column="type_desc" property="typeDesc" jdbcType="VARCHAR" />
+  	<result column="pic" property="pic" jdbcType="VARCHAR" />
+  	<result column="product_name" property="productName" jdbcType="VARCHAR" />
+  	<result column="product_code" property="productCode" jdbcType="VARCHAR" />
+  	<result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+  	<result column="art_no" property="artNo" jdbcType="VARCHAR" />
+  	<result column="activity_stock" property="activityStock" jdbcType="INTEGER" />
+  	<result column="audit_status_desc" property="auditStatusDesc" jdbcType="VARCHAR" />
+  	<result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+  	<result column="sale_count" property="saleCount" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, type, mcht_id, product_id, coupon_id, original_price, activity_price, seckill_type, 
+    compare_price, expected_date, begin_time, end_time, audit_status, status, is_close, 
+    first_audit_by, schedule_audit_by, again_audit_by, seq_no, unreality_num, tomorrow_increase_min, 
+    tomorrow_increase_max, is_watermark, platform_preferential, seckill_time_id, create_by, 
+    create_date, update_by, update_date, remarks, del_flag,
+    FUN_GET_STATUS_DESC("BU_SINGLE_PRODUCT_ACTIVITY", "TYPE", type) type_desc,
+    FUN_GET_STATUS_DESC("BU_SINGLE_PRODUCT_ACTIVITY", "AUDIT_STATUS", audit_status) audit_status_desc,
+    (select a.pic from bu_product_pic a where a.product_id=t.product_id and a.del_flag='0' and a.is_default='1' limit 1) pic,
+    (select a.name from bu_product_brand a,bu_product p where a.id=p.brand_id and p.id=t.product_id) brand_name,
+    (select p.name from bu_product p where p.id=t.product_id) product_name,
+    (select p.code from bu_product p where p.id=t.product_id) product_code,
+    (select p.art_no from bu_product p where p.id=t.product_id) art_no,
+    (select IFNULL(SUM(bpi.stock-bpi.locked_amount),0) from bu_product_item bpi where bpi.del_flag='0' and bpi.product_id=t.product_id) activity_stock,
+    (select a.remarks from bu_single_product_activity_audit_log a where a.single_product_activity_id = t.id and a.del_flag='0'and a.status in ('2','4','5') order by a.id desc limit 1) reject_reason,
+    (select IFNULL(sum(od.quantity),0) from bu_order_dtl od where od.del_flag='0' and od.is_give='0' and od.single_product_activity_id = t.id)sale_count
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.SingleProductActivityCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_single_product_activity t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  <select id="countByExample" parameterType="com.jf.entity.SingleProductActivityCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_single_product_activity t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <select id="getEnrollCount1" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	SELECT 
+  		COUNT(1) 
+  	FROM 
+  		bu_single_product_activity spa,bu_product p 
+  	WHERE 
+  		spa.product_id = p.id 
+  	AND p.brand_id = #{productBrandId} 
+  	AND spa.audit_status IN ('0','1','4') 
+  	AND spa.del_flag='0'
+  	AND spa.is_close='0' 
+  	AND spa.mcht_id = #{mchtId}
+  	AND spa.expected_date<![CDATA[ >= ]]>#{beginDate}
+  	AND spa.expected_date<![CDATA[ <= ]]>#{endDate}
+  </select>
+  <select id="getEnrollCount2" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	SELECT 
+  		COUNT(1)  
+  	FROM 
+  		bu_single_product_activity spa,bu_product p 
+  	WHERE 
+  		spa.product_id = p.id 
+  	AND p.brand_id = #{productBrandId} 
+  	AND spa.audit_status = '3' 
+  	AND spa.del_flag='0'
+  	AND spa.is_close='0' 
+  	AND spa.mcht_id = #{mchtId}
+  	AND spa.expected_date<![CDATA[ >= ]]>#{beginDate}
+  	AND spa.expected_date<![CDATA[ <= ]]>#{endDate}
+  	AND spa.end_time<![CDATA[ > ]]>#{expectedDate}
+  </select>
+</mapper>

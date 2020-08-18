@@ -1,0 +1,288 @@
+<div class="page reduceprice flex dc bgf4" data-title="" data-id="activity_reduceprice">
+	<link rel="stylesheet" href="activity/reduceprice/reduceprice.css?ver=1.1">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back('home')"></i></div>
+		<p class="ellipsis ellipsis-title">  </p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg tab-header reduceprice-con scroll-more">
+		<div class="reduceprice-1 tab-con scroll-y scroll-fix hide">
+			<div class="touchfix">
+				<div class="con-top top1 w75">
+					<span class="ico-btn p-rule" onclick="popupShow('.popup-rule-reduce')"></span>
+					<img src="activity/reduceprice/resources/cutbanner.png">
+				</div>
+				<div class="tab-list w75"></div>
+			</div>
+		</div>
+
+		<div class="reduceprice-2 tab-con scroll-y scroll-fix hide">
+			<div class="touchfix">
+				<div class="con-top top1 w75">
+<!--					<div class="countDown">23:30:59  后结束</div>-->
+					<span class="ico-btn p-rule" onclick="popupShow('.popup-rule-reduce')"></span>
+<!--					<img src="activity/reduceprice/resources/cutbanner.png">-->
+				</div>
+
+				<div class="tab-list w75"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="flex ac jc flex-btns" >
+		<a class="flex ac jc fg ico-tab1" onclick="reducePrice.post(0)">今日邀请商品</a>
+		<a class="flex ac jc fg ico-tab2" onclick="reducePrice.post(1)">我的邀请单</a>
+	</div>
+
+	<div class="popup popup-rule popup-rule-reduce" onclick="closeSelf(this)">
+		<div class="popup-rule-con" onclick="stopSelf()">
+			
+			<div id="reduceprice_rule"></div>
+			
+		</div>
+	</div>
+
+	<!-- sku -->
+	<div class="tab-car popup popup-add-cart popup-cart" onclick="closeSelf(this)"></div>
+
+	<div class="popup popup-reduce-detail" onclick="closeSelf(this)">
+		<div class="popup-main" onclick="stopSelf()">
+			<h3 class="flex ac jc">
+				助力记录
+				<a class="close-x" onclick="closeSelf(this)"></a>
+			</h3>
+			<div class="popup-con scroll-y"></div>
+			<a class="btn-red flex ac jc" onclick="closeSelf(this)">知道了</a>
+		</div>
+	</div>
+	<!--	邀请助力弹窗-->
+	<div class="alertHelp ah">
+
+	</div>
+	<script id="rule_tpl" type="text/html">
+		<div class="tab-head flex as jb">
+			<a onclick="reducePrice.rulepost(0)" class="btn-rule {{ruletab==0?'avtive-rule':''}}">助力减价</a>
+			<a onclick="reducePrice.rulepost(1)" class="btn-rule {{ruletab==1?'avtive-rule':''}}">活动规则</a>
+			<a class="delete-pic" onclick="closeSelf(this)"></a>
+		</div>
+		<div class="con-text">
+			{{if ruletab == 0}}
+				<div class="touchfix">
+					<p class="mb20">1、选中心仪商品，【减价拿】分享给微信好友。</p>
+					<p class="mb20">2、好友需为醒购新用户。</p>
+					<p class="mb20">3、好友助力，商品立减。</p>
+					<p class="mb20">4、助力上限，底价购买。</p>
+				</div>
+			{{/if}}
+			{{if ruletab == 1}}
+				<div class="touchfix">
+					<p class="mb20">1、为了让消费者在醒购商城购物时可以享受更多的商品折扣，消费者可在助力省钱专题活动中挑选到自己喜欢的商品。</p>
+					<p class="mb20">2、好友必须是未注册过醒购APP的新用户，同一个设备、微信号、视为同一用户。</p>
+					<p class="mb20">3、每个商品设置邀请助力人数上限与缩减的价格不同，每个商品均有最低价，减到最低价视为助力完成，中途可提前购买。</p>
+					<p class="mb20">4、任务完成后或者结束后，平台将为您保留24小时下单时间，24小时不下单视为放弃本次助力减价任务。</p>
+					<p class="mb20">5、生成订单后可前往【我的订单】查看物流详情，对商家有疑问或者需要修改收货地址请联系商家客服处理。</p>
+				</div>
+				{{/if}}
+			</div>
+	</script>
+	<script id="reduceprice_tpl_con1" type="text/html">
+		{{if dataList}}
+			{{if dataList.length == 0}}
+				<div class="tab-tdf">
+					<div class="liebiao">
+						<div class="liebiao-img flex ac jc">
+							<h1 class="flex ac jc c9 fts26">当前还没有任务</h1>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+			{{each dataList value i}}
+				<div class="reduce-main flex ac jc">
+					<div class="main-left fn">
+						<img src="{{value.productPic}}" onclick="getUrl('goods/detail.html?id={{value.productId}}','self')">
+					</div>
+					<div class="main-right fg">
+						<div class="right-title clampself">{{value.productName}}</div>
+						<div class="right-main flex ac jb">
+							<p class="f7b fn">￥{{value.salePrice}}</p>
+							<div class="img-jiantou fg">
+								<div class="jiantou-top flex ac jc">每邀1人</div>
+								<div class="jiantou-bottom flex ac jc">立减{{value.fixedAmount}}元</div>
+							</div>
+							<p class="f50 f50s fn">￥{{value.minPayAmount}}</p>
+						</div>
+						{{if value.status == 1}}
+							<a class="getprice flex ac jc" onclick="reducePrice.getPrice('{{value.productId}}','{{value.fixedAmount}}','{{value.maxInviteTimes}}','{{value.minPayAmount}}')">减价拿</a>
+						{{/if}}
+						{{if value.status == 2}}
+							<div class="btn-gray flex ac jc">名额已满</div>
+						{{/if}}
+						{{if value.status == 3}}
+							<div class="btn-gray flex ac jc">已抢光</div>
+						{{/if}}
+					</div>
+				</div>
+			{{/each}}
+		{{/if}}
+	</script>
+	<script id="reduceprice_tpl_con2" type="text/html">
+		{{if dataList}}
+			{{if dataList.length == 0}}
+				<div class="tab-tdf">
+					<div class="liebiao">
+						<div class="liebiao-img flex ac jc">
+							<h1 class="flex ac jc c9 fts26">当前还没领取过任务</h1>
+						</div>
+					</div>
+				</div>
+			{{/if}}
+			{{each dataList value i}}
+				{{if value.taskStatus == 1}}
+					<div class="countDown countEnd">
+						{{if value.endDate - currentDate > 0}}
+						<time class="timers" data-tab="1" data-timer="{{value.endDate - currentDate}}"></time>
+						{{/if}}
+						{{if value.buyEndDate - currentDate>0}}
+						<time class="timers buyEnd hide" data-tab="2" data-timer="{{value.buyEndDate - currentDate}}"></time>
+						{{/if}}
+					</div>
+					<div class="reduce-main flex">
+						<div class="main-left fn" onclick="getUrl('goods/detail.html?id={{value.productId}}&cutOrderId={{value.curOrderId}}','self')">
+							<img src="{{value.skuPic}}">
+						</div>
+						<div class="main-right fg">
+							<div class="top-title">{{value.productName}}</div>
+							<div class="flexs">
+								<div class="f50 main-sales">￥{{(1000 * value.salePrice - 1000 * value.assistanceNum * value.fixedAmount) / 1000}}</div>
+								<a class="btn-grays continue" onclick="getUrl('activity/reduceprice/invitation/index.html?id={{value.productId}}&cutOrderId={{value.curOrderId}}','self')"></a>
+							</div>
+							<div class="main-title flex ac">已减{{(value.assistanceNum) * value.fixedAmount}}元，还可邀请{{value.maxInviteTimes - value.assistanceNum}}人</div>
+							</div>
+						</div>
+					</div>
+				{{/if}}
+				{{if value.taskStatus == 2}}
+				<div class="countDown">
+					<time class="timers buyEnd" data-tab="2" data-timer="{{value.buyEndDate - currentDate}}"></time>
+				</div>
+					<div class="reduce-main flex">
+						<div class="main-left fn" onclick="getUrl('goods/detail.html?id={{value.productId}}','self')">
+							<img src="{{value.skuPic}}">
+						</div>
+						<div class="main-right fg">
+							<div class="top-title">{{value.productName}}</div>
+							<div class="flexs">
+								<div class="f50 main-sales">￥{{(1000 * value.salePrice - 1000 * value.assistanceNum * value.fixedAmount) / 1000}}</div>
+								<a class="btn-grays rightawayBuys" onclick="getUrl('activity/reduceprice/invitation/index.html?id={{value.productId}}&cutOrderId={{value.curOrderId}}','self')">立即购买</a>
+							</div>
+							<div class="main-title flex ac">助力已减{{(value.assistanceNum) * value.fixedAmount}}元</div>
+						</div>
+					</div>
+				{{/if}}
+				{{if value.taskStatus == 3}}
+					<div class="countDown">
+						<time class="timers buyEnd" data-tab="3" data-timer="{{value.buyEndDate - currentDate}}"></time>
+					</div>
+					<div class="reduce-main flex">
+						<div class="main-left fn" onclick="getUrl('goods/detail.html?id={{value.productId}}','self')">
+							<img src="{{value.skuPic}}">
+						</div>
+						<div class="main-right fg">
+							<div class="top-title">{{value.productName}}</div>
+							<div class="flexs">
+								<div class="f50 main-sales">￥{{(1000 * value.salePrice - 1000 * value.assistanceNum * value.fixedAmount) / 1000}}</div>
+<!--								<a class="btn-grays rightawayBuys" onclick="getUrl('activity/reduceprice/invitation/index.html?id={{value.productId}}&cutOrderId={{value.curOrderId}}','self')">邀请完成</a>-->
+								<a class="btn-grays rightawayBuys" onclick="getUrl('activity/reduceprice/invitation/index.html?id={{value.productId}}&cutOrderId={{value.curOrderId}}','self')">立即购买</a>
+							</div>
+							<div class="main-title flex ac">助力已减{{(value.assistanceNum) * value.fixedAmount}}元</div>
+						</div>
+					</div>
+				{{/if}}
+				{{if value.taskStatus == 4}}
+					<div class="countDown">任务结束</div>
+					<div class="reduce-main flex">
+						<div class="main-left fn">
+							<img src="{{value.skuPic}}">
+						</div>
+						<div class="main-right fg">
+							<div class="top-title">{{value.productName}}</div>
+							<div class="flexs">
+								<div class="f50 main-sales">￥{{(1000 * value.salePrice - 1000 * value.assistanceNum * value.fixedAmount) / 1000}}</div>
+								<a class="btn-grays overtime" onclick="getUrl('activity/reduceprice/invitation/index.html?id={{value.productId}}&cutOrderId={{value.curOrderId}}','self')">超时未付款</a>
+							</div>
+							<div class="main-title flex ac">助力已减{{(value.assistanceNum) * value.fixedAmount}}元</div>
+						</div>
+					</div>
+				{{/if}}
+				{{if value.taskStatus == 5}}
+					<div class="countDown">交易完成</div>
+					<div class="reduce-main flex">
+						<div class="main-left fn" onclick="getUrl('goods/detail.html?id={{value.productId}}','self')">
+							<img src="{{value.skuPic}}">
+						</div>
+						<div class="main-right fg">
+							<div class="top-title">{{value.productName}}</div>
+							<div class="flexs">
+								<div class="f50 main-sales">￥{{(1000 * value.salePrice - 1000 * value.assistanceNum * value.fixedAmount) / 1000}}</div>
+								<a class="btn-grays lookOrder" onclick="myOrder('')">查看订单</a>
+								<div class="main-salethough flex ac"></div>
+							</div>
+							<div class="main-title flex ac">助力已减{{(value.assistanceNum) * value.fixedAmount}}元</div>
+						</div>
+					</div>
+				{{/if}}
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="reduceprice_detail_tpl" type="text/html">
+		<div class="popup-bottom" onclick="stopSelf()">
+			<div class="popup-top info-list-top">
+				<dl class="flex fg fg-img" onclick="popupShow('.popup-add-pic')">
+					<img class="img-pic" src="{{pic}}">
+					<div class="flex jc ac chose-flex hide">
+						<span class="c9">选择：</span><span class="sel"></span>
+					</div>
+				</dl>
+				{{if standardMapList}}
+					{{each standardMapList value i}}
+					<div class="info-list">
+						<h3 class="img-span">{{value.propName}}</h3>
+						<ul class="clearfix">
+							{{each value.propValueMapList arr i}}
+								<li data-propvalid="{{arr.propValId}}" class="fn">{{arr.propValue}}</li>
+							{{/each}}
+						</ul>
+					</div>
+					{{/each}}
+				{{/if}}
+				<a class="fn ico-btn close closeover" onclick="closeSelf(this)"></a>
+				<a class="btn-red btns-reds flex ac jc" onclick="reducePrice.goodsDetailSubmit(this)">确定</a>
+			</div>
+		</div>
+	</script>
+
+
+	<script id="reduce_price_tpl_detail" type="text/html">
+		{{if returnData.length}}
+			{{each returnData value i}}
+		<dl class="flex ac">
+			<dt class="fn img-cover">
+				<img src="{{value.weixinHead}}">
+			</dt>
+			<dd class="fg flex ac jb">
+				<p class="ellipsis fg">{{value.memberNick}}</p>
+				<span>{{value.content}}</span>
+			</dd>
+		</dl>
+			{{/each}}
+		{{else}} 
+		<h4 class="flex ac jc">当前还没有成功邀请好友助力</h4>
+		{{/if}}
+	</script>
+
+
+	<script src="activity/reduceprice/reduceprice.js?ver=1.3" async></script>
+</div>

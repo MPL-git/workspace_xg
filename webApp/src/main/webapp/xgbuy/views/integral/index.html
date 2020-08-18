@@ -1,0 +1,79 @@
+<div class="page integral flex dc bgf4" data-title="可抵用积分" data-id="integral">
+	<link rel="stylesheet" href="integral/index.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">可抵用积分</p>
+		<div class="fn">
+			<a onclick="linkPage('../../n/platform/getIntegralRule', '抵扣规则')">规则</a>
+		</div>
+	</header>
+
+	<div class="fg flex dc content"></div>
+
+	<script id="integral_tpl" type="text/html">
+		<div class="row-1 fn">
+			<div class="con-2">{{totalIntegral}}</div>
+			<p>{{context}}</p>
+		</div>
+
+		<div class="flex dc scroll-y fg scroll-more">
+			<div class="row-2 fg flex dc">
+			{{include 'integral_dtl_tpl'}}
+			</div>
+		</div>
+	</script>
+
+	<script id="integral_dtl_tpl" type="text/html">
+		{{if integralDtlList.length}}
+		{{each integralDtlList value i}}
+		<a class="flex ac jb fn" data-id="{{value.id}}">
+			{{value.name}}
+			<div class="flex dc ja ae">
+				<em class="f50">
+					{{if value.tallyMode == 1}}
+						+
+					{{else}}
+						-
+					{{/if}}
+					{{value.integral}}
+				</em>
+				<span class="c9">{{value.createDate}}</span>
+			</div>
+		</a>
+		{{/each}}
+		{{else}}
+		{{include 'integral_tpl_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="integral_cjdk_tpl" type="text/html">
+		<div class="fn row-3 mt20 mb20">
+			<a class="flex ac jb" onclick="getUrl('integral/detail/index.html')">
+				<span class="flex">超级抵扣</span>
+				<i class="ico-btn arrow-r"></i>
+			</a>
+			<div class="scroll-x">
+				<ul class="flex">
+				{{each data value i}}
+					<li class="fn" 
+						onclick="getUrlGoods('{{value.productId}}')"
+						title="{{value.productName}}">
+						<img src="{{value.productPic}}">
+						<p>¥{{value.salePrice}}</p>
+					</li>
+				{{/each}}
+				</ul>
+			</div>
+		</div>
+	</script>
+
+	<script id="integral_tpl_empty" type="text/html">
+		<div class="page-empty empty-integral flex dc ac jc fg">
+			<i></i>
+			<p>当前积分为空</p>
+		</div>
+	</script>
+
+	<script src="integral/index.js?var=1.0" async></script>
+</div>

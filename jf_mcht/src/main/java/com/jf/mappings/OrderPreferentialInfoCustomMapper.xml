@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.OrderPreferentialInfoCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.OrderPreferentialInfoCustom"  extends="com.jf.dao.OrderPreferentialInfoMapper.BaseResultMap">
+  	<result column="belong_desc" property="belongDesc" jdbcType="VARCHAR" />
+  	<result column="preferential_type_desc" property="preferentialTypeDesc" jdbcType="VARCHAR" />
+  	<result column="total_preferential_amount" property="totalPreferentialAmount" jdbcType="DECIMAL" />
+  	<result column="product_preferential_detail" property="productPreferentialDetail" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, combine_order_id, preferential_id, preferential_type, content, preferential_ammount, 
+    preferential_dtl, create_by, create_date, update_by, update_date, remarks, del_flag
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jf.entity.OrderPreferentialInfoCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_order_preferential_info t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+  
+  <select id="getOrderPreferentialInfosByOrderDtlId" parameterType="Integer" resultType="com.jf.entity.OrderPreferentialInfo">
+	SELECT a.* FROM bu_order_preferential_info a WHERE a.order_dtl_id = #{orderDtlId} and a.del_flag=0
+  </select>
+  
+  <select id="getOrderPreferentialInfosByorderDtlIds" resultType="com.jf.entity.OrderPreferentialInfoCustom">
+	SELECT  t.preferential_type,
+			t.preferential_id,
+			CONCAT(FUN_GET_STATUS_DESC("BU_ORDER_PREFERENTIAL_INFO", "BELONG", t.belong),"优惠") as belong_desc,
+			FUN_GET_STATUS_DESC("BU_ORDER_PREFERENTIAL_INFO", "PREFERENTIAL_TYPE", t.preferential_type) as preferential_type_desc,
+			t.preferential_content,
+			SUM(t.preferential_amount) as total_preferential_amount,
+			GROUP_CONCAT((select CONCAT(p.brand_name," ", p.art_no,"(&lt;span style=&apos;color:#FF0000&apos;&gt;", t.preferential_amount,"&lt;/span&gt;元",")") from bu_order_dtl p where p.id=t.order_dtl_id ) SEPARATOR '；') as product_preferential_detail
+		FROM bu_order_preferential_info t where t.del_flag=0 and t.order_dtl_id IN 
+		<foreach item="orderDtlId" collection="list" separator="," open="(" close=")" index="">    
+          #{orderDtlId, jdbcType=INTEGER}    
+        </foreach>
+		GROUP BY t.preferential_type,t.preferential_id;
+  </select>
+  
+</mapper>

@@ -1,0 +1,80 @@
+<div class="page activity-single activity-duanma flex dc" data-title="断码清仓" data-id="activity_templet_single_duanma">
+	<link rel="stylesheet" href="../static/css/common-tabTop2.css">
+	<link rel="stylesheet" href="activity/templet/css/single.css?var=1.0">
+	<link rel="stylesheet" href="activity/templet/css/single-dma.css?var=1.0">
+
+	<header class="flex ac jb fn">
+		<div class="flex fn"><i class="back ico-btn" onclick="back()"></i></div>
+		<p class="ellipsis">断码清仓</p>
+		<div class="fn"></div>
+	</header>
+
+	<div class="fg flex dc">
+		<div class="tab-box2 fn">
+			<div class="tag2 flex"></div>
+			<div class="tag3 flex"></div>
+			<div class="flex jc tab-footer" onclick="singleDuanma.sizeShow()">
+				<img class ="clearance-retract hide" src="activity/templet/images/clearance-retract.png">
+				<img class ="clearance-close" src="activity/templet/images/clearance-close.png">
+			</div>
+		</div>
+
+		<div class="scroll-y scroll-more activity-single-con fg w75"></div>
+	</div>
+
+	<!-- 选择下拉框 -->
+	<div class="popup popup-select" onclick="closeSelf(this)">
+		<div class="popup-select-con" onclick="stopSelf()">
+			<div class="tab-head flex p20">
+				<span class="flex ac">选择分类</span>
+				<div class="flex ac jc tab-select" onclick="closeSelf(this)">
+					<img class ="tab-retract" src="activity/templet/images/tab-close.png">
+				</div>
+			</div>
+
+			<div class="tab-body"></div>
+		</div>
+	</div>
+
+	<script id="activity_single_duanma_list_tpl" type="text/html">
+		{{if list.length}}
+			{{each list value i}}
+		<a class="mb20" onclick="getUrlGoods('{{value.productId}}')">
+			<div class="con-1 h345">
+				<img src="{{value.productPic}}" alt="">
+				{{if value.stockSum <= 0}}
+				<div class="flex jc ac">已售罄</div>
+				<i class="no-goods-mask"></i>
+				{{/if}}
+			</div>
+			<div class="con-2">
+				<p title="{{value.productName}}">{{value.productName}}</p>
+				<div class="scroll-x">
+					<span>
+						<strong class="f50">{{value.salePrice}}</strong>
+						<s class="c9">{{value.tagPrice}}</s>
+					</span>
+					{{if value.discount}}
+					<mark class="btn-f50">{{value.discount}}折</mark>
+					{{/if}}
+					{{if value.manageSelf == '1'}}
+					<i class="manageSelf ml10">自营</i>
+					{{/if}}
+				</div>
+			</div>
+		</a>
+			{{/each}}
+		{{else}}
+			{{include 'activity_single_duanma_empty'}}
+		{{/if}}
+	</script>
+
+	<script id="activity_single_duanma_empty" type="text/html">
+		<div class="page-empty empty-goods flex dc ac jc fg">
+			<i></i>
+			<p>对不起, 此类目没有商品</p>
+		</div>
+	</script>
+
+	<script src="activity/templet/js/single-dma.js?var=1.0" async></script>
+</div>

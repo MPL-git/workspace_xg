@@ -1,0 +1,112 @@
+html, body, .wrapper {
+	height: 100%;
+}
+.wrapper {
+	background: #f4f4f4;
+	font-size: .28rem;
+}
+
+h2, h3 {
+	font-weight: bold;
+}
+h2 {
+	line-height: .74rem;
+	font-size: .36rem;
+	text-align: center;
+}
+h3 {
+	line-height: .66rem;
+	font-size: .3rem;
+	padding-top: .1rem;
+}
+
+.con {
+	padding: 0 .2rem;
+	background: #fff;
+}
+.mt20 {
+	margin-top: .2rem;
+}
+.btn-apply {
+	height: 1rem;
+	background: #ff5050;
+	color: #fff;
+	font-size: .36rem;
+}
+
+.banner {
+	height: 3.75rem;
+}
+.describe {
+	padding-top: .25rem;
+	line-height: .4rem;
+	text-indent: 2em;
+}
+
+.advantage h2 {
+	padding-top: .35rem;
+}
+.advantage div {
+	padding-top: .1rem;
+	line-height: .7rem;
+}
+.advantage p {
+	width: 3.45rem;
+	height: .7rem;
+	margin-bottom: .2rem;
+	padding-left: .2rem;
+	background: #f4f4f4;
+	box-sizing: border-box;
+}
+
+.mode h2 {
+	padding-top: .36rem;
+}
+.mode p {
+	line-height: .56rem;
+	font-size: .26rem;
+}
+
+.category h2 {
+	padding-top: .44rem;
+}
+.category div {
+	height: 2.1rem;
+	padding-top: .2rem;
+	line-height: .66rem;
+	font-size: .26rem;
+	text-align: center;
+}
+.category img {
+	width: .84rem;
+}
+
+.process {
+	line-height: .45rem;
+	padding-bottom: .4rem;
+}
+.process h3:first-of-type {
+	padding: 0;
+}
+
+.standard h2 {
+	padding-top: .1rem;
+}
+.standard div {
+	line-height: .66rem;
+}
+.standard a {
+	width: 100%;
+}
+.standard span {
+	width: .92rem;
+	font-size: .26rem;
+}
+.standard span:after {
+	width: .13rem;
+	height: .2rem;
+	content: '';
+	margin-left: .1rem;
+	background: url(../images/apply-pop/arrow-r.png) no-repeat;
+	background-size: contain;
+}

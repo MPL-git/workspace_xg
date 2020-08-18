@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<display-name>Created Web Application</display-name>
+	<context-param>
+		<description>spring自动加载以下内容</description>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+				classpath*:applicationContext*.xml
+		</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<servlet>
+		<servlet-name>fileServlet</servlet-name>
+		<servlet-class>com.jf.common.utils.FileServlet</servlet-class>
+		<init-param>
+			<param-name>url-pattern</param-name>
+			<param-value>/file_servelt</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>fileServlet</servlet-name>
+		<url-pattern>/file_servelt/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 处理post方式提交表单，解决乱码问题 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>*.shtml</url-pattern>
+	</filter-mapping>
+		<filter>
+		<filter-name>charFilter</filter-name>
+		<filter-class>com.jf.common.filter.CharFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>charFilter</filter-name>
+		<url-pattern> /*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>requestParameterFilter</filter-name>
+		<filter-class>com.jf.common.ext.filter.RequestParameterFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>requestParameterFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+
+	<!-- 处理用所有的请求的统一servlet也是spring MVC核心分发servlet -->
+	<!-- Processes application requests -->
+	<servlet>
+		<servlet-name>springMVC</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>springMVC</servlet-name>
+		<url-pattern>*.shtml</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>RandomImgServlet</servlet-name>
+		<servlet-class>com.jf.common.utils.RandomImgServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>RandomImgServlet</servlet-name>
+		<url-pattern>/servlet/captchacode</url-pattern>
+	</servlet-mapping>
+	<!-- 欢迎页面配置 -->
+	<welcome-file-list>
+		<welcome-file>login.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+    <session-config>  
+         <session-timeout>900</session-timeout>  
+    </session-config>
+	<error-page>
+		<error-code>400</error-code>
+		<location>/common/err/400.jsp</location>
+	</error-page>
+</web-app>

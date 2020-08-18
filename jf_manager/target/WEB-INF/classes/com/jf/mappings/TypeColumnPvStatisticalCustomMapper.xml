@@ -1,0 +1,1463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.TypeColumnPvStatisticalCustomMapper" >
+  <resultMap id="BaseResultMap" type="com.jf.entity.TypeColumnPvStatisticalCustom" extends="com.jf.dao.TypeColumnPvStatisticalMapper.BaseResultMap">
+    <result column="productType1Id" property="productType1Id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="addProductRate" property="addProductRate" jdbcType="VARCHAR" />
+    <result column="submitOrderRate" property="submitOrderRate" jdbcType="VARCHAR" />
+    <result column="paymentRate" property="paymentRate" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="VARCHAR" />
+      <result column="link_id" property="linkId" jdbcType="INTEGER" />
+      <result column="up_date" property="upDate" jdbcType="DATE" />
+      <result column="product_pic" property="productPic" jdbcType="VARCHAR" />
+      <result column="product_name" property="productName" jdbcType="VARCHAR" />
+      <!--<result column="product_code" property="productCode" jdbcType="VARCHAR" />-->
+      <result column="artbrandGroupEasy" property="artbrandGroupEasy" jdbcType="VARCHAR" />
+      <result column="producttype1Name" property="producttype1Name" jdbcType="VARCHAR" />
+      <result column="tag_price_min" property="tagPriceMin" jdbcType="DECIMAL" />
+      <result column="tag_price_max" property="tagPriceMax" jdbcType="DECIMAL" />
+      <result column="sale_price_min" property="salePriceMin" jdbcType="DECIMAL" />
+      <result column="sale_price_max" property="salePriceMax" jdbcType="DECIMAL" />
+      <result column="shop_status" property="shopStatus" jdbcType="VARCHAR" />
+      <result column="mcht_type" property="mchtType" jdbcType="VARCHAR" />
+      <result column="cooperate_begin_date" property="cooperateBeginDate" jdbcType="DATE" />
+      <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+      <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+      <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+      <!--<result column="shop_name" property="shopName" jdbcType="VARCHAR" />-->
+      <result column="mcht_product_brand_name" property="mchtProductBrandName" jdbcType="VARCHAR" />
+    <result column="add_product_rate" property="addProductRate" jdbcType="VARCHAR" />
+    <result column="submit_order_rate" property="submitOrderRate" jdbcType="VARCHAR" />
+    <result column="payment_rate" property="paymentRate" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="INTEGER" />
+    <!--<result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />-->
+    <result column="brand_id" property="brandId" jdbcType="VARCHAR" />
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+
+    <result column="all_visitors_num" property="allVisitorsNum" jdbcType="INTEGER" />
+    <result column="all_visitor_tourist_num" property="allVisitorTouristNum" jdbcType="INTEGER" />
+
+
+  </resultMap>
+
+  <sql id="getCategoryProductDataStatisticsListSql">
+    tcps.*,
+    bp.product_type1_id AS productType1Id,
+    (SELECT bpt.`name` FROM bu_product_type bpt where bpt.id = bp.product_type1_id AND bpt.del_flag = '0') AS name,
+    CONCAT(ROUND(tcps.shopping_cart_count/(tcps.total_visitor_count+tcps.total_visitor_count_tourist)*100,2),'%') AS addProductRate,
+    CONCAT(ROUND(tcps.sub_product_count/(tcps.total_visitor_count+tcps.total_visitor_count_tourist)*100,2),'%') AS submitOrderRate,
+    CONCAT(ROUND(tcps.pay_product_count/(tcps.total_visitor_count+tcps.total_visitor_count_tourist)*100,2),'%') AS paymentRate
+  </sql>
+
+  <select id="getCategoryProductDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    SELECT
+    <include refid="getCategoryProductDataStatisticsListSql" />
+    FROM
+    bu_type_column_pv_statistical tcps,bu_product bp
+    WHERE
+    tcps.type = '1'
+    AND tcps.value_id = bp.id
+    AND DATE_FORMAT(tcps.statistical_date, '%Y-%m-%d %H:%i:%s') <![CDATA[ >= ]]> #{beginDate}
+    AND DATE_FORMAT(tcps.statistical_date, '%Y-%m-%d %H:%i:%s') <![CDATA[ <= ]]> #{endDate}
+    AND tcps.column_type = #{columnType}
+    AND tcps.del_flag = '0'
+    AND bp.del_flag = '0'
+    GROUP BY bp.product_type1_id
+  </select>
+
+
+  <!--商品流量报表数据-->
+  <select id="getCommodityFlowReportData" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        select
+        bp.id as product_id,
+        bp.code as product_code,
+        bp.name,
+        bp.mcht_id,
+        tcps.column_type,
+        IFNULL(tcps.total_visitor_count,0) as total_visitor_count,
+        IFNULL(tcps.total_visitor_count_tourist,0) as total_visitor_count_tourist,
+        IFNULL(tcps.total_pv_count,0) as total_pv_count,
+        IFNULL(tcps.total_pv_count_tourist,0) as total_pv_count_tourist,
+        IFNULL(tcps.shopping_cart_count,0) as shopping_cart_count,
+        IFNULL(tcps.sub_product_count,0) as sub_product_count,
+        IFNULL(tcps.pay_product_count,0) as pay_product_count,
+        IFNULL(pay_amount_count,0) as pay_amount_count,
+        add_product_rate,
+        submit_order_rate,
+        payment_rate
+        from
+        bu_product bp
+        LEFT JOIN
+        (
+        select
+        value_id,
+        column_type,
+        sum(total_visitor_count) as total_visitor_count,
+        sum(total_visitor_count_tourist) as total_visitor_count_tourist,
+        sum(total_pv_count) as total_pv_count,
+        sum(total_pv_count_tourist) as total_pv_count_tourist,
+        sum(shopping_cart_count) as shopping_cart_count,
+        sum(sub_product_count) as sub_product_count,
+        sum(pay_product_count) as pay_product_count,
+        sum(pay_amount_count) as pay_amount_count,
+        CONCAT(ROUND(SUM(shopping_cart_count)/(SUM(total_visitor_count)+SUM(total_visitor_count_tourist))*100,2),'%') AS add_product_rate,
+        CONCAT(ROUND(SUM(sub_product_count)/SUM(shopping_cart_count)*100,2),'%') AS submit_order_rate,
+        CONCAT(ROUND(SUM(pay_product_count)/SUM(sub_product_count)*100,2),'%') AS payment_rate
+        from
+        bu_type_column_pv_statistical
+        where type ='1'
+        and statistical_date
+
+       <if test="payBegin != null" >
+        and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ >= ]]> #{payBegin}
+       </if>
+
+      <if test="payEnd != null" >
+          and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ <= ]]>  #{payEnd}
+      </if>
+
+      <if test="reportColumnId != null" >
+          and column_type = #{reportColumnId}
+        </if>
+        GROUP BY value_id
+        ) tcps
+        on bp.id = tcps.value_id
+        where
+        bp.status = '1'
+        and bp.del_flag = '0'
+        <if test="productCode != null" >
+          and bp.code = #{productCode}
+        </if>
+        <if test="productName != null" >
+          and bp.name like #{productName}
+        </if>
+
+        <if test="productTypeId != null" >
+          and bp.product_type1_id = #{productTypeId}
+        </if>
+        <if test="mchtId != null" >
+          and bp.mcht_id = #{mchtId}
+        </if>
+        <if test="brandId != null" >
+          and bp.brand_id = #{brandId}
+        </if>
+
+        ORDER BY
+        tcps.total_pv_count desc
+
+        <if test="limitSize!=null and limitSize!=null">
+          LIMIT #{limitStart},#{limitSize}
+        </if>
+  </select>
+
+
+  <!--商家流量报表数据-->
+  <select id="getShopFlowReportData" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+      SELECT
+      bmi.id AS mcht_id,
+      bmi.mcht_code,
+      bmi.shop_name,
+      IFNULL(tcps.total_visitor_count, 0) AS total_visitor_count,
+      IFNULL(
+      tcps.total_visitor_count_tourist,
+      0
+      ) AS total_visitor_count_tourist,
+      IFNULL(tcps.total_pv_count, 0) AS total_pv_count,
+      IFNULL(
+      tcps.total_pv_count_tourist,
+      0
+      ) AS total_pv_count_tourist,
+      IFNULL(tcps.shopping_cart_count, 0) AS shopping_cart_count,
+      IFNULL(tcps.sub_product_count, 0) AS sub_product_count,
+      IFNULL(tcps.pay_product_count, 0) AS pay_product_count,
+      IFNULL(pay_amount_count, 0) AS pay_amount_count,
+      add_product_rate,
+      submit_order_rate,
+      payment_rate
+      FROM
+      bu_mcht_info bmi
+      LEFT JOIN (
+      SELECT
+      bp.mcht_id AS mcht_id,
+      value_id,
+      column_type,
+      sum(total_visitor_count) AS total_visitor_count,
+      sum(
+      total_visitor_count_tourist
+      ) AS total_visitor_count_tourist,
+      sum(total_pv_count) AS total_pv_count,
+      sum(total_pv_count_tourist) AS total_pv_count_tourist,
+      sum(shopping_cart_count) AS shopping_cart_count,
+      sum(sub_product_count) AS sub_product_count,
+      sum(pay_product_count) AS pay_product_count,
+      sum(pay_amount_count) AS pay_amount_count,
+      CONCAT(
+      ROUND(
+      SUM(shopping_cart_count) / (
+      SUM(total_visitor_count) + SUM(
+      total_visitor_count_tourist
+      )
+      ) * 100,
+      2
+      ),
+      '%'
+      ) AS add_product_rate,
+      CONCAT(
+      ROUND(
+      SUM(sub_product_count) / SUM(shopping_cart_count) * 100,
+      2
+      ),
+      '%'
+      ) AS submit_order_rate,
+      CONCAT(
+      ROUND(
+      SUM(pay_product_count) / SUM(sub_product_count) * 100,
+      2
+      ),
+      '%'
+      ) AS payment_rate
+      FROM
+      bu_type_column_pv_statistical a,
+      bu_product bp
+      WHERE
+      a.type = '1'
+      and a.value_id = bp.id
+      <if test="payBegin != null" >
+          and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ >= ]]> #{payBegin}
+      </if>
+
+      <if test="payEnd != null" >
+          and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ <= ]]>  #{payEnd}
+      </if>
+
+    <if test="reportColumnId != null" >
+      and column_type = #{reportColumnId}
+    </if>
+    <if test="productTypeId != null" >
+      AND bp.product_type1_id = #{productTypeId}
+    </if>
+    <if test="brandId != null" >
+      AND bp.brand_id = #{brandId}
+    </if>
+
+    <if test="mchtCode != null" >
+        AND bp.mcht_id in (select DISTINCT id from bu_mcht_info where del_flag ='0' and status = '1' and mcht_code =#{mchtCode})
+    </if>
+    <if test="mchtName != null" >
+        AND bp.mcht_id in (select DISTINCT id from bu_mcht_info where del_flag ='0' and status = '1' and shop_name like #{mchtName})
+    </if>
+
+    GROUP BY bp.mcht_id
+    ) tcps
+    on bmi.id = tcps.mcht_id
+    where
+    bmi.status = '1'
+    and bmi.del_flag = '0'
+
+    <if test="mchtCode != null" >
+      AND bmi.mcht_code = #{mchtCode}
+    </if>
+
+    <if test="mchtName != null" >
+     AND bmi.shop_name like #{mchtName}
+    </if>
+
+    <if test="productTypeId != null" >
+      AND bmi.id in (SELECT mpt.mcht_id FROM bu_mcht_product_type mpt WHERE mpt.del_flag = '0' AND mpt.is_main = '1' AND mpt.status = '1' AND mpt.product_type_id = #{productTypeId}  )
+    </if>
+
+    <if test="brandId != null" >
+       AND bmi.id in (select bmpb.mcht_id from bu_mcht_product_brand bmpb where bmpb.del_flag='0' and bmpb.status ='1' and  bmpb.product_brand_id  = #{brandId})
+    </if>
+
+      ORDER BY tcps.total_pv_count desc
+    <if test="limitSize!=null and limitSize!=null">
+      LIMIT #{limitStart},#{limitSize}
+    </if>
+  </select>
+
+  <!--品牌流量报表数据-->
+  <select id="getBrandFlowReportData" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    bpb.id as brand_id,
+    bpb.name ,
+    IFNULL(tcps.total_visitor_count,0) as total_visitor_count,
+    IFNULL(tcps.total_visitor_count_tourist,0) as total_visitor_count_tourist,
+    IFNULL(tcps.total_pv_count,0) as total_pv_count,
+    IFNULL(tcps.total_pv_count_tourist,0) as total_pv_count_tourist,
+    IFNULL(tcps.shopping_cart_count,0) as shopping_cart_count,
+    IFNULL(tcps.sub_product_count,0) as sub_product_count,
+    IFNULL(tcps.pay_product_count,0) as pay_product_count,
+    IFNULL(pay_amount_count,0) as pay_amount_count,
+    add_product_rate,
+    submit_order_rate,
+    payment_rate
+    from
+    bu_product_brand bpb
+    LEFT JOIN
+    (
+    select
+    bp.id,
+    bp.brand_id,
+    sum(total_visitor_count) as total_visitor_count,
+    sum(total_visitor_count_tourist) as total_visitor_count_tourist,
+    sum(total_pv_count) as total_pv_count,
+    sum(total_pv_count_tourist) as total_pv_count_tourist,
+    sum(shopping_cart_count) as shopping_cart_count,
+    sum(sub_product_count) as sub_product_count,
+    sum(pay_product_count) as pay_product_count,
+    sum(pay_amount_count) as pay_amount_count,
+    CONCAT(ROUND(SUM(shopping_cart_count)/(SUM(total_visitor_count)+SUM(total_visitor_count_tourist))*100,2),'%') AS add_product_rate,
+      CONCAT(ROUND(SUM(sub_product_count)/SUM(shopping_cart_count)*100,2),'%') AS submit_order_rate,
+      CONCAT(ROUND(SUM(pay_product_count)/SUM(sub_product_count)*100,2),'%') AS payment_rate
+    from
+    bu_product bp ,bu_type_column_pv_statistical btcps
+    where btcps.type = '1'
+    and bp.id = btcps.value_id
+      <if test="payBegin != null" >
+          and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ >= ]]> #{payBegin}
+      </if>
+
+      <if test="payEnd != null" >
+          and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ <= ]]>  #{payEnd}
+      </if>
+    <if test="productTypeId != null" >
+      and bp.product_type1_id = #{productTypeId}
+    </if>
+    <if test="reportColumnId != null" >
+      and btcps.column_type = #{reportColumnId}
+    </if>
+
+    <if test="mchtId != null" >
+      and bp.mcht_id = #{mchtId}
+    </if>
+
+
+    GROUP BY bp.brand_id
+    )tcps
+    on bpb.id = tcps.brand_id
+    where bpb.del_flag ='0'
+    <if test="brandName!=null">
+      and bpb.name like #{brandName}
+    </if>
+
+
+    <if test="mchtId != null" >
+      and bpb.id in (select distinct mpb.product_brand_id  from bu_mcht_product_brand mpb where mpb.del_flag='0' and mpb.mcht_id = #{mchtId})
+    </if>
+    <if test="productTypeId != null" >
+      and  bpb.id in (select t.brand_id from bu_product t where t.del_flag='0' and t.product_type1_id = #{productTypeId})
+    </if>
+
+      ORDER BY tcps.total_pv_count desc
+
+    <if test="limitSize!=null and limitSize!=null">
+      LIMIT #{limitStart},#{limitSize}
+    </if>
+
+
+  </select>
+
+
+  <!--类目流量报表数据-->
+  <select id="getcategoryFlowReportData" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+    select
+    bpt.id as type_id,
+    bpt.name,
+    IFNULL(tcps.total_visitor_count,0) as total_visitor_count,
+    IFNULL(tcps.total_visitor_count_tourist,0) as total_visitor_count_tourist,
+    IFNULL(tcps.total_pv_count,0) as total_pv_count,
+    IFNULL(tcps.total_pv_count_tourist,0) as total_pv_count_tourist,
+    IFNULL(tcps.shopping_cart_count,0) as shopping_cart_count,
+    IFNULL(tcps.sub_product_count,0) as sub_product_count,
+    IFNULL(tcps.pay_product_count,0) as pay_product_count,
+    IFNULL(pay_amount_count,0) as pay_amount_count,
+    add_product_rate,
+    submit_order_rate,
+    payment_rate
+    from
+    bu_product_type bpt
+    LEFT JOIN
+    (
+    select
+    bp.id,
+    bp.product_type1_id,
+    sum(total_visitor_count) as total_visitor_count,
+    sum(total_visitor_count_tourist) as total_visitor_count_tourist,
+    sum(total_pv_count) as total_pv_count,
+    sum(total_pv_count_tourist) as total_pv_count_tourist,
+    sum(shopping_cart_count) as shopping_cart_count,
+    sum(sub_product_count) as sub_product_count,
+    sum(pay_product_count) as pay_product_count,
+    sum(pay_amount_count) as pay_amount_count,
+    CONCAT(ROUND(SUM(shopping_cart_count)/(SUM(total_visitor_count)+SUM(total_visitor_count_tourist))*100,2),'%') AS add_product_rate,
+    CONCAT(ROUND(SUM(sub_product_count)/SUM(shopping_cart_count)*100,2),'%') AS submit_order_rate,
+    CONCAT(ROUND(SUM(pay_product_count)/SUM(sub_product_count)*100,2),'%') AS payment_rate
+    from
+    bu_product bp ,bu_type_column_pv_statistical btcps
+    where btcps.type = '1'
+    and bp.id = btcps.value_id
+      <if test="payBegin != null" >
+          and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ >= ]]> #{payBegin}
+      </if>
+
+      <if test="payEnd != null" >
+          and DATE_FORMAT(statistical_date, '%Y-%m-%d %H:%i:%s')  <![CDATA[ <= ]]>  #{payEnd}
+      </if>
+      <if test="productTypeId!=null ">
+          AND bp.producut_type1_id = #{productTypeId}
+      </if>
+    <if test="reportColumnId != null" >
+      and btcps.column_type = #{reportColumnId}
+    </if>
+    GROUP BY bp.product_type1_id
+    )tcps
+    on bpt.id = tcps.product_type1_id
+    where bpt.del_flag='0'
+    and bpt.status = '1'
+    and bpt.t_level = '1'
+    <if test="productTypeId!=null ">
+      AND bpt.id = #{productTypeId}
+    </if>
+    <if test="productTypeName!=null ">
+      AND bpt.name like #{productTypeName}
+    </if>
+      ORDER BY tcps.total_pv_count desc
+
+    <if test="limitSize!=null and limitSize!=null">
+      LIMIT #{limitStart},#{limitSize}
+    </if>
+
+  </select>
+
+
+    <sql id="selectDataStatisticsListSql">
+        sn.weight,
+        sn.link_id,
+        sn.up_date,
+        (SELECT bpp.pic FROM bu_product_pic bpp WHERE bpp.product_id = sn.link_id AND bpp.is_default='1' AND bpp.del_flag = '0') product_pic,
+        (SELECT bp.name FROM bu_product bp WHERE bp.id = sn.link_id AND bp.del_flag = '0') product_name,
+        (SELECT bp.code FROM bu_product bp WHERE bp.id = sn.link_id AND bp.del_flag = '0') product_code,
+        (SELECT bpb.name FROM bu_product bp,bu_product_brand bpb WHERE sn.link_id=bp.id AND bp.brand_id=bpb.id AND bp.del_flag='0') artbrandGroupEasy,
+        (SELECT bpt.name FROM bu_product bp,bu_product_type bpt WHERE bp.id = sn.link_id AND bp.product_type1_id = bpt.id AND bpt.`status` = '1' AND bp.del_flag = '0' AND bpt.del_flag = '0') producttype1Name,
+        (SELECT min(a.tag_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') tag_price_min,
+        (SELECT max(a.tag_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') tag_price_max,
+        (SELECT min(a.sale_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') sale_price_min,
+        (SELECT max(a.sale_price) FROM bu_product_item a, bu_product p WHERE a.product_id=p.id AND sn.link_id=p.id AND a.del_flag='0') sale_price_max,
+        total_visitor_count,
+        total_visitor_count_tourist,
+        total_pv_count,
+        total_pv_count_tourist,
+        shopping_cart_count,
+        sub_product_count,
+        pay_product_count,
+        addProductRate,
+        submitOrderRate,
+        paymentRate
+    </sql>
+
+    <sql id="dataStatisticsListSql">
+        SELECT
+        value_id,
+        SUM(total_visitor_count) AS total_visitor_count,
+        SUM(total_visitor_count_tourist) AS total_visitor_count_tourist,
+        SUM(total_pv_count) AS total_pv_count,
+        SUM(total_pv_count_tourist) AS total_pv_count_tourist,
+        SUM(shopping_cart_count) AS shopping_cart_count,
+        SUM(sub_product_count) AS sub_product_count,
+        SUM(pay_product_count) AS pay_product_count,
+        IFNULL(ROUND(sum(shopping_cart_count)*100/(sum(total_visitor_count)+sum(total_visitor_count_tourist)),4),0) as addProductRate,
+        IFNULL(ROUND(sum(sub_product_count)*100/(sum(total_visitor_count)+sum(total_visitor_count_tourist)),4),0) as submitOrderRate,
+        IFNULL(ROUND(sum(pay_product_count)*100/(sum(total_visitor_count)+sum(total_visitor_count_tourist)),4),0) as paymentRate
+        FROM bu_type_column_pv_statistical tcps
+        WHERE
+        tcps.type = #{statisticType}
+        AND tcps.column_type = #{columnType}
+        AND DATE_FORMAT(tcps.statistical_date, '%Y-%m-%d %H:%i:%s') <![CDATA[ >= ]]> #{beginDate}
+        AND DATE_FORMAT(tcps.statistical_date, '%Y-%m-%d %H:%i:%s') <![CDATA[ <= ]]> #{endDate}
+        AND tcps.del_flag = '0'
+        GROUP BY tcps.value_id
+    </sql>
+
+    <select id="selectDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        <include refid="selectDataStatisticsListSql" />
+        FROM
+        bu_source_niche sn
+        LEFT JOIN (
+            <include refid="dataStatisticsListSql"/>
+        ) s
+        ON sn.link_id = s.value_id
+        WHERE
+        sn.type = #{type}
+        <if test="type != 3" >
+            AND sn.audit_status = '1'
+        </if>
+        AND sn.status = '0'
+        AND sn.link_id IN (
+        SELECT
+        p.id
+        FROM
+        bu_product p
+        WHERE
+        sn.link_id = p.id
+        AND p.del_flag = '0'
+        AND p.STATUS = '1'
+        )
+        AND sn.del_flag = '0'
+        <if test="productId != null" >
+            AND exists(select bp.id from bu_product bp where bp.id = sn.link_id and bp.code = #{productId} and bp.del_flag = '0')
+        </if>
+        <if test="productName != null" >
+            AND exists(select bp.id from bu_product bp where bp.id = sn.link_id and bp.name like #{productName} and bp.del_flag = '0')
+        </if>
+        <if test="mchtCode != null" >
+            AND sn.link_id in (select bp.id from bu_product bp,bu_mcht_info bmi where bp.id = sn.link_id and bmi.id = bp.mcht_id and bp.del_flag = '0' and bmi.del_flag='0' and bmi.mcht_code =  #{mchtCode})
+        </if>
+        <if test="mchtName != null" >
+            AND sn.link_id in (select bp.id from bu_product bp,bu_mcht_info bmi where bp.id = sn.link_id and bmi.id = bp.mcht_id  and bp.del_flag = '0' and bmi.del_flag='0' and ( bmi.shop_name like #{mchtName}  or bmi.company_name like #{mchtName} ) )
+        </if>
+        <if test="productTypeId != null" >
+            AND exists(select p.id from bu_product p where sn.link_id=p.id and p.del_flag='0' and p.product_type1_id = #{productTypeId})
+        </if>
+        order by
+        IFNULL(sn.weight,0) desc, sn.up_date desc
+        <if test="limitSize!=null and limitSize!=''">
+            LIMIT #{limitStart},#{limitSize}
+        </if>
+    </select>
+
+    <sql id="selectShopDataStatisticsListSql">
+        sn.weight,
+        sn.link_id,
+        sn.up_date,
+        (SELECT mi.status FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id) shop_status,
+        (SELECT mi.mcht_type FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id) mcht_type,
+        (SELECT mi.cooperate_begin_date FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)cooperate_begin_date,
+        (SELECT mi.mcht_code FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)mcht_code,
+        (SELECT pt.name FROM bu_mcht_product_type mpt, bu_product_type pt WHERE sn.link_id = mpt.mcht_id AND mpt.is_main = '1' AND mpt.del_flag = '0' AND mpt.product_type_id = pt.id AND pt.status = '1' AND pt.del_flag = '0' limit 1 ) product_type_name,
+        (SELECT mi.company_name FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)company_name,
+        (SELECT mi.shop_name FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND sn.link_id = mi.id)shop_name,
+        (SELECT GROUP_CONCAT(pb.`name`) FROM bu_mcht_product_brand mpb, bu_product_brand pb where mpb.mcht_id = sn.link_id and mpb.del_flag = '0' AND mpb.product_brand_id = pb.id AND pb.del_flag = '0') mcht_product_brand_name,
+        IFNULL(total_visitor_count,0) AS total_visitor_count,
+        IFNULL(total_visitor_count_tourist,0) AS total_visitor_count_tourist,
+        IFNULL(total_pv_count,0) AS total_pv_count,
+        IFNULL(total_pv_count_tourist,0) AS total_pv_count_tourist,
+        IFNULL(shopping_cart_count,0) AS shopping_cart_count,
+        IFNULL(sub_product_count,0) AS sub_product_count,
+        IFNULL(pay_product_count,0) AS pay_product_count,
+        addProductRate,
+        submitOrderRate,
+        paymentRate
+    </sql>
+
+    <select id="selectShopDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        <include refid="selectShopDataStatisticsListSql" />
+        FROM
+        bu_source_niche sn
+        LEFT JOIN (
+        <include refid="dataStatisticsListSql"/>
+        ) s
+        ON sn.link_id = s.value_id
+        WHERE
+        sn.type = #{type}
+        AND
+        sn.status = '0'
+        AND
+        sn.audit_status = '1'
+        AND sn.del_flag = '0'
+        <if test="mchtCode != null" >
+            AND sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and bmi.mcht_code =  #{mchtCode})
+        </if>
+        <if test="mchtName != null" >
+            AND sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and ( bmi.shop_name like #{mchtName}  or bmi.company_name like #{mchtName}))
+        </if>
+        <if test="productTypeId != null" >
+            AND exists(select bpt.id from bu_mcht_product_type bmpt,bu_product_type bpt where bmpt.mcht_id = sn.link_id and bmpt.is_main = '1' and bmpt.status = '1' and bpt.id = bmpt.product_type_id and bpt.status = '1' and bpt.del_flag = '0' and bmpt.del_flag='0' and bmpt.product_type_id = #{productTypeId})
+        </if>
+        order by
+        IFNULL(sn.weight,0) desc, sn.up_date desc
+        <if test="limitSize!=null and limitSize!=''">
+            LIMIT #{limitStart},#{limitSize}
+        </if>
+    </select>
+
+    <sql id="selectNowDataStatisticsListSql">
+    sn.weight,
+	sn.link_id,
+	sn.up_date,
+	(
+		SELECT
+			bpp.pic
+		FROM
+			bu_product_pic bpp
+		WHERE
+			bpp.product_id = sn.link_id
+		AND bpp.is_default = '1'
+		AND bpp.del_flag = '0'
+	) product_pic,
+	(
+		SELECT
+			bp. NAME
+		FROM
+			bu_product bp
+		WHERE
+			bp.id = sn.link_id
+		AND bp.del_flag = '0'
+	) product_name,
+	(
+		SELECT
+			bp. CODE
+		FROM
+			bu_product bp
+		WHERE
+			bp.id = sn.link_id
+		AND bp.del_flag = '0'
+	) product_code,
+	(
+		SELECT
+			bpb. NAME
+		FROM
+			bu_product bp,
+			bu_product_brand bpb
+		WHERE
+			sn.link_id = bp.id
+		AND bp.brand_id = bpb.id
+		AND bp.del_flag = '0'
+	) artbrandGroupEasy,
+	(
+		SELECT
+			bpt. NAME
+		FROM
+			bu_product bp,
+			bu_product_type bpt
+		WHERE
+			bp.id = sn.link_id
+		AND bp.product_type1_id = bpt.id
+		AND bpt.`status` = '1'
+		AND bp.del_flag = '0'
+		AND bpt.del_flag = '0'
+	) productType1Name,
+	(
+		SELECT
+			min(a.tag_price)
+		FROM
+			bu_product_item a,
+			bu_product p
+		WHERE
+			a.product_id = p.id
+		AND sn.link_id = p.id
+		AND a.del_flag = '0'
+	) tag_price_min,
+	(
+		SELECT
+			max(a.tag_price)
+		FROM
+			bu_product_item a,
+			bu_product p
+		WHERE
+			a.product_id = p.id
+		AND sn.link_id = p.id
+		AND a.del_flag = '0'
+	) tag_price_max,
+	(
+		SELECT
+			min(a.sale_price)
+		FROM
+			bu_product_item a,
+			bu_product p
+		WHERE
+			a.product_id = p.id
+		AND sn.link_id = p.id
+		AND a.del_flag = '0'
+	) sale_price_min,
+	(
+		SELECT
+			max(a.sale_price)
+		FROM
+			bu_product_item a,
+			bu_product p
+		WHERE
+			a.product_id = p.id
+		AND sn.link_id = p.id
+		AND a.del_flag = '0'
+	) sale_price_max,
+	IFNULL(bmf.total_visitor_count,0) AS total_visitor_count,
+	IFNULL(bmf.total_visitor_count_tourist,0) AS total_visitor_count_tourist,
+	IFNULL(bmf.total_pv_count,0) AS total_pv_count,
+	IFNULL(bmf.total_pv_count_tourist,0) AS total_pv_count_tourist,
+	IFNULL(a.shopping_cart_count, 0) AS shopping_cart_count,
+	IFNULL(b.sub_product_count, 0) AS sub_product_count,
+	IFNULL(c.pay_product_count, 0) AS pay_product_count,
+	IFNULL(
+		ROUND(
+			a.shopping_cart_count * 100 / (bmf.total_visitor_count),
+			4
+		),
+		0
+	) AS addProductRate,
+	IFNULL(
+		ROUND(
+			b.sub_product_count * 100 / (bmf.total_visitor_count),
+			4
+		),
+		0
+	) AS submitOrderRate,
+	IFNULL(
+		ROUND(
+			c.pay_product_count * 100 / (bmf.total_visitor_count),
+			4
+		),
+		0
+	) AS paymentRate
+    </sql>
+
+    <select id="selectNowDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+            <include refid="selectNowDataStatisticsListSql" />
+      <![CDATA[
+        FROM
+        bu_source_niche sn
+        LEFT JOIN (
+        SELECT
+        product_id,
+        COUNT(DISTINCT(bmf.member_id)) AS total_visitor_count,
+        0 AS total_visitor_count_tourist,
+        COUNT(bmf.member_id) AS total_pv_count,
+        0 AS total_pv_count_tourist
+        FROM
+        bu_member_footprint bmf
+        WHERE
+        bmf.del_flag = '0'
+        AND bmf.update_date >= #{beginDate}
+        AND bmf.update_date <= #{endDate}
+        GROUP BY
+        bmf.product_id
+        ) bmf ON sn.link_id = bmf.product_id
+        LEFT JOIN (
+        SELECT
+        bod.product_id,
+        SUM(bsc.quantity) AS shopping_cart_count
+        FROM
+        bu_shopping_cart bsc,
+        bu_order_dtl bod
+        WHERE
+        bsc.order_dtl_id = bod.id
+        AND bsc.create_date >= #{beginDate}
+        AND bsc.create_date <= #{endDate}
+        AND bsc.del_flag = '0'
+        AND bod.del_flag = '0'
+        GROUP BY
+        bod.product_id
+        ) a ON a.product_id = sn.link_id
+        LEFT JOIN (
+        SELECT
+        bod.product_id,
+        SUM(bod.quantity) AS sub_product_count
+        FROM
+        bu_order_dtl bod
+        WHERE
+        bod.create_date >= #{beginDate}
+        AND bod.create_date <= #{endDate}
+        AND bod.del_flag = '0'
+        GROUP BY
+        bod.product_id
+        ) b ON b.product_id = sn.link_id
+        LEFT JOIN (
+        SELECT
+        bod.product_id,
+        SUM(bod.quantity) AS pay_product_count
+        FROM
+        bu_order_dtl bod,
+        bu_sub_order bso,
+        bu_combine_order bco
+        WHERE
+        bod.sub_order_id = bso.id
+        AND bso.combine_order_id = bco.id
+        AND bco. STATUS = '1'
+        AND bco.pay_date >= #{beginDate}
+        AND bco.pay_date <= #{endDate}
+        AND bco.pay_status = '1'
+        AND bod.del_flag = '0'
+        AND bso.del_flag = '0'
+        AND bco.del_flag = '0'
+        GROUP BY
+        bod.product_id
+        ) c ON c.product_id = sn.link_id
+        WHERE
+        sn.link_id IN (
+        SELECT
+        p.id
+        FROM
+        bu_product p
+        WHERE
+        sn.link_id = p.id
+        AND p.del_flag = '0'
+        AND p. STATUS = '1'
+        )
+        AND sn.type = #{type}
+        AND sn. STATUS = '0'
+        AND sn.audit_status = '1'
+        AND sn.del_flag = '0'
+        ]]>
+        <if test="type != 3" >
+            AND sn.audit_status = '1'
+        </if>
+        <if test="productId != null" >
+            AND exists(select bp.id from bu_product bp where bp.id = sn.link_id and bp.code = #{productId} and bp.del_flag = '0')
+        </if>
+        <if test="productName != null" >
+            AND exists(select bp.id from bu_product bp where bp.id = sn.link_id and bp.name like #{productName} and bp.del_flag = '0')
+        </if>
+        <if test="mchtCode != null" >
+            AND sn.link_id in (select bp.id from bu_product bp,bu_mcht_info bmi where bp.id = sn.link_id and bmi.id = bp.mcht_id and bp.del_flag = '0' and bmi.del_flag='0' and bmi.mcht_code =  #{mchtCode})
+        </if>
+        <if test="mchtName != null" >
+            AND sn.link_id in (select bp.id from bu_product bp,bu_mcht_info bmi where bp.id = sn.link_id and bmi.id = bp.mcht_id  and bp.del_flag = '0' and bmi.del_flag='0' and ( bmi.shop_name like #{mchtName}  or bmi.company_name like #{mchtName} ) )
+        </if>
+        <if test="productTypeId != null" >
+            AND exists(select p.id from bu_product p where sn.link_id=p.id and p.del_flag='0' and p.product_type1_id = #{productTypeId})
+        </if>
+        order by
+        IFNULL(sn.weight,0) desc, sn.up_date desc
+        <if test="limitSize!=null and limitSize!=''">
+            LIMIT #{limitStart},#{limitSize}
+        </if>
+    </select>
+
+    <sql id="selectNowShopDataStatisticsListSql">
+       	sn.weight,
+	sn.link_id,
+	sn.up_date,
+	(
+		SELECT
+			mi. STATUS
+		FROM
+			bu_mcht_info mi
+		WHERE
+			mi.del_flag = '0'
+		AND sn.link_id = mi.id
+	) shop_status,
+	(
+		SELECT
+			mi.mcht_type
+		FROM
+			bu_mcht_info mi
+		WHERE
+			mi.del_flag = '0'
+		AND sn.link_id = mi.id
+	) mcht_type,
+	(
+		SELECT
+			mi.cooperate_begin_date
+		FROM
+			bu_mcht_info mi
+		WHERE
+			mi.del_flag = '0'
+		AND sn.link_id = mi.id
+	) cooperate_begin_date,
+	(
+		SELECT
+			mi.mcht_code
+		FROM
+			bu_mcht_info mi
+		WHERE
+			mi.del_flag = '0'
+		AND sn.link_id = mi.id
+	) mcht_code,
+	(
+		SELECT
+			pt. NAME
+		FROM
+			bu_mcht_product_type mpt,
+			bu_product_type pt
+		WHERE
+			sn.link_id = mpt.mcht_id
+		AND mpt.is_main = '1'
+		AND mpt.del_flag = '0'
+		AND mpt.product_type_id = pt.id
+		AND pt. STATUS = '1'
+		AND pt.del_flag = '0'
+		LIMIT 1
+	) product_type_name,
+	(
+		SELECT
+			mi.company_name
+		FROM
+			bu_mcht_info mi
+		WHERE
+			mi.del_flag = '0'
+		AND sn.link_id = mi.id
+	) company_name,
+	(
+		SELECT
+			mi.shop_name
+		FROM
+			bu_mcht_info mi
+		WHERE
+			mi.del_flag = '0'
+		AND sn.link_id = mi.id
+	) shop_name,
+	(
+		SELECT
+			GROUP_CONCAT(pb.`name`)
+		FROM
+			bu_mcht_product_brand mpb,
+			bu_product_brand pb
+		WHERE
+			mpb.mcht_id = sn.link_id
+		AND mpb.del_flag = '0'
+		AND mpb.product_brand_id = pb.id
+		AND pb.del_flag = '0'
+	) mcht_product_brand_name,
+	IFNULL(bmsf.total_visitor_count, 0) AS total_visitor_count,
+	IFNULL(
+		bmsf.total_visitor_count_tourist,
+		0
+	) AS total_visitor_count_tourist,
+	IFNULL(bmsf.total_pv_count, 0) AS total_pv_count,
+	IFNULL(
+		bmsf.total_pv_count_tourist,
+		0
+	) AS total_pv_count_tourist,
+	IFNULL(a.shopping_cart_count, 0) AS shopping_cart_count,
+	IFNULL(b.sub_product_count, 0) AS sub_product_count,
+	IFNULL(c.pay_product_count, 0) AS pay_product_count,
+	IFNULL(
+		ROUND(
+			a.shopping_cart_count * 100 / (bmsf.total_visitor_count),
+			4
+		),
+		0
+	) AS addProductRate,
+	IFNULL(
+		ROUND(
+			b.sub_product_count * 100 / (bmsf.total_visitor_count),
+			4
+		),
+		0
+	) AS submitOrderRate,
+	IFNULL(
+		ROUND(
+			c.pay_product_count * 100 / (bmsf.total_visitor_count),
+			4
+		),
+		0
+	) AS paymentRate
+    </sql>
+
+    <select id="selectNowShopDataStatisticsList" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        <include refid="selectNowShopDataStatisticsListSql" />
+     <![CDATA[
+        FROM
+        bu_source_niche sn
+        LEFT JOIN (
+        SELECT
+	    mcht_id,
+	    COUNT(DISTINCT(d.member_id)) AS total_visitor_count,
+	    0 AS total_visitor_count_tourist,
+	    COUNT(d.member_id) AS total_pv_count,
+	    0 AS total_pv_count_tourist
+        FROM
+	      (
+		    SELECT
+			    mcht_id,
+			    member_id
+		    FROM
+			    bu_member_shop_footprint bmsf
+		    WHERE
+			    bmsf.del_flag = '0'
+		    AND bmsf.update_date >= #{beginDate}
+		    AND bmsf.update_date <= #{endDate}
+		    UNION
+			    SELECT
+				    mcht_id,
+				    member_id
+			    FROM
+				    bu_member_footprint bmf,
+				    bu_product bp
+			    WHERE
+				    bmf.product_id = bp.id
+			    AND bmf.update_date >= #{beginDate}
+			    AND bmf.update_date <= #{endDate}
+			    AND bmf.del_flag = '0'
+			    AND bp.del_flag = '0'
+	        ) d
+            GROUP BY
+	        d.mcht_id
+        ) bmsf ON sn.link_id = bmsf.mcht_id
+        LEFT JOIN (
+        SELECT
+        mcht_id,
+        SUM(quantity) AS shopping_cart_count
+        FROM
+        bu_shopping_cart bsc
+        WHERE
+        bsc.create_date >= #{beginDate}
+        AND bsc.create_date <= #{endDate}
+        AND bsc.del_flag = '0'
+        GROUP BY
+        bsc.mcht_id
+        ) a ON a.mcht_id = sn.link_id
+        LEFT JOIN (
+        SELECT
+        bp.mcht_id AS mcht_id,
+        SUM(bod.quantity) AS sub_product_count
+        FROM
+        bu_order_dtl bod,
+        bu_product bp
+        WHERE
+        bod.product_id = bp.id
+        AND bod.create_date >= #{beginDate}
+        AND bod.create_date <= #{endDate}
+        AND bod.del_flag = '0'
+        GROUP BY
+        bp.mcht_id
+        ) b ON b.mcht_id = sn.link_id
+        LEFT JOIN (
+        SELECT
+        bso.mcht_id AS mcht_id,
+        SUM(bod.quantity) AS pay_product_count
+        FROM
+        bu_order_dtl bod,
+        bu_sub_order bso,
+        bu_combine_order bco
+        WHERE
+        bod.sub_order_id = bso.id
+        AND bso.combine_order_id = bco.id
+        AND bco. STATUS = '1'
+        AND bco.pay_date >= #{beginDate}
+        AND bco.pay_date <= #{endDate}
+        AND bco.pay_status = '1'
+        AND bod.del_flag = '0'
+        AND bso.del_flag = '0'
+        AND bco.del_flag = '0'
+        GROUP BY
+        bso.mcht_id
+        ) c ON c.mcht_id = sn.link_id
+        WHERE
+        sn.type = #{type}
+        AND sn. STATUS = '0'
+        AND sn.audit_status = '1'
+        AND sn.del_flag = '0'
+     ]]>
+        <if test="mchtCode != null" >
+            AND sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and bmi.mcht_code =  #{mchtCode})
+        </if>
+        <if test="mchtName != null" >
+            AND sn.link_id in (select bmi.id from bu_mcht_info bmi where bmi.id = sn.link_id and bmi.del_flag='0' and ( bmi.shop_name like #{mchtName}  or bmi.company_name like #{mchtName}))
+        </if>
+        <if test="productTypeId != null" >
+            AND exists(select bpt.id from bu_mcht_product_type bpt where bpt.mcht_id = sn.link_id and bpt.is_main = '1' and bpt.status = '1' and bpt.del_flag='0' and bpt.product_type_id = #{productTypeId})
+        </if>
+        order by
+        IFNULL(sn.weight,0) desc, sn.up_date desc
+        <if test="limitSize!=null and limitSize!=''">
+            LIMIT #{limitStart},#{limitSize}
+        </if>
+    </select>
+    <select id="selectActivityTrafficStatistics" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        SELECT
+            ba.id,
+            ba.NAME,
+            ba.seq_no AS seqNo,
+            ba.activity_area_id AS activityAreaId,
+            ba.entry_pic AS entryPic,
+            (
+            SELECT
+            a.id
+            FROM
+            bu_ad_info a
+            WHERE
+            a.link_id = ba.id
+            AND a.del_flag = '0'
+            AND a.type = '2'
+            AND a.catalog = '1'
+            AND a.position = '9'
+            AND a.link_type = '2'
+            AND a.STATUS = '1'
+            LIMIT 1
+            ) adInfoId,
+            (
+            SELECT
+            IFNULL( SUM( od.pay_amount ), 0 )
+            FROM
+            bu_combine_order co,
+            bu_sub_order so,
+            bu_order_dtl od
+            WHERE
+            co.del_flag = '0'
+            AND so.del_flag = '0'
+            AND co.pay_status = '1'
+            AND co.id = so.combine_order_id
+            AND so.id = od.sub_order_id
+            AND od.activity_id = ba.id
+            ) AS payAmountSum,
+            IFNULL( a.totalVisitorCount, 0 ) AS totalVisitorCount,
+            IFNULL( a.totalVisitorCountTourist, 0 ) AS totalVisitorCountTourist,
+            IFNULL( a.totalPvCount, 0 ) AS totalPvCount,
+            IFNULL( a.totalPvCountTourist, 0 ) AS totalPvCountTourist,
+            IFNULL( a.shoppingCartCount, 0 ) AS shoppingCartCount,
+            IFNULL( a.addProductRate, '0.00%' ) AS addProductRate,
+            IFNULL( a.subProductCount, 0 ) AS subProductCount,
+            IFNULL( a.submitOrderRate, '0.00%' ) AS submitOrderRate,
+            IFNULL( a.payProductCount, 0 ) AS payProductCount,
+            IFNULL( a.paymentRate, '0.00%' ) AS paymentRate
+        FROM
+            bu_activity ba
+            LEFT JOIN (
+                SELECT
+                    t.value_id AS valueId,
+                    IFNULL( SUM( t.total_visitor_count ), 0 ) AS totalVisitorCount,
+                    IFNULL( SUM( t.total_visitor_count_tourist ), 0 ) AS totalVisitorCountTourist,
+                    IFNULL( SUM( t.total_pv_count ), 0 ) AS totalPvCount,
+                    IFNULL( SUM( t.total_pv_count_tourist ), 0 ) AS totalPvCountTourist,
+                    IFNULL( SUM( t.shopping_cart_count ), 0 ) AS shoppingCartCount,
+                    CONCAT(
+                    ROUND(
+                    SUM( t.shopping_cart_count ) / ( SUM( t.total_visitor_count ) + SUM( t.total_visitor_count_tourist ) ) * 100,
+                    2
+                    ),
+                    '%'
+                    ) AS addProductRate,
+                    IFNULL( SUM( t.sub_product_count ), 0 ) AS subProductCount,
+                    CONCAT( ROUND( SUM( t.sub_product_count ) / SUM( t.shopping_cart_count ) * 100, 2 ), '%' ) AS submitOrderRate,
+                    IFNULL( SUM( t.pay_product_count ), 0 ) AS payProductCount,
+                    CONCAT( ROUND( SUM( t.pay_product_count ) / SUM( t.sub_product_count ) * 100, 2 ), '%' ) AS paymentRate
+                FROM
+                    bu_type_column_pv_statistical t
+                WHERE
+                    t.del_flag = '0'
+                    AND t.type = '3'
+                    <if test="beginTime != null and endTime != null" >
+                        AND t.statistical_date <![CDATA[ >= ]]> #{beginTime,jdbcType=TIMESTAMP}
+                        AND t.statistical_date <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
+                    </if>
+                GROUP BY
+                    t.value_id
+                ) a
+            ON a.valueId = ba.id
+        WHERE
+            ba.del_flag = '0'
+            AND ba.STATUS = '6'
+            AND EXISTS (
+                SELECT
+                baa.id
+                FROM
+                bu_activity_area baa
+                WHERE
+                baa.id = ba.activity_area_id
+                AND baa.del_flag = '0'
+                AND baa.source = '2'
+                AND ( baa.activity_end_time > NOW( ) OR baa.activity_end_time IS NULL )
+            )
+            <if test="activityId != null" >
+                AND ba.id = #{activityId,jdbcType=INTEGER}
+            </if>
+            <if test="name != null" >
+                AND ba.name LIKE #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="mchtCode != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = ba.mcht_id and mi.del_flag = '0' and mi.mcht_code = #{mchtCode,jdbcType=VARCHAR})
+            </if>
+            <if test="mchtName != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = ba.mcht_id and mi.del_flag = '0' and mi.shop_name LIKE #{mchtName,jdbcType=VARCHAR})
+            </if>
+            <if test="productTypeId != null" >
+                AND ba.product_type_id = #{productTypeId,jdbcType=INTEGER}
+            </if>
+        ORDER BY
+            IFNULL( ba.seq_no, 999999 ) ASC,
+            ( SELECT baa.activity_begin_time FROM bu_activity_area baa WHERE baa.id = ba.activity_area_id AND baa.del_flag = '0' ) DESC,
+            ba.id DESC
+        <if test="limitStart != null and limitSize != null " >
+            LIMIT #{limitStart},#{limitSize}
+        </if>
+    </select>
+
+    <select id="countActivityTrafficStatistics" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+        select
+            count(*)
+        from
+            bu_activity ba
+        WHERE
+            ba.del_flag = '0'
+            AND ba.STATUS = '6'
+            AND EXISTS (
+            SELECT
+            baa.id
+            FROM
+            bu_activity_area baa
+            WHERE
+            baa.id = ba.activity_area_id
+            AND baa.del_flag = '0'
+            AND baa.source = '2'
+            AND ( baa.activity_end_time > NOW( ) OR baa.activity_end_time IS NULL )
+            )
+            <if test="activityId != null" >
+                AND ba.id = #{activityId,jdbcType=INTEGER}
+            </if>
+            <if test="name != null" >
+                AND ba.name LIKE #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="mchtCode != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = ba.mcht_id and mi.del_flag = '0' and mi.mcht_code = #{mchtCode,jdbcType=VARCHAR})
+            </if>
+            <if test="mchtName != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = ba.mcht_id and mi.del_flag = '0' and mi.shop_name LIKE #{mchtName,jdbcType=VARCHAR})
+            </if>
+            <if test="productTypeId != null" >
+                AND ba.product_type_id = #{productTypeId,jdbcType=INTEGER}
+            </if>
+    </select>
+
+    <select id="selectSingleProductActivityTrafficStatistics" resultType="java.util.HashMap" parameterType="java.util.HashMap" >
+        SELECT
+            a.id AS id,
+            a.seq_no AS seqNo,
+            a.art_no AS artNo,
+            a.productId AS productId,
+            a.product_name AS productName,
+            a.code AS code,
+            a.product_pic AS productPic,
+            a.brand_name AS brandName,
+            a.shop_name AS shopName,
+            a.mcht_grade_desc AS mchtGradeDesc,
+            IFNULL( b.totalVisitorCount, 0 ) AS totalVisitorCount,
+            IFNULL( b.totalVisitorCountTourist, 0 ) AS totalVisitorCountTourist,
+            IFNULL( b.totalPvCount, 0 ) AS totalPvCount,
+            IFNULL( b.totalPvCountTourist, 0 ) AS totalPvCountTourist,
+            IFNULL( b.shoppingCartCount, 0 ) AS shoppingCartCount,
+            IFNULL( b.addProductRate, '0.00%' ) AS addProductRate,
+            IFNULL( b.subProductCount, 0 ) AS subProductCount,
+            IFNULL( b.submitOrderRate, '0.00%' ) AS submitOrderRate,
+            IFNULL( b.payProductCount, 0 ) AS payProductCount,
+            IFNULL( b.paymentRate, '0.00%' ) AS paymentRate
+        FROM
+            (
+            SELECT
+            spa.id,
+            spa.seq_no,
+            p.id AS productId,
+            p.art_no,
+            p.name AS product_name,
+            p.code,
+            (
+            SELECT
+            bp.pic
+            FROM
+            bu_product_pic bp
+            WHERE
+            spa.product_id = bp.product_id
+            AND bp.is_default = '1'
+            AND bp.del_flag = '0'
+            LIMIT 1
+            ) product_pic,
+            (
+            SELECT
+            bb.NAME
+            FROM
+            bu_product_brand bb
+            WHERE
+            bb.del_flag = '0'
+            AND bb.id = p.brand_id
+            LIMIT 1
+            ) brand_name,
+            ( SELECT bm.shop_name FROM bu_mcht_info bm WHERE spa.mcht_id = bm.id AND bm.del_flag = '0' LIMIT 1 ) shop_name,
+            FUN_GET_STATUS_DESC (
+            "BU_MCHT_INFO",
+            "GRADE",
+            ( SELECT mi.grade FROM bu_mcht_info mi WHERE mi.del_flag = '0' AND mi.id = spa.mcht_id )
+            ) mcht_grade_desc
+            FROM
+            bu_single_product_activity spa,
+            bu_product p
+            WHERE
+            spa.del_flag = '0'
+            AND p.del_flag = '0'
+            AND spa.product_id = p.id
+            AND spa.audit_status IN ( 1, 4, 3 )
+            AND spa.is_close = '0'
+            AND ( DATE_FORMAT( spa.end_time, '%Y-%m-%d %T' ) <![CDATA[ >= ]]> NOW( ) OR spa.end_time IS NULL )
+            <if test="type != null" >
+                AND spa.type = #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="productId != null" >
+                AND p.CODE = #{productId,jdbcType=INTEGER}
+            </if>
+            <if test="productName != null" >
+                AND p.name LIKE #{productName,jdbcType=VARCHAR}
+            </if>
+            <if test="mchtCode != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = spa.mcht_id and mi.del_flag = '0' and mi.mcht_code = #{mchtCode,jdbcType=VARCHAR})
+            </if>
+            <if test="mchtName != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = spa.mcht_id and mi.del_flag = '0' and mi.shop_name LIKE #{mchtName,jdbcType=VARCHAR})
+            </if>
+            <if test="productTypeId != null" >
+                AND p.product_type1_id = #{productTypeId,jdbcType=INTEGER}
+            </if>
+            ) a
+        LEFT JOIN (
+            SELECT
+            t.value_id AS valueId,
+            IFNULL( SUM( t.total_visitor_count ), 0 ) AS totalVisitorCount,
+            IFNULL( SUM( t.total_visitor_count_tourist ), 0 ) AS totalVisitorCountTourist,
+            IFNULL( SUM( t.total_pv_count ), 0 ) AS totalPvCount,
+            IFNULL( SUM( t.total_pv_count_tourist ), 0 ) AS totalPvCountTourist,
+            IFNULL( SUM( t.shopping_cart_count ), 0 ) AS shoppingCartCount,
+            CONCAT(
+            ROUND(
+            SUM( t.shopping_cart_count ) / ( SUM( t.total_visitor_count ) + SUM( t.total_visitor_count_tourist ) ) * 100,
+            2
+            ),
+            '%'
+            ) AS addProductRate,
+            IFNULL( SUM( t.sub_product_count ), 0 ) AS subProductCount,
+            CONCAT( ROUND( SUM( t.sub_product_count ) / SUM( t.shopping_cart_count ) * 100, 2 ), '%' ) AS submitOrderRate,
+            IFNULL( SUM( t.pay_product_count ), 0 ) AS payProductCount,
+            CONCAT( ROUND( SUM( t.pay_product_count ) / SUM( t.sub_product_count ) * 100, 2 ), '%' ) AS paymentRate
+            FROM
+            bu_type_column_pv_statistical t
+            WHERE
+            t.del_flag = '0'
+            AND t.type = '1'
+            <if test="columnType != null" >
+                AND t.column_type =  #{columnType,jdbcType=VARCHAR}
+            </if>
+            <if test="beginTime != null and endTime != null" >
+                AND t.statistical_date <![CDATA[ >= ]]> #{beginTime,jdbcType=TIMESTAMP}
+                AND t.statistical_date <![CDATA[ <= ]]> #{endTime,jdbcType=TIMESTAMP}
+            </if>
+            GROUP BY
+            t.value_id
+            ) b
+        ON b.valueId = a.productId
+        ORDER BY
+            ifnull( a.seq_no, 99999 ) ASC,
+            a.id DESC
+        <if test="limitStart != null and limitSize != null " >
+            LIMIT #{limitStart},#{limitSize}
+        </if>
+    </select>
+
+    <select id="countSingleProductActivityTrafficStatistics" resultType="java.lang.Integer" parameterType="java.util.HashMap" >
+        SELECT
+            count(*)
+        FROM
+            bu_single_product_activity spa,
+            bu_product p
+        WHERE
+            spa.del_flag = '0'
+            AND p.del_flag = '0'
+            AND spa.product_id = p.id
+            AND spa.audit_status IN ( 1, 4, 3 )
+            AND spa.type = '2'
+            AND spa.is_close = '0'
+            AND ( DATE_FORMAT( spa.end_time, '%Y-%m-%d %T' ) <![CDATA[ >= ]]> NOW( ) OR spa.end_time IS NULL )
+            <if test="type != null" >
+                AND spa.type = #{type,jdbcType=VARCHAR}
+            </if>
+            <if test="productId != null" >
+                AND p.CODE = #{productId,jdbcType=INTEGER}
+            </if>
+            <if test="productName != null" >
+                AND p.name LIKE #{productName,jdbcType=VARCHAR}
+            </if>
+            <if test="mchtCode != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = spa.mcht_id and mi.del_flag = '0' and mi.mcht_code = #{mchtCode,jdbcType=VARCHAR})
+            </if>
+            <if test="mchtName != null" >
+                AND EXISTS (select mi.id from bu_mcht_info mi WHERE mi.id = spa.mcht_id and mi.del_flag = '0' and mi.shop_name LIKE #{mchtName,jdbcType=VARCHAR})
+            </if>
+            <if test="productTypeId != null" >
+                AND p.product_type1_id = #{productTypeId,jdbcType=INTEGER}
+            </if>
+    </select>
+
+
+    <select id="getVisitorCount" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        count(DISTINCT bmp.member_id) as all_visitors_num,
+        COUNT(DISTINCT IF(bmp.member_id IS NOT NULL,NULL,bmp.device_number)) as  all_visitor_tourist_num
+        FROM
+        bu_member_pv bmp ,bu_product bp
+        WHERE
+        bmp.value_id IS NOT NULL
+        <if test="payBegin != null and payEnd != null" >
+            AND bmp.create_date <![CDATA[ >= ]]> #{payBegin,jdbcType=TIMESTAMP}
+            AND bmp.create_date <![CDATA[ <= ]]> #{payEnd,jdbcType=TIMESTAMP}
+        </if>
+        AND bmp.page_classify = '10'
+        AND bmp.value_id = bp.id
+        AND bp.del_flag = '0'
+        AND bp.`status` = '1'
+        <if test="mchtId != null" >
+            AND bp.mcht_id =#{mchtId}
+        </if>
+        <if test="productTypeId != null" >
+            AND bp.product_type1_id =#{productTypeId}
+        </if>
+        <if test="productBrandId != null" >
+            AND bp.brand_id =#{productBrandId}
+        </if>
+        <if test="reportColumnId != null" >
+            AND bmp.column_type =#{reportColumnId}
+        </if>
+        <if test="flagId != null and type == 'mcht'" >
+            AND bp.mcht_id = #{flagId}
+        </if>
+        <if test="flagId != null and type == 'productBrand'" >
+            AND bp.brand_id = #{flagId}
+        </if>
+        <if test="flagId != null and type == 'productType'" >
+            AND bp.product_type1_id = #{flagId}
+        </if>
+        GROUP BY
+        <if test="type == 'productBrand'" >
+            bp.brand_id
+        </if>
+        <if test="type == 'productType'" >
+            bp.product_type1_id
+        </if>
+        <if test="type == 'mcht'" >
+            bp.mcht_id
+        </if>
+    </select>
+
+ <!--   <select id="getShopVisitorCount" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        count(DISTINCT bmp.member_id) as all_visitors_num,
+        COUNT(DISTINCT IF(bmp.member_id IS NOT NULL,NULL,bmp.device_number)) as  all_visitor_tourist_num
+        FROM
+        bu_member_pv bmp
+        WHERE
+        bmp.mcht_id IS NOT NULL
+        <if test="payBegin != null and payEnd != null" >
+            AND bmp.create_date <![CDATA[ >= ]]> #{payBegin,jdbcType=TIMESTAMP}
+            AND bmp.create_date <![CDATA[ <= ]]> #{payEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="flagId != null and type == 'productType'" >
+            AND bmp.mcht_id = #{flagId}
+        </if>
+        <if test="reportColumnId != null" >
+            AND bmp.column_type =#{reportColumnId}
+        </if>
+
+        <if test="productTypeId != null" >
+            AND bmp.mcht_id in (SELECT mpt.mcht_id FROM bu_mcht_product_type mpt WHERE mpt.del_flag = '0' AND mpt.is_main = '1' AND mpt.status = '1' AND mpt.mcht_id = bmi.id AND mpt.product_type_id = #{productTypeId}  )
+        </if>
+        AND bmp.del_flag='0'
+        GROUP BY
+        bmp.mcht_id
+    </select>-->
+
+</mapper>

@@ -1,0 +1,103 @@
+/*common*/
+.btn-action { background: #003877; }
+
+/*top*/
+.topbar { background: #003877; color: #fff; }
+.topbar a { color: #fff; }
+
+/*header*/
+.header { background: #fff; }
+
+.search-panel-fields { border-color: #003877; }
+.search-panel-fields button { background-color: #003877; }
+
+.cartbtn { background-color: #003877; border-color: #003877; }
+
+.mini-cart-view .mini-cart-btn { background: #003877; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px; color: #fff; }
+
+/*nav*/
+.site-nav-item a:hover span { border-bottom-color: #003877; }
+
+/*footer*/
+.footwarranty { background: #fff; }
+
+.footer { background: #003877; color: #fff; }
+.footer a:hover { color: #fff; }
+
+/*login*/
+.loginbox { border-top: 3px solid #003877; }
+
+/*main*/
+.filter-sort .sort-on { border-color: #003877; background-color: #003877; color: #fff; }
+
+.pagination .page-cur, .page-go button { background: #003877; border: 1px solid #002044; color: #fff; }
+
+/*page*/
+.block .blocktitle { background: #ffffff; }
+.block .blocktitle span { margin-bottom: -2px; border-bottom: 2px solid #003877; }
+
+.commentblock h3 { border-color: #003877; }
+
+.sideblock .blocktitle { border-top: 3px solid #003877; margin: 0 -1px; }
+
+/*slides*/
+#inslides .switchable-triggers li { color: #fff; }
+#inslides .switchable-triggers li.current { color: #003877; }
+
+/*tabs*/
+#intabs .switchable-tab-title { height: 30px; line-height: 30px; border-bottom: 2px solid #d4d4d4; }
+#intabs .switchable-tab-title .current { border-bottom: 2px solid #003877; margin-bottom: -2px; }
+#intabs .switchable-nav-item i { display: block; margin-top: 70px; width: 0; height: 0; border: 15px dashed transparent; text-indent: -9999px; line-height: 0; }
+#intabs .prev i { border-right: 15px solid #003877; }
+#intabs .next i { border-left: 15px solid #003877; margin-left: 10px; }
+
+/*goodslist*/
+.goods-showlist .item-hover { border-color: #003877; }
+.goods-showlist .goodsname a:hover { color: #003877; }
+.goods-showlist .thumbslist li.selected { border-color: #003877; }
+
+/*goodsdetail*/
+.goods-gallery .thumbs li.selected { border-color: #003877; }
+
+.detail-tabbar .selected { border-top: 3px solid #003877; margin-top: -3px; }
+
+.detail-bd .hd { background: #003877; color: #ffffff; }
+
+.review-rate span { color: #003877; }
+
+.sumratebar span { background: #003877; }
+
+/*goods-set*/
+.combobuy-hd h3, .combobuy-ft h3 { color: #003877; }
+
+/*step*/
+/*payment*/
+.tabbar .selected { margin-top: -3px; border-top: 3px solid #003877; }
+
+.payment .tabbar .selected a { border-top: 3px solid #003877; padding-top: 0; }
+
+/*refund*/
+.tabnav li a.current { color: #fff; background: #003877; }
+
+/*news*/
+.newslist h3 { border-bottom: 2px solid #003877; }
+
+.newslist .title a:hover { color: #003877; }
+
+.newstop { border-bottom: 2px solid #003877; }
+
+/*mycenter*/
+.mcmenu-home { margin-bottom: 10px; background-color: #003877; }
+
+.mcmenu { border-top: 4px solid #003877; }
+
+.mctitle span { margin-bottom: -2px; border-bottom: 2px solid #003877; }
+
+.link-back { background: #003877; }
+
+.link { color: #003877; }
+
+/*brand*/
+.brandextra a { background: #003877; }
+
+/*# sourceMappingURL=theme.css.map */

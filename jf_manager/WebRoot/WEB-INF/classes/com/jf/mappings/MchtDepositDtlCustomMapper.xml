@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jf.dao.MchtDepositDtlCustomMapper">
+  <resultMap id="BaseResultCustomMap" type="com.jf.entity.MchtDepositDtlCustom" extends="com.jf.dao.MchtDepositDtlMapper.BaseResultMap" >
+    <result column="mcht_code" property="mchtCode" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+    <result column="violate_type_desc" property="violateTypeDesc" jdbcType="VARCHAR" />
+    <result column="sub_order_code" property="subOrderCode" jdbcType="VARCHAR" />
+    <result column="violate_date" property="violateDate" jdbcType="TIMESTAMP" />
+    <result column="sub_order_id" property="subOrderId" jdbcType="INTEGER" />
+    <result column="txn_type_desc" property="txnTypeDesc" jdbcType="VARCHAR" />
+    <result column="type_sub_desc" property="typeSubDesc" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="first" property="first" jdbcType="DECIMAL"/>
+    <result column="cash_payment" property="cashPayment" jdbcType="DECIMAL" />
+    <result column="payment_of_goods" property="paymentOfGoods" jdbcType="DECIMAL" />
+    <result column="violate_money" property="violateMoney" jdbcType="DECIMAL" />
+    <result column="refund_deposit" property="refundDeposit" jdbcType="DECIMAL" />
+    <result column="appeal_money" property="appealMoney" jdbcType="DECIMAL" />
+    <result column="after_sale_money" property="afterSaleMoney" jdbcType="DECIMAL" />
+    <result column="last" property="last" jdbcType="DECIMAL"/>
+    <result column="total_amt" property="totalAmt" jdbcType="DECIMAL"/>
+    <result column="need_pay" property="needPay" jdbcType="DECIMAL"/>
+    <result column="each_day" property="eachDay" jdbcType="VARCHAR" />
+    <result column="mcht_id" property="mchtId" jdbcType="VARCHAR" />
+    <result column="mcht_deposit_id" property="mchtDepositid" jdbcType="INTEGER" />
+    <result column="violate_order_code" property="violateOrderCode" jdbcType="VARCHAR" />
+  </resultMap>
+    <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, deposit_id, txn_type, type_sub, txn_amt, pay_amt, biz_type, biz_id, create_by, 
+    create_date, update_by, update_date, remarks, del_flag,
+    (SELECT c.mcht_code from bu_mcht_info c,bu_mcht_deposit b where c.id =b.mcht_id and b.id = t.deposit_id)mcht_code,
+    (SELECT c.company_name from bu_mcht_info c,bu_mcht_deposit b where c.id =b.mcht_id and b.id = t.deposit_id)company_name,
+    FUN_GET_STATUS_DESC("BU_MCHT_DEPOSIT_DTL","TXN_TYPE", t.txn_type) txn_type_desc,
+    FUN_GET_STATUS_DESC("BU_MCHT_DEPOSIT_DTL","TYPE_SUB", t.type_sub) type_sub_desc,
+    (SELECT b.mcht_id FROM bu_mcht_deposit b WHERE t.deposit_id=b.id AND b.del_flag='0') mcht_deposit_id,
+    (select vo.order_code FROM  bu_violate_order vo WHERE  t.biz_id =vo.id  AND vo.del_flag='0')violate_order_code
+  </sql>  
+  <select id="countByExample" parameterType="com.jf.entity.MchtDepositDtlCustomExample" resultType="java.lang.Integer" >
+    select count(*) from bu_mcht_deposit_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectByExample" resultMap="BaseResultCustomMap" parameterType="com.jf.entity.MchtDepositDtlCustomExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from bu_mcht_deposit_dtl t
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart>=0" >
+      limit #{limitStart} , #{limitSize}
+    </if>
+  </select>
+    
+    <sql id="selectMchtDepositDtlSql">
+		 select 
+		        a.*,
+		        (select c.mcht_code from bu_mcht_deposit b, bu_mcht_info c where b.id=a.deposit_id and b.mcht_id=c.id) mcht_code,
+		        (select c.company_name from bu_mcht_deposit b, bu_mcht_info c where b.id=a.deposit_id and b.mcht_id=c.id) company_name
+		 from bu_mcht_deposit_dtl a
+		 where a.del_flag = '0'
+		 	<if test="depositId !=null and depositId != ''">
+				and a.deposit_id =#{depositId}
+			</if>
+			<if test="companyName !=null and companyName != ''">
+				and a.deposit_id in (select b.id from bu_mcht_deposit b, bu_mcht_info c where b.id=a.deposit_id and b.mcht_id=c.id and c.company_name like CONCAT('%', '${companyName}', '%'))
+			</if>
+			<if test="date_begin !=null and date_begin != ''">
+  				and DATE_FORMAT(a.create_date, '%Y-%m-%d') <![CDATA[ >= ]]> #{date_begin,jdbcType=VARCHAR}
+			</if>
+			<if test="date_end !=null and date_end != ''">
+ 				and DATE_FORMAT(a.create_date, '%Y-%m-%d') <![CDATA[ <= ]]> #{date_end,jdbcType=VARCHAR}
+			</if>
+    </sql>
+    
+    <select id="selectMchtDepositDtlList"  parameterType="java.util.HashMap" resultMap="BaseResultCustomMap">
+       SELECT TAB.* FROM (
+		<include refid="selectMchtDepositDtlSql" />
+		)TAB
+		order by TAB.id desc
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+    </select>
+    
+    <select id="mchtDepositDtlListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectMchtDepositDtlSql" /> 
+		  ) TAB	 
+	</select>
+	
+	<sql id="selectViolateDepositDtlSql">
+		 SELECT	a.order_code,FUN_GET_STATUS_DESC("BU_VIOLATE_ORDER","VIOLATE_TYPE", a.violate_type) as violate_type_desc,
+				b.sub_order_code,a.violate_date,t.create_date,t.txn_amt,e.company_name,e.mcht_code,t.biz_id,a.sub_order_id
+		 FROM
+				bu_mcht_deposit_dtl t,
+				bu_violate_order a,
+				bu_sub_order b,
+				bu_mcht_deposit d,
+				bu_mcht_info e
+		 WHERE
+		 	   t.del_flag = '0' and 
+			   t.biz_type = '2'	and
+			   a.id = t.biz_id  and 
+			   a.sub_order_id = b.id and 
+			   t.deposit_id = d.id and 
+			   d.mcht_id = e.id
+		 	<if test="orderCode !=null and orderCode != ''">
+				and a.order_code =#{orderCode}
+			</if>
+			<if test="violateType !=null and violateType != ''">
+				and a.violate_type =#{violateType}
+			</if>
+			<if test="subOrderCode !=null and subOrderCode != ''">
+				and b.sub_order_code =#{subOrderCode}
+			</if>
+			<if test="mchtCode !=null and mchtCode != ''">
+				and e.mcht_code =#{mchtCode}
+			</if>
+    </sql>
+	
+	<select id="selectViolateDepositDtlList"  parameterType="java.util.HashMap" resultMap="BaseResultCustomMap">
+       SELECT TAB.* FROM (
+		<include refid="selectViolateDepositDtlSql" />
+		)TAB
+		order by TAB.create_date desc
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+    </select>
+    <select id="violateDepositDtlListCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectViolateDepositDtlSql" /> 
+		  ) TAB	 
+	</select>
+    
+    <sql id="selectMchtDepositDtlCountListSql">
+SELECT
+	tmp.*, (tmp.total_amt - tmp.last) AS need_pay
+FROM
+	(
+		SELECT
+			t.mcht_id AS mcht_id,
+			t.mcht_code,
+			t.company_name,
+			SUM(t.first) AS first,
+			SUM(t.cash_payment) AS cash_payment,
+			SUM(t.payment_of_goods) AS payment_of_goods,
+			SUM(t.violate_money) AS violate_money,
+			SUM(t.refund_deposit) AS refund_deposit,
+			SUM(t.appeal_money) AS appeal_money,
+			SUM(t.total_amt) AS total_amt,
+			SUM(t.last) AS last
+		FROM
+			(
+				SELECT
+					mi.id AS mcht_id,
+					mi.mcht_code,
+					mi.company_name,
+					SUM(mdd.txn_amt) AS first,
+					0 AS cash_payment,
+					0 AS payment_of_goods,
+					0 AS violate_money,
+					0 AS refund_deposit,
+					0 AS appeal_money,
+					0 AS total_amt,
+					0 AS last
+				FROM
+					bu_mcht_info mi,
+					bu_mcht_deposit md,
+					bu_mcht_deposit_dtl mdd
+				WHERE
+					mi.id = md.mcht_id
+				AND md.id = mdd.deposit_id
+				AND mdd.txn_type != 'A'
+				AND mdd.create_date <![CDATA[ < ]]> #{createDateBegin}
+				AND mdd.del_flag = '0'
+				<if test="mchtCode != null and mchtCode !=''" >
+				AND mi.mcht_code = #{mchtCode}
+			    </if>
+			   <if test="mchtName != null and mchtName !=''" >
+			   AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			   </if>
+			   <if test="productTypeId!=null and productTypeId != ''">
+	           AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+               </if>              
+               <if test="productBrandName !=null and productBrandName != ''">
+		        AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		       </if>
+				GROUP BY
+					mi.id
+				UNION
+					SELECT
+						mi.id AS mcht_id,
+						mi.mcht_code,
+						mi.company_name,
+						0 AS first,
+						SUM(mdd.txn_amt) AS cash_payment,
+						0 AS payment_of_goods,
+						0 AS violate_money,
+						0 AS refund_deposit,
+						0 AS appeal_money,
+						0 AS total_amt,
+						0 AS last
+					FROM
+						bu_mcht_info mi,
+						bu_mcht_deposit md,
+						bu_mcht_deposit_dtl mdd
+					WHERE
+						mi.id = md.mcht_id
+					AND md.id = mdd.deposit_id
+					AND mdd.txn_type = 'B'
+					AND mdd.del_flag = '0'
+					AND mdd.create_date <![CDATA[ >= ]]> #{createDateBegin}
+					AND mdd.create_date <![CDATA[ <= ]]> #{createDateEnd}
+					<if test="mchtCode != null and mchtCode !=''" >
+				    AND mi.mcht_code = #{mchtCode}
+			        </if>
+			        <if test="mchtName != null and mchtName !=''" >
+				    AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			        </if>
+			        <if test="productTypeId!=null and productTypeId != ''">
+	                AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+                    </if>                  
+                    <if test="productBrandName !=null and productBrandName != ''">
+		            AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		            </if>
+					GROUP BY
+						mi.id
+					UNION
+						SELECT
+							mi.id AS mcht_id,
+							mi.mcht_code,
+							mi.company_name,
+							0 AS first,
+							0 AS cash_payment,
+							SUM(mdd.txn_amt) AS payment_of_goods,
+							0 AS violate_money,
+							0 AS refund_deposit,
+							0 AS appeal_money,
+							0 AS total_amt,
+							0 AS last
+						FROM
+							bu_mcht_info mi,
+							bu_mcht_deposit md,
+							bu_mcht_deposit_dtl mdd
+						WHERE
+							mi.id = md.mcht_id
+						AND md.id = mdd.deposit_id
+						AND mdd.txn_type = 'C'
+						AND mdd.del_flag = '0'
+						AND mdd.create_date <![CDATA[ >= ]]> #{createDateBegin}
+						AND mdd.create_date <![CDATA[ <= ]]> #{createDateEnd}
+						 <if test="mchtCode != null and mchtCode !=''" >
+				         AND mi.mcht_code = #{mchtCode}
+			             </if>
+			             <if test="mchtName != null and mchtName !=''" >
+				         AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			            </if>
+			            <if test="productTypeId!=null and productTypeId != ''">
+	                     AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+                        </if>                       
+                        <if test="productBrandName !=null and productBrandName != ''">
+		                 AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		                </if>
+						GROUP BY
+							mi.id
+						UNION
+							SELECT
+								mi.id AS mcht_id,
+								mi.mcht_code,
+								mi.company_name,
+								0 AS first,
+								0 AS cash_payment,
+								0 AS payment_of_goods,
+								SUM(mdd.txn_amt) AS violate_money,
+								0 AS refund_deposit,
+								0 AS appeal_money,
+								0 AS total_amt,
+								0 AS last
+							FROM
+								bu_mcht_info mi,
+								bu_mcht_deposit md,
+								bu_mcht_deposit_dtl mdd
+							WHERE
+								mi.id = md.mcht_id
+							AND md.id = mdd.deposit_id
+							AND mdd.txn_type = 'E'
+							AND mdd.del_flag = '0'
+							AND mdd.create_date <![CDATA[ >= ]]> #{createDateBegin}
+							AND mdd.create_date <![CDATA[ <= ]]> #{createDateEnd}
+							<if test="mchtCode != null and mchtCode !=''" >
+				            AND mi.mcht_code = #{mchtCode}
+			                </if>
+			                <if test="mchtName != null and mchtName !=''" >
+				            AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			                </if>
+			                <if test="productTypeId!=null and productTypeId != ''">
+	                        AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+                            </if>                          
+                            <if test="productBrandName !=null and productBrandName != ''">
+		                    AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		                    </if>
+							GROUP BY
+								mi.id
+							UNION
+								SELECT
+									mi.id AS mcht_id,
+									mi.mcht_code,
+									mi.company_name,
+									0 AS first,
+									0 AS cash_payment,
+									0 AS payment_of_goods,
+									0 AS violate_money,
+									SUM(mdd.txn_amt) AS refund_deposit,
+									0 AS appeal_money,
+									0 AS total_amt,
+									0 AS last
+								FROM
+									bu_mcht_info mi,
+									bu_mcht_deposit md,
+									bu_mcht_deposit_dtl mdd
+								WHERE
+									mi.id = md.mcht_id
+								AND md.id = mdd.deposit_id
+								AND mdd.txn_type = 'D'
+								AND mdd.del_flag = '0'
+								AND mdd.create_date <![CDATA[ >= ]]> #{createDateBegin}
+								AND mdd.create_date <![CDATA[ <= ]]> #{createDateEnd}
+								<if test="mchtCode != null and mchtCode !=''" >
+				                 AND mi.mcht_code = #{mchtCode}
+			                     </if>
+			                    <if test="mchtName != null and mchtName !=''" >
+				                 AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			                    </if>
+			                    <if test="productTypeId!=null and productTypeId != ''">
+	                             AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+                                </if>                            
+                                <if test="productBrandName !=null and productBrandName != ''">
+		                         AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		                        </if>
+								GROUP BY
+									mi.id
+								UNION
+									SELECT
+										mi.id AS mcht_id,
+										mi.mcht_code,
+										mi.company_name,
+										0 AS first,
+										0 AS cash_payment,
+										0 AS payment_of_goods,
+										0 AS violate_money,
+										0 AS refund_deposit,
+										SUM(mdd.txn_amt) AS appeal_money,
+										0 AS total_amt,
+										0 AS last
+									FROM
+										bu_mcht_info mi,
+										bu_mcht_deposit md,
+										bu_mcht_deposit_dtl mdd
+									WHERE
+										mi.id = md.mcht_id
+									AND md.id = mdd.deposit_id
+									AND mdd.txn_type = 'F'
+									AND mdd.del_flag = '0'
+									AND mdd.create_date <![CDATA[ >= ]]> #{createDateBegin}
+									AND mdd.create_date <![CDATA[ <= ]]> #{createDateEnd}
+									<if test="mchtCode != null and mchtCode !=''" >
+				                    AND mi.mcht_code = #{mchtCode}
+			                        </if>
+			                        <if test="mchtName != null and mchtName !=''" >
+				                     AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			                         </if>
+			                         <if test="productTypeId!=null and productTypeId != ''">
+	                                 AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+                                     </if>                             
+                                     <if test="productBrandName !=null and productBrandName != ''">
+		                             AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		                             </if>
+									GROUP BY
+										mi.id
+									UNION
+										SELECT
+											mi.id AS mcht_id,
+											mi.mcht_code,
+											mi.company_name,
+											0 AS first,
+											0 AS cash_payment,
+											0 AS payment_of_goods,
+											0 AS violate_money,
+											0 AS refund_deposit,
+											0 AS appeal_money,
+											md.total_amt AS total_amt,
+											0 AS last
+										FROM
+											bu_mcht_info mi,
+											bu_mcht_deposit md
+										WHERE
+											mi.id = md.mcht_id
+										AND md.del_flag = '0'
+										   <if test="mchtCode != null and mchtCode !=''" >
+				                            AND mi.mcht_code = #{mchtCode}
+			                                </if>
+			                                <if test="mchtName != null and mchtName !=''" >
+				                            AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			                                </if>
+			                                <if test="productTypeId!=null and productTypeId != ''">
+	                                        AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+                                            </if>                              
+                                            <if test="productBrandName !=null and productBrandName != ''">
+		                                     AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		                                    </if>
+										GROUP BY
+											mi.id
+										UNION
+											SELECT
+												mi.id AS mcht_id,
+												mi.mcht_code,
+												mi.company_name,
+												0 AS first,
+												0 AS cash_payment,
+												0 AS payment_of_goods,
+												0 AS violate_money,
+												0 AS refund_deposit,
+												0 AS appeal_money,
+												0 AS total_amt,
+												SUM(mdd.txn_amt) AS last
+											FROM
+												bu_mcht_info mi,
+												bu_mcht_deposit md,
+												bu_mcht_deposit_dtl mdd
+											WHERE
+												mi.id = md.mcht_id
+											AND md.id = mdd.deposit_id
+											AND mdd.txn_type != 'A'
+											AND mdd.create_date <![CDATA[ <= ]]> #{createDateEnd}
+											AND mdd.del_flag = '0'
+											<if test="mchtCode != null and mchtCode !=''" >
+				                            AND mi.mcht_code = #{mchtCode}
+			                                </if>
+			                                <if test="mchtName != null and mchtName !=''" >
+				                            AND (mi.company_name LIKE CONCAT('%',#{mchtName},'%') OR mi.shop_name LIKE CONCAT('%',#{mchtName},'%'))
+			                                </if>
+			                                <if test="productTypeId!=null and productTypeId != ''">
+	                                        AND mi.id in (select mpt.mcht_id from bu_mcht_product_type mpt where mpt.del_flag = '0' and mi.id=mpt.mcht_id and mpt.status = '1' and mpt.product_type_id=#{productTypeId})
+                                             </if>                                          
+                                            <if test="productBrandName !=null and productBrandName != ''">
+		                                     AND mi.id in (select mp.mcht_id from bu_product_brand pb,bu_mcht_product_brand mp where mp.product_brand_id=pb.id and mp.mcht_id = mi.id and mp.audit_status = '3' and pb.del_flag='0' and mp.del_flag='0' and (pb.name LIKE concat('%',#{productBrandName},'%') OR pb.name_zh LIKE concat('%',#{productBrandName},'%') OR pb.name_en LIKE concat('%',#{productBrandName},'%')))
+		                                    </if>
+											GROUP BY
+												mi.id
+			) t
+		GROUP BY
+			t.mcht_id
+	) tmp
+    </sql>
+    
+    <select id="selectMchtDepositDtlCountList" resultMap="BaseResultCustomMap" parameterType="java.util.HashMap" >
+    	SELECT TAB.* FROM (
+		<include refid="selectMchtDepositDtlCountListSql" />
+		)TAB
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+  	</select>
+    
+    <select id="mchtDepositDtlCountCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectMchtDepositDtlCountListSql" /> 
+		  ) TAB	 
+	</select>
+	
+	<sql id="selectMchtDepositDtlCountEachDayListSql">
+		SELECT
+			tmp.each_day,
+			IFNULL((select sum(c.txn_amt) from bu_mcht_deposit_dtl c where DATE_FORMAT(c.create_date, '%Y-%m-%d')<![CDATA[ < ]]> tmp.each_day and c.txn_type!='A' and c.del_flag='0'),0) as first,
+			IFNULL((select sum(c.txn_amt) from bu_mcht_deposit_dtl c where  c.txn_type = 'B' AND DATE_FORMAT(c.create_date, '%Y-%m-%d') = tmp.each_day and c.del_flag='0'),0) as cash_payment,
+			IFNULL((select sum(c.txn_amt) from bu_mcht_deposit_dtl c where  c.txn_type = 'C' AND DATE_FORMAT(c.create_date, '%Y-%m-%d') = tmp.each_day and c.del_flag='0'),0) as payment_of_goods,
+			IFNULL((select sum(c.txn_amt) from bu_mcht_deposit_dtl c where  c.txn_type = 'D' AND DATE_FORMAT(c.create_date, '%Y-%m-%d') = tmp.each_day and c.del_flag='0'),0) as refund_deposit,
+		  	IFNULL((select sum(c.txn_amt) from bu_mcht_deposit_dtl c where  c.txn_type = 'E' AND DATE_FORMAT(c.create_date, '%Y-%m-%d') = tmp.each_day and c.del_flag='0'),0) as violate_money,
+			IFNULL((select sum(c.txn_amt) from bu_mcht_deposit_dtl c where  c.txn_type = 'F' AND DATE_FORMAT(c.create_date, '%Y-%m-%d') = tmp.each_day and c.del_flag='0'),0) as appeal_money,
+			IFNULL((select sum(c.txn_amt) from bu_mcht_deposit_dtl c where  c.txn_type = 'G' AND DATE_FORMAT(c.create_date, '%Y-%m-%d') = tmp.each_day and c.del_flag='0'),0) as after_sale_money
+		FROM
+			(
+				SELECT
+					DISTINCT DATE_FORMAT(b.create_date, '%Y-%m-%d') each_day
+				FROM
+					bu_mcht_deposit_dtl b
+					WHERE b.create_date <![CDATA[ >= ]]> #{createDateBegin,jdbcType=VARCHAR}
+						  AND b.create_date <![CDATA[ <= ]]> #{createDateEnd,jdbcType=VARCHAR}
+						  and b.del_flag='0'
+			) tmp
+		Order BY tmp.each_day
+	</sql>
+	
+	<select id="selectMchtDepositDtlCountEachDayList" resultMap="BaseResultCustomMap" parameterType="java.util.HashMap" >
+    	SELECT TAB.*,(TAB.first+ TAB.cash_payment+TAB.payment_of_goods+TAB.refund_deposit+TAB.violate_money+TAB.appeal_money+TAB.after_sale_money) as last  FROM (
+		<include refid="selectMchtDepositDtlCountEachDayListSql" />
+		)TAB
+       	<if test="MAX_NUM!=null and MAX_NUM!=''">
+			LIMIT ${MIN_NUM},${MAX_NUM}
+	    </if>
+  	</select>
+	
+    <select id="mchtDepositDtlCountEachDayCount" parameterType="java.util.HashMap" resultType="java.lang.Integer"> 
+		  SELECT count(1)   FROM (
+		 <include refid="selectMchtDepositDtlCountEachDayListSql" /> 
+		  ) TAB	 
+	</select>
+</mapper>

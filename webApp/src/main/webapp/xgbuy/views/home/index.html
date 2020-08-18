@@ -1,0 +1,111 @@
+<div class="page home flex dc" data-title="醒购商城" data-id="home">
+	<link rel="stylesheet" href="home/home.css?var=1.0">
+	<link rel="stylesheet" href="../static/css/common-brand.css">
+
+	<div class="nav flex ac scroll-x nav-hide"></div>
+	<div class="nav-righ flex ac jc" onclick="homeApi.navAll(true)">
+		<img src="home/resources/tab.png" alt="">
+	</div>
+	<div id="navAll" class="flex dc hidden" onclick="homeApi.navAll(false)">
+		<div class="nav-head flex ac jb" onclick="stopSelf()">
+			<p>全部类目</p>
+			<img src="home/resources/tab.png" alt="" onclick="homeApi.navAll(false)">
+		</div>
+		<div class="nav flex nav-all fw ac js"  onclick="stopSelf()">
+		
+		</div>
+	</div>
+
+	<div class="scroll-y scroll-fix scroll-more fg bgf4 noscroll-decorate home-content">
+		<div class="touchfix w75">
+			<!-- <div class="nav flex ac scroll-x nav-hide"></div> -->
+			<div class="banner"></div>
+			<div class="marketing"></div>
+			<div class="theme"></div>
+			<div class="brand"></div>
+		</div>
+	</div>
+
+	<!-- 幻灯片 -->
+	<script id="home_swiper_tpl" type="text/html">
+		{{if returnData.length}}
+		<div class="swiper-container">
+			<ul class="swiper-wrapper">
+				{{each returnData value i}}
+				<li onclick="getBrandDef(this, {pos: '{{i}}'})"
+					data-id="{{value.id}}"
+					data-productid="{{value.linkId}}"
+					data-url="{{value.areaUrl}}"
+					data-type="{{value.linkType}}"
+					data-name="{{value.activityAreaName}}"
+					data-link="{{value.linkValue}}"
+					class="swiper-slide">
+					<img src="{{value.pic}}">
+				</li>
+				{{/each}}
+			</ul>
+			<div class="pagination"></div>
+		</div>
+		{{/if}}
+	</script>
+
+	<!-- 导航 -->
+	<script id="home_nav_tpl" type="text/html">
+		{{if categoryList.length}}
+			{{each categoryList value i}}
+		<a onclick="homeApi.randCustom(this)"
+			class="flex dc ac jc{{i ? '' : ' on'}}"
+			data-name="{{value.name}}"
+			data-id="{{value.id}}"
+			data-type="{{value.type}}"
+			data-productTypeId="{{value.productTypeId}}">
+			{{value.name}}
+		</a>
+			{{/each}}
+		{{/if}}
+	</script>
+
+	<script id="home_tpl_brand" type="text/html">
+		{{if activityList.length}}
+		<h2 class="brand-title flex ac jc">
+			<img src="home/resources/brand.png">
+			精选特卖好货<b>•</b>每日准点上线
+		</h2>
+
+		<div class="con-brand con-brand2">
+			{{include 'home_tpl_brand_list'}}
+		</div>
+		{{/if}}
+	</script>
+
+	<script id="home_tpl_brand_list" type="text/html">
+		{{each activityList value i}}
+		<a class="mb20"
+			onclick="getUrlActive(this, {pos: '{{page + i}}'})"
+			data-name="{{value.name}}"
+			data-url="{{value.areaUrl}}"
+			data-activityid="{{value.activityId}}"
+			data-activityareaid="{{value.activityAreaId}}"
+			data-source="{{value.source}}"
+			data-type="{{value.type}}">
+			<dl>
+				<dt class="h50vw">
+					<img src="{{value.entryPic}}">
+				</dt>
+
+				<dd>
+					<div class="row-1 flex ac jb">
+						<div class="flex ac">
+							<p class="ellipsis" title="{{value.name}}">{{value.name}}</p>
+						</div>
+						<time class="flex ac"><p class="ellipsis f50">{{value.activityTime}}</p></time>
+					</div>
+					<div class="row-2">{{value.groups}}</div>
+				</dd>
+			</dl>
+		</a>
+		{{/each}}
+	</script>
+
+	<script src="home/home.js?var=1.3" async></script>
+</div>

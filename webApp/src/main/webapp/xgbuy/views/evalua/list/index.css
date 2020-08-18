@@ -1,0 +1,31 @@
+.evalua-list .list-con {
+	padding: .2rem;
+	font-size: .26rem;
+}
+.evalua-list .list-con .list-spec {
+	height: .61rem;
+	font-size: .24rem;
+}
+
+.evalua-list h4 {
+	height: .45rem;
+}
+
+.evalua-list .score i {
+	width: .2rem;
+	height: .2rem;
+	float: left;
+	margin-left: .1rem;
+	background: url(../images/goods/stars-0.png) no-repeat;
+	background-size: contain;
+}
+.evalua-list .score.star-1 i:nth-child(-n+1),
+.evalua-list .score.star-2 i:nth-child(-n+2),
+.evalua-list .score.star-3 i:nth-child(-n+3),
+.evalua-list .score.star-4 i:nth-child(-n+4),
+.evalua-list .score.star-5 i:nth-child(-n+5) {
+	background-image: url(../images/goods/stars.png);
+}
+.evalua-list .list-text {
+	word-wrap:break-word;
+}
